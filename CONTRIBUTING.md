@@ -1,5 +1,7 @@
 # Contributing to lexdiff
 
+[🇯🇵 日本語版はこちら / Japanese](./CONTRIBUTING.ja.md)
+
 Thank you for your interest in contributing to lexdiff! This project aims to make Japanese law amendment history accessible to everyone through GitHub-style diff visualization.
 
 ## What We Accept
