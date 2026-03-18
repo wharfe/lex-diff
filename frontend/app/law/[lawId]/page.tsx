@@ -183,6 +183,9 @@ export default async function LawPage({
                     </span>
                   </div>
                 ))}
+                <p className="text-[11px] opacity-30 pt-2 border-t border-[var(--border)]">
+                  法案提出当時の役職を表示。NDL国会会議録から自動抽出。
+                </p>
               </div>
             </div>
           </div>

@@ -155,6 +155,13 @@ export default function AboutPage() {
           </p>
           <p>
             <span className="font-bold text-yellow-500">
+              提出者・大臣名は法案提出当時の役職です。
+            </span>
+            改正履歴に表示される大臣名や役職は、その法案が国会に提出された時点のものです。
+            現在の役職とは異なる場合があります。情報はNDL国会会議録から自動抽出しています。
+          </p>
+          <p>
+            <span className="font-bold text-yellow-500">
               正確な内容は必ず原文でご確認ください。
             </span>
             各ページにはe-Gov法令検索への原文リンクを掲載しています。
