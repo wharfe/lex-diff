@@ -33,6 +33,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://lexdiff.com",
   },
+  icons: {
+    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
+  },
   robots: {
     index: true,
     follow: true,
@@ -63,6 +66,24 @@ export default function RootLayout({
         />
       </head>
       <body className={`${geistMono.variable} antialiased`}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebApplication",
+              name: "lexdiff",
+              url: "https://lexdiff.com",
+              description:
+                "法律の改正履歴をGitHub風の差分表示で可視化するオープンソースプロジェクト",
+              applicationCategory: "ReferenceApplication",
+              operatingSystem: "Web",
+              inLanguage: "ja",
+              isAccessibleForFree: true,
+              license: "https://opensource.org/licenses/MIT",
+            }),
+          }}
+        />
         <header className="border-b border-[var(--border)] px-4 py-3">
           <div className="max-w-5xl mx-auto flex items-center gap-3">
             <a href="/" className="text-[17px] font-bold font-mono">

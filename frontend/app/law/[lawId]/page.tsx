@@ -1,10 +1,30 @@
+import type { Metadata } from "next";
 import { getTimelineIds, getTimelineData } from "@/lib/data";
 import { Timeline } from "@/components/timeline";
 import { Icon } from "@/components/icon";
 import { getThemesForLaw } from "@/lib/life-themes";
+import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
 
 export function generateStaticParams() {
   return getTimelineIds().map((lawId) => ({ lawId }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lawId: string }>;
+}): Promise<Metadata> {
+  const { lawId } = await params;
+  const data = getTimelineData(lawId);
+  const desc = data.summary?.description || `${data.law_title}の改正履歴`;
+  return {
+    title: `${data.law_title} 改正履歴`,
+    description: desc,
+    openGraph: {
+      title: `${data.law_title} 改正履歴 | lexdiff`,
+      description: desc,
+    },
+  };
 }
 
 export default async function LawPage({
@@ -18,6 +38,15 @@ export default async function LawPage({
 
   return (
     <div className="flex flex-col gap-6">
+      <BreadcrumbJsonLd
+        items={[
+          { name: "lexdiff", url: "https://lexdiff.com" },
+          {
+            name: data.law_title,
+            url: `https://lexdiff.com/law/${lawId}`,
+          },
+        ]}
+      />
       {/* Repository-style header */}
       <div>
         <div className="flex items-center gap-2 text-[15px] mb-2">
