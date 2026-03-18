@@ -53,10 +53,16 @@ export default function Home() {
       )
     : null;
 
-  // Get a few preview lines from the hero diff
+  // Get preview lines that show both additions and deletions
   const previewLines: string[] = [];
   if (heroDiff) {
-    const modified = heroDiff.data.diffs.find((d) => d.type === "modified");
+    // Find a diff entry with both + and - lines
+    const modified = heroDiff.data.diffs.find((d) => {
+      if (d.type !== "modified") return false;
+      const hasAdd = d.diff.some((l) => l.startsWith("+") && !l.startsWith("+++"));
+      const hasDel = d.diff.some((l) => l.startsWith("-") && !l.startsWith("---"));
+      return hasAdd && hasDel;
+    }) || heroDiff.data.diffs.find((d) => d.type === "modified");
     if (modified) {
       for (const line of modified.diff) {
         if (previewLines.length >= 8) break;

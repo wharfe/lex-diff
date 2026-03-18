@@ -8,9 +8,35 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "lex-diff - 法令改正の差分ビューア",
+  title: {
+    default: "lexdiff - 法令改正の差分ビューア",
+    template: "%s | lexdiff",
+  },
   description:
-    "法律の改正履歴を差分表示で可視化するオープンソースプロジェクト。e-Gov法令APIを利用。",
+    "法律の改正履歴をGitHub風の差分表示で可視化。いつ・どの条文が・誰によって・どう変わったかを一目で追えるオープンソースプロジェクト。",
+  metadataBase: new URL("https://lexdiff.com"),
+  openGraph: {
+    title: "lexdiff - 法令改正の差分ビューア",
+    description:
+      "法律の改正履歴をGitHub風の差分表示で可視化。いつ・どの条文が・誰によって・どう変わったかを一目で追えます。",
+    url: "https://lexdiff.com",
+    siteName: "lexdiff",
+    locale: "ja_JP",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "lexdiff - 法令改正の差分ビューア",
+    description:
+      "法律の改正履歴をGitHub風の差分表示で可視化。",
+  },
+  alternates: {
+    canonical: "https://lexdiff.com",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({

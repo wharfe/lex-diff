@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Data accuracy concern
+    url: https://laws.e-gov.go.jp/
+    about: If you believe a diff or summary is inaccurate, please verify against the original law text at e-Gov. AI-generated annotations may contain errors.

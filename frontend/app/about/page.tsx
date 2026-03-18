@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { Icon } from "@/components/icon";
 
 export const metadata: Metadata = {
-  title: "lex-diffについて",
+  title: "lexdiffについて",
   description:
-    "lex-diffの仕組み、コンセプト、AI利用方針について。法令の改正履歴をGitHub風のdiffで可視化するオープンソースプロジェクト。",
+    "lexdiffの仕組み、コンセプト、AI利用方針について。法令の改正履歴をGitHub風のdiffで可視化するオープンソースプロジェクト。",
 };
 
 export default function AboutPage() {
@@ -12,10 +12,10 @@ export default function AboutPage() {
     <div className="space-y-10">
       {/* Concept */}
       <section>
-        <h2 className="text-[20px] font-bold">lex-diffとは</h2>
+        <h2 className="text-[20px] font-bold">lexdiffとは</h2>
         <div className="mt-3 space-y-3 text-[15px] leading-[26px] opacity-80">
           <p>
-            lex-diffは、日本の法律の改正履歴を
+            lexdiffは、日本の法律の改正履歴を
             <strong>GitHub風の差分表示</strong>
             で可視化するオープンソースプロジェクトです。
           </p>
@@ -37,7 +37,7 @@ export default function AboutPage() {
             「何が追加され、何が削除されたか」が一目でわかるこの仕組みは、実は法律の改正にもそのまま当てはまります。
           </p>
           <p>
-            lex-diffでは、この考え方を法令に適用しています：
+            lexdiffでは、この考え方を法令に適用しています：
           </p>
         </div>
         <div className="mt-4 border border-[var(--border)] rounded-lg overflow-hidden text-[14px]">
@@ -96,7 +96,7 @@ export default function AboutPage() {
             たとえば民法を変えたいときは、「民法等の一部を改正する法律」という別の法律案を国会に提出し、審議・可決する必要があります。
           </p>
           <p className="mt-2">
-            つまり、lex-diffの改正履歴に並んでいる一つ一つの項目は、それ自体が<strong>独立した法律</strong>です。
+            つまり、lexdiffの改正履歴に並んでいる一つ一つの項目は、それ自体が<strong>独立した法律</strong>です。
             GitHubでいえば、コミットメッセージどころか<strong>コミットそのものが一つの法律文書</strong>になっている — それが日本の法改正の仕組みです。
           </p>
         </div>
@@ -211,7 +211,7 @@ export default function AboutPage() {
             },
             {
               q: "OpenGIKAIとの関係は？",
-              a: "lex-diffは独立したプロジェクトですが、同じ開発者による姉妹プロジェクトです。OpenGIKAIは国会審議・首相記者会見・政府審議会などの公的な議論の内容を、lex-diffは法律の条文変更をそれぞれ可視化しています。将来的には相互リンクによる連携を予定しています。",
+              a: "lexdiffは独立したプロジェクトですが、同じ開発者による姉妹プロジェクトです。OpenGIKAIは国会審議・首相記者会見・政府審議会などの公的な議論の内容を、lexdiffは法律の条文変更をそれぞれ可視化しています。将来的には相互リンクによる連携を予定しています。",
             },
             {
               q: "ソースコードはどこで見られますか？",
@@ -233,7 +233,7 @@ export default function AboutPage() {
         <h2 className="text-[20px] font-bold">オープンソース・透明性</h2>
         <div className="mt-3 space-y-3 text-[15px] leading-[26px] opacity-80">
           <p>
-            lex-diffは公共財として運営されています。以下をすべてGitHubで公開しています：
+            lexdiffは公共財として運営されています。以下をすべてGitHubで公開しています：
           </p>
           <ul className="list-inside list-disc space-y-1 pl-2">
             <li>e-Gov APIからのデータ取得ロジック</li>
@@ -275,7 +275,7 @@ export default function AboutPage() {
             </div>
             <p className="mt-1 text-[14px] leading-[22px] opacity-60">
               国会審議・首相記者会見・政府審議会などの公的な議論をスレッド形式で再構築するオープンソースの公共メディア。
-              lex-diffが「法律の条文がどう変わったか」を見せるのに対し、
+              lexdiffが「法律の条文がどう変わったか」を見せるのに対し、
               OpenGIKAIは「その法律がどう議論されたか」を見せます。
             </p>
           </a>
