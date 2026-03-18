@@ -1,0 +1,28 @@
+name: Uptime Check
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+jobs:
+  check:
+    name: Check site
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check lexdiff.com
+        run: |
+          STATUS=$(curl -sL -o /dev/null -w "%{http_code}" https://lexdiff.com/)
+          echo "Status: $STATUS"
+          if [ "$STATUS" != "200" ]; then
+            echo "::error::Site returned HTTP $STATUS"
+            exit 1
+          fi
+
+      - name: Check sitemap
+        run: |
+          STATUS=$(curl -sL -o /dev/null -w "%{http_code}" https://lexdiff.com/sitemap.xml)
+          echo "Sitemap status: $STATUS"
+          if [ "$STATUS" != "200" ]; then
+            echo "::warning::Sitemap returned HTTP $STATUS"
+          fi
