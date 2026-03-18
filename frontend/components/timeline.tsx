@@ -13,10 +13,8 @@ function shortHash(revisionId: string): string {
 
 function EntryContent({
   entry,
-  index,
 }: {
   entry: TimelineEntry;
-  index: number;
 }) {
   const hasDiff = entry.diff_id !== null;
   const hash = shortHash(entry.law_revision_id);
@@ -85,7 +83,7 @@ export function Timeline({
 }) {
   return (
     <div className="text-[14px]">
-      {entries.map((entry, i) => {
+      {entries.map((entry) => {
         const hasDiff = entry.diff_id !== null;
         const className = `block border-b border-[var(--border)] px-4 py-4 ${
           hasDiff ? "hover:bg-[var(--muted)] cursor-pointer" : "opacity-60"
@@ -98,14 +96,14 @@ export function Timeline({
               href={`/diff/${encodeURIComponent(entry.diff_id!)}`}
               className={className}
             >
-              <EntryContent entry={entry} index={i} />
+              <EntryContent entry={entry} />
             </Link>
           );
         }
 
         return (
           <div key={entry.law_revision_id} className={className}>
-            <EntryContent entry={entry} index={i} />
+            <EntryContent entry={entry} />
           </div>
         );
       })}

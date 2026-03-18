@@ -35,9 +35,9 @@ export default async function ThemePage({
       {/* Theme header */}
       <div>
         <div className="flex items-center gap-2 text-[15px] mb-2">
-          <a href="/" className="opacity-50 hover:underline">
-            lex-diff
-          </a>
+          <Link href="/" className="opacity-50 hover:underline">
+            lexdiff
+          </Link>
           <span className="opacity-30">/</span>
           <span className="font-bold">{theme.label}</span>
         </div>

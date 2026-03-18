@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import Script from "next/script";
 import { Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -103,19 +104,19 @@ export default function RootLayout({
         />
         <header className="border-b border-[var(--border)] px-4 py-3">
           <div className="max-w-5xl mx-auto flex items-center gap-3">
-            <a href="/" className="text-[17px] font-bold font-mono">
+            <Link href="/" className="text-[17px] font-bold font-mono">
               <span className="text-[var(--diff-add-text)]">lex</span><span className="text-[var(--diff-del-text)]">diff</span>
-            </a>
+            </Link>
             <span className="text-[13px] opacity-50 hidden md:inline">
               法令改正の差分ビューア
             </span>
             <nav className="ml-auto flex items-center gap-1">
-              <a
+              <Link
                 href="/about"
                 className="px-3 py-1.5 text-[13px] opacity-60 hover:opacity-100 transition-opacity rounded-md hover:bg-[var(--muted)]"
               >
                 About
-              </a>
+              </Link>
               <a
                 href="https://github.com/wharfe/lex-diff"
                 target="_blank"
@@ -144,9 +145,9 @@ export default function RootLayout({
               </a>
             </span>
             <span>AI要約：Claude（Anthropic社）</span>
-            <a href="/about" className="underline">
+            <Link href="/about" className="underline">
               AI利用方針・注意事項
-            </a>
+            </Link>
           </div>
         </footer>
       </body>
