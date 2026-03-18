@@ -17,70 +17,204 @@
       "promulgate_date": "2024-05-31",
       "amendment_law_title": "育児休業、介護休業等育児又は家族介護を行う労働者の福祉に関する法律及び次世代育成支援対策推進法の一部を改正する法律",
       "law_revision_id": "322AC0000000049_20250401_506AC0000000042",
-      "diff_id": "322AC0000000049_2025-03-31_2025-04-01"
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "武見敬三",
+          "position": "厚生労働大臣",
+          "party": "自由民主党"
+        },
+        "committee": "厚生労働委員会"
+      }
     },
     {
       "enforcement_date": "2024-05-31",
       "promulgate_date": "2024-05-31",
       "amendment_law_title": "育児休業、介護休業等育児又は家族介護を行う労働者の福祉に関する法律及び次世代育成支援対策推進法の一部を改正する法律",
       "law_revision_id": "322AC0000000049_20240531_506AC0000000042",
-      "diff_id": "322AC0000000049_2024-05-30_2024-05-31"
+      "diff_id": "322AC0000000049_2024-05-30_2024-05-31",
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "武見敬三",
+          "position": "厚生労働大臣",
+          "party": "自由民主党"
+        },
+        "committee": "厚生労働委員会"
+      }
     },
     {
       "enforcement_date": "2023-04-01",
       "promulgate_date": "2018-07-06",
       "amendment_law_title": "働き方改革を推進するための関係法律の整備に関する法律",
       "law_revision_id": "322AC0000000049_20230401_430AC0000000071",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "加藤勝信",
+          "position": "厚生労働大臣・内閣府特命担当大臣（拉致問題）",
+          "party": "自由民主党"
+        },
+        "committee": "厚生労働委員会"
+      }
     },
     {
       "enforcement_date": "2022-06-17",
       "promulgate_date": "2022-06-17",
       "amendment_law_title": "刑法等の一部を改正する法律の施行に伴う関係法律の整理等に関する法律",
       "law_revision_id": "322AC0000000049_20220617_504AC0000000068",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "古川禎久",
+          "position": "法務大臣",
+          "party": "自由民主党"
+        },
+        "committee": "法務委員会"
+      }
     },
     {
       "enforcement_date": "2020-04-01",
       "promulgate_date": "2020-03-31",
       "amendment_law_title": "労働基準法の一部を改正する法律",
       "law_revision_id": "322AC0000000049_20200401_502AC0000000013",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "加藤勝信",
+          "position": "厚生労働大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "厚生労働委員会"
+      }
     },
     {
       "enforcement_date": "2020-04-01",
       "promulgate_date": "2017-06-02",
       "amendment_law_title": "民法の一部を改正する法律の施行に伴う関係法律の整備等に関する法律",
       "law_revision_id": "322AC0000000049_20200401_429AC0000000045",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "金田勝年",
+          "position": "法務大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "法務委員会"
+      }
     },
     {
       "enforcement_date": "2019-04-01",
       "promulgate_date": "2018-07-06",
       "amendment_law_title": "働き方改革を推進するための関係法律の整備に関する法律",
       "law_revision_id": "322AC0000000049_20190401_430AC0000000071",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "加藤勝信",
+          "position": "厚生労働大臣・内閣府特命担当大臣（拉致問題）",
+          "party": "自由民主党"
+        },
+        "committee": "厚生労働委員会"
+      }
     },
     {
       "enforcement_date": "2018-07-06",
       "promulgate_date": "2018-07-06",
       "amendment_law_title": "働き方改革を推進するための関係法律の整備に関する法律",
       "law_revision_id": "322AC0000000049_20180706_430AC0000000071",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "加藤勝信",
+          "position": "厚生労働大臣・内閣府特命担当大臣（拉致問題）",
+          "party": "自由民主党"
+        },
+        "committee": "厚生労働委員会"
+      }
     },
     {
       "enforcement_date": "2017-06-02",
       "promulgate_date": "2017-06-02",
       "amendment_law_title": "民法の一部を改正する法律の施行に伴う関係法律の整備等に関する法律",
       "law_revision_id": "322AC0000000049_20170602_429AC0000000045",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "金田勝年",
+          "position": "法務大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "法務委員会"
+      }
     },
     {
       "enforcement_date": "2016-04-01",
       "promulgate_date": "2015-05-29",
       "amendment_law_title": "持続可能な医療保険制度を構築するための国民健康保険法等の一部を改正する法律",
       "law_revision_id": "322AC0000000049_20160401_427AC0000000031",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "塩崎恭久",
+          "position": "厚生労働大臣",
+          "party": "自由民主党"
+        },
+        "committee": "厚生労働委員会"
+      }
+    }
+  ],
+  "summary": {
+    "description": "働く人の最低限の権利や労働条件を守るための法律です。残業代の支払い、休憩時間の確保、有給休暇の取得など、雇用主が守らなければならない基本的なルールを定めています。私たちが安心して働けるように、労働時間や賃金について最低限の基準を設けています。",
+    "scope": "日本国内で働くすべての労働者と、労働者を雇用するすべての事業主に適用されます。",
+    "keywords": [
+      "労働時間",
+      "残業代",
+      "有給休暇",
+      "最低賃金",
+      "解雇"
+    ]
+  },
+  "category": "労働",
+  "contributors": [
+    {
+      "name": "加藤勝信",
+      "position": "厚生労働大臣・内閣府特命担当大臣（拉致問題）",
+      "party": "自由民主党",
+      "count": 4
+    },
+    {
+      "name": "武見敬三",
+      "position": "厚生労働大臣",
+      "party": "自由民主党",
+      "count": 2
+    },
+    {
+      "name": "金田勝年",
+      "position": "法務大臣",
+      "party": "自由民主党・無所属の会",
+      "count": 2
+    },
+    {
+      "name": "古川禎久",
+      "position": "法務大臣",
+      "party": "自由民主党",
+      "count": 1
+    },
+    {
+      "name": "塩崎恭久",
+      "position": "厚生労働大臣",
+      "party": "自由民主党",
+      "count": 1
     }
   ]
 }

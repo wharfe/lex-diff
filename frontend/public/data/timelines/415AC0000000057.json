@@ -10,21 +10,48 @@
       "promulgate_date": "2024-06-21",
       "amendment_law_title": "出入国管理及び難民認定法及び外国人の技能実習の適正な実施及び技能実習生の保護に関する法律の一部を改正する法律",
       "law_revision_id": "415AC0000000057_20270401_506AC0000000060",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "小泉龍司",
+          "position": "法務大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "法務委員会"
+      }
     },
     {
       "enforcement_date": "2026-10-01",
       "promulgate_date": "2025-06-18",
       "amendment_law_title": "日本学術会議法",
       "law_revision_id": "415AC0000000057_20261001_507AC0000000070",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "坂井学",
+          "position": "国家公安委員会委員長・内閣府特命担当大臣（防災・海洋政策）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "文部科学委員会"
+      }
     },
     {
       "enforcement_date": "2026-05-21",
       "promulgate_date": "2022-05-25",
       "amendment_law_title": "民事訴訟法等の一部を改正する法律",
       "law_revision_id": "415AC0000000057_20260521_504AC0000000048",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "古川禎久",
+          "position": "法務大臣",
+          "party": "自由民主党"
+        },
+        "committee": "予算委員会"
+      }
     },
     {
       "enforcement_date": "2025-06-01",
@@ -38,161 +65,446 @@
       "promulgate_date": "2024-06-07",
       "amendment_law_title": "情報通信技術の活用による行政手続等に係る関係者の利便性の向上並びに行政運営の簡素化及び効率化を図るためのデジタル社会形成基本法等の一部を改正する法律",
       "law_revision_id": "415AC0000000057_20250401_506AC0000000046",
-      "diff_id": "415AC0000000057_2025-03-31_2025-04-01"
+      "diff_id": "415AC0000000057_2025-03-31_2025-04-01",
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "河野太郎",
+          "position": "デジタル大臣・内閣府特命担当大臣（規制改革）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "地方創生及びデジタル社会の形成等に関する特別委員会"
+      }
     },
     {
       "enforcement_date": "2025-04-01",
       "promulgate_date": "2023-06-07",
       "amendment_law_title": "国立健康危機管理研究機構法の施行に伴う関係法律の整備に関する法律",
       "law_revision_id": "415AC0000000057_20250401_505AC0000000047",
-      "diff_id": "415AC0000000057_2025-03-31_2025-04-01"
+      "diff_id": "415AC0000000057_2025-03-31_2025-04-01",
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": null,
+        "committee": "厚生労働委員会"
+      }
     },
     {
       "enforcement_date": "2024-04-01",
       "promulgate_date": "2023-11-29",
       "amendment_law_title": "金融商品取引法等の一部を改正する法律",
       "law_revision_id": "415AC0000000057_20240401_505AC0000000079",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "鈴木俊一",
+          "position": "財務大臣・内閣府特命担当大臣（金融）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "財政金融委員会"
+      }
     },
     {
       "enforcement_date": "2024-02-16",
       "promulgate_date": "2023-05-19",
       "amendment_law_title": "脱炭素成長型経済構造への円滑な移行の推進に関する法律",
       "law_revision_id": "415AC0000000057_20240216_505AC0000000032",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "西村康稔",
+          "position": "経済産業大臣・内閣府特命担当大臣（原子力損害賠償・廃炉等支援機構）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "経済産業委員会"
+      }
     },
     {
       "enforcement_date": "2024-02-01",
       "promulgate_date": "2023-11-29",
       "amendment_law_title": "金融商品取引法等の一部を改正する法律",
       "law_revision_id": "415AC0000000057_20240201_505AC0000000079",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "鈴木俊一",
+          "position": "財務大臣・内閣府特命担当大臣（金融）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "財政金融委員会"
+      }
     },
     {
       "enforcement_date": "2023-11-29",
       "promulgate_date": "2023-11-29",
       "amendment_law_title": "金融商品取引法等の一部を改正する法律",
       "law_revision_id": "415AC0000000057_20231129_505AC0000000079",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "鈴木俊一",
+          "position": "財務大臣・内閣府特命担当大臣（金融）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "財政金融委員会"
+      }
     },
     {
       "enforcement_date": "2023-06-07",
       "promulgate_date": "2023-06-07",
       "amendment_law_title": "国立健康危機管理研究機構法の施行に伴う関係法律の整備に関する法律",
       "law_revision_id": "415AC0000000057_20230607_505AC0000000047",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": null,
+        "committee": "厚生労働委員会"
+      }
     },
     {
       "enforcement_date": "2023-04-01",
       "promulgate_date": "2021-05-19",
       "amendment_law_title": "デジタル社会の形成を図るための関係法律の整備に関する法律",
       "law_revision_id": "415AC0000000057_20230401_503AC0000000037",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "平井卓也",
+          "position": "内閣府特命担当大臣（マイナンバー制度）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "総務委員会"
+      }
     },
     {
       "enforcement_date": "2022-10-01",
       "promulgate_date": "2021-05-19",
       "amendment_law_title": "デジタル社会の形成を図るための関係法律の整備に関する法律",
       "law_revision_id": "415AC0000000057_20221001_503AC0000000037",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "平井卓也",
+          "position": "内閣府特命担当大臣（マイナンバー制度）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "総務委員会"
+      }
     },
     {
       "enforcement_date": "2022-06-17",
       "promulgate_date": "2022-06-17",
       "amendment_law_title": "刑法等の一部を改正する法律の施行に伴う関係法律の整理等に関する法律",
       "law_revision_id": "415AC0000000057_20220617_504AC0000000068",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "古川禎久",
+          "position": "法務大臣",
+          "party": "自由民主党"
+        },
+        "committee": "法務委員会"
+      }
     },
     {
       "enforcement_date": "2022-06-17",
       "promulgate_date": "2022-05-27",
       "amendment_law_title": "福島復興再生特別措置法の一部を改正する法律",
       "law_revision_id": "415AC0000000057_20220617_504AC0000000054",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "西銘恒三郎",
+          "position": "復興大臣・内閣府特命担当大臣（沖縄及び北方対策）",
+          "party": "自由民主党"
+        },
+        "committee": "東日本大震災復興特別委員会"
+      }
     },
     {
       "enforcement_date": "2022-05-25",
       "promulgate_date": "2022-05-25",
       "amendment_law_title": "民事訴訟法等の一部を改正する法律",
       "law_revision_id": "415AC0000000057_20220525_504AC0000000048",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "古川禎久",
+          "position": "法務大臣",
+          "party": "自由民主党"
+        },
+        "committee": "予算委員会"
+      }
     },
     {
       "enforcement_date": "2022-04-01",
       "promulgate_date": "2021-05-19",
       "amendment_law_title": "デジタル社会の形成を図るための関係法律の整備に関する法律",
       "law_revision_id": "415AC0000000057_20220401_503AC0000000037",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "平井卓也",
+          "position": "内閣府特命担当大臣（マイナンバー制度）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "総務委員会"
+      }
     },
     {
       "enforcement_date": "2022-04-01",
       "promulgate_date": "2020-06-12",
       "amendment_law_title": "個人情報の保護に関する法律等の一部を改正する法律",
       "law_revision_id": "415AC0000000057_20220401_502AC0000000044",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "衛藤晟一",
+          "position": "内閣府特命担当大臣（沖縄及び北方対策・消費者及び食品安全・少子化対策・海洋政策）",
+          "party": "自由民主党・国民の声"
+        },
+        "committee": "内閣委員会"
+      }
     },
     {
       "enforcement_date": "2022-01-01",
       "promulgate_date": "2021-05-19",
       "amendment_law_title": "デジタル社会の形成を図るための関係法律の整備に関する法律",
       "law_revision_id": "415AC0000000057_20220101_503AC0000000037",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "平井卓也",
+          "position": "内閣府特命担当大臣（マイナンバー制度）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "総務委員会"
+      }
     },
     {
       "enforcement_date": "2021-10-01",
       "promulgate_date": "2020-06-12",
       "amendment_law_title": "個人情報の保護に関する法律等の一部を改正する法律",
       "law_revision_id": "415AC0000000057_20211001_502AC0000000044",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "衛藤晟一",
+          "position": "内閣府特命担当大臣（沖縄及び北方対策・消費者及び食品安全・少子化対策・海洋政策）",
+          "party": "自由民主党・国民の声"
+        },
+        "committee": "内閣委員会"
+      }
     },
     {
       "enforcement_date": "2021-05-19",
       "promulgate_date": "2021-05-19",
       "amendment_law_title": "デジタル社会の形成を図るための関係法律の整備に関する法律",
       "law_revision_id": "415AC0000000057_20210519_503AC0000000037",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "平井卓也",
+          "position": "内閣府特命担当大臣（マイナンバー制度）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "総務委員会"
+      }
     },
     {
       "enforcement_date": "2020-12-12",
       "promulgate_date": "2020-06-12",
       "amendment_law_title": "個人情報の保護に関する法律等の一部を改正する法律",
       "law_revision_id": "415AC0000000057_20201212_502AC0000000044",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "衛藤晟一",
+          "position": "内閣府特命担当大臣（沖縄及び北方対策・消費者及び食品安全・少子化対策・海洋政策）",
+          "party": "自由民主党・国民の声"
+        },
+        "committee": "内閣委員会"
+      }
     },
     {
       "enforcement_date": "2020-06-12",
       "promulgate_date": "2020-06-12",
       "amendment_law_title": "個人情報の保護に関する法律等の一部を改正する法律",
       "law_revision_id": "415AC0000000057_20200612_502AC0000000044",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "衛藤晟一",
+          "position": "内閣府特命担当大臣（沖縄及び北方対策・消費者及び食品安全・少子化対策・海洋政策）",
+          "party": "自由民主党・国民の声"
+        },
+        "committee": "内閣委員会"
+      }
     },
     {
       "enforcement_date": "2020-01-07",
       "promulgate_date": "2018-07-27",
       "amendment_law_title": "特定複合観光施設区域整備法",
       "law_revision_id": "415AC0000000057_20200107_430AC0000000080",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "衆法",
+        "minister": {
+          "name": "石井啓一",
+          "position": "国土交通大臣",
+          "party": "公明党"
+        },
+        "committee": "内閣委員会"
+      }
     },
     {
       "enforcement_date": "2017-05-30",
       "promulgate_date": "2016-05-27",
       "amendment_law_title": "行政機関等の保有する個人情報の適正かつ効果的な活用による新たな産業の創出並びに活力ある経済社会及び豊かな国民生活の実現に資するための関係法律の整備に関する法律",
       "law_revision_id": "415AC0000000057_20170530_428AC0000000051",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "高市早苗",
+          "position": "総務大臣",
+          "party": "自由民主党"
+        },
+        "committee": "総務委員会"
+      }
     },
     {
       "enforcement_date": "2017-05-30",
       "promulgate_date": "2015-09-09",
       "amendment_law_title": "個人情報の保護に関する法律及び行政手続における特定の個人を識別するための番号の利用等に関する法律の一部を改正する法律",
       "law_revision_id": "415AC0000000057_20170530_427AC0000000065",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "山口俊一",
+          "position": "内閣府特命担当大臣（沖縄及び北方対策・消費者及び食品安全・科学技術政策・宇宙政策）",
+          "party": "自由民主党"
+        },
+        "committee": "財政金融委員会"
+      }
     },
     {
       "enforcement_date": "2017-03-01",
       "promulgate_date": "2015-09-09",
       "amendment_law_title": "個人情報の保護に関する法律及び行政手続における特定の個人を識別するための番号の利用等に関する法律の一部を改正する法律",
       "law_revision_id": "415AC0000000057_20170301_427AC0000000065",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "山口俊一",
+          "position": "内閣府特命担当大臣（沖縄及び北方対策・消費者及び食品安全・科学技術政策・宇宙政策）",
+          "party": "自由民主党"
+        },
+        "committee": "財政金融委員会"
+      }
+    }
+  ],
+  "summary": {
+    "description": "個人の氏名、住所、電話番号などの個人情報を企業や組織が取り扱う際のルールを定めた法律です。個人情報の不正な取得や利用を防ぎ、私たちのプライバシーを守ることを目的としています。ネットショッピングや会員登録時に個人情報を提供する場面などで、この法律が私たちの権利を保護しています。",
+    "scope": "個人情報を取り扱うすべての事業者（企業、団体、個人事業主など）が対象となります。",
+    "keywords": [
+      "個人情報",
+      "プライバシー",
+      "事業者",
+      "同意",
+      "開示請求"
+    ]
+  },
+  "category": "",
+  "contributors": [
+    {
+      "name": "平井卓也",
+      "position": "内閣府特命担当大臣（マイナンバー制度）",
+      "party": "自由民主党・無所属の会",
+      "count": 5
+    },
+    {
+      "name": "衛藤晟一",
+      "position": "内閣府特命担当大臣（沖縄及び北方対策・消費者及び食品安全・少子化対策・海洋政策）",
+      "party": "自由民主党・国民の声",
+      "count": 4
+    },
+    {
+      "name": "古川禎久",
+      "position": "法務大臣",
+      "party": "自由民主党",
+      "count": 3
+    },
+    {
+      "name": "鈴木俊一",
+      "position": "財務大臣・内閣府特命担当大臣（金融）",
+      "party": "自由民主党・無所属の会",
+      "count": 3
+    },
+    {
+      "name": "山口俊一",
+      "position": "内閣府特命担当大臣（沖縄及び北方対策・消費者及び食品安全・科学技術政策・宇宙政策）",
+      "party": "自由民主党",
+      "count": 2
+    },
+    {
+      "name": "小泉龍司",
+      "position": "法務大臣",
+      "party": "自由民主党・無所属の会",
+      "count": 1
+    },
+    {
+      "name": "坂井学",
+      "position": "国家公安委員会委員長・内閣府特命担当大臣（防災・海洋政策）",
+      "party": "自由民主党・無所属の会",
+      "count": 1
+    },
+    {
+      "name": "河野太郎",
+      "position": "デジタル大臣・内閣府特命担当大臣（規制改革）",
+      "party": "自由民主党・無所属の会",
+      "count": 1
+    },
+    {
+      "name": "西村康稔",
+      "position": "経済産業大臣・内閣府特命担当大臣（原子力損害賠償・廃炉等支援機構）",
+      "party": "自由民主党・無所属の会",
+      "count": 1
+    },
+    {
+      "name": "西銘恒三郎",
+      "position": "復興大臣・内閣府特命担当大臣（沖縄及び北方対策）",
+      "party": "自由民主党",
+      "count": 1
+    },
+    {
+      "name": "石井啓一",
+      "position": "国土交通大臣",
+      "party": "公明党",
+      "count": 1
+    },
+    {
+      "name": "高市早苗",
+      "position": "総務大臣",
+      "party": "自由民主党",
+      "count": 1
     }
   ]
 }

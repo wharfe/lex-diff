@@ -10,21 +10,48 @@
       "promulgate_date": "2024-06-21",
       "amendment_law_title": "出入国管理及び難民認定法等の一部を改正する法律",
       "law_revision_id": "335AC0000000105_20260614_506AC0000000059",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "小泉龍司",
+          "position": "法務大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "法務委員会"
+      }
     },
     {
       "enforcement_date": "2026-05-21",
       "promulgate_date": "2023-06-16",
       "amendment_law_title": "デジタル社会の形成を図るための規制改革を推進するためのデジタル社会形成基本法等の一部を改正する法律",
       "law_revision_id": "335AC0000000105_20260521_505AC0000000063",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "河野太郎",
+          "position": "デジタル大臣・内閣府特命担当大臣（消費者及び食品安全・デジタル改革）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "地方創生及びデジタル社会の形成等に関する特別委員会"
+      }
     },
     {
       "enforcement_date": "2026-04-01",
       "promulgate_date": "2024-05-24",
       "amendment_law_title": "道路交通法の一部を改正する法律",
       "law_revision_id": "335AC0000000105_20260401_506AC0000000034",
-      "diff_id": "335AC0000000105_2026-03-31_2026-04-01"
+      "diff_id": "335AC0000000105_2026-03-31_2026-04-01",
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "松村祥史",
+          "position": "国家公安委員会委員長・内閣府特命担当大臣（防災・海洋政策）",
+          "party": "自由民主党"
+        },
+        "committee": "内閣委員会"
+      }
     },
     {
       "enforcement_date": "2025-06-01",
@@ -38,196 +65,546 @@
       "promulgate_date": "2022-04-27",
       "amendment_law_title": "道路交通法の一部を改正する法律",
       "law_revision_id": "335AC0000000105_20250324_504AC0000000032",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "二之湯智",
+          "position": "国家公安委員会委員長・内閣府特命担当大臣（防災・海洋政策）",
+          "party": "自由民主党・国民の声"
+        },
+        "committee": "内閣委員会"
+      }
     },
     {
       "enforcement_date": "2024-11-01",
       "promulgate_date": "2024-05-24",
       "amendment_law_title": "道路交通法の一部を改正する法律",
       "law_revision_id": "335AC0000000105_20241101_506AC0000000034",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "松村祥史",
+          "position": "国家公安委員会委員長・内閣府特命担当大臣（防災・海洋政策）",
+          "party": "自由民主党"
+        },
+        "committee": "内閣委員会"
+      }
     },
     {
       "enforcement_date": "2024-06-21",
       "promulgate_date": "2024-06-21",
       "amendment_law_title": "出入国管理及び難民認定法等の一部を改正する法律",
       "law_revision_id": "335AC0000000105_20240621_506AC0000000059",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "小泉龍司",
+          "position": "法務大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "法務委員会"
+      }
     },
     {
       "enforcement_date": "2024-06-10",
       "promulgate_date": "2023-06-16",
       "amendment_law_title": "出入国管理及び難民認定法及び日本国との平和条約に基づき日本の国籍を離脱した者等の出入国管理に関する特例法の一部を改正する法律",
       "law_revision_id": "335AC0000000105_20240610_505AC0000000056",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "齋藤健",
+          "position": "法務大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "法務委員会"
+      }
     },
     {
       "enforcement_date": "2024-05-24",
       "promulgate_date": "2024-05-24",
       "amendment_law_title": "道路交通法の一部を改正する法律",
       "law_revision_id": "335AC0000000105_20240524_506AC0000000034",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "松村祥史",
+          "position": "国家公安委員会委員長・内閣府特命担当大臣（防災・海洋政策）",
+          "party": "自由民主党"
+        },
+        "committee": "内閣委員会"
+      }
     },
     {
       "enforcement_date": "2024-04-01",
       "promulgate_date": "2023-06-16",
       "amendment_law_title": "デジタル社会の形成を図るための規制改革を推進するためのデジタル社会形成基本法等の一部を改正する法律",
       "law_revision_id": "335AC0000000105_20240401_505AC0000000063",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "河野太郎",
+          "position": "デジタル大臣・内閣府特命担当大臣（消費者及び食品安全・デジタル改革）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "地方創生及びデジタル社会の形成等に関する特別委員会"
+      }
     },
     {
       "enforcement_date": "2024-04-01",
       "promulgate_date": "2023-05-08",
       "amendment_law_title": "地方自治法の一部を改正する法律",
       "law_revision_id": "335AC0000000105_20240401_505AC0000000019",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "衆法",
+        "minister": {
+          "name": "松本剛明",
+          "position": "総務大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "総務委員会"
+      }
     },
     {
       "enforcement_date": "2023-07-01",
       "promulgate_date": "2022-04-27",
       "amendment_law_title": "道路交通法の一部を改正する法律",
       "law_revision_id": "335AC0000000105_20230701_504AC0000000032",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "二之湯智",
+          "position": "国家公安委員会委員長・内閣府特命担当大臣（防災・海洋政策）",
+          "party": "自由民主党・国民の声"
+        },
+        "committee": "内閣委員会"
+      }
     },
     {
       "enforcement_date": "2023-06-16",
       "promulgate_date": "2023-06-16",
       "amendment_law_title": "デジタル社会の形成を図るための規制改革を推進するためのデジタル社会形成基本法等の一部を改正する法律",
       "law_revision_id": "335AC0000000105_20230616_505AC0000000063",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "河野太郎",
+          "position": "デジタル大臣・内閣府特命担当大臣（消費者及び食品安全・デジタル改革）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "地方創生及びデジタル社会の形成等に関する特別委員会"
+      }
     },
     {
       "enforcement_date": "2023-04-01",
       "promulgate_date": "2022-04-27",
       "amendment_law_title": "道路交通法の一部を改正する法律",
       "law_revision_id": "335AC0000000105_20230401_504AC0000000032",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "二之湯智",
+          "position": "国家公安委員会委員長・内閣府特命担当大臣（防災・海洋政策）",
+          "party": "自由民主党・国民の声"
+        },
+        "committee": "内閣委員会"
+      }
     },
     {
       "enforcement_date": "2022-10-01",
       "promulgate_date": "2022-04-27",
       "amendment_law_title": "道路交通法の一部を改正する法律",
       "law_revision_id": "335AC0000000105_20221001_504AC0000000032",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "二之湯智",
+          "position": "国家公安委員会委員長・内閣府特命担当大臣（防災・海洋政策）",
+          "party": "自由民主党・国民の声"
+        },
+        "committee": "内閣委員会"
+      }
     },
     {
       "enforcement_date": "2022-06-17",
       "promulgate_date": "2022-06-17",
       "amendment_law_title": "刑法等の一部を改正する法律の施行に伴う関係法律の整理等に関する法律",
       "law_revision_id": "335AC0000000105_20220617_504AC0000000068",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "古川禎久",
+          "position": "法務大臣",
+          "party": "自由民主党"
+        },
+        "committee": "法務委員会"
+      }
     },
     {
       "enforcement_date": "2022-05-13",
       "promulgate_date": "2020-06-10",
       "amendment_law_title": "道路交通法の一部を改正する法律",
       "law_revision_id": "335AC0000000105_20220513_502AC0000000042",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "武田良太",
+          "position": "国家公安委員会委員長・内閣府特命担当大臣（防災）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "法務委員会"
+      }
     },
     {
       "enforcement_date": "2022-04-27",
       "promulgate_date": "2022-04-27",
       "amendment_law_title": "道路交通法の一部を改正する法律",
       "law_revision_id": "335AC0000000105_20220427_504AC0000000032",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "二之湯智",
+          "position": "国家公安委員会委員長・内閣府特命担当大臣（防災・海洋政策）",
+          "party": "自由民主党・国民の声"
+        },
+        "committee": "内閣委員会"
+      }
     },
     {
       "enforcement_date": "2021-04-01",
       "promulgate_date": "2020-06-12",
       "amendment_law_title": "地域共生社会の実現のための社会福祉法等の一部を改正する法律",
       "law_revision_id": "335AC0000000105_20210401_502AC0000000052",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "加藤勝信",
+          "position": "厚生労働大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "厚生労働委員会"
+      }
     },
     {
       "enforcement_date": "2020-12-01",
       "promulgate_date": "2020-06-10",
       "amendment_law_title": "道路交通法の一部を改正する法律",
       "law_revision_id": "335AC0000000105_20201201_502AC0000000042",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "武田良太",
+          "position": "国家公安委員会委員長・内閣府特命担当大臣（防災）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "法務委員会"
+      }
     },
     {
       "enforcement_date": "2020-06-30",
       "promulgate_date": "2020-06-10",
       "amendment_law_title": "道路交通法の一部を改正する法律",
       "law_revision_id": "335AC0000000105_20200630_502AC0000000042",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "武田良太",
+          "position": "国家公安委員会委員長・内閣府特命担当大臣（防災）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "法務委員会"
+      }
     },
     {
       "enforcement_date": "2020-06-12",
       "promulgate_date": "2020-06-12",
       "amendment_law_title": "地域共生社会の実現のための社会福祉法等の一部を改正する法律",
       "law_revision_id": "335AC0000000105_20200612_502AC0000000052",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "加藤勝信",
+          "position": "厚生労働大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "厚生労働委員会"
+      }
     },
     {
       "enforcement_date": "2020-04-01",
       "promulgate_date": "2019-06-05",
       "amendment_law_title": "道路交通法の一部を改正する法律",
       "law_revision_id": "335AC0000000105_20200401_501AC0000000020",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "山本順三",
+          "position": "国家公安委員会委員長・内閣府特命担当大臣（防災）",
+          "party": "自由民主党・国民の声"
+        },
+        "committee": "内閣委員会"
+      }
     },
     {
       "enforcement_date": "2020-04-01",
       "promulgate_date": "2019-05-24",
       "amendment_law_title": "道路運送車両法の一部を改正する法律",
       "law_revision_id": "335AC0000000105_20200401_501AC0000000014",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "石井啓一",
+          "position": "国土交通大臣",
+          "party": "公明党"
+        },
+        "committee": "内閣委員会"
+      }
     },
     {
       "enforcement_date": "2019-12-14",
       "promulgate_date": "2019-06-14",
       "amendment_law_title": "成年被後見人等の権利の制限に係る措置の適正化等を図るための関係法律の整備に関する法律",
       "law_revision_id": "335AC0000000105_20191214_501AC0000000037",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "宮腰光寛",
+          "position": "内閣府特命担当大臣（沖縄及び北方対策・消費者及び食品安全・少子化対策・海洋政策）",
+          "party": "自由民主党"
+        },
+        "committee": "法務委員会"
+      }
     },
     {
       "enforcement_date": "2019-12-01",
       "promulgate_date": "2019-06-05",
       "amendment_law_title": "道路交通法の一部を改正する法律",
       "law_revision_id": "335AC0000000105_20191201_501AC0000000020",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "山本順三",
+          "position": "国家公安委員会委員長・内閣府特命担当大臣（防災）",
+          "party": "自由民主党・国民の声"
+        },
+        "committee": "内閣委員会"
+      }
     },
     {
       "enforcement_date": "2019-09-14",
       "promulgate_date": "2019-06-14",
       "amendment_law_title": "成年被後見人等の権利の制限に係る措置の適正化等を図るための関係法律の整備に関する法律",
       "law_revision_id": "335AC0000000105_20190914_501AC0000000037",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "宮腰光寛",
+          "position": "内閣府特命担当大臣（沖縄及び北方対策・消費者及び食品安全・少子化対策・海洋政策）",
+          "party": "自由民主党"
+        },
+        "committee": "法務委員会"
+      }
     },
     {
       "enforcement_date": "2019-06-14",
       "promulgate_date": "2019-06-14",
       "amendment_law_title": "成年被後見人等の権利の制限に係る措置の適正化等を図るための関係法律の整備に関する法律",
       "law_revision_id": "335AC0000000105_20190614_501AC0000000037",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "宮腰光寛",
+          "position": "内閣府特命担当大臣（沖縄及び北方対策・消費者及び食品安全・少子化対策・海洋政策）",
+          "party": "自由民主党"
+        },
+        "committee": "法務委員会"
+      }
     },
     {
       "enforcement_date": "2019-06-05",
       "promulgate_date": "2019-06-05",
       "amendment_law_title": "道路交通法の一部を改正する法律",
       "law_revision_id": "335AC0000000105_20190605_501AC0000000020",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "山本順三",
+          "position": "国家公安委員会委員長・内閣府特命担当大臣（防災）",
+          "party": "自由民主党・国民の声"
+        },
+        "committee": "内閣委員会"
+      }
     },
     {
       "enforcement_date": "2018-04-01",
       "promulgate_date": "2017-06-02",
       "amendment_law_title": "地域包括ケアシステムの強化のための介護保険法等の一部を改正する法律",
       "law_revision_id": "335AC0000000105_20180401_429AC0000000052",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "塩崎恭久",
+          "position": "厚生労働大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "厚生労働委員会"
+      }
     },
     {
       "enforcement_date": "2017-06-02",
       "promulgate_date": "2017-06-02",
       "amendment_law_title": "地域包括ケアシステムの強化のための介護保険法等の一部を改正する法律",
       "law_revision_id": "335AC0000000105_20170602_429AC0000000052",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "塩崎恭久",
+          "position": "厚生労働大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "厚生労働委員会"
+      }
     },
     {
       "enforcement_date": "2017-03-12",
       "promulgate_date": "2015-06-17",
       "amendment_law_title": "道路交通法の一部を改正する法律",
       "law_revision_id": "335AC0000000105_20170312_427AC0000000040",
-      "diff_id": null
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "山谷えり子",
+          "position": "国家公安委員会委員長・内閣府特命担当大臣（防災）",
+          "party": "自由民主党"
+        },
+        "committee": "内閣委員会"
+      }
+    }
+  ],
+  "summary": {
+    "description": "道路での車や歩行者の通行ルールや交通安全に関する規則を定めた法律です。自動車の運転免許、速度制限、信号機の従い方、駐車違反、飲酒運転の禁止など、私たちが日常的に道路を利用する際に守らなければならないルールを規定しています。",
+    "scope": "道路を利用するすべての人（歩行者、自転車利用者、自動車運転者など）に適用されます。",
+    "keywords": [
+      "運転免許",
+      "交通違反",
+      "速度制限",
+      "飲酒運転",
+      "駐車違反"
+    ]
+  },
+  "category": "",
+  "contributors": [
+    {
+      "name": "二之湯智",
+      "position": "国家公安委員会委員長・内閣府特命担当大臣（防災・海洋政策）",
+      "party": "自由民主党・国民の声",
+      "count": 5
+    },
+    {
+      "name": "河野太郎",
+      "position": "デジタル大臣・内閣府特命担当大臣（消費者及び食品安全・デジタル改革）",
+      "party": "自由民主党・無所属の会",
+      "count": 3
+    },
+    {
+      "name": "松村祥史",
+      "position": "国家公安委員会委員長・内閣府特命担当大臣（防災・海洋政策）",
+      "party": "自由民主党",
+      "count": 3
+    },
+    {
+      "name": "武田良太",
+      "position": "国家公安委員会委員長・内閣府特命担当大臣（防災）",
+      "party": "自由民主党・無所属の会",
+      "count": 3
+    },
+    {
+      "name": "山本順三",
+      "position": "国家公安委員会委員長・内閣府特命担当大臣（防災）",
+      "party": "自由民主党・国民の声",
+      "count": 3
+    },
+    {
+      "name": "宮腰光寛",
+      "position": "内閣府特命担当大臣（沖縄及び北方対策・消費者及び食品安全・少子化対策・海洋政策）",
+      "party": "自由民主党",
+      "count": 3
+    },
+    {
+      "name": "小泉龍司",
+      "position": "法務大臣",
+      "party": "自由民主党・無所属の会",
+      "count": 2
+    },
+    {
+      "name": "加藤勝信",
+      "position": "厚生労働大臣",
+      "party": "自由民主党・無所属の会",
+      "count": 2
+    },
+    {
+      "name": "塩崎恭久",
+      "position": "厚生労働大臣",
+      "party": "自由民主党・無所属の会",
+      "count": 2
+    },
+    {
+      "name": "齋藤健",
+      "position": "法務大臣",
+      "party": "自由民主党・無所属の会",
+      "count": 1
+    },
+    {
+      "name": "松本剛明",
+      "position": "総務大臣",
+      "party": "自由民主党・無所属の会",
+      "count": 1
+    },
+    {
+      "name": "古川禎久",
+      "position": "法務大臣",
+      "party": "自由民主党",
+      "count": 1
+    },
+    {
+      "name": "石井啓一",
+      "position": "国土交通大臣",
+      "party": "公明党",
+      "count": 1
+    },
+    {
+      "name": "山谷えり子",
+      "position": "国家公安委員会委員長・内閣府特命担当大臣（防災）",
+      "party": "自由民主党",
+      "count": 1
     }
   ]
 }

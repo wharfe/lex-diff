@@ -32,7 +32,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20,300,0,0&icon_names=add,arrow_forward,calendar_month,change_history,commit,description,difference,family_restroom,folder,gavel,history,lock,open_in_new,schedule,smart_toy,speed,tag,work&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20,300,0,0&icon_names=add,arrow_forward,calendar_month,change_history,code,commit,description,difference,family_restroom,folder,gavel,help,history,info,lock,open_in_new,schedule,smart_toy,speed,tag,work&display=swap"
           rel="stylesheet"
         />
       </head>
@@ -42,38 +42,47 @@ export default function RootLayout({
             <a href="/" className="text-[17px] font-bold font-mono">
               lex-diff
             </a>
-            <span className="text-[13px] opacity-50">
+            <span className="text-[13px] opacity-50 hidden md:inline">
               法令改正の差分ビューア
             </span>
+            <nav className="ml-auto flex items-center gap-1">
+              <a
+                href="/about"
+                className="px-3 py-1.5 text-[13px] opacity-60 hover:opacity-100 transition-opacity rounded-md hover:bg-[var(--muted)]"
+              >
+                About
+              </a>
+              <a
+                href="https://github.com/wharfe/lex-diff"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-3 py-1.5 text-[13px] opacity-60 hover:opacity-100 transition-opacity rounded-md hover:bg-[var(--muted)]"
+              >
+                GitHub
+              </a>
+            </nav>
           </div>
         </header>
         <main className="max-w-5xl mx-auto px-4 py-6 md:px-6 md:py-8">
           {children}
         </main>
-        <footer className="border-t border-[var(--border)] px-4 py-6 mt-8 md:px-6">
-          <div className="max-w-5xl mx-auto">
-            <div className="text-[13px] leading-[22px] opacity-50 space-y-2">
-              <p>
-                出典：
-                <a
-                  href="https://laws.e-gov.go.jp/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="underline"
-                >
-                  e-Gov法令検索
-                </a>
-                （デジタル庁）。法令データは著作権法第13条により著作権の対象外です。
-              </p>
-              <p>
-                改正の概要・条文の注釈はClaude
-                AI（Anthropic社）により自動生成されています。
-                誤りや省略が含まれる可能性があります。正確な内容は必ず原文をご確認ください。
-              </p>
-              <p>
-                要約生成のプロンプトを含むすべてのソースコードはGitHubで公開しています。
-              </p>
-            </div>
+        <footer className="border-t border-[var(--border)] px-4 py-5 mt-8 md:px-6">
+          <div className="max-w-5xl mx-auto flex flex-wrap items-center gap-x-4 gap-y-1 text-[13px] opacity-40">
+            <span>
+              出典：
+              <a
+                href="https://laws.e-gov.go.jp/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline"
+              >
+                e-Gov法令検索
+              </a>
+            </span>
+            <span>AI要約：Claude（Anthropic社）</span>
+            <a href="/about" className="underline">
+              AI利用方針・注意事項
+            </a>
           </div>
         </footer>
       </body>

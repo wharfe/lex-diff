@@ -62,6 +62,21 @@ export interface LawDiffData {
   };
   diffs: ArticleDiff[];
   pr_summary?: PrSummary;
+  proposer?: Proposer;
+}
+
+// Proposer types
+
+export interface Minister {
+  name: string;
+  position: string;
+  party: string | null;
+}
+
+export interface Proposer {
+  submission_type: string | null;
+  minister: Minister | null;
+  committee: string | null;
 }
 
 // Timeline types
@@ -72,6 +87,20 @@ export interface TimelineEntry {
   amendment_law_title: string;
   law_revision_id: string;
   diff_id: string | null;
+  proposer?: Proposer;
+}
+
+export interface LawSummary {
+  description: string;
+  scope: string;
+  keywords: string[];
+}
+
+export interface Contributor {
+  name: string;
+  position: string;
+  party: string | null;
+  count: number;
 }
 
 export interface LawTimeline {
@@ -81,4 +110,7 @@ export interface LawTimeline {
   promulgation_date: string;
   revision_count: number;
   timeline: TimelineEntry[];
+  summary?: LawSummary;
+  category?: string;
+  contributors?: Contributor[];
 }

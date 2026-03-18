@@ -50,13 +50,29 @@ function EntryContent({
         </span>
       </div>
 
-      {/* Line 3: promulgation date if different */}
-      {entry.promulgate_date &&
-        entry.promulgate_date !== entry.enforcement_date && (
-          <div className="ml-8 mt-1 text-[12px] opacity-40">
-            公布: {entry.promulgate_date}
-          </div>
+      {/* Line 3: author + metadata */}
+      <div className="ml-8 mt-1 flex items-center gap-3 flex-wrap text-[12px] opacity-50">
+        {entry.proposer?.minister?.name && (
+          <span>
+            {entry.proposer.minister.name}
+            {entry.proposer.minister.position && (
+              <span className="opacity-60">
+                （{entry.proposer.minister.position.split("・")[0]}）
+              </span>
+            )}
+          </span>
         )}
+        {entry.proposer?.submission_type && (
+          <span className="font-mono">{entry.proposer.submission_type}</span>
+        )}
+        {entry.proposer?.committee && (
+          <span>{entry.proposer.committee}</span>
+        )}
+        {entry.promulgate_date &&
+          entry.promulgate_date !== entry.enforcement_date && (
+            <span>公布: {entry.promulgate_date}</span>
+          )}
+      </div>
     </>
   );
 }
