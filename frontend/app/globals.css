@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #1f2328;
+  --diff-add-bg: #dafbe1;
+  --diff-add-text: #116329;
+  --diff-add-line-bg: #ccffd8;
+  --diff-del-bg: #ffebe9;
+  --diff-del-text: #82071e;
+  --diff-del-line-bg: #ffd7d5;
+  --diff-hunk-bg: #ddf4ff;
+  --diff-hunk-text: #0969da;
+  --border: #d1d9e0;
+  --muted: #f6f8fa;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: "Noto Sans JP", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Helvetica, Arial, "Hiragino Sans", sans-serif;
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0d1117;
+    --foreground: #e6edf3;
+    --diff-add-bg: #1a4721;
+    --diff-add-text: #3fb950;
+    --diff-add-line-bg: #244e2b;
+    --diff-del-bg: #5d1219;
+    --diff-del-text: #ff7b72;
+    --diff-del-line-bg: #6e2b2d;
+    --diff-hunk-bg: #1b2a3d;
+    --diff-hunk-text: #79c0ff;
+    --border: #30363d;
+    --muted: #161b22;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: "Noto Sans JP", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Helvetica, Arial, "Hiragino Sans", sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Prevent text overflow on mobile */
+main {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}

@@ -1,0 +1,233 @@
+{
+  "law_id": "335AC0000000105",
+  "law_title": "道路交通法",
+  "law_num": "昭和三十五年法律第百五号",
+  "promulgation_date": "1960-06-25",
+  "revision_count": 32,
+  "timeline": [
+    {
+      "enforcement_date": "2026-06-14",
+      "promulgate_date": "2024-06-21",
+      "amendment_law_title": "出入国管理及び難民認定法等の一部を改正する法律",
+      "law_revision_id": "335AC0000000105_20260614_506AC0000000059",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2026-05-21",
+      "promulgate_date": "2023-06-16",
+      "amendment_law_title": "デジタル社会の形成を図るための規制改革を推進するためのデジタル社会形成基本法等の一部を改正する法律",
+      "law_revision_id": "335AC0000000105_20260521_505AC0000000063",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2026-04-01",
+      "promulgate_date": "2024-05-24",
+      "amendment_law_title": "道路交通法の一部を改正する法律",
+      "law_revision_id": "335AC0000000105_20260401_506AC0000000034",
+      "diff_id": "335AC0000000105_2026-03-31_2026-04-01"
+    },
+    {
+      "enforcement_date": "2025-06-01",
+      "promulgate_date": "2022-06-17",
+      "amendment_law_title": "刑法等の一部を改正する法律の施行に伴う関係法律の整理等に関する法律　抄",
+      "law_revision_id": "335AC0000000105_20250601_504AC0000000068",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2025-03-24",
+      "promulgate_date": "2022-04-27",
+      "amendment_law_title": "道路交通法の一部を改正する法律",
+      "law_revision_id": "335AC0000000105_20250324_504AC0000000032",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2024-11-01",
+      "promulgate_date": "2024-05-24",
+      "amendment_law_title": "道路交通法の一部を改正する法律",
+      "law_revision_id": "335AC0000000105_20241101_506AC0000000034",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2024-06-21",
+      "promulgate_date": "2024-06-21",
+      "amendment_law_title": "出入国管理及び難民認定法等の一部を改正する法律",
+      "law_revision_id": "335AC0000000105_20240621_506AC0000000059",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2024-06-10",
+      "promulgate_date": "2023-06-16",
+      "amendment_law_title": "出入国管理及び難民認定法及び日本国との平和条約に基づき日本の国籍を離脱した者等の出入国管理に関する特例法の一部を改正する法律",
+      "law_revision_id": "335AC0000000105_20240610_505AC0000000056",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2024-05-24",
+      "promulgate_date": "2024-05-24",
+      "amendment_law_title": "道路交通法の一部を改正する法律",
+      "law_revision_id": "335AC0000000105_20240524_506AC0000000034",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2024-04-01",
+      "promulgate_date": "2023-06-16",
+      "amendment_law_title": "デジタル社会の形成を図るための規制改革を推進するためのデジタル社会形成基本法等の一部を改正する法律",
+      "law_revision_id": "335AC0000000105_20240401_505AC0000000063",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2024-04-01",
+      "promulgate_date": "2023-05-08",
+      "amendment_law_title": "地方自治法の一部を改正する法律",
+      "law_revision_id": "335AC0000000105_20240401_505AC0000000019",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2023-07-01",
+      "promulgate_date": "2022-04-27",
+      "amendment_law_title": "道路交通法の一部を改正する法律",
+      "law_revision_id": "335AC0000000105_20230701_504AC0000000032",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2023-06-16",
+      "promulgate_date": "2023-06-16",
+      "amendment_law_title": "デジタル社会の形成を図るための規制改革を推進するためのデジタル社会形成基本法等の一部を改正する法律",
+      "law_revision_id": "335AC0000000105_20230616_505AC0000000063",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2023-04-01",
+      "promulgate_date": "2022-04-27",
+      "amendment_law_title": "道路交通法の一部を改正する法律",
+      "law_revision_id": "335AC0000000105_20230401_504AC0000000032",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2022-10-01",
+      "promulgate_date": "2022-04-27",
+      "amendment_law_title": "道路交通法の一部を改正する法律",
+      "law_revision_id": "335AC0000000105_20221001_504AC0000000032",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2022-06-17",
+      "promulgate_date": "2022-06-17",
+      "amendment_law_title": "刑法等の一部を改正する法律の施行に伴う関係法律の整理等に関する法律",
+      "law_revision_id": "335AC0000000105_20220617_504AC0000000068",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2022-05-13",
+      "promulgate_date": "2020-06-10",
+      "amendment_law_title": "道路交通法の一部を改正する法律",
+      "law_revision_id": "335AC0000000105_20220513_502AC0000000042",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2022-04-27",
+      "promulgate_date": "2022-04-27",
+      "amendment_law_title": "道路交通法の一部を改正する法律",
+      "law_revision_id": "335AC0000000105_20220427_504AC0000000032",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2021-04-01",
+      "promulgate_date": "2020-06-12",
+      "amendment_law_title": "地域共生社会の実現のための社会福祉法等の一部を改正する法律",
+      "law_revision_id": "335AC0000000105_20210401_502AC0000000052",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2020-12-01",
+      "promulgate_date": "2020-06-10",
+      "amendment_law_title": "道路交通法の一部を改正する法律",
+      "law_revision_id": "335AC0000000105_20201201_502AC0000000042",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2020-06-30",
+      "promulgate_date": "2020-06-10",
+      "amendment_law_title": "道路交通法の一部を改正する法律",
+      "law_revision_id": "335AC0000000105_20200630_502AC0000000042",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2020-06-12",
+      "promulgate_date": "2020-06-12",
+      "amendment_law_title": "地域共生社会の実現のための社会福祉法等の一部を改正する法律",
+      "law_revision_id": "335AC0000000105_20200612_502AC0000000052",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2020-04-01",
+      "promulgate_date": "2019-06-05",
+      "amendment_law_title": "道路交通法の一部を改正する法律",
+      "law_revision_id": "335AC0000000105_20200401_501AC0000000020",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2020-04-01",
+      "promulgate_date": "2019-05-24",
+      "amendment_law_title": "道路運送車両法の一部を改正する法律",
+      "law_revision_id": "335AC0000000105_20200401_501AC0000000014",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2019-12-14",
+      "promulgate_date": "2019-06-14",
+      "amendment_law_title": "成年被後見人等の権利の制限に係る措置の適正化等を図るための関係法律の整備に関する法律",
+      "law_revision_id": "335AC0000000105_20191214_501AC0000000037",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2019-12-01",
+      "promulgate_date": "2019-06-05",
+      "amendment_law_title": "道路交通法の一部を改正する法律",
+      "law_revision_id": "335AC0000000105_20191201_501AC0000000020",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2019-09-14",
+      "promulgate_date": "2019-06-14",
+      "amendment_law_title": "成年被後見人等の権利の制限に係る措置の適正化等を図るための関係法律の整備に関する法律",
+      "law_revision_id": "335AC0000000105_20190914_501AC0000000037",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2019-06-14",
+      "promulgate_date": "2019-06-14",
+      "amendment_law_title": "成年被後見人等の権利の制限に係る措置の適正化等を図るための関係法律の整備に関する法律",
+      "law_revision_id": "335AC0000000105_20190614_501AC0000000037",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2019-06-05",
+      "promulgate_date": "2019-06-05",
+      "amendment_law_title": "道路交通法の一部を改正する法律",
+      "law_revision_id": "335AC0000000105_20190605_501AC0000000020",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2018-04-01",
+      "promulgate_date": "2017-06-02",
+      "amendment_law_title": "地域包括ケアシステムの強化のための介護保険法等の一部を改正する法律",
+      "law_revision_id": "335AC0000000105_20180401_429AC0000000052",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2017-06-02",
+      "promulgate_date": "2017-06-02",
+      "amendment_law_title": "地域包括ケアシステムの強化のための介護保険法等の一部を改正する法律",
+      "law_revision_id": "335AC0000000105_20170602_429AC0000000052",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2017-03-12",
+      "promulgate_date": "2015-06-17",
+      "amendment_law_title": "道路交通法の一部を改正する法律",
+      "law_revision_id": "335AC0000000105_20170312_427AC0000000040",
+      "diff_id": null
+    }
+  ]
+}

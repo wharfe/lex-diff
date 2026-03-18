@@ -1,0 +1,9 @@
+[project]
+name = "lex-diff"
+version = "0.1.0"
+description = "GitHub-style diff viewer for Japanese law amendments"
+requires-python = ">=3.13"
+dependencies = [
+    "anthropic>=0.85.0",
+    "httpx>=0.28.1",
+]

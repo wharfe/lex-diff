@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# uv
+uv.lock
+
+# Data (regenerable)
+data/raw/
+data/diffs/
+
+# Node
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+
+# Env
+.env
+*.Zone.Identifier
+
+# OS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/

@@ -1,0 +1,240 @@
+{
+  "law_id": "129AC0000000089",
+  "law_title": "民法",
+  "law_num": "明治二十九年法律第八十九号",
+  "promulgation_date": "1896-04-27",
+  "revision_count": 33,
+  "timeline": [
+    {
+      "enforcement_date": "2028-06-13",
+      "promulgate_date": "2023-06-14",
+      "amendment_law_title": "民事関係手続等における情報通信技術の活用等の推進を図るための関係法律の整備に関する法律",
+      "law_revision_id": "129AC0000000089_20280613_505AC0000000053",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2027-12-05",
+      "promulgate_date": "2025-06-06",
+      "amendment_law_title": "譲渡担保契約及び所有権留保契約に関する法律の施行に伴う関係法律の整備等に関する法律",
+      "law_revision_id": "129AC0000000089_20271205_507AC0000000057",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2026-04-01",
+      "promulgate_date": "2024-05-24",
+      "amendment_law_title": "民法等の一部を改正する法律",
+      "law_revision_id": "129AC0000000089_20260401_506AC0000000033",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2025-10-01",
+      "promulgate_date": "2023-06-14",
+      "amendment_law_title": "民事関係手続等における情報通信技術の活用等の推進を図るための関係法律の整備に関する法律",
+      "law_revision_id": "129AC0000000089_20251001_505AC0000000053",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2025-06-06",
+      "promulgate_date": "2025-06-06",
+      "amendment_law_title": "譲渡担保契約及び所有権留保契約に関する法律の施行に伴う関係法律の整備等に関する法律",
+      "law_revision_id": "129AC0000000089_20250606_507AC0000000057",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2025-06-01",
+      "promulgate_date": "2022-06-17",
+      "amendment_law_title": "刑法等の一部を改正する法律の施行に伴う関係法律の整理等に関する法律",
+      "law_revision_id": "129AC0000000089_20250601_504AC0000000068",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2024-05-24",
+      "promulgate_date": "2024-05-24",
+      "amendment_law_title": "民法等の一部を改正する法律",
+      "law_revision_id": "129AC0000000089_20240524_506AC0000000033",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2024-04-01",
+      "promulgate_date": "2022-12-16",
+      "amendment_law_title": "民法等の一部を改正する法律",
+      "law_revision_id": "129AC0000000089_20240401_504AC0000000102",
+      "diff_id": "129AC0000000089_2024-03-31_2024-04-01"
+    },
+    {
+      "enforcement_date": "2023-06-14",
+      "promulgate_date": "2023-06-14",
+      "amendment_law_title": "民事関係手続等における情報通信技術の活用等の推進を図るための関係法律の整備に関する法律",
+      "law_revision_id": "129AC0000000089_20230614_505AC0000000053",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2023-04-01",
+      "promulgate_date": "2021-06-11",
+      "amendment_law_title": "国家公務員法等の一部を改正する法律",
+      "law_revision_id": "129AC0000000089_20230401_503AC0000000061",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2023-04-01",
+      "promulgate_date": "2021-04-28",
+      "amendment_law_title": "民法等の一部を改正する法律",
+      "law_revision_id": "129AC0000000089_20230401_503AC0000000024",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2022-12-16",
+      "promulgate_date": "2022-12-16",
+      "amendment_law_title": "民法等の一部を改正する法律",
+      "law_revision_id": "129AC0000000089_20221216_504AC0000000102",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2022-09-01",
+      "promulgate_date": "2019-12-11",
+      "amendment_law_title": "会社法の一部を改正する法律の施行に伴う関係法律の整備等に関する法律",
+      "law_revision_id": "129AC0000000089_20220901_501AC0000000071",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2022-06-17",
+      "promulgate_date": "2022-06-17",
+      "amendment_law_title": "刑法等の一部を改正する法律の施行に伴う関係法律の整理等に関する法律",
+      "law_revision_id": "129AC0000000089_20220617_504AC0000000068",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2022-04-01",
+      "promulgate_date": "2021-05-19",
+      "amendment_law_title": "デジタル社会の形成を図るための関係法律の整備に関する法律",
+      "law_revision_id": "129AC0000000089_20220401_503AC0000000037",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2022-04-01",
+      "promulgate_date": "2018-06-20",
+      "amendment_law_title": "民法の一部を改正する法律",
+      "law_revision_id": "129AC0000000089_20220401_430AC0000000059",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2021-09-01",
+      "promulgate_date": "2021-05-19",
+      "amendment_law_title": "デジタル社会の形成を図るための関係法律の整備に関する法律",
+      "law_revision_id": "129AC0000000089_20210901_503AC0000000037",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2021-05-19",
+      "promulgate_date": "2021-05-19",
+      "amendment_law_title": "デジタル社会の形成を図るための関係法律の整備に関する法律",
+      "law_revision_id": "129AC0000000089_20210519_503AC0000000037",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2021-04-28",
+      "promulgate_date": "2021-04-28",
+      "amendment_law_title": "民法等の一部を改正する法律",
+      "law_revision_id": "129AC0000000089_20210428_503AC0000000024",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2020-04-01",
+      "promulgate_date": "2019-06-14",
+      "amendment_law_title": "民法等の一部を改正する法律",
+      "law_revision_id": "129AC0000000089_20200401_501AC0000000034",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2020-04-01",
+      "promulgate_date": "2019-05-17",
+      "amendment_law_title": "民事執行法及び国際的な子の奪取の民事上の側面に関する条約の実施に関する法律の一部を改正する法律",
+      "law_revision_id": "129AC0000000089_20200401_501AC0000000002",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2020-04-01",
+      "promulgate_date": "2018-07-13",
+      "amendment_law_title": "民法及び家事事件手続法の一部を改正する法律",
+      "law_revision_id": "129AC0000000089_20200401_430AC0000000072",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2020-04-01",
+      "promulgate_date": "2017-06-02",
+      "amendment_law_title": "民法の一部を改正する法律",
+      "law_revision_id": "129AC0000000089_20200401_429AC0000000044",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2020-03-01",
+      "promulgate_date": "2017-06-02",
+      "amendment_law_title": "民法の一部を改正する法律",
+      "law_revision_id": "129AC0000000089_20200301_429AC0000000044",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2019-12-11",
+      "promulgate_date": "2019-12-11",
+      "amendment_law_title": "会社法の一部を改正する法律の施行に伴う関係法律の整備等に関する法律",
+      "law_revision_id": "129AC0000000089_20191211_501AC0000000071",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2019-07-01",
+      "promulgate_date": "2018-07-13",
+      "amendment_law_title": "民法及び家事事件手続法の一部を改正する法律",
+      "law_revision_id": "129AC0000000089_20190701_430AC0000000072",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2019-06-14",
+      "promulgate_date": "2019-06-14",
+      "amendment_law_title": "民法等の一部を改正する法律",
+      "law_revision_id": "129AC0000000089_20190614_501AC0000000034",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2019-05-17",
+      "promulgate_date": "2019-05-17",
+      "amendment_law_title": "民事執行法及び国際的な子の奪取の民事上の側面に関する条約の実施に関する法律の一部を改正する法律",
+      "law_revision_id": "129AC0000000089_20190517_501AC0000000002",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2019-01-13",
+      "promulgate_date": "2018-07-13",
+      "amendment_law_title": "民法及び家事事件手続法の一部を改正する法律",
+      "law_revision_id": "129AC0000000089_20190113_430AC0000000072",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2018-06-20",
+      "promulgate_date": "2018-06-20",
+      "amendment_law_title": "民法の一部を改正する法律",
+      "law_revision_id": "129AC0000000089_20180620_430AC0000000059",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2018-04-01",
+      "promulgate_date": "2017-06-02",
+      "amendment_law_title": "民法の一部を改正する法律",
+      "law_revision_id": "129AC0000000089_20180401_429AC0000000044",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2017-06-02",
+      "promulgate_date": "2017-06-02",
+      "amendment_law_title": "民法の一部を改正する法律",
+      "law_revision_id": "129AC0000000089_20170602_429AC0000000044",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2016-10-13",
+      "promulgate_date": "2016-04-13",
+      "amendment_law_title": "成年後見の事務の円滑化を図るための民法及び家事事件手続法の一部を改正する法律",
+      "law_revision_id": "129AC0000000089_20161013_428AC1000000027",
+      "diff_id": null
+    }
+  ]
+}
