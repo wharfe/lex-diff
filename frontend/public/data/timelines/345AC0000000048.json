@@ -1,0 +1,653 @@
+{
+  "law_id": "345AC0000000048",
+  "law_title": "著作権法",
+  "law_num": "昭和四十五年法律第四十八号",
+  "promulgation_date": "1970-05-06",
+  "revision_count": 36,
+  "timeline": [
+    {
+      "enforcement_date": "2028-06-13",
+      "promulgate_date": "2023-06-14",
+      "amendment_law_title": "民事関係手続等における情報通信技術の活用等の推進を図るための関係法律の整備に関する法律",
+      "law_revision_id": "345AC0000000048_20280613_505AC0000000053",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "齋藤健",
+          "position": "法務大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2026-05-21",
+      "promulgate_date": "2023-06-14",
+      "amendment_law_title": "民事関係手続等における情報通信技術の活用等の推進を図るための関係法律の整備に関する法律",
+      "law_revision_id": "345AC0000000048_20260521_505AC0000000053",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "齋藤健",
+          "position": "法務大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2026-05-21",
+      "promulgate_date": "2022-05-25",
+      "amendment_law_title": "民事訴訟法等の一部を改正する法律",
+      "law_revision_id": "345AC0000000048_20260521_504AC0000000048",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "古川禎久",
+          "position": "法務大臣",
+          "party": "自由民主党"
+        },
+        "committee": "消費者問題に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2026-04-01",
+      "promulgate_date": "2023-05-26",
+      "amendment_law_title": "著作権法の一部を改正する法律",
+      "law_revision_id": "345AC0000000048_20260401_505AC0000000033",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "永岡桂子",
+          "position": "文部科学大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "文教科学委員会"
+      }
+    },
+    {
+      "enforcement_date": "2025-10-01",
+      "promulgate_date": "2025-04-25",
+      "amendment_law_title": "電波法及び放送法の一部を改正する法律",
+      "law_revision_id": "345AC0000000048_20251001_507AC0000000027",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "村上誠一郎",
+          "position": "総務大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "総務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2025-10-01",
+      "promulgate_date": "2023-06-14",
+      "amendment_law_title": "民事関係手続等における情報通信技術の活用等の推進を図るための関係法律の整備に関する法律",
+      "law_revision_id": "345AC0000000048_20251001_505AC0000000053",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "齋藤健",
+          "position": "法務大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2025-06-01",
+      "promulgate_date": "2023-05-26",
+      "amendment_law_title": "著作権法の一部を改正する法律",
+      "law_revision_id": "345AC0000000048_20250601_505AC0000000033",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "永岡桂子",
+          "position": "文部科学大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "文教科学委員会"
+      }
+    },
+    {
+      "enforcement_date": "2025-06-01",
+      "promulgate_date": "2022-06-17",
+      "amendment_law_title": "刑法等の一部を改正する法律の施行に伴う関係法律の整理等に関する法律",
+      "law_revision_id": "345AC0000000048_20250601_504AC0000000068",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "古川禎久",
+          "position": "法務大臣",
+          "party": "自由民主党"
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2024-07-19",
+      "promulgate_date": "2024-06-19",
+      "amendment_law_title": "障害のある児童及び生徒のための教科用特定図書等の普及の促進等に関する法律の一部を改正する法律",
+      "law_revision_id": "345AC0000000048_20240719_506AC1000000055",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "衆法",
+        "minister": null,
+        "committee": "文教科学委員会"
+      }
+    },
+    {
+      "enforcement_date": "2024-01-01",
+      "promulgate_date": "2023-05-26",
+      "amendment_law_title": "著作権法の一部を改正する法律",
+      "law_revision_id": "345AC0000000048_20240101_505AC0000000033",
+      "diff_id": "345AC0000000048_2023-12-31_2024-01-01",
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "永岡桂子",
+          "position": "文部科学大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "文教科学委員会"
+      }
+    },
+    {
+      "enforcement_date": "2023-06-14",
+      "promulgate_date": "2023-06-14",
+      "amendment_law_title": "民事関係手続等における情報通信技術の活用等の推進を図るための関係法律の整備に関する法律",
+      "law_revision_id": "345AC0000000048_20230614_505AC0000000053",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "齋藤健",
+          "position": "法務大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2023-06-01",
+      "promulgate_date": "2021-06-02",
+      "amendment_law_title": "著作権法の一部を改正する法律",
+      "law_revision_id": "345AC0000000048_20230601_503AC0000000052",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "萩生田光一",
+          "position": "文部科学大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "文教科学委員会"
+      }
+    },
+    {
+      "enforcement_date": "2023-05-26",
+      "promulgate_date": "2023-05-26",
+      "amendment_law_title": "著作権法の一部を改正する法律",
+      "law_revision_id": "345AC0000000048_20230526_505AC0000000033",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "永岡桂子",
+          "position": "文部科学大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "文教科学委員会"
+      }
+    },
+    {
+      "enforcement_date": "2022-06-17",
+      "promulgate_date": "2022-06-17",
+      "amendment_law_title": "刑法等の一部を改正する法律の施行に伴う関係法律の整理等に関する法律",
+      "law_revision_id": "345AC0000000048_20220617_504AC0000000068",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "古川禎久",
+          "position": "法務大臣",
+          "party": "自由民主党"
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2022-05-25",
+      "promulgate_date": "2022-05-25",
+      "amendment_law_title": "民事訴訟法等の一部を改正する法律",
+      "law_revision_id": "345AC0000000048_20220525_504AC0000000048",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "古川禎久",
+          "position": "法務大臣",
+          "party": "自由民主党"
+        },
+        "committee": "消費者問題に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2022-05-01",
+      "promulgate_date": "2021-06-02",
+      "amendment_law_title": "著作権法の一部を改正する法律",
+      "law_revision_id": "345AC0000000048_20220501_503AC0000000052",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "萩生田光一",
+          "position": "文部科学大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "文教科学委員会"
+      }
+    },
+    {
+      "enforcement_date": "2022-04-01",
+      "promulgate_date": "2021-05-19",
+      "amendment_law_title": "デジタル社会の形成を図るための関係法律の整備に関する法律",
+      "law_revision_id": "345AC0000000048_20220401_503AC0000000037",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "平井卓也",
+          "position": "内閣府特命担当大臣（マイナンバー制度）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "内閣委員会"
+      }
+    },
+    {
+      "enforcement_date": "2022-01-01",
+      "promulgate_date": "2021-06-02",
+      "amendment_law_title": "著作権法の一部を改正する法律",
+      "law_revision_id": "345AC0000000048_20220101_503AC0000000052",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "萩生田光一",
+          "position": "文部科学大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "文教科学委員会"
+      }
+    },
+    {
+      "enforcement_date": "2021-10-01",
+      "promulgate_date": "2021-06-02",
+      "amendment_law_title": "著作権法の一部を改正する法律",
+      "law_revision_id": "345AC0000000048_20211001_503AC0000000052",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "萩生田光一",
+          "position": "文部科学大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "文教科学委員会"
+      }
+    },
+    {
+      "enforcement_date": "2021-06-02",
+      "promulgate_date": "2021-06-02",
+      "amendment_law_title": "著作権法の一部を改正する法律",
+      "law_revision_id": "345AC0000000048_20210602_503AC0000000052",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "萩生田光一",
+          "position": "文部科学大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "文教科学委員会"
+      }
+    },
+    {
+      "enforcement_date": "2021-05-19",
+      "promulgate_date": "2021-05-19",
+      "amendment_law_title": "デジタル社会の形成を図るための関係法律の整備に関する法律",
+      "law_revision_id": "345AC0000000048_20210519_503AC0000000037",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "平井卓也",
+          "position": "内閣府特命担当大臣（マイナンバー制度）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "内閣委員会"
+      }
+    },
+    {
+      "enforcement_date": "2021-01-01",
+      "promulgate_date": "2020-06-12",
+      "amendment_law_title": "著作権法及びプログラムの著作物に係る登録の特例に関する法律の一部を改正する法律",
+      "law_revision_id": "345AC0000000048_20210101_502AC0000000048",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "萩生田光一",
+          "position": "文部科学大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "文教科学委員会"
+      }
+    },
+    {
+      "enforcement_date": "2020-10-01",
+      "promulgate_date": "2020-06-12",
+      "amendment_law_title": "著作権法及びプログラムの著作物に係る登録の特例に関する法律の一部を改正する法律",
+      "law_revision_id": "345AC0000000048_20201001_502AC0000000048",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "萩生田光一",
+          "position": "文部科学大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "文教科学委員会"
+      }
+    },
+    {
+      "enforcement_date": "2020-06-12",
+      "promulgate_date": "2020-06-12",
+      "amendment_law_title": "著作権法及びプログラムの著作物に係る登録の特例に関する法律の一部を改正する法律",
+      "law_revision_id": "345AC0000000048_20200612_502AC0000000048",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "萩生田光一",
+          "position": "文部科学大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "文教科学委員会"
+      }
+    },
+    {
+      "enforcement_date": "2020-04-28",
+      "promulgate_date": "2018-05-25",
+      "amendment_law_title": "著作権法の一部を改正する法律",
+      "law_revision_id": "345AC0000000048_20200428_430AC0000000030",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "林芳正",
+          "position": "文部科学大臣",
+          "party": "自由民主党・こころ"
+        },
+        "committee": "外務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2020-04-28",
+      "promulgate_date": "2014-05-14",
+      "amendment_law_title": "著作権法の一部を改正する法律",
+      "law_revision_id": "345AC0000000048_20200428_426AC0000000035",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "下村博文",
+          "position": "文部科学大臣",
+          "party": "自由民主党"
+        },
+        "committee": "文教科学委員会"
+      }
+    },
+    {
+      "enforcement_date": "2020-04-01",
+      "promulgate_date": "2017-06-02",
+      "amendment_law_title": "民法の一部を改正する法律の施行に伴う関係法律の整備等に関する法律",
+      "law_revision_id": "345AC0000000048_20200401_429AC0000000045",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "金田勝年",
+          "position": "法務大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2019-07-01",
+      "promulgate_date": "2018-07-13",
+      "amendment_law_title": "民法及び家事事件手続法の一部を改正する法律",
+      "law_revision_id": "345AC0000000048_20190701_430AC0000000072",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "上川陽子",
+          "position": "法務大臣",
+          "party": "自由民主党"
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2019-04-01",
+      "promulgate_date": "2018-06-01",
+      "amendment_law_title": "学校教育法等の一部を改正する法律",
+      "law_revision_id": "345AC0000000048_20190401_430AC0000000039",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "林芳正",
+          "position": "文部科学大臣",
+          "party": "自由民主党・こころ"
+        },
+        "committee": "厚生労働委員会"
+      }
+    },
+    {
+      "enforcement_date": "2019-01-01",
+      "promulgate_date": "2018-05-25",
+      "amendment_law_title": "著作権法の一部を改正する法律",
+      "law_revision_id": "345AC0000000048_20190101_430AC0000000030",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "林芳正",
+          "position": "文部科学大臣",
+          "party": "自由民主党・こころ"
+        },
+        "committee": "外務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2018-12-30",
+      "promulgate_date": "2016-12-16",
+      "amendment_law_title": "環太平洋パートナーシップ協定の締結に伴う関係法律の整備に関する法律",
+      "law_revision_id": "345AC0000000048_20181230_428AC0000000108",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": null,
+        "committee": "環太平洋パートナーシップ協定等に関する特別委員会公聴会"
+      }
+    },
+    {
+      "enforcement_date": "2018-07-13",
+      "promulgate_date": "2018-07-13",
+      "amendment_law_title": "民法及び家事事件手続法の一部を改正する法律",
+      "law_revision_id": "345AC0000000048_20180713_430AC0000000072",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "上川陽子",
+          "position": "法務大臣",
+          "party": "自由民主党"
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2018-05-25",
+      "promulgate_date": "2018-05-25",
+      "amendment_law_title": "著作権法の一部を改正する法律",
+      "law_revision_id": "345AC0000000048_20180525_430AC0000000030",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "林芳正",
+          "position": "文部科学大臣",
+          "party": "自由民主党・こころ"
+        },
+        "committee": "外務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2017-06-02",
+      "promulgate_date": "2017-06-02",
+      "amendment_law_title": "民法の一部を改正する法律の施行に伴う関係法律の整備等に関する法律",
+      "law_revision_id": "345AC0000000048_20170602_429AC0000000045",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "金田勝年",
+          "position": "法務大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2017-05-30",
+      "promulgate_date": "2016-05-27",
+      "amendment_law_title": "行政機関等の保有する個人情報の適正かつ効果的な活用による新たな産業の創出並びに活力ある経済社会及び豊かな国民生活の実現に資するための関係法律の整備に関する法律",
+      "law_revision_id": "345AC0000000048_20170530_428AC0000000051",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "高市早苗",
+          "position": "総務大臣",
+          "party": "自由民主党"
+        },
+        "committee": "総務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2016-12-16",
+      "promulgate_date": "2016-12-16",
+      "amendment_law_title": "環太平洋パートナーシップ協定の締結に伴う関係法律の整備に関する法律",
+      "law_revision_id": "345AC0000000048_20161216_428AC0000000108",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": null,
+        "committee": "環太平洋パートナーシップ協定等に関する特別委員会公聴会"
+      }
+    }
+  ],
+  "summary": {
+    "description": "著作権法は、小説や音楽、映画、写真などの創作物を作った人の権利を守り、無断で使用されることを防ぐ法律です。私たちが日常的に接するYouTube動画の投稿、SNSでの写真シェア、音楽の配信なども、この法律に基づいてルールが決められています。創作者の権利を保護しながら、文化の発展を促進することを目的としています。",
+    "scope": "すべての国民および日本国内で活動する個人・法人が対象となります。",
+    "keywords": [
+      "著作権",
+      "知的財産",
+      "創作物",
+      "複製権",
+      "引用"
+    ]
+  },
+  "category": "文化",
+  "contributors": [
+    {
+      "name": "萩生田光一",
+      "position": "文部科学大臣",
+      "party": "自由民主党・無所属の会",
+      "count": 8
+    },
+    {
+      "name": "齋藤健",
+      "position": "法務大臣",
+      "party": "自由民主党・無所属の会",
+      "count": 4
+    },
+    {
+      "name": "古川禎久",
+      "position": "法務大臣",
+      "party": "自由民主党",
+      "count": 4
+    },
+    {
+      "name": "永岡桂子",
+      "position": "文部科学大臣",
+      "party": "自由民主党・無所属の会",
+      "count": 4
+    },
+    {
+      "name": "林芳正",
+      "position": "文部科学大臣",
+      "party": "自由民主党・こころ",
+      "count": 4
+    },
+    {
+      "name": "平井卓也",
+      "position": "内閣府特命担当大臣（マイナンバー制度）",
+      "party": "自由民主党・無所属の会",
+      "count": 2
+    },
+    {
+      "name": "金田勝年",
+      "position": "法務大臣",
+      "party": "自由民主党・無所属の会",
+      "count": 2
+    },
+    {
+      "name": "上川陽子",
+      "position": "法務大臣",
+      "party": "自由民主党",
+      "count": 2
+    },
+    {
+      "name": "村上誠一郎",
+      "position": "総務大臣",
+      "party": "自由民主党・無所属の会",
+      "count": 1
+    },
+    {
+      "name": "下村博文",
+      "position": "文部科学大臣",
+      "party": "自由民主党",
+      "count": 1
+    },
+    {
+      "name": "高市早苗",
+      "position": "総務大臣",
+      "party": "自由民主党",
+      "count": 1
+    }
+  ]
+}

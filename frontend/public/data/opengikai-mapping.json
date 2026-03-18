@@ -1,0 +1,15 @@
+{
+  "_comment": "Mapping from lex-diff law_id to OpenGIKAI thread URLs. Manually maintained until automated.",
+  "345AC0000000048": {
+    "law_title": "著作権法",
+    "threads": [
+      {
+        "thread_id": "t_20260219_7c0705_03",
+        "title": "国会図書館デジタル化資料個人送信サービス",
+        "url": "https://open-gikai.net/t/t_20260219_7c0705_03",
+        "date": "2026-02-19",
+        "committee": "議院運営委員会"
+      }
+    ]
+  }
+}

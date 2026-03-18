@@ -12,6 +12,7 @@ const CIVIL_CODE = "129AC0000000089";
 const APPI = "415AC0000000057";
 const ROAD_TRAFFIC = "335AC0000000105";
 const LABOR_STANDARDS = "322AC0000000049";
+const COPYRIGHT = "345AC0000000048";
 
 export const LIFE_THEMES: LifeTheme[] = [
   {
@@ -67,6 +68,15 @@ export const LIFE_THEMES: LifeTheme[] = [
     longDescription:
       "法定相続分、遺言の方式、遺産分割、特別寄与料など、相続に関わる法律の改正を追えます。",
     lawIds: [CIVIL_CODE],
+  },
+  {
+    id: "creative",
+    label: "著作権・創作",
+    icon: "description",
+    description: "著作物の利用、引用、SNS投稿、AI学習など",
+    longDescription:
+      "著作権の保護範囲、引用のルール、デジタルコンテンツの利用、AI学習データの取り扱いなど、創作活動に関わる法律の改正を追えます。",
+    lawIds: [COPYRIGHT],
   },
 ];
 

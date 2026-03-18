@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getTimelineIds, getTimelineData } from "@/lib/data";
+import { getTimelineIds, getTimelineData, getOpenGikaiLinks } from "@/lib/data";
 import { Timeline } from "@/components/timeline";
 import { Icon } from "@/components/icon";
+import { OpenGikaiLinks } from "@/components/opengikai-link";
 import { getThemesForLaw } from "@/lib/life-themes";
 import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
 
@@ -36,6 +37,7 @@ export default async function LawPage({
   const { lawId } = await params;
   const data = getTimelineData(lawId);
   const themes = getThemesForLaw(lawId);
+  const gikaiLinks = getOpenGikaiLinks(lawId);
 
   return (
     <div className="flex flex-col gap-6">
@@ -158,9 +160,11 @@ export default async function LawPage({
           </div>
         </div>
 
-        {/* Sidebar — Contributors */}
-        {data.contributors && data.contributors.length > 0 && (
-          <div className="lg:w-[260px] shrink-0">
+        {/* Sidebar */}
+        {(data.contributors?.length || gikaiLinks) && (
+          <div className="lg:w-[260px] shrink-0 space-y-4">
+            {gikaiLinks && <OpenGikaiLinks mapping={gikaiLinks} />}
+            {data.contributors && data.contributors.length > 0 && (
             <div className="border border-[var(--border)] rounded-lg overflow-hidden">
               <div className="px-4 py-3 bg-[var(--muted)] border-b border-[var(--border)] text-[14px] font-medium">
                 Contributors
@@ -189,6 +193,7 @@ export default async function LawPage({
                 </p>
               </div>
             </div>
+            )}
           </div>
         )}
       </div>
