@@ -40,7 +40,7 @@ export default function RootLayout({
         <header className="border-b border-[var(--border)] px-4 py-3">
           <div className="max-w-5xl mx-auto flex items-center gap-3">
             <a href="/" className="text-[17px] font-bold font-mono">
-              lex-diff
+              <span className="text-[var(--diff-add-text)]">lex</span><span className="text-[var(--diff-del-text)]">diff</span>
             </a>
             <span className="text-[13px] opacity-50 hidden md:inline">
               法令改正の差分ビューア
