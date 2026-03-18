@@ -64,8 +64,12 @@ export default function Home() {
       return hasAdd && hasDel;
     }) || heroDiff.data.diffs.find((d) => d.type === "modified");
     if (modified) {
+      let visibleCount = 0;
       for (const line of modified.diff) {
-        if (previewLines.length >= 8) break;
+        // Skip meta lines (--- / +++) as they are hidden in render
+        const isMeta = line.startsWith("---") || line.startsWith("+++");
+        if (!isMeta) visibleCount++;
+        if (visibleCount > 8) break;
         previewLines.push(line);
       }
     }
@@ -124,7 +128,9 @@ export default function Home() {
           <div className="grid gap-4">
             {diffs.map(({ id, data }) => {
               const firstMod = data.diffs.find((d) => d.type === "modified");
-              const preview = firstMod?.diff.slice(0, 4) || [];
+              const preview = firstMod?.diff.filter(
+                (l) => !l.startsWith("---") && !l.startsWith("+++")
+              ).slice(0, 4) || [];
               return (
                 <Link
                   key={id}
