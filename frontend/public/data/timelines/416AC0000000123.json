@@ -1,0 +1,467 @@
+{
+  "law_id": "416AC0000000123",
+  "law_title": "不動産登記法",
+  "law_num": "平成十六年法律第百二十三号",
+  "promulgation_date": "2004-06-18",
+  "revision_count": 24,
+  "timeline": [
+    {
+      "enforcement_date": "2026-05-21",
+      "promulgate_date": "2023-06-16",
+      "amendment_law_title": "デジタル社会の形成を図るための規制改革を推進するためのデジタル社会形成基本法等の一部を改正する法律",
+      "law_revision_id": "416AC0000000123_20260521_505AC0000000063",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "河野太郎",
+          "position": "デジタル大臣・内閣府特命担当大臣（消費者及び食品安全・デジタル改革）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "地域活性化・こども政策・デジタル社会形成に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2026-04-01",
+      "promulgate_date": "2024-05-22",
+      "amendment_law_title": "公益信託に関する法律",
+      "law_revision_id": "416AC0000000123_20260401_506AC0000000030",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "加藤鮎子",
+          "position": "内閣府特命担当大臣（こども政策・少子化対策・若者活躍・男女共同参画・孤独・孤立対策）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "内閣委員会"
+      }
+    },
+    {
+      "enforcement_date": "2026-04-01",
+      "promulgate_date": "2021-04-28",
+      "amendment_law_title": "民法等の一部を改正する法律",
+      "law_revision_id": "416AC0000000123_20260401_503AC0000000024",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "上川陽子",
+          "position": "法務大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "国土交通委員会"
+      }
+    },
+    {
+      "enforcement_date": "2026-02-02",
+      "promulgate_date": "2021-04-28",
+      "amendment_law_title": "民法等の一部を改正する法律",
+      "law_revision_id": "416AC0000000123_20260202_503AC0000000024",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "上川陽子",
+          "position": "法務大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "国土交通委員会"
+      }
+    },
+    {
+      "enforcement_date": "2025-06-01",
+      "promulgate_date": "2022-06-17",
+      "amendment_law_title": "刑法等の一部を改正する法律の施行に伴う関係法律の整理等に関する法律",
+      "law_revision_id": "416AC0000000123_20250601_504AC0000000068",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "古川禎久",
+          "position": "法務大臣",
+          "party": "自由民主党"
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2024-04-01",
+      "promulgate_date": "2023-06-16",
+      "amendment_law_title": "デジタル社会の形成を図るための規制改革を推進するためのデジタル社会形成基本法等の一部を改正する法律",
+      "law_revision_id": "416AC0000000123_20240401_505AC0000000063",
+      "diff_id": "416AC0000000123_2024-03-31_2024-04-01",
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "河野太郎",
+          "position": "デジタル大臣・内閣府特命担当大臣（消費者及び食品安全・デジタル改革）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "地域活性化・こども政策・デジタル社会形成に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2024-04-01",
+      "promulgate_date": "2021-04-28",
+      "amendment_law_title": "民法等の一部を改正する法律",
+      "law_revision_id": "416AC0000000123_20240401_503AC0000000024",
+      "diff_id": "416AC0000000123_2024-03-31_2024-04-01",
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "上川陽子",
+          "position": "法務大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "国土交通委員会"
+      }
+    },
+    {
+      "enforcement_date": "2023-06-16",
+      "promulgate_date": "2023-06-16",
+      "amendment_law_title": "デジタル社会の形成を図るための規制改革を推進するためのデジタル社会形成基本法等の一部を改正する法律",
+      "law_revision_id": "416AC0000000123_20230616_505AC0000000063",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "河野太郎",
+          "position": "デジタル大臣・内閣府特命担当大臣（消費者及び食品安全・デジタル改革）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "地域活性化・こども政策・デジタル社会形成に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2023-04-01",
+      "promulgate_date": "2021-04-28",
+      "amendment_law_title": "民法等の一部を改正する法律",
+      "law_revision_id": "416AC0000000123_20230401_503AC0000000024",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "上川陽子",
+          "position": "法務大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "国土交通委員会"
+      }
+    },
+    {
+      "enforcement_date": "2022-09-01",
+      "promulgate_date": "2019-12-11",
+      "amendment_law_title": "会社法の一部を改正する法律の施行に伴う関係法律の整備等に関する法律",
+      "law_revision_id": "416AC0000000123_20220901_501AC0000000071",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "森まさこ",
+          "position": "法務大臣",
+          "party": "自由民主党・国民の声"
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2022-06-17",
+      "promulgate_date": "2022-06-17",
+      "amendment_law_title": "刑法等の一部を改正する法律の施行に伴う関係法律の整理等に関する法律",
+      "law_revision_id": "416AC0000000123_20220617_504AC0000000068",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "古川禎久",
+          "position": "法務大臣",
+          "party": "自由民主党"
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2022-05-18",
+      "promulgate_date": "2021-05-19",
+      "amendment_law_title": "デジタル社会の形成を図るための関係法律の整備に関する法律",
+      "law_revision_id": "416AC0000000123_20220518_503AC0000000037",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "平井卓也",
+          "position": "内閣府特命担当大臣（マイナンバー制度）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "地方創生に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2022-04-01",
+      "promulgate_date": "2021-05-19",
+      "amendment_law_title": "デジタル社会の形成を図るための関係法律の整備に関する法律",
+      "law_revision_id": "416AC0000000123_20220401_503AC0000000037",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "平井卓也",
+          "position": "内閣府特命担当大臣（マイナンバー制度）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "地方創生に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2021-05-19",
+      "promulgate_date": "2021-05-19",
+      "amendment_law_title": "デジタル社会の形成を図るための関係法律の整備に関する法律",
+      "law_revision_id": "416AC0000000123_20210519_503AC0000000037",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "平井卓也",
+          "position": "内閣府特命担当大臣（マイナンバー制度）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "地方創生に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2021-04-28",
+      "promulgate_date": "2021-04-28",
+      "amendment_law_title": "民法等の一部を改正する法律",
+      "law_revision_id": "416AC0000000123_20210428_503AC0000000024",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "上川陽子",
+          "position": "法務大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "国土交通委員会"
+      }
+    },
+    {
+      "enforcement_date": "2020-09-29",
+      "promulgate_date": "2020-03-31",
+      "amendment_law_title": "土地基本法等の一部を改正する法律",
+      "law_revision_id": "416AC0000000123_20200929_502AC0000000012",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "赤羽一嘉",
+          "position": "国土交通大臣",
+          "party": "公明党"
+        },
+        "committee": "国土交通委員会"
+      }
+    },
+    {
+      "enforcement_date": "2020-04-01",
+      "promulgate_date": "2018-07-13",
+      "amendment_law_title": "民法及び家事事件手続法の一部を改正する法律",
+      "law_revision_id": "416AC0000000123_20200401_430AC0000000072",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "上川陽子",
+          "position": "法務大臣",
+          "party": "自由民主党"
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2020-04-01",
+      "promulgate_date": "2017-06-02",
+      "amendment_law_title": "民法の一部を改正する法律の施行に伴う関係法律の整備等に関する法律",
+      "law_revision_id": "416AC0000000123_20200401_429AC0000000045",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "金田勝年",
+          "position": "法務大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2019-12-16",
+      "promulgate_date": "2019-05-31",
+      "amendment_law_title": "情報通信技術の活用による行政手続等に係る関係者の利便性の向上並びに行政運営の簡素化及び効率化を図るための行政手続等における情報通信の技術の利用に関する法律等の一部を改正する法律",
+      "law_revision_id": "416AC0000000123_20191216_501AC0000000016",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "平井卓也",
+          "position": "内閣府特命担当大臣（クールジャパン戦略・知的財産戦略・科学技術政策・宇宙政策）",
+          "party": "自由民主党"
+        },
+        "committee": "内閣委員会"
+      }
+    },
+    {
+      "enforcement_date": "2019-12-11",
+      "promulgate_date": "2019-12-11",
+      "amendment_law_title": "会社法の一部を改正する法律の施行に伴う関係法律の整備等に関する法律",
+      "law_revision_id": "416AC0000000123_20191211_501AC0000000071",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "森まさこ",
+          "position": "法務大臣",
+          "party": "自由民主党・国民の声"
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2018-07-13",
+      "promulgate_date": "2018-07-13",
+      "amendment_law_title": "民法及び家事事件手続法の一部を改正する法律",
+      "law_revision_id": "416AC0000000123_20180713_430AC0000000072",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "上川陽子",
+          "position": "法務大臣",
+          "party": "自由民主党"
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2017-06-02",
+      "promulgate_date": "2017-06-02",
+      "amendment_law_title": "民法の一部を改正する法律の施行に伴う関係法律の整備等に関する法律",
+      "law_revision_id": "416AC0000000123_20170602_429AC0000000045",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "金田勝年",
+          "position": "法務大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2017-05-30",
+      "promulgate_date": "2016-05-27",
+      "amendment_law_title": "行政機関等の保有する個人情報の適正かつ効果的な活用による新たな産業の創出並びに活力ある経済社会及び豊かな国民生活の実現に資するための関係法律の整備に関する法律",
+      "law_revision_id": "416AC0000000123_20170530_428AC0000000051",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "高市早苗",
+          "position": "総務大臣",
+          "party": "自由民主党"
+        },
+        "committee": "総務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2016-04-01",
+      "promulgate_date": "2014-06-13",
+      "amendment_law_title": "行政不服審査法の施行に伴う関係法律の整備等に関する法律",
+      "law_revision_id": "416AC0000000123_20160401_426AC0000000069",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "新藤義孝",
+          "position": "総務大臣・内閣府特命担当大臣（地方分権改革）",
+          "party": "自由民主党"
+        },
+        "committee": "法務委員会"
+      }
+    }
+  ],
+  "summary": {
+    "description": "不動産登記法は、土地や建物などの不動産の所有者や権利関係を国の登記簿に記録するための手続きやルールを定めた法律です。マイホームの購入や相続の際に、正式に所有者として登録されるための仕組みを整備しています。",
+    "scope": "不動産の売買、相続、贈与などに関わるすべての個人や法人が対象となります。",
+    "keywords": [
+      "不動産登記",
+      "所有権",
+      "登記簿",
+      "司法書士",
+      "相続登記"
+    ]
+  },
+  "category": "民事",
+  "contributors": [
+    {
+      "name": "上川陽子",
+      "position": "法務大臣",
+      "party": "自由民主党・無所属の会",
+      "count": 7
+    },
+    {
+      "name": "平井卓也",
+      "position": "内閣府特命担当大臣（マイナンバー制度）",
+      "party": "自由民主党・無所属の会",
+      "count": 4
+    },
+    {
+      "name": "河野太郎",
+      "position": "デジタル大臣・内閣府特命担当大臣（消費者及び食品安全・デジタル改革）",
+      "party": "自由民主党・無所属の会",
+      "count": 3
+    },
+    {
+      "name": "古川禎久",
+      "position": "法務大臣",
+      "party": "自由民主党",
+      "count": 2
+    },
+    {
+      "name": "森まさこ",
+      "position": "法務大臣",
+      "party": "自由民主党・国民の声",
+      "count": 2
+    },
+    {
+      "name": "金田勝年",
+      "position": "法務大臣",
+      "party": "自由民主党・無所属の会",
+      "count": 2
+    },
+    {
+      "name": "加藤鮎子",
+      "position": "内閣府特命担当大臣（こども政策・少子化対策・若者活躍・男女共同参画・孤独・孤立対策）",
+      "party": "自由民主党・無所属の会",
+      "count": 1
+    },
+    {
+      "name": "赤羽一嘉",
+      "position": "国土交通大臣",
+      "party": "公明党",
+      "count": 1
+    },
+    {
+      "name": "高市早苗",
+      "position": "総務大臣",
+      "party": "自由民主党",
+      "count": 1
+    },
+    {
+      "name": "新藤義孝",
+      "position": "総務大臣・内閣府特命担当大臣（地方分権改革）",
+      "party": "自由民主党",
+      "count": 1
+    }
+  ]
+}

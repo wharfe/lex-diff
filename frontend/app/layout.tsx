@@ -79,7 +79,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20,300,0,0&icon_names=add,arrow_forward,calendar_month,change_history,code,commit,description,difference,family_restroom,folder,gavel,help,history,home,info,lock,open_in_new,schedule,shopping_cart,smart_toy,speed,tag,work&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20,300,0,0&icon_names=add,arrow_forward,badge,calendar_month,change_history,code,commit,description,difference,family_restroom,folder,forum,gavel,help,history,home,info,lock,open_in_new,schedule,shopping_cart,smart_toy,speed,tag,work&display=swap"
           rel="stylesheet"
         />
       </head>

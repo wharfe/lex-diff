@@ -1,0 +1,1763 @@
+{
+  "law_id": "425AC0000000027",
+  "law_title": "行政手続における特定の個人を識別するための番号の利用等に関する法律",
+  "law_num": "平成二十五年法律第二十七号",
+  "promulgation_date": "2013-05-31",
+  "revision_count": 99,
+  "timeline": [
+    {
+      "enforcement_date": "2030-06-19",
+      "promulgate_date": "2025-06-20",
+      "amendment_law_title": "社会経済の変化を踏まえた年金制度の機能強化のための国民年金法等の一部を改正する等の法律",
+      "law_revision_id": "425AC0000000027_20300619_507AC0000000074",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "福岡資麿",
+          "position": "厚生労働大臣",
+          "party": "自由民主党"
+        },
+        "committee": "厚生労働委員会"
+      }
+    },
+    {
+      "enforcement_date": "2029-06-06",
+      "promulgate_date": "2024-06-07",
+      "amendment_law_title": "情報通信技術の活用による行政手続等に係る関係者の利便性の向上並びに行政運営の簡素化及び効率化を図るためのデジタル社会形成基本法等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20290606_506AC0000000046",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "河野太郎",
+          "position": "デジタル大臣・内閣府特命担当大臣（規制改革）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "地域活性化・こども政策・デジタル社会形成に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2026-10-01",
+      "promulgate_date": "2025-12-12",
+      "amendment_law_title": "医療法等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20261001_507AC0000000087",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "上野賢一郎",
+          "position": "厚生労働大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "厚生労働委員会"
+      }
+    },
+    {
+      "enforcement_date": "2026-08-22",
+      "promulgate_date": "2025-05-23",
+      "amendment_law_title": "行政手続における特定の個人を識別するための番号の利用等に関する法律及び住民基本台帳法の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20260822_507AC0000000038",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "平将明",
+          "position": "デジタル大臣・内閣府特命担当大臣（規制改革）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "地域活性化・こども政策・デジタル社会形成に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2026-06-14",
+      "promulgate_date": "2024-06-21",
+      "amendment_law_title": "出入国管理及び難民認定法等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20260614_506AC0000000059",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "小泉龍司",
+          "position": "法務大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "法務委員会、厚生労働委員会連合審査会"
+      }
+    },
+    {
+      "enforcement_date": "2026-05-27",
+      "promulgate_date": "2025-05-28",
+      "amendment_law_title": "電気通信事業法及び日本電信電話株式会社等に関する法律の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20260527_507AC0000000046",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "村上誠一郎",
+          "position": "総務大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "総務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2026-05-26",
+      "promulgate_date": "2023-06-09",
+      "amendment_law_title": "行政手続における特定の個人を識別するための番号の利用等に関する法律等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20260526_505AC0000000048",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "河野太郎",
+          "position": "デジタル大臣・内閣府特命担当大臣（消費者及び食品安全・デジタル改革）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "地方創生及びデジタル社会の形成等に関する特別委員会、厚生労働委員会連合審査会"
+      }
+    },
+    {
+      "enforcement_date": "2026-04-01",
+      "promulgate_date": "2024-06-12",
+      "amendment_law_title": "子ども・子育て支援法等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20260401_506AC0000000047",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "加藤鮎子",
+          "position": "内閣府特命担当大臣（こども政策・少子化対策・若者活躍・男女共同参画・孤独・孤立対策）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "地域活性化・こども政策・デジタル社会形成に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2026-02-14",
+      "promulgate_date": "2025-05-14",
+      "amendment_law_title": "船員法等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20260214_507AC0000000032",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "中野洋昌",
+          "position": "国土交通大臣",
+          "party": "公明党"
+        },
+        "committee": "予算委員会"
+      }
+    },
+    {
+      "enforcement_date": "2025-12-12",
+      "promulgate_date": "2025-12-12",
+      "amendment_law_title": "医療法等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20251212_507AC0000000087",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "上野賢一郎",
+          "position": "厚生労働大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "厚生労働委員会"
+      }
+    },
+    {
+      "enforcement_date": "2025-10-01",
+      "promulgate_date": "2025-04-25",
+      "amendment_law_title": "児童福祉法等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20251001_507AC0000000029",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": null,
+        "committee": "予算委員会"
+      }
+    },
+    {
+      "enforcement_date": "2025-08-16",
+      "promulgate_date": "2025-05-16",
+      "amendment_law_title": "地域の自主性及び自立性を高めるための改革の推進を図るための関係法律の整備に関する法律",
+      "law_revision_id": "425AC0000000027_20250816_507AC0000000035",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "伊東良孝",
+          "position": "内閣府特命担当大臣（沖縄及び北方対策・消費者及び食品安全・地方創生・アイヌ施策）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "地域活性化・こども政策・デジタル社会形成に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2025-06-20",
+      "promulgate_date": "2025-06-20",
+      "amendment_law_title": "社会経済の変化を踏まえた年金制度の機能強化のための国民年金法等の一部を改正する等の法律",
+      "law_revision_id": "425AC0000000027_20250620_507AC0000000074",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "福岡資麿",
+          "position": "厚生労働大臣",
+          "party": "自由民主党"
+        },
+        "committee": "厚生労働委員会"
+      }
+    },
+    {
+      "enforcement_date": "2025-06-01",
+      "promulgate_date": "2022-06-17",
+      "amendment_law_title": "刑法等の一部を改正する法律の施行に伴う関係法律の整理等に関する法律　抄",
+      "law_revision_id": "425AC0000000027_20250601_504AC0000000068",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2025-05-23",
+      "promulgate_date": "2025-05-23",
+      "amendment_law_title": "行政手続における特定の個人を識別するための番号の利用等に関する法律及び住民基本台帳法の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20250523_507AC0000000038",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "平将明",
+          "position": "デジタル大臣・内閣府特命担当大臣（規制改革）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "地域活性化・こども政策・デジタル社会形成に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2025-05-14",
+      "promulgate_date": "2025-05-14",
+      "amendment_law_title": "船員法等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20250514_507AC0000000032",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "中野洋昌",
+          "position": "国土交通大臣",
+          "party": "公明党"
+        },
+        "committee": "予算委員会"
+      }
+    },
+    {
+      "enforcement_date": "2025-04-25",
+      "promulgate_date": "2025-04-25",
+      "amendment_law_title": "児童福祉法等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20250425_507AC0000000029",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": null,
+        "committee": "予算委員会"
+      }
+    },
+    {
+      "enforcement_date": "2025-04-01",
+      "promulgate_date": "2025-03-31",
+      "amendment_law_title": "所得税法等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20250401_507AC0000000013",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "加藤勝信",
+          "position": "財務大臣・内閣府特命担当大臣（金融）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "総務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2025-04-01",
+      "promulgate_date": "2024-06-12",
+      "amendment_law_title": "子ども・子育て支援法等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20250401_506AC0000000047",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "加藤鮎子",
+          "position": "内閣府特命担当大臣（こども政策・少子化対策・若者活躍・男女共同参画・孤独・孤立対策）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "地域活性化・こども政策・デジタル社会形成に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2025-04-01",
+      "promulgate_date": "2024-06-07",
+      "amendment_law_title": "情報通信技術の活用による行政手続等に係る関係者の利便性の向上並びに行政運営の簡素化及び効率化を図るためのデジタル社会形成基本法等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20250401_506AC0000000046",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "河野太郎",
+          "position": "デジタル大臣・内閣府特命担当大臣（規制改革）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "地域活性化・こども政策・デジタル社会形成に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2024-12-02",
+      "promulgate_date": "2023-06-09",
+      "amendment_law_title": "行政手続における特定の個人を識別するための番号の利用等に関する法律等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20241202_505AC0000000048",
+      "diff_id": "425AC0000000027_2024-12-01_2024-12-02",
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "河野太郎",
+          "position": "デジタル大臣・内閣府特命担当大臣（消費者及び食品安全・デジタル改革）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "地方創生及びデジタル社会の形成等に関する特別委員会、厚生労働委員会連合審査会"
+      }
+    },
+    {
+      "enforcement_date": "2024-10-01",
+      "promulgate_date": "2024-06-12",
+      "amendment_law_title": "子ども・子育て支援法等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20241001_506AC0000000047",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "加藤鮎子",
+          "position": "内閣府特命担当大臣（こども政策・少子化対策・若者活躍・男女共同参画・孤独・孤立対策）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "地域活性化・こども政策・デジタル社会形成に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2024-09-19",
+      "promulgate_date": "2024-06-19",
+      "amendment_law_title": "地域の自主性及び自立性を高めるための改革の推進を図るための関係法律の整備に関する法律",
+      "law_revision_id": "425AC0000000027_20240919_506AC0000000053",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "自見はなこ",
+          "position": "内閣府特命担当大臣（沖縄及び北方対策・消費者及び食品安全・地方創生・アイヌ施策）",
+          "party": "自由民主党"
+        },
+        "committee": "地域活性化・こども政策・デジタル社会形成に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2024-06-21",
+      "promulgate_date": "2024-06-21",
+      "amendment_law_title": "出入国管理及び難民認定法等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20240621_506AC0000000059",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "小泉龍司",
+          "position": "法務大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "法務委員会、厚生労働委員会連合審査会"
+      }
+    },
+    {
+      "enforcement_date": "2024-06-12",
+      "promulgate_date": "2024-06-12",
+      "amendment_law_title": "子ども・子育て支援法等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20240612_506AC0000000047",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "加藤鮎子",
+          "position": "内閣府特命担当大臣（こども政策・少子化対策・若者活躍・男女共同参画・孤独・孤立対策）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "地域活性化・こども政策・デジタル社会形成に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2024-06-07",
+      "promulgate_date": "2024-06-07",
+      "amendment_law_title": "情報通信技術の活用による行政手続等に係る関係者の利便性の向上並びに行政運営の簡素化及び効率化を図るためのデジタル社会形成基本法等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20240607_506AC0000000046",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "河野太郎",
+          "position": "デジタル大臣・内閣府特命担当大臣（規制改革）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "地域活性化・こども政策・デジタル社会形成に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2024-05-27",
+      "promulgate_date": "2023-06-09",
+      "amendment_law_title": "行政手続における特定の個人を識別するための番号の利用等に関する法律等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20240527_505AC0000000048",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "河野太郎",
+          "position": "デジタル大臣・内閣府特命担当大臣（消費者及び食品安全・デジタル改革）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "地方創生及びデジタル社会の形成等に関する特別委員会、厚生労働委員会連合審査会"
+      }
+    },
+    {
+      "enforcement_date": "2024-05-27",
+      "promulgate_date": "2021-05-19",
+      "amendment_law_title": "デジタル社会の形成を図るための関係法律の整備に関する法律",
+      "law_revision_id": "425AC0000000027_20240527_503AC0000000037",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "平井卓也",
+          "position": "内閣府特命担当大臣（マイナンバー制度）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "地方創生に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2024-05-27",
+      "promulgate_date": "2019-05-31",
+      "amendment_law_title": "情報通信技術の活用による行政手続等に係る関係者の利便性の向上並びに行政運営の簡素化及び効率化を図るための行政手続等における情報通信の技術の利用に関する法律等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20240527_501AC0000000016",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "平井卓也",
+          "position": "内閣府特命担当大臣（クールジャパン戦略・知的財産戦略・科学技術政策・宇宙政策）",
+          "party": "自由民主党"
+        },
+        "committee": "内閣委員会"
+      }
+    },
+    {
+      "enforcement_date": "2024-04-24",
+      "promulgate_date": "2024-04-24",
+      "amendment_law_title": "生活困窮者自立支援法等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20240424_506AC0000000021",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": null,
+        "committee": "厚生労働委員会"
+      }
+    },
+    {
+      "enforcement_date": "2024-04-01",
+      "promulgate_date": "2022-12-16",
+      "amendment_law_title": "障害者の日常生活及び社会生活を総合的に支援するための法律等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20240401_504AC0000000104",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "加藤勝信",
+          "position": "厚生労働大臣",
+          "party": "自由民主党"
+        },
+        "committee": "厚生労働委員会"
+      }
+    },
+    {
+      "enforcement_date": "2024-04-01",
+      "promulgate_date": "2022-06-15",
+      "amendment_law_title": "児童福祉法等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20240401_504AC0000000066",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "後藤茂之",
+          "position": "厚生労働大臣",
+          "party": "自由民主党"
+        },
+        "committee": "厚生労働委員会"
+      }
+    },
+    {
+      "enforcement_date": "2024-04-01",
+      "promulgate_date": "2021-05-19",
+      "amendment_law_title": "預貯金者の意思に基づく個人番号の利用による預貯金口座の管理等に関する法律",
+      "law_revision_id": "425AC0000000027_20240401_503AC0000000039",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "平井卓也",
+          "position": "内閣府特命担当大臣（マイナンバー制度）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "内閣委員会、総務委員会連合審査会"
+      }
+    },
+    {
+      "enforcement_date": "2024-03-01",
+      "promulgate_date": "2021-05-19",
+      "amendment_law_title": "デジタル社会の形成を図るための関係法律の整備に関する法律",
+      "law_revision_id": "425AC0000000027_20240301_503AC0000000037",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "平井卓也",
+          "position": "内閣府特命担当大臣（マイナンバー制度）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "地方創生に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2024-03-01",
+      "promulgate_date": "2020-06-05",
+      "amendment_law_title": "年金制度の機能強化のための国民年金法等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20240301_502AC0000000040",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "加藤勝信",
+          "position": "厚生労働大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "厚生労働委員会"
+      }
+    },
+    {
+      "enforcement_date": "2024-03-01",
+      "promulgate_date": "2019-05-31",
+      "amendment_law_title": "戸籍法の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20240301_501AC0000000017",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "山下貴司",
+          "position": "法務大臣",
+          "party": "自由民主党"
+        },
+        "committee": "厚生労働委員会"
+      }
+    },
+    {
+      "enforcement_date": "2024-01-01",
+      "promulgate_date": "2019-03-29",
+      "amendment_law_title": "森林環境税及び森林環境譲与税に関する法律",
+      "law_revision_id": "425AC0000000027_20240101_431AC0000000003",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "石田真敏",
+          "position": "総務大臣・内閣府特命担当大臣（マイナンバー制度）",
+          "party": "自由民主党"
+        },
+        "committee": "予算委員会第六分科会"
+      }
+    },
+    {
+      "enforcement_date": "2023-06-09",
+      "promulgate_date": "2023-06-09",
+      "amendment_law_title": "行政手続における特定の個人を識別するための番号の利用等に関する法律等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20230609_505AC0000000048",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "河野太郎",
+          "position": "デジタル大臣・内閣府特命担当大臣（消費者及び食品安全・デジタル改革）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "地方創生及びデジタル社会の形成等に関する特別委員会、厚生労働委員会連合審査会"
+      }
+    },
+    {
+      "enforcement_date": "2023-04-01",
+      "promulgate_date": "2023-03-31",
+      "amendment_law_title": "所得税法等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20230401_505AC0000000003",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "鈴木俊一",
+          "position": "財務大臣・内閣府特命担当大臣（金融）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "財務金融委員会"
+      }
+    },
+    {
+      "enforcement_date": "2023-04-01",
+      "promulgate_date": "2022-04-20",
+      "amendment_law_title": "防衛省設置法等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20230401_504AC0000000026",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "岸信夫",
+          "position": "防衛大臣",
+          "party": "自由民主党"
+        },
+        "committee": "予算委員会第一分科会"
+      }
+    },
+    {
+      "enforcement_date": "2023-04-01",
+      "promulgate_date": "2021-05-19",
+      "amendment_law_title": "デジタル社会の形成を図るための関係法律の整備に関する法律",
+      "law_revision_id": "425AC0000000027_20230401_503AC0000000037",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "平井卓也",
+          "position": "内閣府特命担当大臣（マイナンバー制度）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "地方創生に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2022-12-16",
+      "promulgate_date": "2022-12-16",
+      "amendment_law_title": "障害者の日常生活及び社会生活を総合的に支援するための法律等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20221216_504AC0000000104",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "加藤勝信",
+          "position": "厚生労働大臣",
+          "party": "自由民主党"
+        },
+        "committee": "厚生労働委員会"
+      }
+    },
+    {
+      "enforcement_date": "2022-06-17",
+      "promulgate_date": "2022-06-17",
+      "amendment_law_title": "刑法等の一部を改正する法律の施行に伴う関係法律の整理等に関する法律",
+      "law_revision_id": "425AC0000000027_20220617_504AC0000000068",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "古川禎久",
+          "position": "法務大臣",
+          "party": "自由民主党"
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2022-04-01",
+      "promulgate_date": "2021-05-19",
+      "amendment_law_title": "デジタル社会の形成を図るための関係法律の整備に関する法律",
+      "law_revision_id": "425AC0000000027_20220401_503AC0000000037",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "平井卓也",
+          "position": "内閣府特命担当大臣（マイナンバー制度）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "地方創生に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2022-04-01",
+      "promulgate_date": "2020-06-12",
+      "amendment_law_title": "個人情報の保護に関する法律等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20220401_502AC0000000044",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "衛藤晟一",
+          "position": "内閣府特命担当大臣（沖縄及び北方対策・消費者及び食品安全・少子化対策・海洋政策）",
+          "party": "自由民主党・国民の声"
+        },
+        "committee": "内閣委員会"
+      }
+    },
+    {
+      "enforcement_date": "2022-04-01",
+      "promulgate_date": "2020-06-05",
+      "amendment_law_title": "年金制度の機能強化のための国民年金法等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20220401_502AC0000000040",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "加藤勝信",
+          "position": "厚生労働大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "厚生労働委員会"
+      }
+    },
+    {
+      "enforcement_date": "2022-01-11",
+      "promulgate_date": "2019-05-31",
+      "amendment_law_title": "戸籍法の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20220111_501AC0000000017",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "山下貴司",
+          "position": "法務大臣",
+          "party": "自由民主党"
+        },
+        "committee": "厚生労働委員会"
+      }
+    },
+    {
+      "enforcement_date": "2022-01-01",
+      "promulgate_date": "2021-05-19",
+      "amendment_law_title": "公的給付の支給等の迅速かつ確実な実施のための預貯金口座の登録等に関する法律",
+      "law_revision_id": "425AC0000000027_20220101_503AC0000000038",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "平井卓也",
+          "position": "内閣府特命担当大臣（マイナンバー制度）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "内閣委員会、総務委員会連合審査会"
+      }
+    },
+    {
+      "enforcement_date": "2021-09-13",
+      "promulgate_date": "2021-05-19",
+      "amendment_law_title": "デジタル社会の形成を図るための関係法律の整備に関する法律",
+      "law_revision_id": "425AC0000000027_20210913_503AC0000000037",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "平井卓也",
+          "position": "内閣府特命担当大臣（マイナンバー制度）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "地方創生に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2021-09-13",
+      "promulgate_date": "2019-05-31",
+      "amendment_law_title": "戸籍法の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20210913_501AC0000000017",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "山下貴司",
+          "position": "法務大臣",
+          "party": "自由民主党"
+        },
+        "committee": "厚生労働委員会"
+      }
+    },
+    {
+      "enforcement_date": "2021-09-01",
+      "promulgate_date": "2021-05-19",
+      "amendment_law_title": "デジタル社会の形成を図るための関係法律の整備に関する法律",
+      "law_revision_id": "425AC0000000027_20210901_503AC0000000037",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "平井卓也",
+          "position": "内閣府特命担当大臣（マイナンバー制度）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "地方創生に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2021-09-01",
+      "promulgate_date": "2021-05-19",
+      "amendment_law_title": "デジタル庁設置法",
+      "law_revision_id": "425AC0000000027_20210901_503AC0000000036",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "平井卓也",
+          "position": "内閣府特命担当大臣（マイナンバー制度）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "内閣委員会、総務委員会連合審査会"
+      }
+    },
+    {
+      "enforcement_date": "2021-06-11",
+      "promulgate_date": "2021-06-11",
+      "amendment_law_title": "全世代対応型の社会保障制度を構築するための健康保険法等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20210611_503AC0000000066",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "田村憲久",
+          "position": "厚生労働大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "厚生労働委員会"
+      }
+    },
+    {
+      "enforcement_date": "2021-05-20",
+      "promulgate_date": "2021-05-10",
+      "amendment_law_title": "災害対策基本法等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20210520_503AC0000000030",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "小此木八郎",
+          "position": "国家公安委員会委員長・内閣府特命担当大臣（防災・海洋政策）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "災害対策特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2021-05-19",
+      "promulgate_date": "2021-05-19",
+      "amendment_law_title": "公的給付の支給等の迅速かつ確実な実施のための預貯金口座の登録等に関する法律",
+      "law_revision_id": "425AC0000000027_20210519_503AC0000000038",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "平井卓也",
+          "position": "内閣府特命担当大臣（マイナンバー制度）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "内閣委員会、総務委員会連合審査会"
+      }
+    },
+    {
+      "enforcement_date": "2021-05-19",
+      "promulgate_date": "2021-05-19",
+      "amendment_law_title": "デジタル社会の形成を図るための関係法律の整備に関する法律",
+      "law_revision_id": "425AC0000000027_20210519_503AC0000000037",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "平井卓也",
+          "position": "内閣府特命担当大臣（マイナンバー制度）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "地方創生に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2021-05-19",
+      "promulgate_date": "2021-05-19",
+      "amendment_law_title": "デジタル庁設置法",
+      "law_revision_id": "425AC0000000027_20210519_503AC0000000036",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "平井卓也",
+          "position": "内閣府特命担当大臣（マイナンバー制度）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "内閣委員会、総務委員会連合審査会"
+      }
+    },
+    {
+      "enforcement_date": "2021-04-01",
+      "promulgate_date": "2021-03-31",
+      "amendment_law_title": "所得税法等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20210401_503AC0000000011",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "麻生太郎",
+          "position": "財務大臣・内閣府特命担当大臣（金融）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "財務金融委員会"
+      }
+    },
+    {
+      "enforcement_date": "2021-04-01",
+      "promulgate_date": "2020-03-31",
+      "amendment_law_title": "所得税法等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20210401_502AC0000000008",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "麻生太郎",
+          "position": "財務大臣・内閣府特命担当大臣（金融）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "財務金融委員会"
+      }
+    },
+    {
+      "enforcement_date": "2021-04-01",
+      "promulgate_date": "2019-05-22",
+      "amendment_law_title": "医療保険制度の適正かつ効率的な運営を図るための健康保険法等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20210401_501AC0000000009",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "根本匠",
+          "position": "厚生労働大臣",
+          "party": "自由民主党"
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2020-12-12",
+      "promulgate_date": "2020-06-12",
+      "amendment_law_title": "個人情報の保護に関する法律等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20201212_502AC0000000044",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "衛藤晟一",
+          "position": "内閣府特命担当大臣（沖縄及び北方対策・消費者及び食品安全・少子化対策・海洋政策）",
+          "party": "自由民主党・国民の声"
+        },
+        "committee": "内閣委員会"
+      }
+    },
+    {
+      "enforcement_date": "2020-06-12",
+      "promulgate_date": "2020-06-12",
+      "amendment_law_title": "個人情報の保護に関する法律等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20200612_502AC0000000044",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "衛藤晟一",
+          "position": "内閣府特命担当大臣（沖縄及び北方対策・消費者及び食品安全・少子化対策・海洋政策）",
+          "party": "自由民主党・国民の声"
+        },
+        "committee": "内閣委員会"
+      }
+    },
+    {
+      "enforcement_date": "2020-06-05",
+      "promulgate_date": "2020-06-05",
+      "amendment_law_title": "年金制度の機能強化のための国民年金法等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20200605_502AC0000000040",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "加藤勝信",
+          "position": "厚生労働大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "厚生労働委員会"
+      }
+    },
+    {
+      "enforcement_date": "2020-05-25",
+      "promulgate_date": "2019-05-31",
+      "amendment_law_title": "情報通信技術の活用による行政手続等に係る関係者の利便性の向上並びに行政運営の簡素化及び効率化を図るための行政手続等における情報通信の技術の利用に関する法律等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20200525_501AC0000000016",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "平井卓也",
+          "position": "内閣府特命担当大臣（クールジャパン戦略・知的財産戦略・科学技術政策・宇宙政策）",
+          "party": "自由民主党"
+        },
+        "committee": "内閣委員会"
+      }
+    },
+    {
+      "enforcement_date": "2020-04-01",
+      "promulgate_date": "2020-03-31",
+      "amendment_law_title": "雇用保険法等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20200401_502AC0000000014",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "加藤勝信",
+          "position": "厚生労働大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "厚生労働委員会"
+      }
+    },
+    {
+      "enforcement_date": "2020-04-01",
+      "promulgate_date": "2019-05-22",
+      "amendment_law_title": "医療保険制度の適正かつ効率的な運営を図るための健康保険法等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20200401_501AC0000000009",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "根本匠",
+          "position": "厚生労働大臣",
+          "party": "自由民主党"
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2020-04-01",
+      "promulgate_date": "2019-03-29",
+      "amendment_law_title": "所得税法等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20200401_431AC0000000006",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "麻生太郎",
+          "position": "財務大臣・内閣府特命担当大臣（金融）",
+          "party": "自由民主党"
+        },
+        "committee": "財務金融委員会"
+      }
+    },
+    {
+      "enforcement_date": "2020-03-31",
+      "promulgate_date": "2020-03-31",
+      "amendment_law_title": "雇用保険法等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20200331_502AC0000000014",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "加藤勝信",
+          "position": "厚生労働大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "厚生労働委員会"
+      }
+    },
+    {
+      "enforcement_date": "2019-10-01",
+      "promulgate_date": "2019-05-31",
+      "amendment_law_title": "情報通信技術の活用による行政手続等に係る関係者の利便性の向上並びに行政運営の簡素化及び効率化を図るための行政手続等における情報通信の技術の利用に関する法律等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20191001_501AC0000000016",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "平井卓也",
+          "position": "内閣府特命担当大臣（クールジャパン戦略・知的財産戦略・科学技術政策・宇宙政策）",
+          "party": "自由民主党"
+        },
+        "committee": "内閣委員会"
+      }
+    },
+    {
+      "enforcement_date": "2019-10-01",
+      "promulgate_date": "2019-05-17",
+      "amendment_law_title": "子ども・子育て支援法の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20191001_501AC0000000007",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "宮腰光寛",
+          "position": "内閣府特命担当大臣（沖縄及び北方対策・消費者及び食品安全・少子化対策・海洋政策）",
+          "party": "自由民主党"
+        },
+        "committee": "内閣委員会"
+      }
+    },
+    {
+      "enforcement_date": "2019-10-01",
+      "promulgate_date": "2019-03-29",
+      "amendment_law_title": "特別法人事業税及び特別法人事業譲与税に関する法律",
+      "law_revision_id": "425AC0000000027_20191001_431AC0000000004",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "石田真敏",
+          "position": "総務大臣・内閣府特命担当大臣（マイナンバー制度）",
+          "party": "自由民主党"
+        },
+        "committee": "総務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2019-10-01",
+      "promulgate_date": "2016-03-31",
+      "amendment_law_title": "地方税法等の一部を改正する等の法律",
+      "law_revision_id": "425AC0000000027_20191001_428AC0000000013",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "高市早苗",
+          "position": "総務大臣",
+          "party": "自由民主党"
+        },
+        "committee": "総務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2019-10-01",
+      "promulgate_date": "2012-11-26",
+      "amendment_law_title": "年金生活者支援給付金の支給に関する法律",
+      "law_revision_id": "425AC0000000027_20191001_424AC0000000102",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "三井辨雄",
+          "position": "厚生労働大臣",
+          "party": "民主党・無所属クラブ・国民新党"
+        },
+        "committee": "厚生労働委員会"
+      }
+    },
+    {
+      "enforcement_date": "2019-07-16",
+      "promulgate_date": "2019-03-29",
+      "amendment_law_title": "所得税法等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20190716_431AC0000000006",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "麻生太郎",
+          "position": "財務大臣・内閣府特命担当大臣（金融）",
+          "party": "自由民主党"
+        },
+        "committee": "財務金融委員会"
+      }
+    },
+    {
+      "enforcement_date": "2019-06-20",
+      "promulgate_date": "2019-05-31",
+      "amendment_law_title": "戸籍法の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20190620_501AC0000000017",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "山下貴司",
+          "position": "法務大臣",
+          "party": "自由民主党"
+        },
+        "committee": "厚生労働委員会"
+      }
+    },
+    {
+      "enforcement_date": "2019-06-01",
+      "promulgate_date": "2018-06-27",
+      "amendment_law_title": "地域の自主性及び自立性を高めるための改革の推進を図るための関係法律の整備に関する法律",
+      "law_revision_id": "425AC0000000027_20190601_430AC0000000066",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "梶山弘志",
+          "position": "内閣府特命担当大臣（地方創生・規制改革）",
+          "party": "自由民主党"
+        },
+        "committee": "地方創生に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2019-05-31",
+      "promulgate_date": "2019-05-31",
+      "amendment_law_title": "情報通信技術の活用による行政手続等に係る関係者の利便性の向上並びに行政運営の簡素化及び効率化を図るための行政手続等における情報通信の技術の利用に関する法律等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20190531_501AC0000000016",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "平井卓也",
+          "position": "内閣府特命担当大臣（クールジャパン戦略・知的財産戦略・科学技術政策・宇宙政策）",
+          "party": "自由民主党"
+        },
+        "committee": "内閣委員会"
+      }
+    },
+    {
+      "enforcement_date": "2019-05-22",
+      "promulgate_date": "2019-05-22",
+      "amendment_law_title": "医療保険制度の適正かつ効率的な運営を図るための健康保険法等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20190522_501AC0000000009",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "根本匠",
+          "position": "厚生労働大臣",
+          "party": "自由民主党"
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2019-05-17",
+      "promulgate_date": "2019-05-17",
+      "amendment_law_title": "子ども・子育て支援法の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20190517_501AC0000000007",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "宮腰光寛",
+          "position": "内閣府特命担当大臣（沖縄及び北方対策・消費者及び食品安全・少子化対策・海洋政策）",
+          "party": "自由民主党"
+        },
+        "committee": "内閣委員会"
+      }
+    },
+    {
+      "enforcement_date": "2019-04-01",
+      "promulgate_date": "2019-03-29",
+      "amendment_law_title": "所得税法等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20190401_431AC0000000006",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "麻生太郎",
+          "position": "財務大臣・内閣府特命担当大臣（金融）",
+          "party": "自由民主党"
+        },
+        "committee": "財務金融委員会"
+      }
+    },
+    {
+      "enforcement_date": "2019-04-01",
+      "promulgate_date": "2018-07-06",
+      "amendment_law_title": "働き方改革を推進するための関係法律の整備に関する法律",
+      "law_revision_id": "425AC0000000027_20190401_430AC0000000071",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "加藤勝信",
+          "position": "厚生労働大臣・内閣府特命担当大臣（拉致問題）",
+          "party": "自由民主党"
+        },
+        "committee": "厚生労働委員会"
+      }
+    },
+    {
+      "enforcement_date": "2019-01-01",
+      "promulgate_date": "2018-03-31",
+      "amendment_law_title": "所得税法等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20190101_430AC0000000007",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "麻生太郎",
+          "position": "財務大臣・内閣府特命担当大臣（金融）",
+          "party": "自由民主党"
+        },
+        "committee": "財務金融委員会"
+      }
+    },
+    {
+      "enforcement_date": "2018-07-06",
+      "promulgate_date": "2018-07-06",
+      "amendment_law_title": "働き方改革を推進するための関係法律の整備に関する法律",
+      "law_revision_id": "425AC0000000027_20180706_430AC0000000071",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "加藤勝信",
+          "position": "厚生労働大臣・内閣府特命担当大臣（拉致問題）",
+          "party": "自由民主党"
+        },
+        "committee": "厚生労働委員会"
+      }
+    },
+    {
+      "enforcement_date": "2018-06-27",
+      "promulgate_date": "2018-06-27",
+      "amendment_law_title": "地域の自主性及び自立性を高めるための改革の推進を図るための関係法律の整備に関する法律",
+      "law_revision_id": "425AC0000000027_20180627_430AC0000000066",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "梶山弘志",
+          "position": "内閣府特命担当大臣（地方創生・規制改革）",
+          "party": "自由民主党"
+        },
+        "committee": "地方創生に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2018-06-08",
+      "promulgate_date": "2018-06-08",
+      "amendment_law_title": "生活困窮者等の自立を促進するための生活困窮者自立支援法等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20180608_430AC0000000044",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "加藤勝信",
+          "position": "厚生労働大臣・内閣府特命担当大臣（拉致問題）",
+          "party": "自由民主党"
+        },
+        "committee": "厚生労働委員会"
+      }
+    },
+    {
+      "enforcement_date": "2018-04-01",
+      "promulgate_date": "2018-03-31",
+      "amendment_law_title": "所得税法等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20180401_430AC0000000007",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "麻生太郎",
+          "position": "財務大臣・内閣府特命担当大臣（金融）",
+          "party": "自由民主党"
+        },
+        "committee": "財務金融委員会"
+      }
+    },
+    {
+      "enforcement_date": "2018-04-01",
+      "promulgate_date": "2017-06-02",
+      "amendment_law_title": "地域包括ケアシステムの強化のための介護保険法等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20180401_429AC0000000052",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "塩崎恭久",
+          "position": "厚生労働大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "厚生労働委員会"
+      }
+    },
+    {
+      "enforcement_date": "2018-04-01",
+      "promulgate_date": "2015-05-29",
+      "amendment_law_title": "持続可能な医療保険制度を構築するための国民健康保険法等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20180401_427AC0000000031",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "塩崎恭久",
+          "position": "厚生労働大臣",
+          "party": "自由民主党"
+        },
+        "committee": "厚生労働委員会"
+      }
+    },
+    {
+      "enforcement_date": "2018-01-01",
+      "promulgate_date": "2015-09-09",
+      "amendment_law_title": "個人情報の保護に関する法律及び行政手続における特定の個人を識別するための番号の利用等に関する法律の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20180101_427AC0000000065",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "山口俊一",
+          "position": "内閣府特命担当大臣（沖縄及び北方対策・消費者及び食品安全・科学技術政策・宇宙政策）",
+          "party": "自由民主党"
+        },
+        "committee": "財政金融委員会"
+      }
+    },
+    {
+      "enforcement_date": "2018-01-01",
+      "promulgate_date": "2015-03-31",
+      "amendment_law_title": "所得税法等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20180101_427AC0000000009",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "麻生太郎",
+          "position": "財務大臣・内閣府特命担当大臣（金融）",
+          "party": "自由民主党"
+        },
+        "committee": "財務金融委員会"
+      }
+    },
+    {
+      "enforcement_date": "2017-06-02",
+      "promulgate_date": "2017-06-02",
+      "amendment_law_title": "地域包括ケアシステムの強化のための介護保険法等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20170602_429AC0000000052",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "塩崎恭久",
+          "position": "厚生労働大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "厚生労働委員会"
+      }
+    },
+    {
+      "enforcement_date": "2017-05-30",
+      "promulgate_date": "2016-05-27",
+      "amendment_law_title": "行政機関等の保有する個人情報の適正かつ効果的な活用による新たな産業の創出並びに活力ある経済社会及び豊かな国民生活の実現に資するための関係法律の整備に関する法律",
+      "law_revision_id": "425AC0000000027_20170530_428AC0000000051",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "高市早苗",
+          "position": "総務大臣",
+          "party": "自由民主党"
+        },
+        "committee": "総務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2017-05-30",
+      "promulgate_date": "2015-09-09",
+      "amendment_law_title": "個人情報の保護に関する法律及び行政手続における特定の個人を識別するための番号の利用等に関する法律の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20170530_427AC0000000065",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "山口俊一",
+          "position": "内閣府特命担当大臣（沖縄及び北方対策・消費者及び食品安全・科学技術政策・宇宙政策）",
+          "party": "自由民主党"
+        },
+        "committee": "財政金融委員会"
+      }
+    },
+    {
+      "enforcement_date": "2017-05-30",
+      "promulgate_date": "2013-05-31",
+      "amendment_law_title": null,
+      "law_revision_id": "425AC0000000027_20170530_000000000000000",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2017-05-29",
+      "promulgate_date": "2017-05-24",
+      "amendment_law_title": "地方公共団体情報システム機構法等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20170529_429AC0000000036",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "高市早苗",
+          "position": "総務大臣・内閣府特命担当大臣（マイナンバー制度）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "総務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2017-05-24",
+      "promulgate_date": "2017-05-24",
+      "amendment_law_title": "地方公共団体情報システム機構法等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20170524_429AC0000000036",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "高市早苗",
+          "position": "総務大臣・内閣府特命担当大臣（マイナンバー制度）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "総務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2017-04-26",
+      "promulgate_date": "2017-04-26",
+      "amendment_law_title": "地域の自主性及び自立性を高めるための改革の推進を図るための関係法律の整備に関する法律",
+      "law_revision_id": "425AC0000000027_20170426_429AC0000000025",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "山本幸三",
+          "position": "内閣府特命担当大臣（規制改革・地方創生）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "地方創生に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2017-04-01",
+      "promulgate_date": "2017-03-31",
+      "amendment_law_title": "独立行政法人日本学生支援機構法の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20170401_429AC0000000009",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "松野博一",
+          "position": "文部科学大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "予算委員会公聴会"
+      }
+    },
+    {
+      "enforcement_date": "2017-04-01",
+      "promulgate_date": "2016-06-03",
+      "amendment_law_title": "児童福祉法等の一部を改正する法律",
+      "law_revision_id": "425AC0000000027_20170401_428AC0000000063",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "塩崎恭久",
+          "position": "厚生労働大臣",
+          "party": "自由民主党"
+        },
+        "committee": "厚生労働委員会"
+      }
+    }
+  ],
+  "summary": {
+    "description": "いわゆる「マイナンバー法」と呼ばれる法律で、国民一人ひとりに12桁の個人番号（マイナンバー）を割り当て、税務手続きや社会保障の申請などの行政手続きを効率化することを定めています。マイナンバーカードの発行や、個人情報の適切な管理・保護についても規定されています。",
+    "scope": "日本国内に住民票を有するすべての個人、および個人番号を取り扱う国や地方公共団体、事業者が対象となります。",
+    "keywords": [
+      "マイナンバー",
+      "個人番号",
+      "マイナンバーカード",
+      "行政手続き",
+      "個人情報保護"
+    ]
+  },
+  "category": "行政手続",
+  "contributors": [
+    {
+      "name": "平井卓也",
+      "position": "内閣府特命担当大臣（マイナンバー制度）",
+      "party": "自由民主党・無所属の会",
+      "count": 16
+    },
+    {
+      "name": "加藤勝信",
+      "position": "財務大臣・内閣府特命担当大臣（金融）",
+      "party": "自由民主党・無所属の会",
+      "count": 11
+    },
+    {
+      "name": "麻生太郎",
+      "position": "財務大臣・内閣府特命担当大臣（金融）",
+      "party": "自由民主党・無所属の会",
+      "count": 8
+    },
+    {
+      "name": "河野太郎",
+      "position": "デジタル大臣・内閣府特命担当大臣（規制改革）",
+      "party": "自由民主党・無所属の会",
+      "count": 7
+    },
+    {
+      "name": "加藤鮎子",
+      "position": "内閣府特命担当大臣（こども政策・少子化対策・若者活躍・男女共同参画・孤独・孤立対策）",
+      "party": "自由民主党・無所属の会",
+      "count": 4
+    },
+    {
+      "name": "山下貴司",
+      "position": "法務大臣",
+      "party": "自由民主党",
+      "count": 4
+    },
+    {
+      "name": "高市早苗",
+      "position": "総務大臣",
+      "party": "自由民主党",
+      "count": 4
+    },
+    {
+      "name": "塩崎恭久",
+      "position": "厚生労働大臣",
+      "party": "自由民主党・無所属の会",
+      "count": 4
+    },
+    {
+      "name": "衛藤晟一",
+      "position": "内閣府特命担当大臣（沖縄及び北方対策・消費者及び食品安全・少子化対策・海洋政策）",
+      "party": "自由民主党・国民の声",
+      "count": 3
+    },
+    {
+      "name": "根本匠",
+      "position": "厚生労働大臣",
+      "party": "自由民主党",
+      "count": 3
+    },
+    {
+      "name": "福岡資麿",
+      "position": "厚生労働大臣",
+      "party": "自由民主党",
+      "count": 2
+    },
+    {
+      "name": "上野賢一郎",
+      "position": "厚生労働大臣",
+      "party": "自由民主党・無所属の会",
+      "count": 2
+    },
+    {
+      "name": "平将明",
+      "position": "デジタル大臣・内閣府特命担当大臣（規制改革）",
+      "party": "自由民主党・無所属の会",
+      "count": 2
+    },
+    {
+      "name": "小泉龍司",
+      "position": "法務大臣",
+      "party": "自由民主党・無所属の会",
+      "count": 2
+    },
+    {
+      "name": "中野洋昌",
+      "position": "国土交通大臣",
+      "party": "公明党",
+      "count": 2
+    },
+    {
+      "name": "石田真敏",
+      "position": "総務大臣・内閣府特命担当大臣（マイナンバー制度）",
+      "party": "自由民主党",
+      "count": 2
+    },
+    {
+      "name": "宮腰光寛",
+      "position": "内閣府特命担当大臣（沖縄及び北方対策・消費者及び食品安全・少子化対策・海洋政策）",
+      "party": "自由民主党",
+      "count": 2
+    },
+    {
+      "name": "梶山弘志",
+      "position": "内閣府特命担当大臣（地方創生・規制改革）",
+      "party": "自由民主党",
+      "count": 2
+    },
+    {
+      "name": "山口俊一",
+      "position": "内閣府特命担当大臣（沖縄及び北方対策・消費者及び食品安全・科学技術政策・宇宙政策）",
+      "party": "自由民主党",
+      "count": 2
+    },
+    {
+      "name": "村上誠一郎",
+      "position": "総務大臣",
+      "party": "自由民主党・無所属の会",
+      "count": 1
+    },
+    {
+      "name": "伊東良孝",
+      "position": "内閣府特命担当大臣（沖縄及び北方対策・消費者及び食品安全・地方創生・アイヌ施策）",
+      "party": "自由民主党・無所属の会",
+      "count": 1
+    },
+    {
+      "name": "自見はなこ",
+      "position": "内閣府特命担当大臣（沖縄及び北方対策・消費者及び食品安全・地方創生・アイヌ施策）",
+      "party": "自由民主党",
+      "count": 1
+    },
+    {
+      "name": "後藤茂之",
+      "position": "厚生労働大臣",
+      "party": "自由民主党",
+      "count": 1
+    },
+    {
+      "name": "鈴木俊一",
+      "position": "財務大臣・内閣府特命担当大臣（金融）",
+      "party": "自由民主党・無所属の会",
+      "count": 1
+    },
+    {
+      "name": "岸信夫",
+      "position": "防衛大臣",
+      "party": "自由民主党",
+      "count": 1
+    },
+    {
+      "name": "古川禎久",
+      "position": "法務大臣",
+      "party": "自由民主党",
+      "count": 1
+    },
+    {
+      "name": "田村憲久",
+      "position": "厚生労働大臣",
+      "party": "自由民主党・無所属の会",
+      "count": 1
+    },
+    {
+      "name": "小此木八郎",
+      "position": "国家公安委員会委員長・内閣府特命担当大臣（防災・海洋政策）",
+      "party": "自由民主党・無所属の会",
+      "count": 1
+    },
+    {
+      "name": "三井辨雄",
+      "position": "厚生労働大臣",
+      "party": "民主党・無所属クラブ・国民新党",
+      "count": 1
+    },
+    {
+      "name": "山本幸三",
+      "position": "内閣府特命担当大臣（規制改革・地方創生）",
+      "party": "自由民主党・無所属の会",
+      "count": 1
+    },
+    {
+      "name": "松野博一",
+      "position": "文部科学大臣",
+      "party": "自由民主党・無所属の会",
+      "count": 1
+    }
+  ]
+}

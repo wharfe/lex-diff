@@ -1,0 +1,166 @@
+{
+  "law_id": "413AC0000000137",
+  "law_title": "特定電気通信による情報の流通によって発生する権利侵害等への対処に関する法律",
+  "law_num": "平成十三年法律第百三十七号",
+  "promulgation_date": "2001-11-30",
+  "revision_count": 8,
+  "timeline": [
+    {
+      "enforcement_date": "2028-06-13",
+      "promulgate_date": "2023-06-14",
+      "amendment_law_title": "民事関係手続等における情報通信技術の活用等の推進を図るための関係法律の整備に関する法律",
+      "law_revision_id": "413AC0000000137_20280613_505AC0000000053",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "齋藤健",
+          "position": "法務大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2026-05-21",
+      "promulgate_date": "2022-05-25",
+      "amendment_law_title": "民事訴訟法等の一部を改正する法律",
+      "law_revision_id": "413AC0000000137_20260521_504AC0000000048",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "古川禎久",
+          "position": "法務大臣",
+          "party": "自由民主党"
+        },
+        "committee": "消費者問題に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2025-04-01",
+      "promulgate_date": "2024-05-17",
+      "amendment_law_title": "特定電気通信役務提供者の損害賠償責任の制限及び発信者情報の開示に関する法律の一部を改正する法律",
+      "law_revision_id": "413AC0000000137_20250401_506AC0000000025",
+      "diff_id": "413AC0000000137_2025-03-31_2025-04-01",
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "松本剛明",
+          "position": "総務大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "総務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2023-06-14",
+      "promulgate_date": "2023-06-14",
+      "amendment_law_title": "民事関係手続等における情報通信技術の活用等の推進を図るための関係法律の整備に関する法律",
+      "law_revision_id": "413AC0000000137_20230614_505AC0000000053",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "齋藤健",
+          "position": "法務大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2023-02-20",
+      "promulgate_date": "2022-05-25",
+      "amendment_law_title": "民事訴訟法等の一部を改正する法律",
+      "law_revision_id": "413AC0000000137_20230220_504AC0000000048",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "古川禎久",
+          "position": "法務大臣",
+          "party": "自由民主党"
+        },
+        "committee": "消費者問題に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2022-10-01",
+      "promulgate_date": "2021-04-28",
+      "amendment_law_title": "特定電気通信役務提供者の損害賠償責任の制限及び発信者情報の開示に関する法律の一部を改正する法律",
+      "law_revision_id": "413AC0000000137_20221001_503AC0000000027",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "武田良太",
+          "position": "総務大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "総務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2022-05-25",
+      "promulgate_date": "2022-05-25",
+      "amendment_law_title": "民事訴訟法等の一部を改正する法律",
+      "law_revision_id": "413AC0000000137_20220525_504AC0000000048",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "古川禎久",
+          "position": "法務大臣",
+          "party": "自由民主党"
+        },
+        "committee": "消費者問題に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2013-05-26",
+      "promulgate_date": "2013-04-26",
+      "amendment_law_title": null,
+      "law_revision_id": "413AC0000000137_20130526_425AC0000000010",
+      "diff_id": null
+    }
+  ],
+  "summary": {
+    "description": "インターネット上の掲示板やSNSなどで、誹謗中傷や個人情報の無断掲載など、他人の権利を侵害する情報が投稿された場合の対処方法を定めた法律です。被害者がプロバイダーに対して情報の削除や投稿者の情報開示を求める手続きについて規定しています。",
+    "scope": "インターネットサービスを提供するプロバイダー事業者と、ネット上で権利侵害を受けた一般市民が対象となります。",
+    "keywords": [
+      "プロバイダー責任制限法",
+      "誹謗中傷",
+      "情報開示請求",
+      "削除要請",
+      "ネット被害"
+    ]
+  },
+  "category": "電気通信",
+  "contributors": [
+    {
+      "name": "古川禎久",
+      "position": "法務大臣",
+      "party": "自由民主党",
+      "count": 3
+    },
+    {
+      "name": "齋藤健",
+      "position": "法務大臣",
+      "party": "自由民主党・無所属の会",
+      "count": 2
+    },
+    {
+      "name": "松本剛明",
+      "position": "総務大臣",
+      "party": "自由民主党・無所属の会",
+      "count": 1
+    },
+    {
+      "name": "武田良太",
+      "position": "総務大臣",
+      "party": "自由民主党・無所属の会",
+      "count": 1
+    }
+  ]
+}

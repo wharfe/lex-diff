@@ -17,6 +17,9 @@ const PENAL_CODE = "140AC0000000045";
 const CONSUMER_CONTRACT = "412AC0000000061";
 const CHILDCARE_LEAVE = "403AC0000000076";
 const BUILDING_STANDARDS = "325AC0000000201";
+const REAL_PROPERTY_REG = "416AC0000000123";
+const MY_NUMBER = "425AC0000000027";
+const INFO_PLATFORM = "413AC0000000137";
 
 export const LIFE_THEMES: LifeTheme[] = [
   {
@@ -71,7 +74,7 @@ export const LIFE_THEMES: LifeTheme[] = [
     description: "遺言、相続分、遺産分割など",
     longDescription:
       "法定相続分、遺言の方式、遺産分割、特別寄与料など、相続に関わる法律の改正を追えます。",
-    lawIds: [CIVIL_CODE],
+    lawIds: [CIVIL_CODE, REAL_PROPERTY_REG],
   },
   {
     id: "creative",
@@ -107,7 +110,25 @@ export const LIFE_THEMES: LifeTheme[] = [
     description: "省エネ基準、建築確認、リフォーム規制など",
     longDescription:
       "建築物の省エネルギー基準、建築確認手続き、耐震基準、リフォーム規制など、住まいに関わる法律の改正を追えます。",
-    lawIds: [BUILDING_STANDARDS],
+    lawIds: [BUILDING_STANDARDS, REAL_PROPERTY_REG],
+  },
+  {
+    id: "mynumber",
+    label: "マイナンバー",
+    icon: "badge",
+    description: "マイナカード、保険証、行政手続きなど",
+    longDescription:
+      "マイナンバーカードの利用範囲、健康保険証との一体化、行政手続きのデジタル化など、番号制度に関わる法律の改正を追えます。",
+    lawIds: [MY_NUMBER],
+  },
+  {
+    id: "sns",
+    label: "ネット・SNS",
+    icon: "forum",
+    description: "誹謗中傷、発信者開示、プラットフォーム規制など",
+    longDescription:
+      "SNS上の誹謗中傷への対処、発信者情報の開示請求、大規模プラットフォームの透明性義務など、インターネット利用に関わる法律の改正を追えます。",
+    lawIds: [INFO_PLATFORM],
   },
 ];
 
