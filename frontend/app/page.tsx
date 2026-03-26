@@ -36,13 +36,17 @@ function DiffPreviewLine({ line }: { line: string }) {
 
 export default function Home() {
   const timelineIds = getTimelineIds();
-  const timelines = timelineIds.map((id) => ({
-    id,
-    data: getTimelineData(id),
-  }));
+  const timelines = timelineIds
+    .map((id) => ({
+      id,
+      data: getTimelineData(id),
+    }))
+    .sort((a, b) => b.data.revision_count - a.data.revision_count);
 
   const diffIds = getDiffIds();
-  const diffs = diffIds.map((id) => ({ id, data: getDiffData(id) }));
+  const diffs = diffIds
+    .map((id) => ({ id, data: getDiffData(id) }))
+    .sort((a, b) => b.data.date_after.localeCompare(a.data.date_after));
 
   // Pick the most interesting diff for the hero preview (most changes)
   const heroDiff = diffs.length > 0
@@ -126,7 +130,7 @@ export default function Home() {
         <section>
           <h2 className="text-[17px] font-bold mb-4">最近の改正</h2>
           <div className="grid gap-4">
-            {diffs.map(({ id, data }) => {
+            {diffs.slice(0, 6).map(({ id, data }) => {
               const firstMod = data.diffs.find((d) => d.type === "modified");
               const preview = firstMod?.diff.filter(
                 (l) => !l.startsWith("---") && !l.startsWith("+++")

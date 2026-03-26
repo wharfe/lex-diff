@@ -1,0 +1,321 @@
+{
+  "law_id": "140AC0000000045",
+  "law_title": "刑法",
+  "law_num": "明治四十年法律第四十五号",
+  "promulgation_date": "1907-04-24",
+  "revision_count": 16,
+  "timeline": [
+    {
+      "enforcement_date": "2026-05-22",
+      "promulgate_date": "2025-05-23",
+      "amendment_law_title": "情報通信技術の進展等に対応するための刑事訴訟法等の一部を改正する法律",
+      "law_revision_id": "140AC0000000045_20260522_507AC0000000039",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "鈴木馨祐",
+          "position": "法務大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2025-07-22",
+      "promulgate_date": "2025-04-23",
+      "amendment_law_title": "日本国の自衛隊と我が国以外の締約国の軍隊との間における相互のアクセス及び協力の円滑化に関する日本国と我が国以外の締約国との間の協定の実施に関する法律",
+      "law_revision_id": "140AC0000000045_20250722_507AC0000000026",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "中谷元",
+          "position": "防衛大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "外交防衛委員会"
+      }
+    },
+    {
+      "enforcement_date": "2025-06-12",
+      "promulgate_date": "2025-05-23",
+      "amendment_law_title": "情報通信技術の進展等に対応するための刑事訴訟法等の一部を改正する法律",
+      "law_revision_id": "140AC0000000045_20250612_507AC0000000039",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "鈴木馨祐",
+          "position": "法務大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2025-06-01",
+      "promulgate_date": "2023-05-17",
+      "amendment_law_title": "刑事訴訟法等の一部を改正する法律",
+      "law_revision_id": "140AC0000000045_20250601_505AC0000000028",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "齋藤健",
+          "position": "法務大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2025-06-01",
+      "promulgate_date": "2022-06-17",
+      "amendment_law_title": "刑法等の一部を改正する法律",
+      "law_revision_id": "140AC0000000045_20250601_504AC0000000067",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "古川禎久",
+          "position": "法務大臣",
+          "party": "自由民主党"
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2025-05-23",
+      "promulgate_date": "2025-05-23",
+      "amendment_law_title": "情報通信技術の進展等に対応するための刑事訴訟法等の一部を改正する法律",
+      "law_revision_id": "140AC0000000045_20250523_507AC0000000039",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "鈴木馨祐",
+          "position": "法務大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2023-07-13",
+      "promulgate_date": "2023-06-23",
+      "amendment_law_title": "刑法及び刑事訴訟法の一部を改正する法律",
+      "law_revision_id": "140AC0000000045_20230713_505AC0000000066",
+      "diff_id": "140AC0000000045_2023-07-12_2023-07-13",
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "齋藤健",
+          "position": "法務大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2023-06-06",
+      "promulgate_date": "2023-05-17",
+      "amendment_law_title": "刑事訴訟法等の一部を改正する法律",
+      "law_revision_id": "140AC0000000045_20230606_505AC0000000028",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "齋藤健",
+          "position": "法務大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2023-05-17",
+      "promulgate_date": "2023-05-17",
+      "amendment_law_title": "刑事訴訟法等の一部を改正する法律",
+      "law_revision_id": "140AC0000000045_20230517_505AC0000000028",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "齋藤健",
+          "position": "法務大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2022-07-07",
+      "promulgate_date": "2022-06-17",
+      "amendment_law_title": "刑法等の一部を改正する法律",
+      "law_revision_id": "140AC0000000045_20220707_504AC0000000067",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "古川禎久",
+          "position": "法務大臣",
+          "party": "自由民主党"
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2020-04-01",
+      "promulgate_date": "2018-07-13",
+      "amendment_law_title": "民法及び家事事件手続法の一部を改正する法律",
+      "law_revision_id": "140AC0000000045_20200401_430AC0000000072",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "上川陽子",
+          "position": "法務大臣",
+          "party": "自由民主党"
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2018-07-13",
+      "promulgate_date": "2018-07-13",
+      "amendment_law_title": "民法及び家事事件手続法の一部を改正する法律",
+      "law_revision_id": "140AC0000000045_20180713_430AC0000000072",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "上川陽子",
+          "position": "法務大臣",
+          "party": "自由民主党"
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2017-07-13",
+      "promulgate_date": "2017-06-23",
+      "amendment_law_title": "刑法の一部を改正する法律",
+      "law_revision_id": "140AC0000000045_20170713_429AC0000000072",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "金田勝年",
+          "position": "法務大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2017-07-13",
+      "promulgate_date": "2017-06-21",
+      "amendment_law_title": "組織的な犯罪の処罰及び犯罪収益の規制等に関する法律等の一部を改正する法律",
+      "law_revision_id": "140AC0000000045_20170713_429AC0000000067",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "金田勝年",
+          "position": "法務大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2017-07-11",
+      "promulgate_date": "2017-06-21",
+      "amendment_law_title": "組織的な犯罪の処罰及び犯罪収益の規制等に関する法律等の一部を改正する法律",
+      "law_revision_id": "140AC0000000045_20170711_429AC0000000067",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "金田勝年",
+          "position": "法務大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2016-06-23",
+      "promulgate_date": "2016-06-03",
+      "amendment_law_title": "刑事訴訟法等の一部を改正する法律",
+      "law_revision_id": "140AC0000000045_20160623_428AC0000000054",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "岩城光英",
+          "position": "法務大臣",
+          "party": "自由民主党"
+        },
+        "committee": "法務委員会"
+      }
+    }
+  ],
+  "summary": {
+    "description": "刑法は、殺人や窃盗、詐欺など犯罪として処罰される行為と、その刑罰の内容を定めた法律です。社会の秩序を守るために、どのような行為が犯罪にあたるのか、犯罪を犯した場合にどのような刑罰（懲役、罰金など）が科せられるのかを明確に規定しています。",
+    "scope": "日本国内で犯罪行為を行ったすべての人（日本人・外国人問わず）に適用されます。",
+    "keywords": [
+      "犯罪",
+      "刑罰",
+      "懲役",
+      "罰金",
+      "殺人"
+    ]
+  },
+  "category": "刑事",
+  "contributors": [
+    {
+      "name": "齋藤健",
+      "position": "法務大臣",
+      "party": "自由民主党・無所属の会",
+      "count": 4
+    },
+    {
+      "name": "鈴木馨祐",
+      "position": "法務大臣",
+      "party": "自由民主党・無所属の会",
+      "count": 3
+    },
+    {
+      "name": "金田勝年",
+      "position": "法務大臣",
+      "party": "自由民主党・無所属の会",
+      "count": 3
+    },
+    {
+      "name": "古川禎久",
+      "position": "法務大臣",
+      "party": "自由民主党",
+      "count": 2
+    },
+    {
+      "name": "上川陽子",
+      "position": "法務大臣",
+      "party": "自由民主党",
+      "count": 2
+    },
+    {
+      "name": "中谷元",
+      "position": "防衛大臣",
+      "party": "自由民主党・無所属の会",
+      "count": 1
+    },
+    {
+      "name": "岩城光英",
+      "position": "法務大臣",
+      "party": "自由民主党",
+      "count": 1
+    }
+  ]
+}

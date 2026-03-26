@@ -1,0 +1,645 @@
+{
+  "law_id": "325AC0000000201",
+  "law_title": "建築基準法",
+  "law_num": "昭和二十五年法律第二百一号",
+  "promulgation_date": "1950-05-24",
+  "revision_count": 34,
+  "timeline": [
+    {
+      "enforcement_date": "2026-04-01",
+      "promulgate_date": "2025-06-18",
+      "amendment_law_title": "公立の義務教育諸学校等の教育職員の給与等に関する特別措置法等の一部を改正する法律",
+      "law_revision_id": "325AC0000000201_20260401_507AC0000000068",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "あべ俊子",
+          "position": "文部科学大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "文部科学委員会"
+      }
+    },
+    {
+      "enforcement_date": "2025-12-01",
+      "promulgate_date": "2025-05-16",
+      "amendment_law_title": "地域の自主性及び自立性を高めるための改革の推進を図るための関係法律の整備に関する法律",
+      "law_revision_id": "325AC0000000201_20251201_507AC0000000035",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "伊東良孝",
+          "position": "内閣府特命担当大臣（沖縄及び北方対策・消費者及び食品安全・地方創生・アイヌ施策）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "地方創生及びデジタル社会の形成等に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2025-06-01",
+      "promulgate_date": "2022-06-17",
+      "amendment_law_title": "刑法等の一部を改正する法律の施行に伴う関係法律の整理等に関する法律",
+      "law_revision_id": "325AC0000000201_20250601_504AC0000000068",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "古川禎久",
+          "position": "法務大臣",
+          "party": "自由民主党"
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2025-04-01",
+      "promulgate_date": "2022-06-17",
+      "amendment_law_title": "脱炭素社会の実現に資するための建築物のエネルギー消費性能の向上に関する法律等の一部を改正する法律",
+      "law_revision_id": "325AC0000000201_20250401_504AC0000000069",
+      "diff_id": "325AC0000000201_2025-03-31_2025-04-01",
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "斉藤鉄夫",
+          "position": "国土交通大臣",
+          "party": "公明党"
+        },
+        "committee": "国土交通委員会"
+      }
+    },
+    {
+      "enforcement_date": "2024-11-01",
+      "promulgate_date": "2024-06-19",
+      "amendment_law_title": "地域の自主性及び自立性を高めるための改革の推進を図るための関係法律の整備に関する法律",
+      "law_revision_id": "325AC0000000201_20241101_506AC0000000053",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "自見はなこ",
+          "position": "内閣府特命担当大臣（沖縄及び北方対策・消費者及び食品安全・地方創生・アイヌ施策）",
+          "party": "自由民主党"
+        },
+        "committee": "地方創生及びデジタル社会の形成等に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2024-06-19",
+      "promulgate_date": "2024-06-19",
+      "amendment_law_title": "地域の自主性及び自立性を高めるための改革の推進を図るための関係法律の整備に関する法律",
+      "law_revision_id": "325AC0000000201_20240619_506AC0000000053",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "自見はなこ",
+          "position": "内閣府特命担当大臣（沖縄及び北方対策・消費者及び食品安全・地方創生・アイヌ施策）",
+          "party": "自由民主党"
+        },
+        "committee": "地方創生及びデジタル社会の形成等に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2024-04-01",
+      "promulgate_date": "2023-06-16",
+      "amendment_law_title": "デジタル社会の形成を図るための規制改革を推進するためのデジタル社会形成基本法等の一部を改正する法律",
+      "law_revision_id": "325AC0000000201_20240401_505AC0000000063",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "河野太郎",
+          "position": "デジタル大臣・内閣府特命担当大臣（消費者及び食品安全・デジタル改革）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "地方創生及びデジタル社会の形成等に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2024-04-01",
+      "promulgate_date": "2023-06-16",
+      "amendment_law_title": "地域の自主性及び自立性を高めるための改革の推進を図るための関係法律の整備に関する法律",
+      "law_revision_id": "325AC0000000201_20240401_505AC0000000058",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "岡田直樹",
+          "position": "内閣府特命担当大臣（沖縄及び北方対策・規制改革・地方創生・クールジャパン戦略・アイヌ施策）",
+          "party": "自由民主党"
+        },
+        "committee": "地域活性化・こども政策・デジタル社会形成に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2024-04-01",
+      "promulgate_date": "2022-06-17",
+      "amendment_law_title": "脱炭素社会の実現に資するための建築物のエネルギー消費性能の向上に関する法律等の一部を改正する法律",
+      "law_revision_id": "325AC0000000201_20240401_504AC0000000069",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "斉藤鉄夫",
+          "position": "国土交通大臣",
+          "party": "公明党"
+        },
+        "committee": "国土交通委員会"
+      }
+    },
+    {
+      "enforcement_date": "2023-06-16",
+      "promulgate_date": "2023-06-16",
+      "amendment_law_title": "デジタル社会の形成を図るための規制改革を推進するためのデジタル社会形成基本法等の一部を改正する法律",
+      "law_revision_id": "325AC0000000201_20230616_505AC0000000063",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "河野太郎",
+          "position": "デジタル大臣・内閣府特命担当大臣（消費者及び食品安全・デジタル改革）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "地方創生及びデジタル社会の形成等に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2023-06-16",
+      "promulgate_date": "2023-06-16",
+      "amendment_law_title": "地域の自主性及び自立性を高めるための改革の推進を図るための関係法律の整備に関する法律",
+      "law_revision_id": "325AC0000000201_20230616_505AC0000000058",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "岡田直樹",
+          "position": "内閣府特命担当大臣（沖縄及び北方対策・規制改革・地方創生・クールジャパン戦略・アイヌ施策）",
+          "party": "自由民主党"
+        },
+        "committee": "地域活性化・こども政策・デジタル社会形成に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2023-05-26",
+      "promulgate_date": "2022-05-27",
+      "amendment_law_title": "宅地造成等規制法の一部を改正する法律",
+      "law_revision_id": "325AC0000000201_20230526_504AC0000000055",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "斉藤鉄夫",
+          "position": "国土交通大臣",
+          "party": "公明党"
+        },
+        "committee": "国土交通委員会"
+      }
+    },
+    {
+      "enforcement_date": "2023-04-01",
+      "promulgate_date": "2022-06-17",
+      "amendment_law_title": "脱炭素社会の実現に資するための建築物のエネルギー消費性能の向上に関する法律等の一部を改正する法律",
+      "law_revision_id": "325AC0000000201_20230401_504AC0000000069",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "斉藤鉄夫",
+          "position": "国土交通大臣",
+          "party": "公明党"
+        },
+        "committee": "国土交通委員会"
+      }
+    },
+    {
+      "enforcement_date": "2022-08-20",
+      "promulgate_date": "2022-05-20",
+      "amendment_law_title": "地域の自主性及び自立性を高めるための改革の推進を図るための関係法律の整備に関する法律",
+      "law_revision_id": "325AC0000000201_20220820_504AC0000000044",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "野田聖子",
+          "position": "内閣府特命担当大臣（少子化対策・地方創生・男女共同参画）",
+          "party": "自由民主党"
+        },
+        "committee": "地方創生及びデジタル社会の形成等に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2022-06-17",
+      "promulgate_date": "2022-06-17",
+      "amendment_law_title": "脱炭素社会の実現に資するための建築物のエネルギー消費性能の向上に関する法律等の一部を改正する法律",
+      "law_revision_id": "325AC0000000201_20220617_504AC0000000069",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "斉藤鉄夫",
+          "position": "国土交通大臣",
+          "party": "公明党"
+        },
+        "committee": "国土交通委員会"
+      }
+    },
+    {
+      "enforcement_date": "2022-06-17",
+      "promulgate_date": "2022-06-17",
+      "amendment_law_title": "刑法等の一部を改正する法律の施行に伴う関係法律の整理等に関する法律",
+      "law_revision_id": "325AC0000000201_20220617_504AC0000000068",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "古川禎久",
+          "position": "法務大臣",
+          "party": "自由民主党"
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2022-05-31",
+      "promulgate_date": "2022-05-20",
+      "amendment_law_title": "地域の自主性及び自立性を高めるための改革の推進を図るための関係法律の整備に関する法律",
+      "law_revision_id": "325AC0000000201_20220531_504AC0000000044",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "野田聖子",
+          "position": "内閣府特命担当大臣（少子化対策・地方創生・男女共同参画）",
+          "party": "自由民主党"
+        },
+        "committee": "地方創生及びデジタル社会の形成等に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2022-05-20",
+      "promulgate_date": "2022-05-20",
+      "amendment_law_title": "地域の自主性及び自立性を高めるための改革の推進を図るための関係法律の整備に関する法律",
+      "law_revision_id": "325AC0000000201_20220520_504AC0000000044",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "野田聖子",
+          "position": "内閣府特命担当大臣（少子化対策・地方創生・男女共同参画）",
+          "party": "自由民主党"
+        },
+        "committee": "地方創生及びデジタル社会の形成等に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2021-11-01",
+      "promulgate_date": "2021-05-10",
+      "amendment_law_title": "特定都市河川浸水被害対策法等の一部を改正する法律",
+      "law_revision_id": "325AC0000000201_20211101_503AC0000000031",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "赤羽一嘉",
+          "position": "国土交通大臣",
+          "party": "公明党"
+        },
+        "committee": "国土交通委員会"
+      }
+    },
+    {
+      "enforcement_date": "2021-08-26",
+      "promulgate_date": "2021-05-26",
+      "amendment_law_title": "地域の自主性及び自立性を高めるための改革の推進を図るための関係法律の整備に関する法律",
+      "law_revision_id": "325AC0000000201_20210826_503AC0000000044",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "坂本哲志",
+          "position": "内閣府特命担当大臣（少子化対策・地方創生）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "地方創生に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2021-05-10",
+      "promulgate_date": "2021-05-10",
+      "amendment_law_title": "特定都市河川浸水被害対策法等の一部を改正する法律",
+      "law_revision_id": "325AC0000000201_20210510_503AC0000000031",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "赤羽一嘉",
+          "position": "国土交通大臣",
+          "party": "公明党"
+        },
+        "committee": "国土交通委員会"
+      }
+    },
+    {
+      "enforcement_date": "2020-09-07",
+      "promulgate_date": "2020-06-10",
+      "amendment_law_title": "都市再生特別措置法等の一部を改正する法律",
+      "law_revision_id": "325AC0000000201_20200907_502AC0000000043",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "赤羽一嘉",
+          "position": "国土交通大臣",
+          "party": "公明党"
+        },
+        "committee": "国土交通委員会"
+      }
+    },
+    {
+      "enforcement_date": "2019-12-01",
+      "promulgate_date": "2019-06-14",
+      "amendment_law_title": "成年被後見人等の権利の制限に係る措置の適正化等を図るための関係法律の整備に関する法律",
+      "law_revision_id": "325AC0000000201_20191201_501AC0000000037",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "宮腰光寛",
+          "position": "内閣府特命担当大臣（沖縄及び北方対策・消費者及び食品安全・少子化対策・海洋政策）",
+          "party": "自由民主党"
+        },
+        "committee": "内閣委員会"
+      }
+    },
+    {
+      "enforcement_date": "2019-09-14",
+      "promulgate_date": "2019-06-14",
+      "amendment_law_title": "成年被後見人等の権利の制限に係る措置の適正化等を図るための関係法律の整備に関する法律",
+      "law_revision_id": "325AC0000000201_20190914_501AC0000000037",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "宮腰光寛",
+          "position": "内閣府特命担当大臣（沖縄及び北方対策・消費者及び食品安全・少子化対策・海洋政策）",
+          "party": "自由民主党"
+        },
+        "committee": "内閣委員会"
+      }
+    },
+    {
+      "enforcement_date": "2019-07-01",
+      "promulgate_date": "2018-05-30",
+      "amendment_law_title": "不正競争防止法等の一部を改正する法律",
+      "law_revision_id": "325AC0000000201_20190701_430AC0000000033",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "世耕弘成",
+          "position": "経済産業大臣・内閣府特命担当大臣（原子力損害賠償・廃炉等支援機構）",
+          "party": "自由民主党・こころ"
+        },
+        "committee": "経済産業委員会"
+      }
+    },
+    {
+      "enforcement_date": "2019-06-25",
+      "promulgate_date": "2018-06-27",
+      "amendment_law_title": "建築基準法の一部を改正する法律",
+      "law_revision_id": "325AC0000000201_20190625_430AC0000000067",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "石井啓一",
+          "position": "国土交通大臣",
+          "party": "公明党"
+        },
+        "committee": "厚生労働委員会"
+      }
+    },
+    {
+      "enforcement_date": "2019-06-14",
+      "promulgate_date": "2019-06-14",
+      "amendment_law_title": "成年被後見人等の権利の制限に係る措置の適正化等を図るための関係法律の整備に関する法律",
+      "law_revision_id": "325AC0000000201_20190614_501AC0000000037",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "宮腰光寛",
+          "position": "内閣府特命担当大臣（沖縄及び北方対策・消費者及び食品安全・少子化対策・海洋政策）",
+          "party": "自由民主党"
+        },
+        "committee": "内閣委員会"
+      }
+    },
+    {
+      "enforcement_date": "2018-09-25",
+      "promulgate_date": "2018-06-27",
+      "amendment_law_title": "建築基準法の一部を改正する法律",
+      "law_revision_id": "325AC0000000201_20180925_430AC0000000067",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "石井啓一",
+          "position": "国土交通大臣",
+          "party": "公明党"
+        },
+        "committee": "厚生労働委員会"
+      }
+    },
+    {
+      "enforcement_date": "2018-07-15",
+      "promulgate_date": "2018-04-25",
+      "amendment_law_title": "都市再生特別措置法等の一部を改正する法律",
+      "law_revision_id": "325AC0000000201_20180715_430AC0000000022",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "石井啓一",
+          "position": "国土交通大臣",
+          "party": "公明党"
+        },
+        "committee": "東日本大震災復興特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2018-06-27",
+      "promulgate_date": "2018-06-27",
+      "amendment_law_title": "建築基準法の一部を改正する法律",
+      "law_revision_id": "325AC0000000201_20180627_430AC0000000067",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "石井啓一",
+          "position": "国土交通大臣",
+          "party": "公明党"
+        },
+        "committee": "厚生労働委員会"
+      }
+    },
+    {
+      "enforcement_date": "2018-04-01",
+      "promulgate_date": "2017-05-12",
+      "amendment_law_title": "都市緑地法等の一部を改正する法律",
+      "law_revision_id": "325AC0000000201_20180401_429AC0000000026",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "石井啓一",
+          "position": "国土交通大臣",
+          "party": "公明党"
+        },
+        "committee": "内閣委員会"
+      }
+    },
+    {
+      "enforcement_date": "2017-06-15",
+      "promulgate_date": "2017-05-12",
+      "amendment_law_title": "都市緑地法等の一部を改正する法律",
+      "law_revision_id": "325AC0000000201_20170615_429AC0000000026",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "石井啓一",
+          "position": "国土交通大臣",
+          "party": "公明党"
+        },
+        "committee": "内閣委員会"
+      }
+    },
+    {
+      "enforcement_date": "2017-05-12",
+      "promulgate_date": "2017-05-12",
+      "amendment_law_title": "都市緑地法等の一部を改正する法律",
+      "law_revision_id": "325AC0000000201_20170512_429AC0000000026",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "石井啓一",
+          "position": "国土交通大臣",
+          "party": "公明党"
+        },
+        "committee": "内閣委員会"
+      }
+    },
+    {
+      "enforcement_date": "2016-09-01",
+      "promulgate_date": "2016-06-07",
+      "amendment_law_title": "都市再生特別措置法等の一部を改正する法律",
+      "law_revision_id": "325AC0000000201_20160901_428AC0000000072",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "石井啓一",
+          "position": "国土交通大臣",
+          "party": "公明党"
+        },
+        "committee": "国土交通委員会"
+      }
+    }
+  ],
+  "summary": {
+    "description": "建物を建てる時や改築する時に守らなければならない最低限の基準を定めた法律です。地震や火災から人々の生命や財産を守るため、建物の構造や設備、敷地の使い方などの安全基準を決めています。私たちが住む家やマンション、働くオフィスビルなど、すべての建物がこの法律に基づいて建てられています。",
+    "scope": "日本国内で建築物を建築、増築、改築、移転する建築主、設計者、施工者、および建築物の所有者や管理者すべてが対象となります。",
+    "keywords": [
+      "建築確認申請",
+      "耐震基準",
+      "防火規定",
+      "容積率",
+      "建築士"
+    ]
+  },
+  "category": "建築・住宅",
+  "contributors": [
+    {
+      "name": "石井啓一",
+      "position": "国土交通大臣",
+      "party": "公明党",
+      "count": 8
+    },
+    {
+      "name": "斉藤鉄夫",
+      "position": "国土交通大臣",
+      "party": "公明党",
+      "count": 5
+    },
+    {
+      "name": "野田聖子",
+      "position": "内閣府特命担当大臣（少子化対策・地方創生・男女共同参画）",
+      "party": "自由民主党",
+      "count": 3
+    },
+    {
+      "name": "赤羽一嘉",
+      "position": "国土交通大臣",
+      "party": "公明党",
+      "count": 3
+    },
+    {
+      "name": "宮腰光寛",
+      "position": "内閣府特命担当大臣（沖縄及び北方対策・消費者及び食品安全・少子化対策・海洋政策）",
+      "party": "自由民主党",
+      "count": 3
+    },
+    {
+      "name": "古川禎久",
+      "position": "法務大臣",
+      "party": "自由民主党",
+      "count": 2
+    },
+    {
+      "name": "自見はなこ",
+      "position": "内閣府特命担当大臣（沖縄及び北方対策・消費者及び食品安全・地方創生・アイヌ施策）",
+      "party": "自由民主党",
+      "count": 2
+    },
+    {
+      "name": "河野太郎",
+      "position": "デジタル大臣・内閣府特命担当大臣（消費者及び食品安全・デジタル改革）",
+      "party": "自由民主党・無所属の会",
+      "count": 2
+    },
+    {
+      "name": "岡田直樹",
+      "position": "内閣府特命担当大臣（沖縄及び北方対策・規制改革・地方創生・クールジャパン戦略・アイヌ施策）",
+      "party": "自由民主党",
+      "count": 2
+    },
+    {
+      "name": "あべ俊子",
+      "position": "文部科学大臣",
+      "party": "自由民主党・無所属の会",
+      "count": 1
+    },
+    {
+      "name": "伊東良孝",
+      "position": "内閣府特命担当大臣（沖縄及び北方対策・消費者及び食品安全・地方創生・アイヌ施策）",
+      "party": "自由民主党・無所属の会",
+      "count": 1
+    },
+    {
+      "name": "坂本哲志",
+      "position": "内閣府特命担当大臣（少子化対策・地方創生）",
+      "party": "自由民主党・無所属の会",
+      "count": 1
+    },
+    {
+      "name": "世耕弘成",
+      "position": "経済産業大臣・内閣府特命担当大臣（原子力損害賠償・廃炉等支援機構）",
+      "party": "自由民主党・こころ",
+      "count": 1
+    }
+  ]
+}

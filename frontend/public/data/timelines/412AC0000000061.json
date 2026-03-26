@@ -1,0 +1,337 @@
+{
+  "law_id": "412AC0000000061",
+  "law_title": "消費者契約法",
+  "law_num": "平成十二年法律第六十一号",
+  "promulgation_date": "2000-05-12",
+  "revision_count": 17,
+  "timeline": [
+    {
+      "enforcement_date": "2025-06-01",
+      "promulgate_date": "2022-06-17",
+      "amendment_law_title": "刑法等の一部を改正する法律の施行に伴う関係法律の整理等に関する法律",
+      "law_revision_id": "412AC0000000061_20250601_504AC0000000068",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "古川禎久",
+          "position": "法務大臣",
+          "party": "自由民主党"
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2024-10-01",
+      "promulgate_date": "2023-05-17",
+      "amendment_law_title": "不当景品類及び不当表示防止法の一部を改正する法律",
+      "law_revision_id": "412AC0000000061_20241001_505AC0000000029",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "河野太郎",
+          "position": "デジタル大臣・内閣府特命担当大臣（消費者及び食品安全・デジタル改革）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "消費者問題に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2024-04-01",
+      "promulgate_date": "2023-06-16",
+      "amendment_law_title": "デジタル社会の形成を図るための規制改革を推進するためのデジタル社会形成基本法等の一部を改正する法律",
+      "law_revision_id": "412AC0000000061_20240401_505AC0000000063",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "河野太郎",
+          "position": "デジタル大臣・内閣府特命担当大臣（消費者及び食品安全・デジタル改革）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "地方創生及びデジタル社会の形成等に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2023-10-01",
+      "promulgate_date": "2022-06-01",
+      "amendment_law_title": "消費者契約法及び消費者の財産的被害の集団的な回復のための民事の裁判手続の特例に関する法律の一部を改正する法律",
+      "law_revision_id": "412AC0000000061_20231001_504AC0000000059",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "若宮健嗣",
+          "position": "内閣府特命担当大臣（消費者及び食品安全・クールジャパン戦略・知的財産戦略）",
+          "party": "自由民主党"
+        },
+        "committee": "消費者問題に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2023-06-16",
+      "promulgate_date": "2023-06-16",
+      "amendment_law_title": "デジタル社会の形成を図るための規制改革を推進するためのデジタル社会形成基本法等の一部を改正する法律",
+      "law_revision_id": "412AC0000000061_20230616_505AC0000000063",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "河野太郎",
+          "position": "デジタル大臣・内閣府特命担当大臣（消費者及び食品安全・デジタル改革）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "地方創生及びデジタル社会の形成等に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2023-06-01",
+      "promulgate_date": "2022-06-01",
+      "amendment_law_title": "消費者契約法及び消費者の財産的被害の集団的な回復のための民事の裁判手続の特例に関する法律の一部を改正する法律",
+      "law_revision_id": "412AC0000000061_20230601_504AC0000000059",
+      "diff_id": "412AC0000000061_2023-05-31_2023-06-01",
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "若宮健嗣",
+          "position": "内閣府特命担当大臣（消費者及び食品安全・クールジャパン戦略・知的財産戦略）",
+          "party": "自由民主党"
+        },
+        "committee": "消費者問題に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2023-01-05",
+      "promulgate_date": "2022-12-16",
+      "amendment_law_title": "消費者契約法及び独立行政法人国民生活センター法の一部を改正する法律",
+      "law_revision_id": "412AC0000000061_20230105_504AC0000000099",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "河野太郎",
+          "position": "デジタル大臣・内閣府特命担当大臣（消費者及び食品安全・デジタル改革）",
+          "party": "自由民主党"
+        },
+        "committee": "消費者問題に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2022-06-17",
+      "promulgate_date": "2022-06-17",
+      "amendment_law_title": "刑法等の一部を改正する法律の施行に伴う関係法律の整理等に関する法律",
+      "law_revision_id": "412AC0000000061_20220617_504AC0000000068",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "古川禎久",
+          "position": "法務大臣",
+          "party": "自由民主党"
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2022-06-01",
+      "promulgate_date": "2022-06-01",
+      "amendment_law_title": "消費者契約法及び消費者の財産的被害の集団的な回復のための民事の裁判手続の特例に関する法律の一部を改正する法律",
+      "law_revision_id": "412AC0000000061_20220601_504AC0000000059",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "若宮健嗣",
+          "position": "内閣府特命担当大臣（消費者及び食品安全・クールジャパン戦略・知的財産戦略）",
+          "party": "自由民主党"
+        },
+        "committee": "消費者問題に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2020-04-01",
+      "promulgate_date": "2017-06-02",
+      "amendment_law_title": "民法の一部を改正する法律の施行に伴う関係法律の整備等に関する法律",
+      "law_revision_id": "412AC0000000061_20200401_429AC0000000045",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "金田勝年",
+          "position": "法務大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2020-04-01",
+      "promulgate_date": "2016-06-03",
+      "amendment_law_title": "消費者契約法の一部を改正する法律",
+      "law_revision_id": "412AC0000000061_20200401_428AC0000000061",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "河野太郎",
+          "position": "国家公安委員会委員長・内閣府特命担当大臣（消費者及び食品安全・規制改革・防災）",
+          "party": "自由民主党"
+        },
+        "committee": "予算委員会"
+      }
+    },
+    {
+      "enforcement_date": "2019-06-15",
+      "promulgate_date": "2018-06-15",
+      "amendment_law_title": "消費者契約法の一部を改正する法律",
+      "law_revision_id": "412AC0000000061_20190615_430AC0000000054",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "金子修",
+          "position": "法務大臣官房政策立案総括審議官",
+          "party": null
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2017-10-01",
+      "promulgate_date": "2017-06-02",
+      "amendment_law_title": "独立行政法人国民生活センター法等の一部を改正する法律",
+      "law_revision_id": "412AC0000000061_20171001_429AC0000000043",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "松本純",
+          "position": "国家公安委員会委員長・内閣府特命担当大臣（消費者及び食品安全・防災・海洋政策）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "消費者問題に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2017-06-03",
+      "promulgate_date": "2016-06-03",
+      "amendment_law_title": "消費者契約法の一部を改正する法律",
+      "law_revision_id": "412AC0000000061_20170603_428AC0000000061",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "河野太郎",
+          "position": "国家公安委員会委員長・内閣府特命担当大臣（消費者及び食品安全・規制改革・防災）",
+          "party": "自由民主党"
+        },
+        "committee": "予算委員会"
+      }
+    },
+    {
+      "enforcement_date": "2017-06-02",
+      "promulgate_date": "2017-06-02",
+      "amendment_law_title": "独立行政法人国民生活センター法等の一部を改正する法律",
+      "law_revision_id": "412AC0000000061_20170602_429AC0000000043",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "松本純",
+          "position": "国家公安委員会委員長・内閣府特命担当大臣（消費者及び食品安全・防災・海洋政策）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "消費者問題に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2017-06-02",
+      "promulgate_date": "2016-06-03",
+      "amendment_law_title": "消費者契約法の一部を改正する法律",
+      "law_revision_id": "412AC0000000061_20170602_428AC0000000061",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "河野太郎",
+          "position": "国家公安委員会委員長・内閣府特命担当大臣（消費者及び食品安全・規制改革・防災）",
+          "party": "自由民主党"
+        },
+        "committee": "予算委員会"
+      }
+    },
+    {
+      "enforcement_date": "2016-10-01",
+      "promulgate_date": "2013-12-11",
+      "amendment_law_title": "消費者の財産的被害の集団的な回復のための民事の裁判手続の特例に関する法律",
+      "law_revision_id": "412AC0000000061_20161001_425AC0000000096",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "森まさこ",
+          "position": "内閣府特命担当大臣（消費者及び食品安全・少子化対策・男女共同参画）",
+          "party": "自由民主党"
+        },
+        "committee": "消費者問題に関する特別委員会"
+      }
+    }
+  ],
+  "summary": {
+    "description": "消費者と事業者の間で結ばれる契約について、消費者を保護するためのルールを定めた法律です。事業者が嘘の説明をしたり、消費者を困らせるような方法で契約を結んだ場合、消費者がその契約を取り消すことができます。また、消費者に一方的に不利な契約条項は無効になる場合があります。",
+    "scope": "一般消費者と事業者（会社や個人事業主など）との間で結ばれるすべての契約が対象となります。",
+    "keywords": [
+      "消費者保護",
+      "契約取消し",
+      "不当勧誘",
+      "不当条項",
+      "クーリングオフ"
+    ]
+  },
+  "category": "商業",
+  "contributors": [
+    {
+      "name": "河野太郎",
+      "position": "デジタル大臣・内閣府特命担当大臣（消費者及び食品安全・デジタル改革）",
+      "party": "自由民主党・無所属の会",
+      "count": 7
+    },
+    {
+      "name": "若宮健嗣",
+      "position": "内閣府特命担当大臣（消費者及び食品安全・クールジャパン戦略・知的財産戦略）",
+      "party": "自由民主党",
+      "count": 3
+    },
+    {
+      "name": "古川禎久",
+      "position": "法務大臣",
+      "party": "自由民主党",
+      "count": 2
+    },
+    {
+      "name": "松本純",
+      "position": "国家公安委員会委員長・内閣府特命担当大臣（消費者及び食品安全・防災・海洋政策）",
+      "party": "自由民主党・無所属の会",
+      "count": 2
+    },
+    {
+      "name": "金田勝年",
+      "position": "法務大臣",
+      "party": "自由民主党・無所属の会",
+      "count": 1
+    },
+    {
+      "name": "金子修",
+      "position": "法務大臣官房政策立案総括審議官",
+      "party": null,
+      "count": 1
+    },
+    {
+      "name": "森まさこ",
+      "position": "内閣府特命担当大臣（消費者及び食品安全・少子化対策・男女共同参画）",
+      "party": "自由民主党",
+      "count": 1
+    }
+  ]
+}

@@ -18,7 +18,7 @@
           "position": "法務大臣",
           "party": "自由民主党・無所属の会"
         },
-        "committee": "法務委員会"
+        "committee": "内閣委員会"
       }
     },
     {
@@ -34,7 +34,7 @@
           "position": "法務大臣",
           "party": "自由民主党・無所属の会"
         },
-        "committee": "法務委員会"
+        "committee": "内閣委員会"
       }
     },
     {
@@ -50,7 +50,7 @@
           "position": "法務大臣",
           "party": "自由民主党"
         },
-        "committee": "消費者問題に関する特別委員会"
+        "committee": "予算委員会"
       }
     },
     {
@@ -66,7 +66,7 @@
           "position": "文部科学大臣",
           "party": "自由民主党・無所属の会"
         },
-        "committee": "文教科学委員会"
+        "committee": "文部科学委員会"
       }
     },
     {
@@ -98,7 +98,7 @@
           "position": "法務大臣",
           "party": "自由民主党・無所属の会"
         },
-        "committee": "法務委員会"
+        "committee": "内閣委員会"
       }
     },
     {
@@ -106,7 +106,7 @@
       "promulgate_date": "2023-05-26",
       "amendment_law_title": "著作権法の一部を改正する法律",
       "law_revision_id": "345AC0000000048_20250601_505AC0000000033",
-      "diff_id": null,
+      "diff_id": "345AC0000000048_2025-05-31_2025-06-01",
       "proposer": {
         "submission_type": "閣法",
         "minister": {
@@ -114,7 +114,7 @@
           "position": "文部科学大臣",
           "party": "自由民主党・無所属の会"
         },
-        "committee": "文教科学委員会"
+        "committee": "文部科学委員会"
       }
     },
     {
@@ -122,7 +122,7 @@
       "promulgate_date": "2022-06-17",
       "amendment_law_title": "刑法等の一部を改正する法律の施行に伴う関係法律の整理等に関する法律",
       "law_revision_id": "345AC0000000048_20250601_504AC0000000068",
-      "diff_id": null,
+      "diff_id": "345AC0000000048_2025-05-31_2025-06-01",
       "proposer": {
         "submission_type": "閣法",
         "minister": {
@@ -142,7 +142,7 @@
       "proposer": {
         "submission_type": "衆法",
         "minister": null,
-        "committee": "文教科学委員会"
+        "committee": "文部科学委員会"
       }
     },
     {
@@ -158,7 +158,7 @@
           "position": "文部科学大臣",
           "party": "自由民主党・無所属の会"
         },
-        "committee": "文教科学委員会"
+        "committee": "文部科学委員会"
       }
     },
     {
@@ -174,7 +174,7 @@
           "position": "法務大臣",
           "party": "自由民主党・無所属の会"
         },
-        "committee": "法務委員会"
+        "committee": "内閣委員会"
       }
     },
     {
@@ -190,7 +190,7 @@
           "position": "文部科学大臣",
           "party": "自由民主党・無所属の会"
         },
-        "committee": "文教科学委員会"
+        "committee": "文部科学委員会"
       }
     },
     {
@@ -206,7 +206,7 @@
           "position": "文部科学大臣",
           "party": "自由民主党・無所属の会"
         },
-        "committee": "文教科学委員会"
+        "committee": "文部科学委員会"
       }
     },
     {
@@ -238,7 +238,7 @@
           "position": "法務大臣",
           "party": "自由民主党"
         },
-        "committee": "消費者問題に関する特別委員会"
+        "committee": "予算委員会"
       }
     },
     {
@@ -254,7 +254,7 @@
           "position": "文部科学大臣",
           "party": "自由民主党・無所属の会"
         },
-        "committee": "文教科学委員会"
+        "committee": "文部科学委員会"
       }
     },
     {
@@ -270,7 +270,7 @@
           "position": "内閣府特命担当大臣（マイナンバー制度）",
           "party": "自由民主党・無所属の会"
         },
-        "committee": "内閣委員会"
+        "committee": "総務委員会"
       }
     },
     {
@@ -286,7 +286,7 @@
           "position": "文部科学大臣",
           "party": "自由民主党・無所属の会"
         },
-        "committee": "文教科学委員会"
+        "committee": "文部科学委員会"
       }
     },
     {
@@ -302,7 +302,7 @@
           "position": "文部科学大臣",
           "party": "自由民主党・無所属の会"
         },
-        "committee": "文教科学委員会"
+        "committee": "文部科学委員会"
       }
     },
     {
@@ -318,7 +318,7 @@
           "position": "文部科学大臣",
           "party": "自由民主党・無所属の会"
         },
-        "committee": "文教科学委員会"
+        "committee": "文部科学委員会"
       }
     },
     {
@@ -334,7 +334,7 @@
           "position": "内閣府特命担当大臣（マイナンバー制度）",
           "party": "自由民主党・無所属の会"
         },
-        "committee": "内閣委員会"
+        "committee": "総務委員会"
       }
     },
     {
@@ -350,7 +350,7 @@
           "position": "文部科学大臣",
           "party": "自由民主党・無所属の会"
         },
-        "committee": "文教科学委員会"
+        "committee": "文部科学委員会"
       }
     },
     {
@@ -366,7 +366,7 @@
           "position": "文部科学大臣",
           "party": "自由民主党・無所属の会"
         },
-        "committee": "文教科学委員会"
+        "committee": "文部科学委員会"
       }
     },
     {
@@ -382,7 +382,7 @@
           "position": "文部科学大臣",
           "party": "自由民主党・無所属の会"
         },
-        "committee": "文教科学委員会"
+        "committee": "文部科学委員会"
       }
     },
     {
@@ -398,7 +398,7 @@
           "position": "文部科学大臣",
           "party": "自由民主党・こころ"
         },
-        "committee": "外務委員会"
+        "committee": "文部科学委員会"
       }
     },
     {
@@ -414,7 +414,7 @@
           "position": "文部科学大臣",
           "party": "自由民主党"
         },
-        "committee": "文教科学委員会"
+        "committee": "文部科学委員会"
       }
     },
     {
@@ -462,7 +462,7 @@
           "position": "文部科学大臣",
           "party": "自由民主党・こころ"
         },
-        "committee": "厚生労働委員会"
+        "committee": "文部科学委員会"
       }
     },
     {
@@ -478,7 +478,7 @@
           "position": "文部科学大臣",
           "party": "自由民主党・こころ"
         },
-        "committee": "外務委員会"
+        "committee": "文部科学委員会"
       }
     },
     {
@@ -490,7 +490,7 @@
       "proposer": {
         "submission_type": "閣法",
         "minister": null,
-        "committee": "環太平洋パートナーシップ協定等に関する特別委員会公聴会"
+        "committee": "環太平洋パートナーシップ協定等に関する特別委員会"
       }
     },
     {
@@ -522,7 +522,7 @@
           "position": "文部科学大臣",
           "party": "自由民主党・こころ"
         },
-        "committee": "外務委員会"
+        "committee": "文部科学委員会"
       }
     },
     {
@@ -566,88 +566,8 @@
       "proposer": {
         "submission_type": "閣法",
         "minister": null,
-        "committee": "環太平洋パートナーシップ協定等に関する特別委員会公聴会"
+        "committee": "環太平洋パートナーシップ協定等に関する特別委員会"
       }
-    }
-  ],
-  "summary": {
-    "description": "著作権法は、小説や音楽、映画、写真などの創作物を作った人の権利を守り、無断で使用されることを防ぐ法律です。私たちが日常的に接するYouTube動画の投稿、SNSでの写真シェア、音楽の配信なども、この法律に基づいてルールが決められています。創作者の権利を保護しながら、文化の発展を促進することを目的としています。",
-    "scope": "すべての国民および日本国内で活動する個人・法人が対象となります。",
-    "keywords": [
-      "著作権",
-      "知的財産",
-      "創作物",
-      "複製権",
-      "引用"
-    ]
-  },
-  "category": "文化",
-  "contributors": [
-    {
-      "name": "萩生田光一",
-      "position": "文部科学大臣",
-      "party": "自由民主党・無所属の会",
-      "count": 8
-    },
-    {
-      "name": "齋藤健",
-      "position": "法務大臣",
-      "party": "自由民主党・無所属の会",
-      "count": 4
-    },
-    {
-      "name": "古川禎久",
-      "position": "法務大臣",
-      "party": "自由民主党",
-      "count": 4
-    },
-    {
-      "name": "永岡桂子",
-      "position": "文部科学大臣",
-      "party": "自由民主党・無所属の会",
-      "count": 4
-    },
-    {
-      "name": "林芳正",
-      "position": "文部科学大臣",
-      "party": "自由民主党・こころ",
-      "count": 4
-    },
-    {
-      "name": "平井卓也",
-      "position": "内閣府特命担当大臣（マイナンバー制度）",
-      "party": "自由民主党・無所属の会",
-      "count": 2
-    },
-    {
-      "name": "金田勝年",
-      "position": "法務大臣",
-      "party": "自由民主党・無所属の会",
-      "count": 2
-    },
-    {
-      "name": "上川陽子",
-      "position": "法務大臣",
-      "party": "自由民主党",
-      "count": 2
-    },
-    {
-      "name": "村上誠一郎",
-      "position": "総務大臣",
-      "party": "自由民主党・無所属の会",
-      "count": 1
-    },
-    {
-      "name": "下村博文",
-      "position": "文部科学大臣",
-      "party": "自由民主党",
-      "count": 1
-    },
-    {
-      "name": "高市早苗",
-      "position": "総務大臣",
-      "party": "自由民主党",
-      "count": 1
     }
   ]
 }

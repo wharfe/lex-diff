@@ -1,0 +1,378 @@
+{
+  "law_id": "403AC0000000076",
+  "law_title": "育児休業、介護休業等育児又は家族介護を行う労働者の福祉に関する法律",
+  "law_num": "平成三年法律第七十六号",
+  "promulgation_date": "1991-05-15",
+  "revision_count": 21,
+  "timeline": [
+    {
+      "enforcement_date": "2026-10-01",
+      "promulgate_date": "2025-06-11",
+      "amendment_law_title": "労働施策の総合的な推進並びに労働者の雇用の安定及び職業生活の充実等に関する法律等の一部を改正する法律",
+      "law_revision_id": "403AC0000000076_20261001_507AC0000000063",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": null,
+        "committee": "厚生労働委員会"
+      }
+    },
+    {
+      "enforcement_date": "2025-10-01",
+      "promulgate_date": "2024-05-31",
+      "amendment_law_title": "育児休業、介護休業等育児又は家族介護を行う労働者の福祉に関する法律及び次世代育成支援対策推進法の一部を改正する法律",
+      "law_revision_id": "403AC0000000076_20251001_506AC0000000042",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "武見敬三",
+          "position": "厚生労働大臣",
+          "party": "自由民主党"
+        },
+        "committee": "厚生労働委員会"
+      }
+    },
+    {
+      "enforcement_date": "2025-06-01",
+      "promulgate_date": "2022-06-17",
+      "amendment_law_title": "刑法等の一部を改正する法律の施行に伴う関係法律の整理等に関する法律　抄",
+      "law_revision_id": "403AC0000000076_20250601_504AC0000000068",
+      "diff_id": null
+    },
+    {
+      "enforcement_date": "2025-04-01",
+      "promulgate_date": "2024-05-31",
+      "amendment_law_title": "育児休業、介護休業等育児又は家族介護を行う労働者の福祉に関する法律及び次世代育成支援対策推進法の一部を改正する法律",
+      "law_revision_id": "403AC0000000076_20250401_506AC0000000042",
+      "diff_id": "403AC0000000076_2025-03-31_2025-04-01",
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "武見敬三",
+          "position": "厚生労働大臣",
+          "party": "自由民主党"
+        },
+        "committee": "厚生労働委員会"
+      }
+    },
+    {
+      "enforcement_date": "2024-05-31",
+      "promulgate_date": "2024-05-31",
+      "amendment_law_title": "育児休業、介護休業等育児又は家族介護を行う労働者の福祉に関する法律及び次世代育成支援対策推進法の一部を改正する法律",
+      "law_revision_id": "403AC0000000076_20240531_506AC0000000042",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "武見敬三",
+          "position": "厚生労働大臣",
+          "party": "自由民主党"
+        },
+        "committee": "厚生労働委員会"
+      }
+    },
+    {
+      "enforcement_date": "2023-04-01",
+      "promulgate_date": "2021-06-11",
+      "amendment_law_title": "地方公務員法の一部を改正する法律",
+      "law_revision_id": "403AC0000000076_20230401_503AC0000000063",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "武田良太",
+          "position": "総務大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "内閣委員会、総務委員会連合審査会"
+      }
+    },
+    {
+      "enforcement_date": "2023-04-01",
+      "promulgate_date": "2021-06-11",
+      "amendment_law_title": "国家公務員法等の一部を改正する法律",
+      "law_revision_id": "403AC0000000076_20230401_503AC0000000061",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "衆法",
+        "minister": {
+          "name": "河野太郎",
+          "position": "内閣府特命担当大臣（沖縄及び北方対策・規制改革）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "総務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2023-04-01",
+      "promulgate_date": "2021-06-09",
+      "amendment_law_title": "育児休業、介護休業等育児又は家族介護を行う労働者の福祉に関する法律及び雇用保険法の一部を改正する法律",
+      "law_revision_id": "403AC0000000076_20230401_503AC0000000058",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": null,
+        "committee": "厚生労働委員会"
+      }
+    },
+    {
+      "enforcement_date": "2022-10-01",
+      "promulgate_date": "2022-03-31",
+      "amendment_law_title": "雇用保険法等の一部を改正する法律",
+      "law_revision_id": "403AC0000000076_20221001_504AC0000000012",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "後藤茂之",
+          "position": "厚生労働大臣",
+          "party": "自由民主党"
+        },
+        "committee": "厚生労働委員会"
+      }
+    },
+    {
+      "enforcement_date": "2022-10-01",
+      "promulgate_date": "2021-06-09",
+      "amendment_law_title": "育児休業、介護休業等育児又は家族介護を行う労働者の福祉に関する法律及び雇用保険法の一部を改正する法律",
+      "law_revision_id": "403AC0000000076_20221001_503AC0000000058",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": null,
+        "committee": "厚生労働委員会"
+      }
+    },
+    {
+      "enforcement_date": "2022-06-17",
+      "promulgate_date": "2022-06-17",
+      "amendment_law_title": "刑法等の一部を改正する法律の施行に伴う関係法律の整理等に関する法律",
+      "law_revision_id": "403AC0000000076_20220617_504AC0000000068",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "古川禎久",
+          "position": "法務大臣",
+          "party": "自由民主党"
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2022-04-01",
+      "promulgate_date": "2021-06-09",
+      "amendment_law_title": "育児休業、介護休業等育児又は家族介護を行う労働者の福祉に関する法律及び雇用保険法の一部を改正する法律",
+      "law_revision_id": "403AC0000000076_20220401_503AC0000000058",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": null,
+        "committee": "厚生労働委員会"
+      }
+    },
+    {
+      "enforcement_date": "2022-03-31",
+      "promulgate_date": "2022-03-31",
+      "amendment_law_title": "雇用保険法等の一部を改正する法律",
+      "law_revision_id": "403AC0000000076_20220331_504AC0000000012",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "後藤茂之",
+          "position": "厚生労働大臣",
+          "party": "自由民主党"
+        },
+        "committee": "厚生労働委員会"
+      }
+    },
+    {
+      "enforcement_date": "2021-06-09",
+      "promulgate_date": "2021-06-09",
+      "amendment_law_title": "育児休業、介護休業等育児又は家族介護を行う労働者の福祉に関する法律及び雇用保険法の一部を改正する法律",
+      "law_revision_id": "403AC0000000076_20210609_503AC0000000058",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": null,
+        "committee": "厚生労働委員会"
+      }
+    },
+    {
+      "enforcement_date": "2020-06-01",
+      "promulgate_date": "2019-06-05",
+      "amendment_law_title": "女性の職業生活における活躍の推進に関する法律等の一部を改正する法律",
+      "law_revision_id": "403AC0000000076_20200601_501AC0000000024",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "根本匠",
+          "position": "厚生労働大臣",
+          "party": "自由民主党"
+        },
+        "committee": "厚生労働委員会"
+      }
+    },
+    {
+      "enforcement_date": "2019-06-05",
+      "promulgate_date": "2019-06-05",
+      "amendment_law_title": "女性の職業生活における活躍の推進に関する法律等の一部を改正する法律",
+      "law_revision_id": "403AC0000000076_20190605_501AC0000000024",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "根本匠",
+          "position": "厚生労働大臣",
+          "party": "自由民主党"
+        },
+        "committee": "厚生労働委員会"
+      }
+    },
+    {
+      "enforcement_date": "2019-04-01",
+      "promulgate_date": "2018-07-06",
+      "amendment_law_title": "働き方改革を推進するための関係法律の整備に関する法律",
+      "law_revision_id": "403AC0000000076_20190401_430AC0000000071",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "加藤勝信",
+          "position": "厚生労働大臣・内閣府特命担当大臣（拉致問題）",
+          "party": "自由民主党"
+        },
+        "committee": "厚生労働委員会"
+      }
+    },
+    {
+      "enforcement_date": "2018-01-01",
+      "promulgate_date": "2017-03-31",
+      "amendment_law_title": "雇用保険法等の一部を改正する法律",
+      "law_revision_id": "403AC0000000076_20180101_429AC0000000014",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "塩崎恭久",
+          "position": "厚生労働大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "厚生労働委員会"
+      }
+    },
+    {
+      "enforcement_date": "2017-10-01",
+      "promulgate_date": "2017-03-31",
+      "amendment_law_title": "雇用保険法等の一部を改正する法律",
+      "law_revision_id": "403AC0000000076_20171001_429AC0000000014",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "塩崎恭久",
+          "position": "厚生労働大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "厚生労働委員会"
+      }
+    },
+    {
+      "enforcement_date": "2017-04-01",
+      "promulgate_date": "2017-03-31",
+      "amendment_law_title": "雇用保険法等の一部を改正する法律",
+      "law_revision_id": "403AC0000000076_20170401_429AC0000000014",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "塩崎恭久",
+          "position": "厚生労働大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "厚生労働委員会"
+      }
+    },
+    {
+      "enforcement_date": "2017-04-01",
+      "promulgate_date": "2016-06-03",
+      "amendment_law_title": "児童福祉法等の一部を改正する法律",
+      "law_revision_id": "403AC0000000076_20170401_428AC0000000063",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "塩崎恭久",
+          "position": "厚生労働大臣",
+          "party": "自由民主党"
+        },
+        "committee": "厚生労働委員会"
+      }
+    }
+  ],
+  "summary": {
+    "description": "働いている人が子育てや家族の介護をするときに、仕事を休んだり短時間勤務にしたりできる権利を定めた法律です。育児休業や介護休業の取得条件、期間、給付金などについて規定し、働きながら家族の世話ができるよう支援しています。",
+    "scope": "雇用されているすべての労働者（正社員、契約社員、パート等）とその雇用主である事業者",
+    "keywords": [
+      "育児休業",
+      "介護休業",
+      "短時間勤務",
+      "育児休業給付金",
+      "ワークライフバランス"
+    ]
+  },
+  "category": "労働",
+  "contributors": [
+    {
+      "name": "塩崎恭久",
+      "position": "厚生労働大臣",
+      "party": "自由民主党・無所属の会",
+      "count": 4
+    },
+    {
+      "name": "武見敬三",
+      "position": "厚生労働大臣",
+      "party": "自由民主党",
+      "count": 3
+    },
+    {
+      "name": "後藤茂之",
+      "position": "厚生労働大臣",
+      "party": "自由民主党",
+      "count": 2
+    },
+    {
+      "name": "根本匠",
+      "position": "厚生労働大臣",
+      "party": "自由民主党",
+      "count": 2
+    },
+    {
+      "name": "武田良太",
+      "position": "総務大臣",
+      "party": "自由民主党・無所属の会",
+      "count": 1
+    },
+    {
+      "name": "河野太郎",
+      "position": "内閣府特命担当大臣（沖縄及び北方対策・規制改革）",
+      "party": "自由民主党・無所属の会",
+      "count": 1
+    },
+    {
+      "name": "古川禎久",
+      "position": "法務大臣",
+      "party": "自由民主党",
+      "count": 1
+    },
+    {
+      "name": "加藤勝信",
+      "position": "厚生労働大臣・内閣府特命担当大臣（拉致問題）",
+      "party": "自由民主党",
+      "count": 1
+    }
+  ]
+}

@@ -13,6 +13,10 @@ const APPI = "415AC0000000057";
 const ROAD_TRAFFIC = "335AC0000000105";
 const LABOR_STANDARDS = "322AC0000000049";
 const COPYRIGHT = "345AC0000000048";
+const PENAL_CODE = "140AC0000000045";
+const CONSUMER_CONTRACT = "412AC0000000061";
+const CHILDCARE_LEAVE = "403AC0000000076";
+const BUILDING_STANDARDS = "325AC0000000201";
 
 export const LIFE_THEMES: LifeTheme[] = [
   {
@@ -31,16 +35,16 @@ export const LIFE_THEMES: LifeTheme[] = [
     description: "親権、養育、児童福祉、育児休業など",
     longDescription:
       "親権制度、嫡出推定、認知、育児休業など、子育てに関わる法律の改正を追えます。",
-    lawIds: [CIVIL_CODE, LABOR_STANDARDS],
+    lawIds: [CIVIL_CODE, LABOR_STANDARDS, CHILDCARE_LEAVE],
   },
   {
     id: "work",
     label: "働く・転職",
     icon: "work",
-    description: "労働時間、残業、解雇、有給休暇など",
+    description: "労働時間、残業、解雇、有給休暇、育休など",
     longDescription:
       "労働時間の上限、残業代、有給休暇、育児介護休業など、働く人の権利に関わる法律の改正を追えます。",
-    lawIds: [LABOR_STANDARDS],
+    lawIds: [LABOR_STANDARDS, CHILDCARE_LEAVE],
   },
   {
     id: "driving",
@@ -77,6 +81,33 @@ export const LIFE_THEMES: LifeTheme[] = [
     longDescription:
       "著作権の保護範囲、引用のルール、デジタルコンテンツの利用、AI学習データの取り扱いなど、創作活動に関わる法律の改正を追えます。",
     lawIds: [COPYRIGHT],
+  },
+  {
+    id: "crime",
+    label: "犯罪・刑罰",
+    icon: "gavel",
+    description: "性犯罪、侮辱罪、詐欺、刑罰の重さなど",
+    longDescription:
+      "不同意性交等罪の新設、侮辱罪の厳罰化、詐欺・窃盗の罰則など、刑事法の改正を追えます。",
+    lawIds: [PENAL_CODE],
+  },
+  {
+    id: "shopping",
+    label: "消費・契約",
+    icon: "shopping_cart",
+    description: "悪質商法、サブスク解約、ネット通販トラブルなど",
+    longDescription:
+      "不当な勧誘への取消権、サブスクリプション解約ルール、ネット通販トラブルなど、消費者を守る法律の改正を追えます。",
+    lawIds: [CONSUMER_CONTRACT],
+  },
+  {
+    id: "housing",
+    label: "住まい・建築",
+    icon: "home",
+    description: "省エネ基準、建築確認、リフォーム規制など",
+    longDescription:
+      "建築物の省エネルギー基準、建築確認手続き、耐震基準、リフォーム規制など、住まいに関わる法律の改正を追えます。",
+    lawIds: [BUILDING_STANDARDS],
   },
 ];
 
