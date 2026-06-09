@@ -97,3 +97,31 @@ def validate_explainer(explainer: dict, valid_years: set[str]) -> list[str]:
             if not f.get("q") or not f.get("a"):
                 errors.append(f"faq[{i}] missing q/a")
     return errors
+
+
+def normalize_explainer(raw: dict, selected: list[dict]) -> dict:
+    """Re-attach deterministic year/grounded from `selected`, keep LLM prose,
+    strip why/impact from ungrounded changes, normalize faq to a clean list."""
+    changes = []
+    for sel, item in zip(selected, raw.get("recent_changes", []) or []):
+        change = {
+            "year": sel["year"],
+            "title": (item.get("title") or sel["source_title"]).strip(),
+            "what": (item.get("what") or "").strip(),
+            "grounded": sel["grounded"],
+        }
+        if sel["grounded"]:
+            why = (item.get("why") or "").strip()
+            impact = (item.get("impact") or "").strip()
+            if why:
+                change["why"] = why
+            if impact:
+                change["impact"] = impact
+        changes.append(change)
+
+    faq = [
+        {"q": f.get("q", "").strip(), "a": f.get("a", "").strip()}
+        for f in (raw.get("faq") or [])
+        if f.get("q") and f.get("a")
+    ]
+    return {"intro": (raw.get("intro") or "").strip(), "recent_changes": changes, "faq": faq}

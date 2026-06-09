@@ -3,7 +3,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
-from explainer import select_changes, validate_explainer
+from explainer import select_changes, validate_explainer, normalize_explainer
 
 
 def test_select_dedupes_by_title_prefers_diff_id():
@@ -81,3 +81,36 @@ def test_validate_flags_missing_key():
     del bad["intro"]
     errors = validate_explainer(bad, VALID_YEARS)
     assert any("intro" in e for e in errors)
+
+
+def test_normalize_reattaches_year_grounded_and_strips_ungrounded():
+    selected = [
+        {"year": "2024", "source_title": "民法等の一部を改正する法律", "grounded": True},
+        {"year": "2026", "source_title": "整理法", "grounded": False},
+    ]
+    raw = {
+        "intro": "  導入文  ",
+        "recent_changes": [
+            {"title": "相続登記の義務化", "what": "3年以内に登記。", "why": "所有者不明土地対策。", "impact": "過料あり。"},
+            {"title": "技術的整理", "what": "条ずれの整理。", "why": "LLMが勝手に書いた背景", "impact": "影響も勝手に"},
+        ],
+        # faq missing entirely
+    }
+    result = normalize_explainer(raw, selected)
+    assert result["intro"] == "導入文"
+    assert result["recent_changes"][0]["grounded"] is True
+    assert result["recent_changes"][0]["why"] == "所有者不明土地対策。"
+    # ungrounded: why/impact stripped
+    assert result["recent_changes"][1]["grounded"] is False
+    assert "why" not in result["recent_changes"][1]
+    assert "impact" not in result["recent_changes"][1]
+    # faq normalized to []
+    assert result["faq"] == []
+
+
+def test_normalize_filters_incomplete_faq():
+    selected = [{"year": "2024", "source_title": "X", "grounded": True}]
+    raw = {"intro": "x", "recent_changes": [{"title": "t", "what": "w", "why": "y", "impact": "i"}],
+           "faq": [{"q": "問", "a": "答"}, {"q": "", "a": "答だけ"}, {"q": "問だけ"}]}
+    result = normalize_explainer(raw, selected)
+    assert result["faq"] == [{"q": "問", "a": "答"}]
