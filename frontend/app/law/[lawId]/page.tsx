@@ -6,6 +6,7 @@ import { Icon } from "@/components/icon";
 import { OpenGikaiLinks } from "@/components/opengikai-link";
 import { getThemesForLaw } from "@/lib/life-themes";
 import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
+import { LawExplainerSection } from "@/components/law-explainer";
 
 export function generateStaticParams() {
   return getTimelineIds().map((lawId) => ({ lawId }));
@@ -19,6 +20,7 @@ export async function generateMetadata({
   const { lawId } = await params;
   const data = getTimelineData(lawId);
   const desc =
+    data.explainer?.intro ||
     data.summary?.description ||
     `${data.law_title}の改正履歴を時系列で一覧。全${data.revision_count}回の改正について、いつ・どの条文が・どう変わったかをわかりやすく確認できます。`;
   return {
@@ -150,6 +152,10 @@ export default async function LawPage({
             )}
           </div>
         </div>
+      )}
+
+      {data.explainer && (
+        <LawExplainerSection lawTitle={data.law_title} explainer={data.explainer} />
       )}
 
       <div className="flex flex-col lg:flex-row gap-6">
