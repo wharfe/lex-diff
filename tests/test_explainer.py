@@ -114,3 +114,29 @@ def test_normalize_filters_incomplete_faq():
            "faq": [{"q": "問", "a": "答"}, {"q": "", "a": "答だけ"}, {"q": "問だけ"}]}
     result = normalize_explainer(raw, selected)
     assert result["faq"] == [{"q": "問", "a": "答"}]
+
+
+def test_validate_flags_non_dict_items_without_crashing():
+    bad = _ok_explainer()
+    bad["recent_changes"][0] = "not a dict"
+    errors = validate_explainer(bad, VALID_YEARS)
+    assert any("recent_changes[0]" in e for e in errors)
+
+    bad2 = _ok_explainer()
+    bad2["faq"] = ["not a dict"]
+    errors2 = validate_explainer(bad2, VALID_YEARS)
+    assert any("faq[0]" in e for e in errors2)
+
+
+def test_normalize_skips_non_dict_change_items():
+    selected = [
+        {"year": "2024", "source_title": "X", "grounded": True},
+        {"year": "2026", "source_title": "Y", "grounded": False},
+    ]
+    raw = {"intro": "i", "recent_changes": ["garbage", {"title": "t", "what": "w"}], "faq": "notalist"}
+    result = normalize_explainer(raw, selected)
+    # non-dict change item is skipped, not crashed on; valid one is kept
+    assert all(isinstance(c, dict) for c in result["recent_changes"])
+    assert any(c["title"] == "t" for c in result["recent_changes"])
+    # non-list faq normalizes to []
+    assert result["faq"] == []

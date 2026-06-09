@@ -78,6 +78,9 @@ def validate_explainer(explainer: dict, valid_years: set[str]) -> list[str]:
         errors.append(f"recent_changes count out of range (1-{MAX_CHANGES})")
     else:
         for i, c in enumerate(rc):
+            if not isinstance(c, dict):
+                errors.append(f"recent_changes[{i}] not an object")
+                continue
             for k in ("year", "title", "what", "grounded"):
                 if k not in c:
                     errors.append(f"recent_changes[{i}] missing {k}")
@@ -94,6 +97,9 @@ def validate_explainer(explainer: dict, valid_years: set[str]) -> list[str]:
         errors.append("faq must be a list")
     else:
         for i, f in enumerate(faq):
+            if not isinstance(f, dict):
+                errors.append(f"faq[{i}] not an object")
+                continue
             if not f.get("q") or not f.get("a"):
                 errors.append(f"faq[{i}] missing q/a")
     return errors
@@ -104,6 +110,8 @@ def normalize_explainer(raw: dict, selected: list[dict]) -> dict:
     strip why/impact from ungrounded changes, normalize faq to a clean list."""
     changes = []
     for sel, item in zip(selected, raw.get("recent_changes", []) or []):
+        if not isinstance(item, dict):
+            continue
         change = {
             "year": sel["year"],
             "title": (item.get("title") or sel["source_title"]).strip(),
@@ -119,9 +127,12 @@ def normalize_explainer(raw: dict, selected: list[dict]) -> dict:
                 change["impact"] = impact
         changes.append(change)
 
+    raw_faq = raw.get("faq") or []
+    if not isinstance(raw_faq, list):
+        raw_faq = []
     faq = [
         {"q": f.get("q", "").strip(), "a": f.get("a", "").strip()}
-        for f in (raw.get("faq") or [])
-        if f.get("q") and f.get("a")
+        for f in raw_faq
+        if isinstance(f, dict) and f.get("q") and f.get("a")
     ]
     return {"intro": (raw.get("intro") or "").strip(), "recent_changes": changes, "faq": faq}
