@@ -3,7 +3,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
-from explainer import select_changes
+from explainer import select_changes, validate_explainer
 
 
 def test_select_dedupes_by_title_prefers_diff_id():
@@ -41,3 +41,43 @@ def test_select_caps_at_four_and_skips_empty_title():
     result = select_changes(timeline)
     assert len(result) == 4
     assert all(c["year"] for c in result)
+
+
+VALID_YEARS = {"2024", "2026"}
+
+
+def _ok_explainer():
+    return {
+        "intro": "不動産登記法は近年、相続登記の義務化など大きな改正が続いています。マイホームや相続の手続きに直接関わる重要な変更です。",
+        "recent_changes": [
+            {"year": "2024", "title": "相続登記の義務化", "what": "相続を知った日から3年以内の登記が必須になりました。",
+             "why": "所有者不明土地の増加が社会問題化したためです。", "impact": "相続人は期限内の手続きが必要です。", "grounded": True},
+            {"year": "2026", "title": "登記手続のデジタル化", "what": "オンラインでの手続きが拡充されました。", "grounded": False},
+        ],
+        "faq": [{"q": "相続登記はいつから義務？", "a": "2024年4月1日から施行されています。"}],
+    }
+
+
+def test_validate_passes_on_good_explainer():
+    assert validate_explainer(_ok_explainer(), VALID_YEARS) == []
+
+
+def test_validate_flags_ungrounded_with_why():
+    bad = _ok_explainer()
+    bad["recent_changes"][1]["why"] = "推測の背景"
+    errors = validate_explainer(bad, VALID_YEARS)
+    assert any("ungrounded" in e for e in errors)
+
+
+def test_validate_flags_year_not_in_timeline():
+    bad = _ok_explainer()
+    bad["recent_changes"][0]["year"] = "1999"
+    errors = validate_explainer(bad, VALID_YEARS)
+    assert any("year" in e for e in errors)
+
+
+def test_validate_flags_missing_key():
+    bad = _ok_explainer()
+    del bad["intro"]
+    errors = validate_explainer(bad, VALID_YEARS)
+    assert any("intro" in e for e in errors)

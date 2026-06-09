@@ -58,3 +58,42 @@ def select_changes(timeline: list[dict]) -> list[dict]:
     ]
     changes.sort(key=lambda c: (c["grounded"], c["enforcement_date"]), reverse=True)
     return changes[:MAX_CHANGES]
+
+
+def validate_explainer(explainer: dict, valid_years: set[str]) -> list[str]:
+    """Return a list of human-readable validation errors (empty = valid)."""
+    errors: list[str] = []
+    for key in ("intro", "recent_changes", "faq"):
+        if key not in explainer:
+            errors.append(f"missing key: {key}")
+    if errors:
+        return errors
+
+    intro = explainer["intro"]
+    if not isinstance(intro, str) or not (40 <= len(intro) <= 200):
+        errors.append("intro length out of range (40-200)")
+
+    rc = explainer["recent_changes"]
+    if not isinstance(rc, list) or not (1 <= len(rc) <= MAX_CHANGES):
+        errors.append(f"recent_changes count out of range (1-{MAX_CHANGES})")
+    else:
+        for i, c in enumerate(rc):
+            for k in ("year", "title", "what", "grounded"):
+                if k not in c:
+                    errors.append(f"recent_changes[{i}] missing {k}")
+            if c.get("year") not in valid_years:
+                errors.append(f"recent_changes[{i}] year {c.get('year')} not in timeline")
+            what = c.get("what", "")
+            if not isinstance(what, str) or not (0 < len(what) <= 120):
+                errors.append(f"recent_changes[{i}] what length out of range")
+            if not c.get("grounded") and (c.get("why") or c.get("impact")):
+                errors.append(f"recent_changes[{i}] ungrounded must not have why/impact")
+
+    faq = explainer["faq"]
+    if not isinstance(faq, list):
+        errors.append("faq must be a list")
+    else:
+        for i, f in enumerate(faq):
+            if not f.get("q") or not f.get("a"):
+                errors.append(f"faq[{i}] missing q/a")
+    return errors
