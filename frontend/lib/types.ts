@@ -96,6 +96,26 @@ export interface LawSummary {
   keywords: string[];
 }
 
+export interface ExplainerChange {
+  year: string;
+  title: string;
+  what: string;
+  why?: string;
+  impact?: string;
+  grounded: boolean;
+}
+
+export interface ExplainerFaq {
+  q: string;
+  a: string;
+}
+
+export interface LawExplainer {
+  intro: string;
+  recent_changes: ExplainerChange[];
+  faq: ExplainerFaq[];
+}
+
 export interface Contributor {
   name: string;
   position: string;
@@ -113,4 +133,5 @@ export interface LawTimeline {
   summary?: LawSummary;
   category?: string;
   contributors?: Contributor[];
+  explainer?: LawExplainer;
 }
