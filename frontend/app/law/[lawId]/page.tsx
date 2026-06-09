@@ -18,10 +18,13 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { lawId } = await params;
   const data = getTimelineData(lawId);
-  const desc = data.summary?.description || `${data.law_title}の改正履歴`;
+  const desc =
+    data.summary?.description ||
+    `${data.law_title}の改正履歴を時系列で一覧。全${data.revision_count}回の改正について、いつ・どの条文が・どう変わったかをわかりやすく確認できます。`;
   return {
-    title: `${data.law_title} 改正履歴`,
+    title: `${data.law_title}の改正履歴｜全${data.revision_count}回の改正一覧`,
     description: desc,
+    alternates: { canonical: `/law/${lawId}` },
     openGraph: {
       title: `${data.law_title} 改正履歴 | lexdiff`,
       description: desc,

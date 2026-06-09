@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { LIFE_THEMES, getThemeById } from "@/lib/life-themes";
 import { getTimelineData } from "@/lib/data";
@@ -5,6 +6,27 @@ import { Icon } from "@/components/icon";
 
 export function generateStaticParams() {
   return LIFE_THEMES.map((t) => ({ themeId: t.id }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ themeId: string }>;
+}): Promise<Metadata> {
+  const { themeId } = await params;
+  const theme = getThemeById(themeId);
+  if (!theme) {
+    return { title: "テーマが見つかりません" };
+  }
+  return {
+    title: `${theme.label}に関わる法律の改正`,
+    description: theme.longDescription,
+    alternates: { canonical: `/theme/${themeId}` },
+    openGraph: {
+      title: `${theme.label}に関わる法律の改正 | lexdiff`,
+      description: theme.longDescription,
+    },
+  };
 }
 
 export default async function ThemePage({

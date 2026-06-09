@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import {
   getDiffIds,
@@ -7,6 +8,10 @@ import {
 } from "@/lib/data";
 import { LIFE_THEMES } from "@/lib/life-themes";
 import { Icon } from "@/components/icon";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 function DiffPreviewLine({ line }: { line: string }) {
   const isAdd = line.startsWith("+") && !line.startsWith("+++");

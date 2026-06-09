@@ -17,11 +17,14 @@ export async function generateMetadata({
   const { diffId } = await params;
   const data = getDiffData(decodeURIComponent(diffId));
   const title = data.pr_summary?.title || data.revision_after.amendment_law_title;
+  const year = data.date_after.slice(0, 4);
+  const changedCount = data.stats.added + data.stats.modified + data.stats.deleted;
   return {
-    title: `${data.law_title} — ${title}`,
-    description: `${data.law_title}の改正差分（${data.date_before} → ${data.date_after}）。${data.stats.added + data.stats.modified + data.stats.deleted}条が変更。`,
+    title: `${data.law_title}【${year}年改正】${title}`,
+    description: `${data.law_title}の${year}年改正による新旧条文の差分。${title}で${changedCount}条が変更されました。改正前後の条文を並べて確認できます。`,
+    alternates: { canonical: `/diff/${encodeURIComponent(diffId)}` },
     openGraph: {
-      title: `${data.law_title} — ${title} | lexdiff`,
+      title: `${data.law_title}【${year}年改正】${title} | lexdiff`,
       description: data.pr_summary?.summary || title,
     },
   };

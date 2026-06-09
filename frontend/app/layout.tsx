@@ -34,9 +34,6 @@ export const metadata: Metadata = {
     description:
       "法律の改正履歴をGitHub風の差分表示で可視化。",
   },
-  alternates: {
-    canonical: "https://lexdiff.com",
-  },
   icons: {
     icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
   },

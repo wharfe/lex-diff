@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "lexdiffについて",
   description:
     "lexdiffの仕組み、コンセプト、AI利用方針について。法令の改正履歴をGitHub風のdiffで可視化するオープンソースプロジェクト。",
+  alternates: { canonical: "/about" },
 };
 
 export default function AboutPage() {
