@@ -76,6 +76,13 @@ def test_validate_flags_year_not_in_timeline():
     assert any("year" in e for e in errors)
 
 
+def test_validate_flags_too_many_faq():
+    bad = _ok_explainer()
+    bad["faq"] = [{"q": f"Q{i}", "a": f"A{i}"} for i in range(4)]
+    errors = validate_explainer(bad, VALID_YEARS)
+    assert any("faq count exceeds 3" in e for e in errors)
+
+
 def test_validate_flags_missing_key():
     bad = _ok_explainer()
     del bad["intro"]

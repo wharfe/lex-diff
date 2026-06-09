@@ -108,6 +108,8 @@ def validate_explainer(explainer: dict, valid_years: set[str]) -> list[str]:
     if not isinstance(faq, list):
         errors.append("faq must be a list")
     else:
+        if len(faq) > 3:
+            errors.append("faq count exceeds 3")
         for i, f in enumerate(faq):
             if not isinstance(f, dict):
                 errors.append(f"faq[{i}] not an object")
