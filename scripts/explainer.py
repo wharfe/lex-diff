@@ -58,7 +58,18 @@ def select_changes(timeline: list[dict]) -> list[dict]:
         for c in by_title.values()
     ]
     changes.sort(key=lambda c: (c["grounded"], c["enforcement_date"]), reverse=True)
-    return changes[:MAX_CHANGES]
+
+    # Drop later entries that reuse a non-null diff_id already taken (same snapshot
+    # can back two amendment laws — show it once). None diff_ids are never collapsed.
+    deduped: list[dict] = []
+    seen_diff_ids: set[str] = set()
+    for c in changes:
+        if c["diff_id"]:
+            if c["diff_id"] in seen_diff_ids:
+                continue
+            seen_diff_ids.add(c["diff_id"])
+        deduped.append(c)
+    return deduped[:MAX_CHANGES]
 
 
 def validate_explainer(explainer: dict, valid_years: set[str]) -> list[str]:

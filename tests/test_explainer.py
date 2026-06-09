@@ -128,6 +128,29 @@ def test_validate_flags_non_dict_items_without_crashing():
     assert any("faq[0]" in e for e in errors2)
 
 
+def test_select_dedupes_by_diff_id_across_titles():
+    # Two different amendment titles share the SAME diff_id (same snapshot).
+    timeline = [
+        {"enforcement_date": "2024-04-01", "amendment_law_title": "デジタル改革法", "diff_id": "416_2024"},
+        {"enforcement_date": "2024-04-01", "amendment_law_title": "民法等改正", "diff_id": "416_2024"},
+        {"enforcement_date": "2026-04-01", "amendment_law_title": "公益信託法", "diff_id": None},
+    ]
+    result = select_changes(timeline)
+    diff_ids = [c["diff_id"] for c in result if c["diff_id"]]
+    assert diff_ids == ["416_2024"]  # the shared diff_id appears only once
+    # the None-diff ungrounded entry survives
+    assert any(c["diff_id"] is None for c in result)
+
+
+def test_select_does_not_collapse_distinct_none_diff_ids():
+    timeline = [
+        {"enforcement_date": "2025-01-01", "amendment_law_title": "A法", "diff_id": None},
+        {"enforcement_date": "2024-01-01", "amendment_law_title": "B法", "diff_id": None},
+    ]
+    result = select_changes(timeline)
+    assert len(result) == 2  # two None-diff entries are NOT merged
+
+
 def test_normalize_skips_non_dict_change_items():
     selected = [
         {"year": "2024", "source_title": "X", "grounded": True},
