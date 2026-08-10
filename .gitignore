@@ -9,6 +9,7 @@ uv.lock
 # Data (regenerable)
 data/raw/
 data/diffs/
+data/timelines/
 
 # Node
 frontend/node_modules/
