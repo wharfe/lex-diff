@@ -10,6 +10,7 @@ uv.lock
 data/raw/
 data/diffs/
 data/timelines/
+data/proposers/
 
 # Node
 frontend/node_modules/
@@ -18,7 +19,8 @@ frontend/out/
 
 # Env
 .env
-*.Zone.Identifier
+# WSL artifact; matches both `foo.Zone.Identifier` and `.env:Zone.Identifier`
+*Zone.Identifier
 
 # OS
 .DS_Store
@@ -27,3 +29,6 @@ frontend/out/
 .vscode/
 .idea/
 .vercel
+
+# Agent tooling (local settings, per-machine memory)
+.claude/

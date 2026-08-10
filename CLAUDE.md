@@ -19,6 +19,9 @@ Related project: [open-gikai](../open-gikai/) — parliamentary proceeding viewe
 # Python pipeline
 uv run python scripts/fetch.py <law_id> <date_before> <date_after>
 uv run python scripts/diff.py <law_id> <date_before> <date_after>
+uv run python scripts/timeline.py <law_id>     # Amendment history for /law/<law_id>
+uv run python scripts/explainer.py <law_id>    # Plain-language "recent amendments" section
+uv run pytest                                  # Python tests
 
 # Frontend (in frontend/ directory)
 cd frontend
@@ -36,16 +39,42 @@ npm run lint   # Lint
 ├── scripts/               Python data pipeline
 │   ├── fetch.py           Fetch law data from e-Gov API
 │   ├── diff.py            Compute structural diff between law versions
+│   ├── annotate.py        Per-article annotations
+│   ├── timeline.py        Build amendment history for a law
+│   ├── proposer.py        Bill sponsors/contributors via the NDL API
+│   ├── enrich.py          Merge supplementary data into a diff
+│   ├── law_summary.py     AI-generated law overview
+│   ├── explainer.py       AI-generated "recent amendments" section (see below)
 │   └── requirements.txt   Python dependencies (legacy, use pyproject.toml)
-├── data/                  Generated data (not committed)
+├── tests/                 pytest suite for the pure functions in scripts/
+├── data/                  Generated data (not committed — all subdirs gitignored)
 │   ├── raw/               Raw API responses
-│   └── diffs/             Computed diff JSON files
+│   ├── diffs/             Computed diff JSON files
+│   ├── timelines/         Amendment history per law
+│   └── proposers/         Bill sponsor data from the NDL API
 └── frontend/              Next.js application
     ├── app/               Pages and layouts
     ├── components/        React components
     ├── lib/               Types and data utilities
-    └── public/data/       Static diff data for SSG
+    └── public/data/       Static diff + timeline data for SSG (committed)
 ```
+
+Scripts that write to `data/` also mirror their output into `frontend/public/data/`
+when the destination file already exists — that mirrored copy is what ships.
+
+## AI-Generated Content
+
+`law_summary.py`, `annotate.py`, and `explainer.py` call the Claude API
+(key in `.env`). `explainer.py` is the hallucination-sensitive one, so it is
+structured defensively and changes should preserve that shape:
+
+- Facts that must not be invented (enforcement year, whether a diff backs the
+  entry) are computed in Python; the LLM only writes prose.
+- Each amendment is `grounded` (a diff exists → `why`/`impact` allowed) or
+  ungrounded (only the amendment's name and year are known → prose must stay
+  within that, and `why`/`impact` are stripped).
+- Output is validated before it is written; a failure exits non-zero and saves
+  nothing. Pure functions are covered by `tests/test_explainer.py`.
 
 ## Key Concepts
 
