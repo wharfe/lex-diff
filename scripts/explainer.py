@@ -214,6 +214,7 @@ def build_prompt(law_title, law_num, category, summary_desc, changes):
 - recent_changes は入力の改正と同じ順番・同じ件数で出力する。
 - ungrounded の改正では why/impact を出力しない（キーごと省略）。
 - 提供情報に無い事実（数値・期限・因果）を断定しない。不確実なら書かない。
+- 罰則（罰金・拘禁刑）と行政処分（勧告・命令・業務改善命令など）を混同しない。罰金を「行政処分」と書かない。
 - 見出しや本文に「{law_title}」「改正」「わかりやすく」が自然に含まれるとよい。
 - faq は0-3件。確実に答えられるものだけ。
 - JSONのみを出力する。"""
