@@ -45,6 +45,7 @@ npm run lint   # Lint
 │   ├── enrich.py          Merge supplementary data into a diff
 │   ├── law_summary.py     AI-generated law overview
 │   ├── explainer.py       AI-generated "recent amendments" section (see below)
+│   ├── llm.py             Shared Claude API helpers for the three scripts above
 │   └── requirements.txt   Python dependencies (legacy, use pyproject.toml)
 ├── tests/                 pytest suite for the pure functions in scripts/
 ├── data/                  Generated data (not committed — all subdirs gitignored)
@@ -65,16 +66,30 @@ when the destination file already exists — that mirrored copy is what ships.
 ## AI-Generated Content
 
 `law_summary.py`, `annotate.py`, and `explainer.py` call the Claude API
-(key in `.env`). `explainer.py` is the hallucination-sensitive one, so it is
-structured defensively and changes should preserve that shape:
+(key in `.env`) through the shared helpers in `llm.py`. All three are
+hallucination-sensitive and are structured defensively; changes must preserve
+that shape:
 
 - Facts that must not be invented (enforcement year, whether a diff backs the
-  entry) are computed in Python; the LLM only writes prose.
-- Each amendment is `grounded` (a diff exists → `why`/`impact` allowed) or
-  ungrounded (only the amendment's name and year are known → prose must stay
-  within that, and `why`/`impact` are stripped).
-- Output is validated before it is written; a failure exits non-zero and saves
-  nothing. Pure functions are covered by `tests/test_explainer.py`.
+  entry, which articles changed) are computed in Python; the LLM only writes
+  prose from the evidence it is handed.
+- **Never call the model with an empty evidence list.** `annotate.py` raises
+  instead. An amendment whose 本則 is untouched still has its 附則 as evidence —
+  dropping it left the prompt empty and the model wrote from memory.
+- The evidence excerpt must contain the change. `changed_excerpt()` centres on
+  the SequenceMatcher opcodes; when it still has to trim, it says so in the
+  prompt rather than claiming the excerpt is the whole of the evidence.
+- A truncated answer is a failure, not a cheaper answer. `llm.response_text()`
+  raises on `stop_reason == "max_tokens"`; storing the fragment as prose once
+  shipped raw JSON to readers.
+- Output is validated before it is written and before a cached entry is reused
+  (`validate_annotation` / `validate_pr_summary` / `validate_explainer`);
+  a failure exits non-zero and saves nothing.
+- `explainer.py` additionally marks each amendment `grounded` (a diff exists →
+  `why`/`impact` allowed) or ungrounded (only the amendment's name and year are
+  known → prose stays within that, and `why`/`impact` are stripped).
+- Annotations are cached by a fingerprint of model + prompt version + prompt
+  text. Changing a prompt means bumping `PROMPT_VERSION` in `annotate.py`.
 
 ## Key Concepts
 
@@ -82,6 +97,14 @@ structured defensively and changes should preserve that shape:
 - **asof**: Point-in-time parameter for the API — returns the law as enacted on that date
 - **Article (条)**: Primary unit of comparison; diffs are computed per-article
 - **Section path**: Hierarchical location (Part > Chapter > Section) of each article
+- **本則 / 附則**: e-Gov numbers the 附則 (supplementary provisions) of each
+  amending law from 1 independently of the main text, so a flat map keyed by
+  article number lets 附則第一条 overwrite 本則第一条. `diff.py` therefore keys
+  附則 as `suppl_<AmendLawNum>_<num>` (`suppl_key`), carries `is_suppl` and
+  `amend_law_num` on every entry, and refuses a duplicate key rather than
+  dropping an article. The frontend splits the two and counts only 本則 in every
+  change count (`mainChangeCounts`). 附則 is not merely procedural — 労働基準法
+  附則第138条 was the whole substance of its own amendment.
 
 ## Git Conventions
 
