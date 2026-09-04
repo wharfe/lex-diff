@@ -5,6 +5,8 @@ import {
   getDiffData,
   getTimelineIds,
   getTimelineData,
+  mainChangeCounts,
+  previewDiff,
 } from "@/lib/data";
 import { LIFE_THEMES } from "@/lib/life-themes";
 import { Icon } from "@/components/icon";
@@ -56,22 +58,17 @@ export default function Home() {
   // Pick the most interesting diff for the hero preview (most changes)
   const heroDiff = diffs.length > 0
     ? diffs.reduce((best, curr) =>
-        (curr.data.stats.added + curr.data.stats.modified + curr.data.stats.deleted) >
-        (best.data.stats.added + best.data.stats.modified + best.data.stats.deleted)
+        mainChangeCounts(curr.data.diffs).total >
+        mainChangeCounts(best.data.diffs).total
           ? curr : best
       )
     : null;
 
   // Get preview lines that show both additions and deletions
   const previewLines: string[] = [];
+  const heroPreview = heroDiff ? previewDiff(heroDiff.data.diffs) : null;
   if (heroDiff) {
-    // Find a diff entry with both + and - lines
-    const modified = heroDiff.data.diffs.find((d) => {
-      if (d.type !== "modified") return false;
-      const hasAdd = d.diff.some((l) => l.startsWith("+") && !l.startsWith("+++"));
-      const hasDel = d.diff.some((l) => l.startsWith("-") && !l.startsWith("---"));
-      return hasAdd && hasDel;
-    }) || heroDiff.data.diffs.find((d) => d.type === "modified");
+    const modified = heroPreview;
     if (modified) {
       let visibleCount = 0;
       for (const line of modified.diff) {
@@ -117,8 +114,9 @@ export default function Home() {
               className="w-full md:w-[340px] lg:w-[400px] shrink-0 border border-[var(--border)] rounded-lg overflow-hidden hover:border-[var(--diff-hunk-text)] transition-colors"
             >
               <div className="bg-[var(--muted)] px-3 py-2 border-b border-[var(--border)] text-[12px] font-mono opacity-60 truncate">
-                {heroDiff.data.diffs.find((d) => d.type === "modified")
-                  ?.title_after || ""}
+                {/* Same entry the lines below come from — the heading and the
+                    body used to be picked separately and could disagree. */}
+                {heroPreview?.title_after || ""}
               </div>
               <div>
                 {previewLines.map((line, i) => (
@@ -136,7 +134,7 @@ export default function Home() {
           <h2 className="text-[17px] font-bold mb-4">最近の改正</h2>
           <div className="grid gap-4">
             {diffs.slice(0, 6).map(({ id, data }) => {
-              const firstMod = data.diffs.find((d) => d.type === "modified");
+              const firstMod = previewDiff(data.diffs);
               const preview = firstMod?.diff.filter(
                 (l) => !l.startsWith("---") && !l.startsWith("+++")
               ).slice(0, 4) || [];
@@ -155,21 +153,31 @@ export default function Home() {
                         {data.date_after}
                       </span>
                       <div className="flex items-center gap-2 text-[12px] font-mono ml-auto">
-                        {data.stats.added > 0 && (
-                          <span className="text-[var(--diff-add-text)]">
-                            +{data.stats.added}
-                          </span>
-                        )}
-                        {data.stats.modified > 0 && (
-                          <span className="text-[var(--diff-hunk-text)]">
-                            ~{data.stats.modified}
-                          </span>
-                        )}
-                        {data.stats.deleted > 0 && (
-                          <span className="text-[var(--diff-del-text)]">
-                            -{data.stats.deleted}
-                          </span>
-                        )}
+                        {(() => {
+                          const c = mainChangeCounts(data.diffs);
+                          return (
+                            <>
+                              {c.added > 0 && (
+                                <span className="text-[var(--diff-add-text)]">
+                                  +{c.added}
+                                </span>
+                              )}
+                              {c.modified > 0 && (
+                                <span className="text-[var(--diff-hunk-text)]">
+                                  ~{c.modified}
+                                </span>
+                              )}
+                              {c.deleted > 0 && (
+                                <span className="text-[var(--diff-del-text)]">
+                                  -{c.deleted}
+                                </span>
+                              )}
+                              {c.total === 0 && (
+                                <span className="opacity-40">附則のみ</span>
+                              )}
+                            </>
+                          );
+                        })()}
                       </div>
                     </div>
                     <p className="text-[14px] opacity-60">

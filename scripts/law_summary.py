@@ -13,8 +13,9 @@ import os
 from pathlib import Path
 
 import anthropic
+from llm import response_text, strip_code_fence
 
-MODEL = "claude-sonnet-4-20250514"
+MODEL = "claude-sonnet-5"
 DATA_DIR = Path(__file__).parent.parent / "data"
 FRONTEND_DIR = Path(__file__).parent.parent / "frontend" / "public" / "data"
 
@@ -52,12 +53,11 @@ JSONのみを出力してください。"""
 
     response = client.messages.create(
         model=MODEL,
-        max_tokens=500,
+        max_tokens=4000,
         messages=[{"role": "user", "content": prompt}],
     )
-    text = response.content[0].text.strip()
-    if text.startswith("```"):
-        text = text.split("\n", 1)[1].rsplit("```", 1)[0].strip()
+    text = response_text(response)
+    text = strip_code_fence(text)
     return json.loads(text)
 
 

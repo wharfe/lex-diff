@@ -103,10 +103,20 @@ function AnnotationCard({ diff }: { diff: ArticleDiff }) {
   );
 }
 
-export function ArticleDiffCard({ diff }: { diff: ArticleDiff }) {
-  const [expanded, setExpanded] = useState(true);
+export function ArticleDiffCard({
+  diff,
+  defaultExpanded = true,
+}: {
+  diff: ArticleDiff;
+  defaultExpanded?: boolean;
+}) {
+  const [expanded, setExpanded] = useState(defaultExpanded);
   const title = diff.title_after || diff.title_before || "";
-  const sectionLabel = diff.section_path.join("/");
+  // 附則 has no 本則 section path; show which amending law it belongs to instead,
+  // otherwise several blocks would all just read "第一条".
+  const sectionLabel = diff.is_suppl
+    ? diff.amend_law_num || "附則"
+    : diff.section_path.join("/");
 
   return (
     <div className="border border-[var(--border)] rounded-lg overflow-hidden">
@@ -142,12 +152,80 @@ export function ArticleDiffCard({ diff }: { diff: ArticleDiff }) {
   );
 }
 
-export function DiffViewer({ diffs }: { diffs: ArticleDiff[] }) {
+function SectionHeading({
+  title,
+  note,
+  count,
+  // 附則 entries are not all 条: a block with no Article of its own is one
+  // entry holding several 項, so it is counted in 件 rather than 条.
+  unit,
+}: {
+  title: string;
+  note: string;
+  count: number;
+  unit: string;
+}) {
   return (
-    <div className="flex flex-col gap-5">
-      {diffs.map((diff) => (
-        <ArticleDiffCard key={diff.article_num} diff={diff} />
-      ))}
+    <div className="flex items-baseline gap-2 flex-wrap">
+      <h2 className="text-[15px] font-bold">{title}</h2>
+      <span className="text-[13px] font-mono opacity-40">
+        {count}
+        {unit}
+      </span>
+      <span className="text-[13px] opacity-50">{note}</span>
+    </div>
+  );
+}
+
+export function DiffViewer({ diffs }: { diffs: ArticleDiff[] }) {
+  // 附則 (施行期日・経過措置) is numbered independently of the main text, so it
+  // gets its own section instead of being mixed in as if it were 第1条.
+  const main = diffs.filter((d) => !d.is_suppl);
+  const suppl = diffs.filter((d) => d.is_suppl);
+
+  return (
+    <div className="flex flex-col gap-8">
+      <div className="flex flex-col gap-3">
+        <SectionHeading
+          title="本則の改正"
+          note="法律の中身が変わった条文"
+          count={main.length}
+          unit="条"
+        />
+        {main.length === 0 ? (
+          <p className="text-[14px] opacity-60 border border-[var(--border)] rounded-lg px-4 py-3">
+            この改正では本則の条文は変わっていません（変更は附則のみ）。
+          </p>
+        ) : (
+          <div className="flex flex-col gap-5">
+            {main.map((diff) => (
+              <ArticleDiffCard key={diff.article_num} diff={diff} />
+            ))}
+          </div>
+        )}
+      </div>
+
+      {suppl.length > 0 && (
+        <div className="flex flex-col gap-3">
+          <SectionHeading
+            title="附則"
+            // Not only 施行期日: 労働基準法附則第138条 (the 中小企業 overtime
+            // exemption) was the whole substance of its own amendment.
+            note="いつから適用されるか・経過措置・特例など"
+            count={suppl.length}
+            unit="件"
+          />
+          <div className="flex flex-col gap-5">
+            {suppl.map((diff) => (
+              <ArticleDiffCard
+                key={diff.article_num}
+                diff={diff}
+                defaultExpanded={false}
+              />
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

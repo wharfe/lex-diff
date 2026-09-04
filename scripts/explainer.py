@@ -11,9 +11,10 @@ import sys
 import json
 import os
 import anthropic
+from llm import response_text, strip_code_fence
 from pathlib import Path
 
-MODEL = "claude-sonnet-4-6"
+MODEL = "claude-sonnet-5"
 ROOT = Path(__file__).parent.parent
 DATA_DIR = ROOT / "data"
 FRONTEND_DIR = ROOT / "frontend" / "public" / "data"
@@ -225,12 +226,11 @@ def generate_explainer(law_title, law_num, category, summary_desc, changes) -> d
     prompt = build_prompt(law_title, law_num, category, summary_desc, changes)
     response = client.messages.create(
         model=MODEL,
-        max_tokens=2000,
+        max_tokens=8000,
         messages=[{"role": "user", "content": prompt}],
     )
-    text = response.content[0].text.strip()
-    if text.startswith("```"):
-        text = text.split("\n", 1)[1].rsplit("```", 1)[0].strip()
+    text = response_text(response)
+    text = strip_code_fence(text)
     return json.loads(text)
 
 

@@ -24,13 +24,148 @@ def extract_text(node: dict | str) -> str:
     return "".join(extract_text(c) for c in node.get("children", []))
 
 
-def find_articles(node: dict | str) -> list[dict]:
-    """Find all Article nodes and return structured data."""
+# The 附則 a law was enacted with carries no AmendLawNum; every later block has
+# one. Observed across all 34 raw snapshots: exactly one such block per law,
+# always first, and AmendLawNum is unique within a law.
+ORIGINAL_SUPPL = "原始"
+
+# Suffix for a 附則 block that has no Article children — the block itself is the
+# unit, so it needs a key that cannot collide with any Article Num.
+SUPPL_BLOCK_BODY = "本文"
+
+
+def subtree_has(node: dict, tag: str) -> bool:
+    """True when `tag` appears anywhere under `node` (node itself excluded)."""
+    for child in node.get("children", []) or []:
+        if not isinstance(child, dict):
+            continue
+        if child.get("tag") == tag or subtree_has(child, tag):
+            return True
+    return False
+
+
+def walk_tags(
+    node: dict, tags: set[str], stop_at: set[str] | None = None
+) -> list[dict]:
+    """Every descendant whose tag is in `tags`, in document order.
+
+    `stop_at` prunes whole subtrees — used to collect the 項 that sit outside
+    an Article without also swallowing the 項 that belong to one.
+    """
+    found = []
+    for child in node.get("children", []) or []:
+        if not isinstance(child, dict):
+            continue
+        tag = child.get("tag")
+        if stop_at and tag in stop_at:
+            continue
+        if tag in tags:
+            found.append(child)
+        else:
+            found.extend(walk_tags(child, tags, stop_at))
+    return found
+
+
+def suppl_key(amend_law_num: str | None, num: str) -> str:
+    """Namespaced key for a 附則 article.
+
+    Keyed by the amending law rather than by position: e-Gov inserts blocks in
+    promulgation order, not at the end, so a positional index shifts between
+    versions and would turn one 附則 into a spurious deleted + added pair.
+    """
+    return f"suppl_{amend_law_num or ORIGINAL_SUPPL}_{num}"
+
+
+def index_by_num(articles: list[dict]) -> dict[str, dict]:
+    """Map article number -> article, refusing to let a duplicate win silently.
+
+    This is the shape of issue #10 itself: a dict comprehension over articles
+    keyed by Num let 附則第一条 overwrite 本則第一条, and the loss was invisible
+    because the output still looked like a valid diff. The namespacing above
+    makes a collision unlikely, not impossible — two SupplProvision blocks can
+    still carry the same AmendLawNum, and a missing AmendLawNum falls back to
+    the same ORIGINAL_SUPPL bucket. Fail loudly instead of dropping a 条文.
+    """
+    by_num: dict[str, dict] = {}
+    for a in articles:
+        num = a["num"]
+        if not num:
+            raise ValueError(f"article with empty Num: {a.get('title')!r}")
+        if num in by_num:
+            raise ValueError(
+                f"duplicate article key {num!r} — one of these would be dropped: "
+                f"{by_num[num].get('title')!r} vs {a.get('title')!r}"
+            )
+        by_num[num] = a
+    return by_num
+
+
+def find_articles(
+    node: dict | str,
+    in_suppl: bool = False,
+    amend_law_num: str | None = None,
+) -> list[dict]:
+    """Find all Article nodes and return structured data.
+
+    Articles inside SupplProvision (附則) are kept in a separate number space:
+    e-Gov numbers them 1, 2, 3... independently of the main provisions, so a
+    flat map keyed by Num lets 附則第一条 silently overwrite 本則第一条.
+    """
     if isinstance(node, str):
         return []
     tag = node.get("tag", "")
     attr = node.get("attr", {})
     results = []
+
+    if tag == "SupplProvision":
+        in_suppl = True
+        amend_law_num = attr.get("AmendLawNum")
+        # About a third of 附則 blocks have no Article at all — just a label and
+        # bare Paragraphs (558 of 1809 blocks across the 34 raw snapshots).
+        # Collecting only Article nodes dropped those blocks entirely, so an
+        # amendment that changed nothing else went out as an empty diff.
+        # The whole block becomes one entry; its paragraphs are its body.
+        #
+        # The test is over the whole subtree, not the direct children: the law
+        # XML schema allows SupplProvision > Chapter > Article, and a
+        # direct-child test would send such a block down the article-less path
+        # and drop every 条 in it. No snapshot has that shape today, which is
+        # exactly why it has to be handled structurally rather than observed.
+        # Paragraphs that are not inside an Article are collected either way.
+        # The law XML schema allows Article and Paragraph as siblings under
+        # SupplProvision; treating "has an Article" as "is entirely Articles"
+        # dropped the bare 項 (施行期日 and the like) of such a block. No
+        # snapshot has that shape today — which is exactly why round 2's
+        # identical assumption survived until a reviewer pointed at the schema.
+        if True:
+            label = ""
+            paragraphs = []
+            for child in walk_tags(node, {"SupplProvisionLabel", "Paragraph"},
+                                   stop_at={"Article"}):
+                if child.get("tag") == "SupplProvisionLabel":
+                    label = label or extract_text(child).strip()
+                else:
+                    paragraphs.append({
+                        "num": child.get("attr", {}).get("Num", ""),
+                        "text": format_paragraph(child),
+                    })
+            if paragraphs:
+                title = label or "附則"
+                if subtree_has(node, "Article"):
+                    # The block also has 条; name this entry for what it is so
+                    # it cannot be mistaken for the whole 附則.
+                    title = f"{title}（条以外の項）"
+                if amend_law_num:
+                    title = f"{title}（{amend_law_num}）"
+                results.append({
+                    "num": suppl_key(amend_law_num, SUPPL_BLOCK_BODY),
+                    "title": title,
+                    "paragraphs": paragraphs,
+                    "is_suppl": True,
+                    "amend_law_num": amend_law_num,
+                })
+            if not subtree_has(node, "Article"):
+                return results
 
     if tag == "Article":
         num = attr.get("Num", "")
@@ -53,14 +188,16 @@ def find_articles(node: dict | str) -> list[dict]:
                 paragraphs.append({"num": para_num, "text": para_text})
 
         results.append({
-            "num": num,
+            "num": suppl_key(amend_law_num, num) if in_suppl else num,
             "title": title,
             "paragraphs": paragraphs,
+            "is_suppl": in_suppl,
+            "amend_law_num": amend_law_num,
         })
 
     for child in node.get("children", []):
         if isinstance(child, dict):
-            results.extend(find_articles(child))
+            results.extend(find_articles(child, in_suppl, amend_law_num))
 
     return results
 
@@ -121,8 +258,8 @@ def article_to_lines(article: dict) -> list[str]:
 
 def compute_diff(before_articles: list[dict], after_articles: list[dict]) -> list[dict]:
     """Compute article-level diff between two versions."""
-    before_map = {a["num"]: a for a in before_articles}
-    after_map = {a["num"]: a for a in after_articles}
+    before_map = index_by_num(before_articles)
+    after_map = index_by_num(after_articles)
 
     all_nums = []
     seen = set()
@@ -164,6 +301,8 @@ def compute_diff(before_articles: list[dict], after_articles: list[dict]) -> lis
                 "diff": diff_lines,
                 "paragraphs_before": old["paragraphs"],
                 "paragraphs_after": new["paragraphs"],
+                "is_suppl": new.get("is_suppl", False),
+                "amend_law_num": new.get("amend_law_num"),
             })
 
         elif old and not new:
@@ -177,6 +316,8 @@ def compute_diff(before_articles: list[dict], after_articles: list[dict]) -> lis
                 "diff": [f"-{line}" for line in article_to_lines(old)],
                 "paragraphs_before": old["paragraphs"],
                 "paragraphs_after": [],
+                "is_suppl": old.get("is_suppl", False),
+                "amend_law_num": old.get("amend_law_num"),
             })
 
         elif not old and new:
@@ -190,6 +331,8 @@ def compute_diff(before_articles: list[dict], after_articles: list[dict]) -> lis
                 "diff": [f"+{line}" for line in article_to_lines(new)],
                 "paragraphs_before": [],
                 "paragraphs_after": new["paragraphs"],
+                "is_suppl": new.get("is_suppl", False),
+                "amend_law_num": new.get("amend_law_num"),
             })
 
     return diffs
@@ -209,6 +352,10 @@ def find_section_path(node: dict | str, article_num: str, path: list[str] | None
         "Section": "SectionTitle",
         "Subsection": "SubsectionTitle",
     }
+
+    # 附則 has its own numbering; never resolve a 本則 path from inside it
+    if tag == "SupplProvision":
+        return None
 
     current_path = path
     if tag in section_tags:
@@ -264,12 +411,22 @@ def main():
     after_articles = find_articles(after_data["law_full_text"])
     print(f"Articles: {len(before_articles)} -> {len(after_articles)}")
 
-    # Compute diff
-    diffs = compute_diff(before_articles, after_articles)
+    # Compute diff. A key collision means one 条文 would be silently dropped —
+    # the shape of issue #10 — so it stops this law rather than shipping a diff
+    # with a hole in it. It is deliberately fatal for this law only: the caller
+    # loops over laws, and the message names the colliding key.
+    try:
+        diffs = compute_diff(before_articles, after_articles)
+    except ValueError as e:
+        print(f"Error: {law_id} {date_before}->{date_after}: {e}")
+        sys.exit(1)
     print(f"Changed articles: {len(diffs)}")
 
     # Add section paths
     for d in diffs:
+        if d.get("is_suppl"):
+            d["section_path"] = []
+            continue
         num = d["article_num"]
         source = after_data if d["type"] != "deleted" else before_data
         section_path = find_section_path(source["law_full_text"], num)
@@ -280,6 +437,8 @@ def main():
         "added": sum(1 for d in diffs if d["type"] == "added"),
         "modified": sum(1 for d in diffs if d["type"] == "modified"),
         "deleted": sum(1 for d in diffs if d["type"] == "deleted"),
+        "main": sum(1 for d in diffs if not d.get("is_suppl")),
+        "suppl": sum(1 for d in diffs if d.get("is_suppl")),
     }
 
     output = {

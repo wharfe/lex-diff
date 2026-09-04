@@ -1,4 +1,4 @@
-import { LawDiffData, LawTimeline } from "./types";
+import { ArticleDiff, LawDiffData, LawTimeline } from "./types";
 import fs from "fs";
 import path from "path";
 
@@ -58,4 +58,41 @@ export function getOpenGikaiLinks(
   const raw = fs.readFileSync(mappingPath, "utf-8");
   const mapping = JSON.parse(raw) as Record<string, OpenGikaiMapping>;
   return mapping[lawId] || null;
+}
+
+/** Counts of 本則 changes only.
+ *
+ * `stats.added/modified/deleted` include 附則, whose articles are numbered
+ * separately from the main text — folding them in claimed "2 条が変更" for an
+ * amendment that touched no article of the main text at all. Every surface
+ * that shows a change count goes through this.
+ */
+export function mainChangeCounts(diffs: ArticleDiff[]) {
+  const main = diffs.filter((d) => !d.is_suppl);
+  const count = (type: ArticleDiff["type"]) =>
+    main.filter((d) => d.type === type).length;
+  return {
+    total: main.length,
+    added: count("added"),
+    modified: count("modified"),
+    deleted: count("deleted"),
+    supplTotal: diffs.length - main.length,
+  };
+}
+
+/** The 本則 entry best suited to preview an amendment, or null.
+ *
+ * 附則 is excluded: previewing 附則第一条 as if it were the substance of the
+ * amendment is the same mistake as counting it — a card can otherwise say
+ * "附則のみ" and then show a 施行期日 paragraph as what changed.
+ */
+export function previewDiff(diffs: ArticleDiff[]): ArticleDiff | null {
+  const main = diffs.filter((d) => !d.is_suppl);
+  const withBothSides = main.find(
+    (d) =>
+      d.type === "modified" &&
+      d.diff.some((l) => l.startsWith("+") && !l.startsWith("+++")) &&
+      d.diff.some((l) => l.startsWith("-") && !l.startsWith("---"))
+  );
+  return withBothSides ?? main.find((d) => d.type === "modified") ?? null;
 }

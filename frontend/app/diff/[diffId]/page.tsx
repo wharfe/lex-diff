@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getDiffIds, getDiffData } from "@/lib/data";
+import { getDiffIds, getDiffData, mainChangeCounts } from "@/lib/data";
 import { RevisionHeader } from "@/components/revision-header";
 import { PrSummaryCard } from "@/components/pr-summary";
 import { DiffViewer } from "@/components/diff-viewer";
@@ -18,10 +18,18 @@ export async function generateMetadata({
   const data = getDiffData(decodeURIComponent(diffId));
   const title = data.pr_summary?.title || data.revision_after.amendment_law_title;
   const year = data.date_after.slice(0, 4);
-  const changedCount = data.stats.added + data.stats.modified + data.stats.deleted;
+  // 本則 only — see mainChangeCounts. Folding 附則 in claimed "2条が変更され
+  // ました" for an amendment that changed no article of the main text at all.
+  const { total: mainCount, supplTotal: supplCount } = mainChangeCounts(
+    data.diffs
+  );
+  const changeSummary =
+    mainCount > 0
+      ? `${title}で本則${mainCount}条が変更されました。`
+      : `${title}。本則の条文は変わらず、附則（施行期日・経過措置・特例など）${supplCount}件のみの改正です。`;
   return {
     title: `${data.law_title}【${year}年改正】${title}`,
-    description: `${data.law_title}の${year}年改正による新旧条文の差分。${title}で${changedCount}条が変更されました。改正前後の条文を並べて確認できます。`,
+    description: `${data.law_title}の${year}年改正による新旧条文の差分。${changeSummary}改正前後の条文を並べて確認できます。`,
     alternates: { canonical: `/diff/${encodeURIComponent(diffId)}` },
     openGraph: {
       title: `${data.law_title}【${year}年改正】${title} | lexdiff`,

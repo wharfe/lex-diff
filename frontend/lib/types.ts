@@ -27,6 +27,13 @@ export interface ArticleDiff {
   paragraphs_after: Paragraph[];
   section_path: string[];
   annotation?: ArticleAnnotation;
+  /** True when this entry is a 附則 (supplementary provision) of the amending
+   * law rather than an article of the main text. e-Gov numbers 附則
+   * independently, so its article_num is namespaced
+   * "suppl_<AmendLawNum>_<num>" (see suppl_key in scripts/diff.py). */
+  is_suppl?: boolean;
+  /** The amending law a 附則 belongs to, e.g. "令和五年六月二三日法律第六六号". */
+  amend_law_num?: string | null;
 }
 
 export interface KeyChange {
@@ -59,6 +66,8 @@ export interface LawDiffData {
     added: number;
     modified: number;
     deleted: number;
+    main?: number;
+    suppl?: number;
   };
   diffs: ArticleDiff[];
   pr_summary?: PrSummary;
