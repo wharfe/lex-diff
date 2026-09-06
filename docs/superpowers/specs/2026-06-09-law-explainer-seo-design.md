@@ -121,6 +121,7 @@ timelineをそのまま渡さない。以下の前処理を行う：
 - 入力プロンプト材料：`law_title`、`law_num`、`category`、`summary.description`、上記で集約・根拠付けした改正リスト。
 - 出力：`explainer` JSON（上記スキーマ）。コードフェンス除去・`json.loads`は`law_summary.py`と同じ堅牢化を流用。`faq`欠落/`null`は`[]`に、`why`/`impact`の空文字は未設定として正規化。
 - **モデル**：`claude-sonnet-4-6`（最新Sonnet。長文品質とコストのバランス。既存`law_summary.py`の`claude-sonnet-4-20250514`から更新）。
+  - **注記（2026-09-06 追記）**: Claude Sonnet 4 は 2026-06-15 に廃止済み。現行コードは `claude-sonnet-5`（commit c692f6d）。**上のモデル名をそのままコピーしないこと。**
 - **プロンプト方針**：日本語SEO記事の作法に沿う。
   - 見出し・本文に検索意図の語（「○○法 改正」「わかりやすく」「いつから」）を自然に含める。
   - 専門用語を避け日常生活との関わりで説明（既存summaryの方針と一貫）。

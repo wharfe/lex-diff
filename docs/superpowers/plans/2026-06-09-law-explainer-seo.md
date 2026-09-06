@@ -10,6 +10,8 @@
 
 設計spec: `docs/superpowers/specs/2026-06-09-law-explainer-seo-design.md`
 
+> **注記（2026-09-06 追記）**: 本ドキュメント内の `claude-sonnet-4-6` / `claude-sonnet-4-20250514` は 2026-06-09 時点の記述です。Claude Sonnet 4 は 2026-06-15 に廃止され、現行コードは `claude-sonnet-5` を使います（commit c692f6d）。**このドキュメントのモデル名をそのままコピーしないでください。**
+
 ---
 
 ## File Structure
