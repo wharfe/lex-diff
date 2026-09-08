@@ -25,6 +25,7 @@ from pathlib import Path
 
 import anthropic
 from llm import complete_json
+from lawtext import extract_text, walk_tags
 
 MODEL = "claude-sonnet-5"
 DATA_DIR = Path(__file__).parent.parent / "data"
@@ -48,6 +49,13 @@ ABOLISHED_PENALTY_TERMS = ("懲役", "禁錮", "禁固", "禁こ")
 
 MAX_KEYWORDS = 5
 
+# Headings that make up a law's table of contents, outermost first.
+STRUCTURE_TITLE_TAGS = {"PartTitle", "ChapterTitle", "SectionTitle", "SubsectionTitle"}
+
+# 附則 is a different axis from the main text and says nothing about what the
+# law is for, so the evidence stops at its boundary.
+SUPPL = {"SupplProvision"}
+
 
 def load_env():
     env_path = Path(__file__).parent.parent / ".env"
@@ -59,8 +67,83 @@ def load_env():
                 os.environ.setdefault(key.strip(), value.strip())
 
 
-def validate_summary(summary: dict) -> list[str]:
-    """Return a list of human-readable validation errors (empty = valid)."""
+def build_evidence(law_full_text: dict) -> str:
+    """The law's own text, cut down to what a summary can be written from.
+
+    Three things, and deliberately not the whole law: 民法 is 226,000
+    characters and does not fit in a prompt at any useful price.
+
+    - the table of contents, which is the law's own account of its shape
+    - every article caption, which together are the list of what it covers
+      (1,250 of them in 民法, 17,823 characters — dense and cheap)
+    - article 1 in full, which is the purpose / scope clause and so the direct
+      basis for the summary's `scope` field. 刑法第一条 reads "日本国内において
+      罪を犯したすべての者に適用する" — that *is* the answer, verbatim.
+
+    Raises rather than returning something empty: calling the model with no
+    evidence is what let it write from memory in the first place.
+    """
+    headings = [
+        extract_text(n).strip()
+        for n in walk_tags(law_full_text, STRUCTURE_TITLE_TAGS, stop_at=SUPPL)
+    ]
+    captions = [
+        extract_text(n).strip()
+        for n in walk_tags(law_full_text, {"ArticleCaption"}, stop_at=SUPPL)
+    ]
+    articles = walk_tags(law_full_text, {"Article"}, stop_at=SUPPL)
+    first_article = extract_text(articles[0]).strip() if articles else ""
+
+    if not (headings or captions or first_article):
+        raise ValueError(
+            "no law text to summarise — refusing to call the model with empty "
+            "evidence (it would answer from memory)"
+        )
+
+    parts = []
+    if headings:
+        parts.append("## 目次\n" + "\n".join(h for h in headings if h))
+    if captions:
+        parts.append("## 各条の見出し\n" + "\n".join(c for c in captions if c))
+    if first_article:
+        parts.append("## 第一条（全文）\n" + first_article)
+    return "\n\n".join(parts)
+
+
+def load_evidence(raw_dir: Path, law_id: str) -> str:
+    """Build evidence from the newest snapshot of a law in `raw_dir`.
+
+    Newest, not any: a summary describes the law as it stands now, and
+    data/raw holds one file per point-in-time fetch. The `_revisions.json`
+    companion has no law_full_text and is skipped by the same test that skips
+    a malformed snapshot.
+    """
+    snapshots = []
+    for path in sorted(raw_dir.glob(f"{law_id}_*.json")):
+        try:
+            body = json.loads(path.read_text()).get("law_full_text")
+        except json.JSONDecodeError:
+            continue
+        if body:
+            snapshots.append((path.name, body))
+    if not snapshots:
+        raise FileNotFoundError(
+            f"no snapshot with law_full_text for {law_id} in {raw_dir} — "
+            "run fetch.py first; a summary is not written without the law text"
+        )
+    return build_evidence(snapshots[-1][1])
+
+
+def validate_summary_shape(summary: dict) -> list[str]:
+    """The checks that can be made without the law text in hand.
+
+    Split out from validate_summary because the two run in different places.
+    A shipped summary is checked long after generation, from a repository that
+    does not carry data/raw (it is gitignored, so CI has no snapshots at all);
+    all that can be asked of it there is that it is well formed and free of the
+    abolished penalty names. Grounding needs the evidence and so belongs to
+    generation time only — see validate_summary below.
+    """
     errors: list[str] = []
     if not isinstance(summary, dict):
         return ["summary is not an object"]
@@ -94,8 +177,41 @@ def validate_summary(summary: dict) -> list[str]:
     return errors
 
 
-def generate_summary(law_title: str, law_num: str, category: str, revision_count: int) -> dict:
-    """Generate a brief plain-language summary of a law."""
+def validate_summary(summary: dict, evidence: str) -> list[str]:
+    """Shape, plus: every keyword must actually occur in the law's own text.
+
+    `evidence` is required rather than optional so that a caller which lost it
+    fails loudly instead of quietly falling back to the memory-only behaviour
+    this function exists to end.
+
+    A keyword is a noun: either the law contains the word or it does not. Prose
+    cannot be checked this way — a summary may fairly say 事業者 or 日常生活
+    without the statute using either word — but an invented institution almost
+    always surfaces in the keywords first, and catching it there costs nothing.
+    """
+    if not evidence or not evidence.strip():
+        return ["evidence is empty — refusing to validate a summary with no basis"]
+
+    errors = validate_summary_shape(summary)
+    keywords = summary.get("keywords") if isinstance(summary, dict) else None
+    if isinstance(keywords, list):
+        for kw in keywords:
+            if isinstance(kw, str) and kw.strip() and kw.strip() not in evidence:
+                errors.append(
+                    f"keyword not found in the law text: {kw}"
+                    " (keywords must come from the law's own headings or article 1)"
+                )
+    return errors
+
+
+def generate_summary(
+    law_title: str,
+    law_num: str,
+    category: str,
+    revision_count: int,
+    evidence: str,
+) -> dict:
+    """Generate a brief plain-language summary of a law from its own text."""
     client = anthropic.Anthropic()
 
     prompt = f"""あなたは日本の法律の専門家です。以下の法律について、一般市民向けの簡潔な説明をJSON形式で出力してください。
@@ -105,7 +221,16 @@ def generate_summary(law_title: str, law_num: str, category: str, revision_count
 分類: {category}
 改正回数: {revision_count}回
 
+--- 以下はこの法律の実際の条文から機械的に抜き出した根拠です ---
+
+{evidence}
+
+--- 根拠ここまで ---
+
 制約:
+- 上の根拠に書かれていることだけを使って書いてください。根拠に無い制度・用語・数値を補わないでください。
+- keywords は必ず根拠テキストに現れる語から選んでください（現れない語は機械的に弾かれ、やり直しになります）。
+- 根拠は目次・各条の見出し・第一条だけで、条文本文の大部分は含まれていません。書かれていない細部を推測で埋めないでください。
 - 2025年6月1日施行の改正刑法により「懲役」「禁錮」は「拘禁刑」に一本化されました。現行制度の説明にこれらの刑名を使わないでください。
 - 現在の制度として言えることだけを書き、廃止された制度名・過去の呼称を現行のものとして提示しないでください。
 
@@ -146,15 +271,21 @@ def main():
         if rev_data.get("revisions"):
             category = rev_data["revisions"][0].get("category", "")
 
+    # The law's own text, not the model's memory. Raises when there is no
+    # snapshot: a summary is not written without evidence.
+    evidence = load_evidence(DATA_DIR / "raw", law_id)
+
     print(f"Generating summary for {timeline['law_title']}...")
+    print(f"  Evidence: {len(evidence)} chars from the law text")
     summary = generate_summary(
         timeline["law_title"],
         timeline["law_num"],
         category,
         timeline["revision_count"],
+        evidence,
     )
 
-    errors = validate_summary(summary)
+    errors = validate_summary(summary, evidence)
     if errors:
         print("Validation failed — nothing was saved:")
         for e in errors:
