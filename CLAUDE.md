@@ -47,7 +47,9 @@ npm run lint   # Lint
 │   ├── explainer.py       AI-generated "recent amendments" section (see below)
 │   ├── llm.py             Shared Claude API helpers for the three scripts above
 │   └── requirements.txt   Python dependencies (legacy, use pyproject.toml)
-├── tests/                 pytest suite for the pure functions in scripts/
+├── tests/                 pytest suite — the pure functions in scripts/, plus
+│                          test_shipped_data.py over frontend/public/data/
+│                          (not run in CI yet — issue #17)
 ├── data/                  Generated data (not committed — all subdirs gitignored)
 │   ├── raw/               Raw API responses
 │   ├── diffs/             Computed diff JSON files
@@ -56,7 +58,8 @@ npm run lint   # Lint
 └── frontend/              Next.js application
     ├── app/               Pages and layouts
     ├── components/        React components
-    ├── lib/               Types and data utilities
+    ├── lib/               Types and data utilities, plus law-seo.ts — the one
+    │                      place holding hand-written (not generated) copy
     └── public/data/       Static diff + timeline data for SSG (committed)
 ```
 
@@ -83,13 +86,31 @@ that shape:
   raises on `stop_reason == "max_tokens"`; storing the fragment as prose once
   shipped raw JSON to readers.
 - Output is validated before it is written and before a cached entry is reused
-  (`validate_annotation` / `validate_pr_summary` / `validate_explainer`);
-  a failure exits non-zero and saves nothing.
+  (`validate_annotation` / `validate_pr_summary` / `validate_explainer` /
+  `validate_summary`); a failure exits non-zero and saves nothing.
+- `law_summary.py` is the exception to the first rule above and the weakest of
+  the three: it hands the model no law text at all, only the law's name, number,
+  category and revision count. `validate_summary` is a narrow guard against one
+  known failure — it rejects the penalty names abolished in 2025 (懲役 / 禁錮 /
+  禁固 / 禁こ, merged into 拘禁刑 on 2025-06-01, which the 刑法 summary shipped
+  as current law) and checks the shape. A wrong scope or a different repealed
+  institution still passes. Feeding it the actual article text is issue #16.
+  The ban is deliberately scoped to `law_summary.py`: a diff's `pr_summary`
+  legitimately says 懲役 when describing the amendment that renamed it.
 - `explainer.py` additionally marks each amendment `grounded` (a diff exists →
   `why`/`impact` allowed) or ungrounded (only the amendment's name and year are
   known → prose stays within that, and `why`/`impact` are stripped).
 - Annotations are cached by a fingerprint of model + prompt version + prompt
   text. Changing a prompt means bumping `PROMPT_VERSION` in `annotate.py`.
+
+Hand-written copy is the blind spot of all of the above: `frontend/lib/law-seo.ts`
+supplies a page's `<title>` tail and meta description, and no validator sees it.
+Its legal claims must be written from the article text in `frontend/public/data/`,
+with the conditions intact — 「怠ると過料」 for 「正当な理由がないのに怠ったときは
+十万円以下の過料」 is the same class of error as an abolished penalty name. Facts
+the page already computes (the amendment count) belong in the template, not in
+the prose. `assertLawSeoOverridesValid` fails the build on an unknown law id or a
+blank field, because a typo would silently revert a page that took months to rank.
 
 ## Key Concepts
 
@@ -102,8 +123,11 @@ that shape:
   article number lets 附則第一条 overwrite 本則第一条. `diff.py` therefore keys
   附則 as `suppl_<AmendLawNum>_<num>` (`suppl_key`), carries `is_suppl` and
   `amend_law_num` on every entry, and refuses a duplicate key rather than
-  dropping an article. The frontend splits the two and counts only 本則 in every
-  change count (`mainChangeCounts`). 附則 is not merely procedural — 労働基準法
+  dropping an article. Every change count is 本則-only, on both sides: the
+  frontend's `mainChangeCounts` and the published JSON's
+  `stats.added/modified/deleted` (`compute_stats` in `diff.py`; `stats.suppl` is
+  how many 附則 entries there are, and a per-type breakdown of them is
+  deliberately not published). 附則 is not merely procedural — 労働基準法
   附則第138条 was the whole substance of its own amendment.
 
 ## Git Conventions
