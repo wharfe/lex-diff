@@ -62,12 +62,14 @@ export interface LawDiffData {
   date_after: string;
   revision_before: RevisionInfo;
   revision_after: RevisionInfo;
+  /** added/modified/deleted count 本則 only; `suppl` is how many 附則 entries
+   *  there are. Nothing in the app reads this — it is the published JSON's shape. */
   stats: {
     added: number;
     modified: number;
     deleted: number;
-    main?: number;
-    suppl?: number;
+    main: number;
+    suppl: number;
   };
   diffs: ArticleDiff[];
   pr_summary?: PrSummary;

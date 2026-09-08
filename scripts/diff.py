@@ -378,6 +378,33 @@ def find_section_path(node: dict | str, article_num: str, path: list[str] | None
     return None
 
 
+def compute_stats(diffs: list[dict]) -> dict:
+    """Change counts, with 本則 and 附則 kept apart.
+
+    `added` / `modified` / `deleted` count 本則 only — the same numbers the site
+    shows (frontend/lib/data.ts mainChangeCounts). They used to fold 附則 in,
+    which made the published JSON claim "2 条が変更" for 労働基準法 2024 when the
+    main text was untouched: e-Gov numbers each amending law's 附則 from 1
+    independently, so they are a different axis, not more of the same articles.
+    `suppl` carries how many 附則 entries there are; a per-type breakdown of
+    them is deliberately not published — nothing reads it, and it is derivable
+    from `diffs`, so it would be public surface with no reader.
+    """
+    main = [d for d in diffs if not d.get("is_suppl")]
+    suppl = [d for d in diffs if d.get("is_suppl")]
+
+    def count(entries: list[dict], type_: str) -> int:
+        return sum(1 for d in entries if d["type"] == type_)
+
+    return {
+        "added": count(main, "added"),
+        "modified": count(main, "modified"),
+        "deleted": count(main, "deleted"),
+        "main": len(main),
+        "suppl": len(suppl),
+    }
+
+
 def main():
     if len(sys.argv) < 4:
         print(__doc__)
@@ -433,13 +460,7 @@ def main():
         d["section_path"] = section_path or []
 
     # Build output
-    stats = {
-        "added": sum(1 for d in diffs if d["type"] == "added"),
-        "modified": sum(1 for d in diffs if d["type"] == "modified"),
-        "deleted": sum(1 for d in diffs if d["type"] == "deleted"),
-        "main": sum(1 for d in diffs if not d.get("is_suppl")),
-        "suppl": sum(1 for d in diffs if d.get("is_suppl")),
-    }
+    stats = compute_stats(diffs)
 
     output = {
         "law_id": law_id,
@@ -464,7 +485,10 @@ def main():
     out_path = DIFF_DIR / f"{law_id}_{date_before}_{date_after}.json"
     out_path.write_text(json.dumps(output, ensure_ascii=False, indent=2))
     print(f"\nOutput: {out_path}")
-    print(f"Stats: +{stats['added']} added, ~{stats['modified']} modified, -{stats['deleted']} deleted")
+    print(
+        f"Stats (本則): +{stats['added']} added, ~{stats['modified']} modified, "
+        f"-{stats['deleted']} deleted / 附則: {stats['suppl']}"
+    )
 
 
 if __name__ == "__main__":

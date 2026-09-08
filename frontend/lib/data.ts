@@ -62,10 +62,14 @@ export function getOpenGikaiLinks(
 
 /** Counts of 本則 changes only.
  *
- * `stats.added/modified/deleted` include 附則, whose articles are numbered
- * separately from the main text — folding them in claimed "2 条が変更" for an
- * amendment that touched no article of the main text at all. Every surface
- * that shows a change count goes through this.
+ * 附則 articles are numbered separately from the main text, so folding them in
+ * claimed "2 条が変更" for an amendment that touched no article of the main text
+ * at all. Every surface that shows a change count goes through this.
+ *
+ * The published JSON's `stats` used to have that bug and no longer does — its
+ * added/modified/deleted are 本則-only too (scripts/diff.py compute_stats). This
+ * function still exists because it counts from `diffs`, which every caller
+ * already holds, and because it also reports `supplTotal`.
  */
 export function mainChangeCounts(diffs: ArticleDiff[]) {
   const main = diffs.filter((d) => !d.is_suppl);
