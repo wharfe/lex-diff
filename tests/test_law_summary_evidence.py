@@ -212,7 +212,12 @@ def test_first_article_is_not_labelled_第一条_when_it_is_not():
     )
     evidence = build_evidence(tree)
     assert "## 第一条（全文）" not in evidence
-    assert "第1_2条" in evidence or "1_2" in evidence
+    assert "1_2" in evidence
+    # The label alone is not enough: the design leans on article 1 being the
+    # purpose clause, and the prompt says so. Without this note the model reads
+    # a definition clause as if it stated the scope.
+    assert "第一条が無い" in evidence
+    assert "断定せず" in evidence
 
 
 # --- choosing which snapshot is "the law as it stands" -------------------------
@@ -269,15 +274,48 @@ def test_revisions_file_is_excluded_by_name(tmp_path):
     assert "（現行の規定）" in load_evidence(tmp_path, "999AC0000000001", "2026-09-08")
 
 
-def test_latest_enforced_revision_ignores_future_dates(tmp_path):
-    (tmp_path / "999AC0000000001_revisions.json").write_text(
-        json.dumps(
-            {"revisions": [
-                {"amendment_enforcement_date": "2024-04-01"},
-                {"amendment_enforcement_date": "2099-04-01"},
-            ]},
-            ensure_ascii=False,
-        )
+def test_article_with_only_a_title_is_not_evidence():
+    # extract_text on such an Article yields "第一条" — a label, not text. The
+    # emptiness check has to be structural, not a string length.
+    tree = node(
+        "Law",
+        node("LawBody", node("MainProvision", node(
+            "Chapter",
+            node("ChapterTitle", text_node("   ")),
+            node("Article", node("ArticleTitle", text_node("第一条")), Num="1")))),
     )
-    assert law_summary.latest_enforced_revision(
-        tmp_path, "999AC0000000001", "2026-09-08") == "2024-04-01"
+    with pytest.raises(ValueError):
+        build_evidence(tree)
+
+
+def test_snapshot_with_a_non_date_suffix_is_ignored(tmp_path):
+    # "<law_id>_2025-01-01_copy.json" sorts after the real file and would be
+    # picked as newest, its non-date name then compared as if it were a date.
+    _write_snapshot(tmp_path, "999AC0000000001", "2024-01-01", "（本物）")
+    (tmp_path / "999AC0000000001_2024-01-01_copy.json").write_text("{ not json")
+    assert "（本物）" in load_evidence(tmp_path, "999AC0000000001", "2026-09-08")
+
+
+def test_main_refuses_a_snapshot_that_is_not_todays(monkeypatch, tmp_path):
+    # The evidence for "the law as it stands" has to be fetched today. The
+    # earlier design compared against <law_id>_revisions.json, whose own
+    # freshness nobody guaranteed — a missing or stale list passed silently.
+    raw = tmp_path / "raw"; raw.mkdir()
+    _write_snapshot(raw, "140AC0000000045", "2020-01-01", "（古い規定）")
+    tl = tmp_path / "timelines"; tl.mkdir()
+    (tl / "140AC0000000045.json").write_text(json.dumps(
+        {"law_title": "刑法", "law_num": "x", "revision_count": 1, "timeline": []},
+        ensure_ascii=False))
+    called = []
+    monkeypatch.setattr(law_summary, "DATA_DIR", tmp_path)
+    monkeypatch.setattr(law_summary, "FRONTEND_DIR", tmp_path / "frontend")
+    monkeypatch.setattr(law_summary, "load_env", lambda: None)
+    monkeypatch.setattr(law_summary, "generate_summary",
+                        lambda *a, **k: called.append(1))
+    monkeypatch.setattr(sys, "argv", ["law_summary.py", "140AC0000000045"])
+
+    with pytest.raises(SystemExit) as exc:
+        law_summary.main()
+
+    assert exc.value.code == 3
+    assert called == [], "the model was called with law text that is not today's"

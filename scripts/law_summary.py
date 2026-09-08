@@ -31,10 +31,12 @@ banning their use in the same breath. main() now refuses to run when the newest
 snapshot is older than the law's latest enforced revision.
 """
 
+import re
 import sys
 import json
 import os
 import datetime
+from zoneinfo import ZoneInfo
 from pathlib import Path
 
 import anthropic
@@ -63,6 +65,16 @@ ABOLISHED_PENALTY_TERMS = ("懲役", "禁錮", "禁固", "禁こ")
 
 MAX_KEYWORDS = 5
 MIN_KEYWORD_LEN = 2
+
+# Enforcement dates are Japanese calendar dates, so "today" is Tokyo's. On a
+# UTC runner every Japanese midnight-to-09:00 would otherwise be yesterday.
+JST = ZoneInfo("Asia/Tokyo")
+
+# data/raw filenames are "<law_id>_<YYYY-MM-DD>.json". Match the date strictly:
+# a stray "<law_id>_2025-01-01_copy.json" would otherwise sort after the real
+# file and be picked as the newest, with its non-date suffix then compared as
+# a string.
+SNAPSHOT_RE = re.compile(r"^(\d{4}-\d{2}-\d{2})$")
 
 # Headings that make up a law's table of contents, outermost first.
 STRUCTURE_TITLE_TAGS = {"PartTitle", "ChapterTitle", "SectionTitle", "SubsectionTitle"}
@@ -117,7 +129,12 @@ def build_evidence(law_full_text: dict) -> str:
         ) if t
     ]
     articles = walk_tags(law_full_text, {"Article"}, stop_at=SKIP_SUBTREES)
-    first_article = extract_text(articles[0]).strip() if articles else ""
+    # An Article carrying only its own title yields "第一条" — a label, not
+    # text. extract_text cannot tell the two apart, so the test is structural:
+    # the article must actually contain a sentence.
+    first_article = ""
+    if articles and walk_tags(articles[0], {"Sentence"}):
+        first_article = extract_text(articles[0]).strip()
     # Do not call it 第一条 without checking. articles[0] is only the first in
     # document order; a law whose 第一条 was 削除 and dropped from the tree would
     # have its 第一条の二 handed over under a label asserting otherwise, and the
@@ -130,8 +147,18 @@ def build_evidence(law_full_text: dict) -> str:
     if captions:
         parts.append("## 各条の見出し\n" + "\n".join(captions))
     if first_article:
-        label = "第一条" if first_num == "1" else f"最初の条（第{first_num}条）"
-        parts.append(f"## {label}（全文）\n" + first_article)
+        if first_num == "1":
+            parts.append("## 第一条（全文）\n" + first_article)
+        else:
+            # The design leans on article 1 being the purpose / scope clause.
+            # When there is no article 1, say so rather than letting the model
+            # read a definition or duty clause as if it stated the scope.
+            parts.append(
+                f"## 最初の条（第{first_num}条・全文）\n"
+                "※この法令には第一条が無いため、目的・適用範囲を述べた条ではない"
+                "可能性がある。適用範囲は断定せず、目次と見出しから言える範囲に"
+                "とどめること。\n" + first_article
+            )
 
     evidence = "\n\n".join(parts)
     # Section labels alone are not evidence; measure what is under them.
@@ -144,43 +171,22 @@ def build_evidence(law_full_text: dict) -> str:
     return evidence
 
 
-def latest_enforced_revision(raw_dir: Path, law_id: str, today: str) -> str | None:
-    """The newest already-in-force revision date for a law, or None if unknown.
+def snapshot_date(path: Path, law_id: str) -> str | None:
+    """The asof date in a raw snapshot's filename, or None if it is not one.
 
-    Read from the `_revisions.json` companion that timeline.py already fetches.
-    Future enforcement dates are excluded: a law is described as it stands, and
-    a revision that has not taken effect is not yet the law.
+    None covers `<law_id>_revisions.json` and anything else the glob picks up:
+    only a strict YYYY-MM-DD is a snapshot date, so a stray copy cannot sort
+    itself to the front and then be string-compared as if it were a date.
     """
-    path = raw_dir / f"{law_id}_revisions.json"
-    if not path.exists():
-        return None
-    try:
-        doc = json.loads(path.read_text())
-    except (json.JSONDecodeError, OSError):
-        return None
-    if not isinstance(doc, dict):
-        return None
-    dates = []
-    for rev in doc.get("revisions") or []:
-        if not isinstance(rev, dict):
-            continue
-        d = rev.get("amendment_enforcement_date") or rev.get("enforcement_date")
-        if isinstance(d, str) and d and d <= today:
-            dates.append(d)
-    return max(dates) if dates else None
-
-
-def snapshot_date(path: Path, law_id: str) -> str:
-    """The asof date encoded in a raw snapshot's filename."""
-    return path.name[len(law_id) + 1 : -len(".json")]
+    stem = path.name[len(law_id) + 1 : -len(".json")]
+    return stem if SNAPSHOT_RE.match(stem) else None
 
 
 def newest_snapshot(raw_dir: Path, law_id: str, today: str) -> Path:
     """The newest snapshot of a law that is not dated in the future."""
     candidates = sorted(
         p for p in raw_dir.glob(f"{law_id}_*.json")
-        if not p.name.endswith("_revisions.json")
-        and snapshot_date(p, law_id) <= today
+        if (d := snapshot_date(p, law_id)) is not None and d <= today
     )
     if not candidates:
         raise FileNotFoundError(
@@ -208,7 +214,7 @@ def load_evidence(raw_dir: Path, law_id: str, today: str | None = None) -> str:
     function refuses the first, and refuses a newest-candidate that will not
     parse rather than quietly falling back to an older, more-wrong snapshot.
     """
-    today = today or datetime.date.today().isoformat()
+    today = today or datetime.datetime.now(JST).date().isoformat()
     newest = newest_snapshot(raw_dir, law_id, today)
     try:
         doc = json.loads(newest.read_text())
@@ -261,9 +267,11 @@ def validate_summary_shape(summary: dict) -> list[str]:
     elif not all(isinstance(k, str) and k.strip() for k in keywords):
         errors.append("keywords must all be non-empty strings")
     else:
-        # A one-character keyword is not a term, and the grounding check cannot
-        # reject it either: 「刑」 occurs inside 「刑罰」, so any single kanji the
-        # law uses at all passes. 刑法 shipped exactly that.
+        # Output quality, not grounding. The containment check cannot reject a
+        # single character — 「刑」 occurs inside 「刑罰」, so any kanji the law
+        # uses at all passes it, and 刑法 shipped exactly that as a keyword.
+        # This length rule does not make a keyword meaningful either (「の罪」
+        # would pass); it removes the one failure that was actually observed.
         for k in keywords:
             if len(k.strip()) < MIN_KEYWORD_LEN:
                 errors.append(
@@ -380,22 +388,26 @@ def main():
     # today. Raises when there is no snapshot: a summary is not written
     # without evidence.
     raw_dir = DATA_DIR / "raw"
-    today = datetime.date.today().isoformat()
+    today = datetime.datetime.now(JST).date().isoformat()
     evidence = load_evidence(raw_dir, law_id, today)
 
-    # A summary describes current law, so evidence older than the law's latest
-    # enforced revision is the wrong text. Every 刑法 snapshot on disk predated
-    # the 2025-06-01 merger into 拘禁刑, which put the prompt in the position of
-    # asking for current law while handing over repealed penalty names and
-    # forbidding their use — the model could satisfy the evidence or the ban,
-    # not both.
+    # A summary describes the law as it stands, so the evidence must be the
+    # law as it stands — which means fetched today.
+    #
+    # The first attempt at this compared the snapshot against the newest
+    # enforced revision in <law_id>_revisions.json. That machinery bought
+    # almost nothing: nobody guarantees the *revision list* is current either,
+    # and timeline.py reuses an existing one indefinitely, so the ordinary case
+    # of "both files are old together" satisfied the comparison and passed.
+    # A missing, malformed or empty list failed open on top of that. Requiring
+    # today's fetch needs no second file to be trusted, and fetch.py takes
+    # seconds. Summaries are written rarely; the cost is not the constraint.
     used = snapshot_date(newest_snapshot(raw_dir, law_id, today), law_id)
-    latest = latest_enforced_revision(raw_dir, law_id, today)
-    if latest and used < latest:
+    if used != today:
         print(
-            f"Refusing to summarise from stale law text:\n"
+            f"Refusing to summarise from law text that is not today's:\n"
             f"  newest snapshot: {used}\n"
-            f"  latest enforced revision: {latest}\n"
+            f"  today (JST):     {today}\n"
             f"  run: uv run python scripts/fetch.py {law_id} {used} {today}"
         )
         sys.exit(3)

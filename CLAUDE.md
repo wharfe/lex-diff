@@ -106,11 +106,16 @@ that shape:
   summarised from text older than their latest enforced revision, and every
   刑法 snapshot predated the 2025-06-01 merger into 拘禁刑 — so the prompt asked
   for current law while handing over repealed penalty names and banning their
-  use in the same breath. `main()` now exits 3 rather than calling the model
-  when the newest snapshot predates the law's latest enforced revision, and
-  `load_evidence` ignores future-dated snapshots (the pipeline fetches those
-  routinely, to diff against) and refuses to fall back to an older snapshot
-  when the newest one will not parse.
+  use in the same breath. `main()` now **requires a snapshot fetched today**
+  (JST — these are Japanese enforcement dates) and exits 3 with the `fetch.py`
+  command otherwise. Comparing against the newest enforced revision in
+  `<law_id>_revisions.json` was tried first and removed: nothing guarantees
+  that list is current either, `timeline.py` reuses an existing one
+  indefinitely, and a missing or malformed list failed open. Requiring today's
+  fetch needs no second file to be trusted. `load_evidence` additionally
+  ignores future-dated snapshots (the pipeline fetches those routinely, to diff
+  against) and refuses to fall back to an older snapshot when the newest one
+  will not parse.
 - `explainer.py` additionally marks each amendment `grounded` (a diff exists →
   `why`/`impact` allowed) or ungrounded (only the amendment's name and year are
   known → prose stays within that, and `why`/`impact` are stripped).

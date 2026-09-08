@@ -1,3 +1,4 @@
+import datetime
 import json
 import sys
 from pathlib import Path
@@ -119,10 +120,16 @@ def _timeline_fixture(tmp_path):
 
 
 def _raw_fixture(tmp_path):
-    """main() now refuses to run without the law text, so give it one."""
+    """main() refuses to run without today's law text, so give it today's.
+
+    The date is computed rather than hardcoded because the guard compares
+    against today in Asia/Tokyo: a fixed filename would pass on the day it was
+    written and fail every day after.
+    """
     raw_dir = tmp_path / "raw"
     raw_dir.mkdir()
-    (raw_dir / "140AC0000000045_2023-07-13.json").write_text(
+    today = datetime.datetime.now(law_summary.JST).date().isoformat()
+    (raw_dir / f"140AC0000000045_{today}.json").write_text(
         json.dumps(
             {
                 "law_full_text": {
@@ -139,7 +146,19 @@ def _raw_fixture(tmp_path):
                                     "attr": {"Num": "1"},
                                     "children": [
                                         {"tag": "ArticleCaption", "attr": {}, "children": ["（国内犯）"]},
-                                        {"tag": "Paragraph", "attr": {}, "children": ["犯罪 刑罰 拘禁刑 罰金 殺人"]},
+                                        {
+                                            "tag": "Paragraph",
+                                            "attr": {},
+                                            "children": [{
+                                                "tag": "ParagraphSentence",
+                                                "attr": {},
+                                                "children": [{
+                                                    "tag": "Sentence",
+                                                    "attr": {},
+                                                    "children": ["犯罪 刑罰 拘禁刑 罰金 殺人"],
+                                                }],
+                                            }],
+                                        },
                                     ],
                                 },
                             ],
@@ -225,38 +244,6 @@ def test_the_prompt_contains_the_evidence(monkeypatch):
 
     assert EVIDENCE in seen["prompt"], "the law text never reached the model"
     assert "刑法" in seen["prompt"]
-
-
-def test_main_refuses_stale_evidence_and_saves_nothing(monkeypatch, tmp_path):
-    # Every 刑法 snapshot on disk predated the 2025-06-01 merger into 拘禁刑, so
-    # the prompt asked for current law while handing over repealed penalty
-    # names and forbidding their use. The model could satisfy the evidence or
-    # the ban, not both.
-    path = _timeline_fixture(tmp_path)
-    before = path.read_bytes()
-    raw_dir = _raw_fixture(tmp_path)
-    (raw_dir / "140AC0000000045_revisions.json").write_text(
-        json.dumps(
-            {"revisions": [{"amendment_enforcement_date": "2025-06-01"}]},
-            ensure_ascii=False,
-        )
-    )
-    called = []
-    monkeypatch.setattr(
-        law_summary, "generate_summary", lambda *a, **k: called.append(1) or valid_summary()
-    )
-    monkeypatch.setattr(law_summary, "DATA_DIR", tmp_path)
-    monkeypatch.setattr(law_summary, "FRONTEND_DIR", tmp_path / "frontend")
-    monkeypatch.setattr(law_summary, "load_env", lambda: None)
-    monkeypatch.setattr(sys, "argv", ["law_summary.py", "140AC0000000045"])
-
-    # The fixture snapshot is dated 2023-07-13, older than the revision above.
-    with pytest.raises(SystemExit) as exc:
-        law_summary.main()
-
-    assert exc.value.code == 3
-    assert called == [], "the model was called with stale law text"
-    assert path.read_bytes() == before
 
 
 def test_single_character_keyword_is_rejected():
