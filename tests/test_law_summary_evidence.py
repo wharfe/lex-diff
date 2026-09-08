@@ -133,3 +133,151 @@ def test_load_evidence_ignores_the_revisions_file(tmp_path):
     )
     with pytest.raises(FileNotFoundError):
         load_evidence(tmp_path, "999AC0000000001")
+
+
+# --- what Gate3 found ---------------------------------------------------------
+#
+# Each test below pins one finding from the review of this change. They are
+# grouped here rather than merged above because the failures they describe all
+# survived the first round of tests: every one of them looked like working code.
+
+def suppl_tree():
+    """A law with a 附則 block and a TOC, like the real e-Gov trees."""
+    return node(
+        "Law",
+        node(
+            "LawBody",
+            node(  # the law's own table of contents — repeats the body headings
+                "TOC",
+                node("TOCChapter", node("ChapterTitle", text_node("第一章　総則"))),
+            ),
+            node(
+                "MainProvision",
+                node(
+                    "Chapter",
+                    node("ChapterTitle", text_node("第一章　総則")),
+                    article("1", "（目的）", "この法律は、猫の福祉の増進を目的とする。"),
+                ),
+            ),
+            node(
+                "SupplProvision",
+                node("SupplProvisionLabel", text_node("附則")),
+                article("1", "（施行期日）", "この法律は、公布の日から施行する。"),
+            ),
+        ),
+    )
+
+
+def test_table_of_contents_is_not_printed_twice():
+    # The e-Gov tree carries a TOC element repeating every body heading, so
+    # collecting both sent the whole outline twice (民法: 364 lines, 197 of
+    # them duplicates).
+    evidence = build_evidence(suppl_tree())
+    assert evidence.count("第一章　総則") == 1
+
+
+def test_supplementary_provisions_are_excluded():
+    # 附則 is a different axis from the main text and says nothing about what
+    # the law is for. This is the largest self-made decision in the evidence
+    # design and had no test at all.
+    evidence = build_evidence(suppl_tree())
+    assert "（施行期日）" not in evidence
+    assert "（目的）" in evidence
+
+
+def test_blank_headings_do_not_count_as_evidence():
+    # A heading node whose text is empty makes the list truthy while
+    # contributing nothing: testing the lists instead of the assembled text
+    # sent the model "## 目次" alone and called it evidence.
+    blank = node(
+        "Law",
+        node("LawBody", node("MainProvision", node(
+            "Chapter", node("ChapterTitle", text_node("   "))))),
+    )
+    with pytest.raises(ValueError):
+        build_evidence(blank)
+
+
+def test_first_article_is_not_labelled_第一条_when_it_is_not():
+    # articles[0] is only the first in document order. A law whose 第一条 was
+    # 削除 and dropped from the tree would have its 第一条の二 handed over under
+    # a label asserting otherwise — and the prompt tells the model this is
+    # where `scope` comes from.
+    tree = node(
+        "Law",
+        node("LawBody", node("MainProvision", node(
+            "Chapter",
+            node("ChapterTitle", text_node("第一章")),
+            article("1_2", "（定義）", "この法律において「猫」とは、家猫をいう。")))),
+    )
+    evidence = build_evidence(tree)
+    assert "## 第一条（全文）" not in evidence
+    assert "第1_2条" in evidence or "1_2" in evidence
+
+
+# --- choosing which snapshot is "the law as it stands" -------------------------
+
+def _write_snapshot(raw_dir, law_id, date, caption):
+    tree = node(
+        "Law",
+        node("LawBody", node("MainProvision", node(
+            "Chapter",
+            node("ChapterTitle", text_node("第一章")),
+            article("1", caption, "本文。")))),
+    )
+    (raw_dir / f"{law_id}_{date}.json").write_text(
+        json.dumps({"law_full_text": tree}, ensure_ascii=False)
+    )
+
+
+def test_future_dated_snapshot_is_not_used(tmp_path):
+    # The pipeline routinely fetches an enforcement date months ahead in order
+    # to diff against it, so the newest file on disk is regularly one that has
+    # not taken effect. A summary describes the law as it stands.
+    _write_snapshot(tmp_path, "999AC0000000001", "2024-01-01", "（現行の規定）")
+    _write_snapshot(tmp_path, "999AC0000000001", "2099-01-01", "（未施行の規定）")
+    evidence = load_evidence(tmp_path, "999AC0000000001", "2026-09-08")
+    assert "（現行の規定）" in evidence
+    assert "（未施行の規定）" not in evidence
+
+
+def test_unreadable_newest_snapshot_does_not_fall_back_to_an_older_one(tmp_path):
+    # Falling back looks like success and publishes superseded law as current.
+    _write_snapshot(tmp_path, "999AC0000000001", "2020-01-01", "（古い規定）")
+    (tmp_path / "999AC0000000001_2024-01-01.json").write_text("{ not json")
+    with pytest.raises(ValueError):
+        load_evidence(tmp_path, "999AC0000000001", "2026-09-08")
+
+
+def test_newest_snapshot_without_law_full_text_does_not_fall_back(tmp_path):
+    _write_snapshot(tmp_path, "999AC0000000001", "2020-01-01", "（古い規定）")
+    (tmp_path / "999AC0000000001_2024-01-01.json").write_text(
+        json.dumps({"error": "not found"}, ensure_ascii=False)
+    )
+    with pytest.raises(ValueError):
+        load_evidence(tmp_path, "999AC0000000001", "2026-09-08")
+
+
+def test_revisions_file_is_excluded_by_name(tmp_path):
+    # It sorts after every dated snapshot, so excluding it only incidentally
+    # (by having no law_full_text) would make it the newest candidate and turn
+    # every run into the fall-back error above.
+    _write_snapshot(tmp_path, "999AC0000000001", "2024-01-01", "（現行の規定）")
+    (tmp_path / "999AC0000000001_revisions.json").write_text(
+        json.dumps({"revisions": []}, ensure_ascii=False)
+    )
+    assert "（現行の規定）" in load_evidence(tmp_path, "999AC0000000001", "2026-09-08")
+
+
+def test_latest_enforced_revision_ignores_future_dates(tmp_path):
+    (tmp_path / "999AC0000000001_revisions.json").write_text(
+        json.dumps(
+            {"revisions": [
+                {"amendment_enforcement_date": "2024-04-01"},
+                {"amendment_enforcement_date": "2099-04-01"},
+            ]},
+            ensure_ascii=False,
+        )
+    )
+    assert law_summary.latest_enforced_revision(
+        tmp_path, "999AC0000000001", "2026-09-08") == "2024-04-01"

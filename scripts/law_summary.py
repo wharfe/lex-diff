@@ -1,4 +1,4 @@
-"""Generate a brief summary for a law using Claude AI.
+"""Generate a brief summary for a law from the law's own text.
 
 Usage:
     python scripts/law_summary.py <law_id>
@@ -6,21 +6,35 @@ Usage:
 Example:
     python scripts/law_summary.py 129AC0000000089
 
-Unlike annotate.py and explainer.py, this script hands the model no law text —
-only the law's name, number, category and revision count. Everything else comes
-out of the model's own memory.
+The model is handed evidence built out of the law itself — its table of
+contents, every article caption, and article 1 in full (build_evidence). It
+used to be handed nothing but the law's name, number, category and revision
+count, so every word of the answer came out of its own memory; that is issue
+#16, and this script is the last of the three generators to leave it.
 
-validate_summary() is a narrow guard against one known failure, not a guarantee
-that the answer is true. It checks the shape and rejects the penalty names
-abolished in 2025; a wrong scope, a different repealed institution, or an
-invented requirement passes it untouched. Removing the class of error entirely
-means handing the model the current article text as evidence, the way the other
-two scripts already do — issue #16.
+Two guards, in different places, because they can run in different places:
+
+- validate_summary_shape() checks form and the abolished penalty names. It
+  needs no evidence, so it also runs over already-shipped data in CI.
+- validate_summary() adds the grounding rule — every keyword must occur in the
+  evidence. That needs the law text, which only exists at generation time
+  (data/raw is gitignored).
+
+Neither can judge prose. A description that invents a requirement still passes;
+what the evidence buys is that the model has no reason to invent one.
+
+The evidence must also be *current*. data/raw holds whatever dates someone
+fetched for a diff, which is unrelated to "now": every snapshot of 刑法 here
+predated the 2025-06-01 merger of 懲役/禁錮 into 拘禁刑, so the prompt asked for
+a description of current law while handing over repealed penalty names and
+banning their use in the same breath. main() now refuses to run when the newest
+snapshot is older than the law's latest enforced revision.
 """
 
 import sys
 import json
 import os
+import datetime
 from pathlib import Path
 
 import anthropic
@@ -48,13 +62,17 @@ FRONTEND_DIR = Path(__file__).parent.parent / "frontend" / "public" / "data"
 ABOLISHED_PENALTY_TERMS = ("懲役", "禁錮", "禁固", "禁こ")
 
 MAX_KEYWORDS = 5
+MIN_KEYWORD_LEN = 2
 
 # Headings that make up a law's table of contents, outermost first.
 STRUCTURE_TITLE_TAGS = {"PartTitle", "ChapterTitle", "SectionTitle", "SubsectionTitle"}
 
-# 附則 is a different axis from the main text and says nothing about what the
-# law is for, so the evidence stops at its boundary.
-SUPPL = {"SupplProvision"}
+# Subtrees the evidence stops at. 附則 is a different axis from the main text
+# and says nothing about what the law is for. TOC is the law's own table of
+# contents element, which repeats every Part/Chapter/Section title that also
+# appears in the body — collecting both printed the whole outline twice (民法:
+# 364 heading lines of which 197 were duplicates).
+SKIP_SUBTREES = {"SupplProvision", "TOC"}
 
 
 def load_env():
@@ -75,63 +93,139 @@ def build_evidence(law_full_text: dict) -> str:
 
     - the table of contents, which is the law's own account of its shape
     - every article caption, which together are the list of what it covers
-      (1,250 of them in 民法, 17,823 characters — dense and cheap)
+      (1,090 of them in 民法, 15,467 characters — dense and cheap)
     - article 1 in full, which is the purpose / scope clause and so the direct
       basis for the summary's `scope` field. 刑法第一条 reads "日本国内において
       罪を犯したすべての者に適用する" — that *is* the answer, verbatim.
 
     Raises rather than returning something empty: calling the model with no
-    evidence is what let it write from memory in the first place.
+    evidence is what let it write from memory in the first place. The emptiness
+    test is on the assembled text, not on the node lists — a heading node whose
+    text is blank makes the list truthy while contributing nothing, so testing
+    the lists sent "## 目次" alone to the model and called that evidence.
     """
     headings = [
-        extract_text(n).strip()
-        for n in walk_tags(law_full_text, STRUCTURE_TITLE_TAGS, stop_at=SUPPL)
+        t for t in (
+            extract_text(n).strip()
+            for n in walk_tags(law_full_text, STRUCTURE_TITLE_TAGS, stop_at=SKIP_SUBTREES)
+        ) if t
     ]
     captions = [
-        extract_text(n).strip()
-        for n in walk_tags(law_full_text, {"ArticleCaption"}, stop_at=SUPPL)
+        t for t in (
+            extract_text(n).strip()
+            for n in walk_tags(law_full_text, {"ArticleCaption"}, stop_at=SKIP_SUBTREES)
+        ) if t
     ]
-    articles = walk_tags(law_full_text, {"Article"}, stop_at=SUPPL)
+    articles = walk_tags(law_full_text, {"Article"}, stop_at=SKIP_SUBTREES)
     first_article = extract_text(articles[0]).strip() if articles else ""
+    # Do not call it 第一条 without checking. articles[0] is only the first in
+    # document order; a law whose 第一条 was 削除 and dropped from the tree would
+    # have its 第一条の二 handed over under a label asserting otherwise, and the
+    # prompt tells the model this article is where `scope` comes from.
+    first_num = articles[0].get("attr", {}).get("Num", "") if articles else ""
 
-    if not (headings or captions or first_article):
+    parts = []
+    if headings:
+        parts.append("## 目次\n" + "\n".join(headings))
+    if captions:
+        parts.append("## 各条の見出し\n" + "\n".join(captions))
+    if first_article:
+        label = "第一条" if first_num == "1" else f"最初の条（第{first_num}条）"
+        parts.append(f"## {label}（全文）\n" + first_article)
+
+    evidence = "\n\n".join(parts)
+    # Section labels alone are not evidence; measure what is under them.
+    body = evidence.replace("## 目次", "").replace("## 各条の見出し", "")
+    if not body.strip() or not (headings or captions or first_article):
         raise ValueError(
             "no law text to summarise — refusing to call the model with empty "
             "evidence (it would answer from memory)"
         )
-
-    parts = []
-    if headings:
-        parts.append("## 目次\n" + "\n".join(h for h in headings if h))
-    if captions:
-        parts.append("## 各条の見出し\n" + "\n".join(c for c in captions if c))
-    if first_article:
-        parts.append("## 第一条（全文）\n" + first_article)
-    return "\n\n".join(parts)
+    return evidence
 
 
-def load_evidence(raw_dir: Path, law_id: str) -> str:
-    """Build evidence from the newest snapshot of a law in `raw_dir`.
+def latest_enforced_revision(raw_dir: Path, law_id: str, today: str) -> str | None:
+    """The newest already-in-force revision date for a law, or None if unknown.
 
-    Newest, not any: a summary describes the law as it stands now, and
-    data/raw holds one file per point-in-time fetch. The `_revisions.json`
-    companion has no law_full_text and is skipped by the same test that skips
-    a malformed snapshot.
+    Read from the `_revisions.json` companion that timeline.py already fetches.
+    Future enforcement dates are excluded: a law is described as it stands, and
+    a revision that has not taken effect is not yet the law.
     """
-    snapshots = []
-    for path in sorted(raw_dir.glob(f"{law_id}_*.json")):
-        try:
-            body = json.loads(path.read_text()).get("law_full_text")
-        except json.JSONDecodeError:
+    path = raw_dir / f"{law_id}_revisions.json"
+    if not path.exists():
+        return None
+    try:
+        doc = json.loads(path.read_text())
+    except (json.JSONDecodeError, OSError):
+        return None
+    if not isinstance(doc, dict):
+        return None
+    dates = []
+    for rev in doc.get("revisions") or []:
+        if not isinstance(rev, dict):
             continue
-        if body:
-            snapshots.append((path.name, body))
-    if not snapshots:
+        d = rev.get("amendment_enforcement_date") or rev.get("enforcement_date")
+        if isinstance(d, str) and d and d <= today:
+            dates.append(d)
+    return max(dates) if dates else None
+
+
+def snapshot_date(path: Path, law_id: str) -> str:
+    """The asof date encoded in a raw snapshot's filename."""
+    return path.name[len(law_id) + 1 : -len(".json")]
+
+
+def newest_snapshot(raw_dir: Path, law_id: str, today: str) -> Path:
+    """The newest snapshot of a law that is not dated in the future."""
+    candidates = sorted(
+        p for p in raw_dir.glob(f"{law_id}_*.json")
+        if not p.name.endswith("_revisions.json")
+        and snapshot_date(p, law_id) <= today
+    )
+    if not candidates:
         raise FileNotFoundError(
-            f"no snapshot with law_full_text for {law_id} in {raw_dir} — "
-            "run fetch.py first; a summary is not written without the law text"
+            f"no snapshot of {law_id} dated on or before {today} in {raw_dir} — "
+            f"run: uv run python scripts/fetch.py {law_id} {today} {today}"
         )
-    return build_evidence(snapshots[-1][1])
+    return candidates[-1]
+
+
+def load_evidence(raw_dir: Path, law_id: str, today: str | None = None) -> str:
+    """Build evidence from the law as it stands on `today`.
+
+    data/raw holds one file per point-in-time fetch, and those dates are
+    whatever someone needed for a *diff* — they have no relationship to now.
+    Two things follow, and both were live bugs:
+
+    - A snapshot dated in the future is not the current law. The pipeline
+      routinely fetches an enforcement date months ahead to diff against, so
+      the newest file on disk is regularly one that has not taken effect.
+    - The newest file may still be years old. Every 刑法 snapshot here predates
+      the 2025-06-01 merger into 拘禁刑, so the evidence contained the very
+      penalty names validate_summary_shape() exists to reject.
+
+    The caller checks the second one (it needs the revision list); this
+    function refuses the first, and refuses a newest-candidate that will not
+    parse rather than quietly falling back to an older, more-wrong snapshot.
+    """
+    today = today or datetime.date.today().isoformat()
+    newest = newest_snapshot(raw_dir, law_id, today)
+    try:
+        doc = json.loads(newest.read_text())
+    except (json.JSONDecodeError, OSError) as exc:
+        raise ValueError(
+            f"newest snapshot {newest.name} could not be read ({exc}) — refusing "
+            "to fall back to an older one, which would describe superseded law "
+            "as current"
+        ) from exc
+    body = doc.get("law_full_text") if isinstance(doc, dict) else None
+    if not body:
+        raise ValueError(
+            f"newest snapshot {newest.name} has no law_full_text — refusing to "
+            "fall back to an older one, which would describe superseded law as "
+            "current"
+        )
+    return build_evidence(body)
 
 
 def validate_summary_shape(summary: dict) -> list[str]:
@@ -166,6 +260,16 @@ def validate_summary_shape(summary: dict) -> list[str]:
         errors.append(f"keywords count out of range (1-{MAX_KEYWORDS})")
     elif not all(isinstance(k, str) and k.strip() for k in keywords):
         errors.append("keywords must all be non-empty strings")
+    else:
+        # A one-character keyword is not a term, and the grounding check cannot
+        # reject it either: 「刑」 occurs inside 「刑罰」, so any single kanji the
+        # law uses at all passes. 刑法 shipped exactly that.
+        for k in keywords:
+            if len(k.strip()) < MIN_KEYWORD_LEN:
+                errors.append(
+                    f"keyword too short to be a term: {k}"
+                    f" (need {MIN_KEYWORD_LEN}+ characters)"
+                )
 
     blob = json.dumps(summary, ensure_ascii=False)
     for term in ABOLISHED_PENALTY_TERMS:
@@ -230,6 +334,7 @@ def generate_summary(
 制約:
 - 上の根拠に書かれていることだけを使って書いてください。根拠に無い制度・用語・数値を補わないでください。
 - keywords は必ず根拠テキストに現れる語から選んでください（現れない語は機械的に弾かれ、やり直しになります）。
+- keywords は2文字以上の意味のある用語にしてください（「刑」のような一文字は弾かれます）。
 - 根拠は目次・各条の見出し・第一条だけで、条文本文の大部分は含まれていません。書かれていない細部を推測で埋めないでください。
 - 2025年6月1日施行の改正刑法により「懲役」「禁錮」は「拘禁刑」に一本化されました。現行制度の説明にこれらの刑名を使わないでください。
 - 現在の制度として言えることだけを書き、廃止された制度名・過去の呼称を現行のものとして提示しないでください。
@@ -271,9 +376,29 @@ def main():
         if rev_data.get("revisions"):
             category = rev_data["revisions"][0].get("category", "")
 
-    # The law's own text, not the model's memory. Raises when there is no
-    # snapshot: a summary is not written without evidence.
-    evidence = load_evidence(DATA_DIR / "raw", law_id)
+    # The law's own text, not the model's memory, and the text as it stands
+    # today. Raises when there is no snapshot: a summary is not written
+    # without evidence.
+    raw_dir = DATA_DIR / "raw"
+    today = datetime.date.today().isoformat()
+    evidence = load_evidence(raw_dir, law_id, today)
+
+    # A summary describes current law, so evidence older than the law's latest
+    # enforced revision is the wrong text. Every 刑法 snapshot on disk predated
+    # the 2025-06-01 merger into 拘禁刑, which put the prompt in the position of
+    # asking for current law while handing over repealed penalty names and
+    # forbidding their use — the model could satisfy the evidence or the ban,
+    # not both.
+    used = snapshot_date(newest_snapshot(raw_dir, law_id, today), law_id)
+    latest = latest_enforced_revision(raw_dir, law_id, today)
+    if latest and used < latest:
+        print(
+            f"Refusing to summarise from stale law text:\n"
+            f"  newest snapshot: {used}\n"
+            f"  latest enforced revision: {latest}\n"
+            f"  run: uv run python scripts/fetch.py {law_id} {used} {today}"
+        )
+        sys.exit(3)
 
     print(f"Generating summary for {timeline['law_title']}...")
     print(f"  Evidence: {len(evidence)} chars from the law text")

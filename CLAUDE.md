@@ -88,15 +88,29 @@ that shape:
 - Output is validated before it is written and before a cached entry is reused
   (`validate_annotation` / `validate_pr_summary` / `validate_explainer` /
   `validate_summary`); a failure exits non-zero and saves nothing.
-- `law_summary.py` is the exception to the first rule above and the weakest of
-  the three: it hands the model no law text at all, only the law's name, number,
-  category and revision count. `validate_summary` is a narrow guard against one
-  known failure — it rejects the penalty names abolished in 2025 (懲役 / 禁錮 /
-  禁固 / 禁こ, merged into 拘禁刑 on 2025-06-01, which the 刑法 summary shipped
-  as current law) and checks the shape. A wrong scope or a different repealed
-  institution still passes. Feeding it the actual article text is issue #16.
-  The ban is deliberately scoped to `law_summary.py`: a diff's `pr_summary`
-  legitimately says 懲役 when describing the amendment that renamed it.
+- `law_summary.py` builds its evidence from the law itself — the table of
+  contents, every article caption, and article 1 in full (`build_evidence`).
+  Article 1 is the purpose / scope clause, so it is the direct basis for the
+  summary's `scope`. The whole text is never sent: 民法 is 226,000 characters.
+  Its validation is in two layers because they can run in different places —
+  `validate_summary_shape` (form + the abolished penalty names) needs no
+  evidence and so also runs over shipped data in CI, while `validate_summary`
+  adds the grounding rule: **every keyword must occur in the evidence**. Prose
+  is not checked word by word (「事業者」「日常生活」 would be false positives);
+  a keyword is a noun, so it can be. The penalty-name ban is deliberately
+  scoped to `law_summary.py`: a diff's `pr_summary` legitimately says 懲役 when
+  describing the amendment that renamed it.
+- **The evidence has to be current, which is a separate requirement from having
+  evidence at all.** `data/raw` holds whatever asof dates someone fetched for a
+  *diff*, and those have no relationship to "now": 10 of 12 laws were being
+  summarised from text older than their latest enforced revision, and every
+  刑法 snapshot predated the 2025-06-01 merger into 拘禁刑 — so the prompt asked
+  for current law while handing over repealed penalty names and banning their
+  use in the same breath. `main()` now exits 3 rather than calling the model
+  when the newest snapshot predates the law's latest enforced revision, and
+  `load_evidence` ignores future-dated snapshots (the pipeline fetches those
+  routinely, to diff against) and refuses to fall back to an older snapshot
+  when the newest one will not parse.
 - `explainer.py` additionally marks each amendment `grounded` (a diff exists →
   `why`/`impact` allowed) or ungrounded (only the amendment's name and year are
   known → prose stays within that, and `why`/`impact` are stripped).

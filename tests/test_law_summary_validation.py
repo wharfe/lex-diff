@@ -203,3 +203,64 @@ def test_empty_evidence_is_refused_outright():
     # A caller that lost its evidence must not get a pass by default.
     errors = validate_summary(valid_summary(), "")
     assert any("evidence" in e for e in errors)
+
+
+# --- the evidence must actually reach the model -------------------------------
+#
+# Gate3 finding: nothing pinned the hand-off. generate_summary could be called
+# with the wrong string — or the evidence dropped from the prompt entirely —
+# and every test above would stay green, because they all mock it away.
+
+def test_the_prompt_contains_the_evidence(monkeypatch):
+    seen = {}
+
+    def fake_complete_json(client, model, prompt, max_tokens):
+        seen["prompt"] = prompt
+        return valid_summary()
+
+    monkeypatch.setattr(law_summary, "complete_json", fake_complete_json)
+    monkeypatch.setattr(law_summary.anthropic, "Anthropic", lambda *a, **k: object())
+
+    law_summary.generate_summary("刑法", "明治四十年法律第四十五号", "刑事", 16, EVIDENCE)
+
+    assert EVIDENCE in seen["prompt"], "the law text never reached the model"
+    assert "刑法" in seen["prompt"]
+
+
+def test_main_refuses_stale_evidence_and_saves_nothing(monkeypatch, tmp_path):
+    # Every 刑法 snapshot on disk predated the 2025-06-01 merger into 拘禁刑, so
+    # the prompt asked for current law while handing over repealed penalty
+    # names and forbidding their use. The model could satisfy the evidence or
+    # the ban, not both.
+    path = _timeline_fixture(tmp_path)
+    before = path.read_bytes()
+    raw_dir = _raw_fixture(tmp_path)
+    (raw_dir / "140AC0000000045_revisions.json").write_text(
+        json.dumps(
+            {"revisions": [{"amendment_enforcement_date": "2025-06-01"}]},
+            ensure_ascii=False,
+        )
+    )
+    called = []
+    monkeypatch.setattr(
+        law_summary, "generate_summary", lambda *a, **k: called.append(1) or valid_summary()
+    )
+    monkeypatch.setattr(law_summary, "DATA_DIR", tmp_path)
+    monkeypatch.setattr(law_summary, "FRONTEND_DIR", tmp_path / "frontend")
+    monkeypatch.setattr(law_summary, "load_env", lambda: None)
+    monkeypatch.setattr(sys, "argv", ["law_summary.py", "140AC0000000045"])
+
+    # The fixture snapshot is dated 2023-07-13, older than the revision above.
+    with pytest.raises(SystemExit) as exc:
+        law_summary.main()
+
+    assert exc.value.code == 3
+    assert called == [], "the model was called with stale law text"
+    assert path.read_bytes() == before
+
+
+def test_single_character_keyword_is_rejected():
+    # 「刑」 passes the grounding check because it occurs inside 「刑罰」, so the
+    # evidence rule cannot catch it. 刑法 shipped it as a keyword.
+    errors = validate_summary(valid_summary(keywords=["刑", "殺人"]), EVIDENCE)
+    assert any("too short" in e for e in errors)
