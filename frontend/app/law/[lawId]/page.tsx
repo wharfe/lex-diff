@@ -7,9 +7,13 @@ import { OpenGikaiLinks } from "@/components/opengikai-link";
 import { getThemesForLaw } from "@/lib/life-themes";
 import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
 import { LawExplainerSection } from "@/components/law-explainer";
+import { lawSeo, assertLawSeoOverridesValid } from "@/lib/law-seo";
 
 export function generateStaticParams() {
-  return getTimelineIds().map((lawId) => ({ lawId }));
+  const lawIds = getTimelineIds();
+  // A typo'd override id would otherwise revert a ranking page in silence.
+  assertLawSeoOverridesValid(lawIds);
+  return lawIds.map((lawId) => ({ lawId }));
 }
 
 export async function generateMetadata({
@@ -19,12 +23,19 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { lawId } = await params;
   const data = getTimelineData(lawId);
+  const seo = lawSeo(lawId);
   const desc =
+    seo?.description ||
     data.explainer?.intro ||
     data.summary?.description ||
     `${data.law_title}の改正履歴を時系列で一覧。全${data.revision_count}回の改正について、いつ・どの条文が・どう変わったかをわかりやすく確認できます。`;
+  // 改正履歴 stays in front: that phrasing is what the page already ranks for.
+  // The hook only extends the tail, so an override cannot cost the winning query.
+  const title = seo?.titleHook
+    ? `${data.law_title}の改正履歴｜${seo.titleHook}から全${data.revision_count}回の改正一覧まで`
+    : `${data.law_title}の改正履歴｜全${data.revision_count}回の改正一覧`;
   return {
-    title: `${data.law_title}の改正履歴｜全${data.revision_count}回の改正一覧`,
+    title,
     description: desc,
     alternates: { canonical: `/law/${lawId}` },
     openGraph: {
