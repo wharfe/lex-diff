@@ -12,16 +12,11 @@ import json
 from pathlib import Path
 from difflib import unified_diff
 
+from lawtext import extract_text, walk_tags
+
 DATA_DIR = Path(__file__).parent.parent / "data"
 RAW_DIR = DATA_DIR / "raw"
 DIFF_DIR = DATA_DIR / "diffs"
-
-
-def extract_text(node: dict | str) -> str:
-    """Recursively extract plain text from a law XML node."""
-    if isinstance(node, str):
-        return node
-    return "".join(extract_text(c) for c in node.get("children", []))
 
 
 # The 附則 a law was enacted with carries no AmendLawNum; every later block has
@@ -42,28 +37,6 @@ def subtree_has(node: dict, tag: str) -> bool:
         if child.get("tag") == tag or subtree_has(child, tag):
             return True
     return False
-
-
-def walk_tags(
-    node: dict, tags: set[str], stop_at: set[str] | None = None
-) -> list[dict]:
-    """Every descendant whose tag is in `tags`, in document order.
-
-    `stop_at` prunes whole subtrees — used to collect the 項 that sit outside
-    an Article without also swallowing the 項 that belong to one.
-    """
-    found = []
-    for child in node.get("children", []) or []:
-        if not isinstance(child, dict):
-            continue
-        tag = child.get("tag")
-        if stop_at and tag in stop_at:
-            continue
-        if tag in tags:
-            found.append(child)
-        else:
-            found.extend(walk_tags(child, tags, stop_at))
-    return found
 
 
 def suppl_key(amend_law_num: str | None, num: str) -> str:

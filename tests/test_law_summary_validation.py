@@ -1,3 +1,4 @@
+import datetime
 import json
 import sys
 from pathlib import Path
@@ -8,6 +9,26 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
 import law_summary
 from law_summary import validate_summary
+
+
+# Stands in for what build_evidence() returns: the law's own words. Every
+# keyword in valid_summary() appears here, because that is now the rule.
+EVIDENCE = """## 目次
+第一章　総則
+第二章　殺人の罪
+第三章　窃盗及び強盗の罪
+
+## 各条の見出し
+（国内犯）
+（殺人）
+（窃盗）
+（罰金）
+（刑罰の種類）
+（犯罪の成立）
+（拘禁刑）
+
+## 第一条（全文）
+（国内犯）第一条この法律は、日本国内において罪を犯したすべての者に適用する。"""
 
 
 def valid_summary(**overrides):
@@ -24,7 +45,7 @@ def valid_summary(**overrides):
 
 
 def test_valid_summary_passes():
-    assert validate_summary(valid_summary()) == []
+    assert validate_summary(valid_summary(), EVIDENCE) == []
 
 
 def test_abolished_penalty_name_in_description_is_rejected():
@@ -34,13 +55,13 @@ def test_abolished_penalty_name_in_description_is_rejected():
             "明確に規定した法律です。社会の秩序を守るために定められています。"
         )
     )
-    errors = validate_summary(summary)
+    errors = validate_summary(summary, EVIDENCE)
     assert any("懲役" in e for e in errors)
 
 
 def test_abolished_penalty_name_in_keywords_is_rejected():
     # The 刑法 summary that shipped had 懲役 in keywords as well as in prose.
-    errors = validate_summary(valid_summary(keywords=["犯罪", "刑罰", "懲役"]))
+    errors = validate_summary(valid_summary(keywords=["犯罪", "刑罰", "懲役"]), EVIDENCE)
     assert any("懲役" in e for e in errors)
 
 
@@ -48,28 +69,28 @@ def test_abolished_penalty_name_in_keywords_is_rejected():
 def test_every_spelling_of_the_abolished_kinko_is_rejected(term):
     # 禁固 is the newspaper spelling; a ban listing only 禁錮 lets the same
     # mistake through one character later.
-    errors = validate_summary(valid_summary(keywords=["犯罪", term]))
+    errors = validate_summary(valid_summary(keywords=["犯罪", term]), EVIDENCE)
     assert any(term in e for e in errors)
 
 
 def test_missing_key_is_reported_alone():
     summary = valid_summary()
     del summary["scope"]
-    assert validate_summary(summary) == ["missing key: scope"]
+    assert validate_summary(summary, EVIDENCE) == ["missing key: scope"]
 
 
 def test_too_many_keywords_is_rejected():
-    errors = validate_summary(valid_summary(keywords=["a", "b", "c", "d", "e", "f"]))
+    errors = validate_summary(valid_summary(keywords=["a", "b", "c", "d", "e", "f"]), EVIDENCE)
     assert any("keywords count" in e for e in errors)
 
 
 def test_empty_keyword_is_rejected():
-    errors = validate_summary(valid_summary(keywords=["犯罪", "  "]))
+    errors = validate_summary(valid_summary(keywords=["犯罪", "  "]), EVIDENCE)
     assert any("non-empty" in e for e in errors)
 
 
 def test_short_description_is_rejected():
-    errors = validate_summary(valid_summary(description="短い説明"))
+    errors = validate_summary(valid_summary(description="短い説明"), EVIDENCE)
     assert any("description length" in e for e in errors)
 
 
@@ -98,7 +119,40 @@ def _timeline_fixture(tmp_path):
     return path
 
 
+def _law_document():
+    """What the e-Gov API returns, in the shape build_evidence expects."""
+    return {
+        "law_full_text": {
+            "tag": "Law",
+            "attr": {},
+            "children": [{
+                "tag": "Chapter",
+                "attr": {},
+                "children": [
+                    {"tag": "ChapterTitle", "attr": {}, "children": ["第一章　総則"]},
+                    {
+                        "tag": "Article",
+                        "attr": {"Num": "1"},
+                        "children": [
+                            {"tag": "ArticleCaption", "attr": {}, "children": ["（国内犯）"]},
+                            {"tag": "Paragraph", "attr": {}, "children": [{
+                                "tag": "ParagraphSentence", "attr": {}, "children": [{
+                                    "tag": "Sentence", "attr": {},
+                                    "children": ["犯罪 刑罰 拘禁刑 罰金 殺人"],
+                                }],
+                            }]},
+                        ],
+                    },
+                ],
+            }],
+        }
+    }
+
+
 def _run_main(monkeypatch, tmp_path, generated):
+    # The evidence is fetched in the same call as the generation, so this is
+    # where the network would be. Never let the suite reach it.
+    monkeypatch.setattr(law_summary, "fetch_law_data", lambda *a, **k: _law_document())
     monkeypatch.setattr(law_summary, "DATA_DIR", tmp_path)
     monkeypatch.setattr(law_summary, "FRONTEND_DIR", tmp_path / "frontend")
     monkeypatch.setattr(law_summary, "load_env", lambda: None)
@@ -125,3 +179,87 @@ def test_main_saves_a_valid_summary(monkeypatch, tmp_path):
     _run_main(monkeypatch, tmp_path, generated)
 
     assert json.loads(path.read_text())["summary"] == generated
+
+
+# --- keywords must have a basis in the law text -------------------------------
+#
+# The validator cannot judge prose, but a keyword is a noun: either the word is
+# in the law or it is not. This is the cheapest possible check on the failure
+# the script exists to prevent — a plausible-sounding institution the law does
+# not contain.
+
+def test_keyword_absent_from_the_law_text_is_rejected():
+    errors = validate_summary(valid_summary(keywords=["犯罪", "行政指導"]), EVIDENCE)
+    assert any("行政指導" in e for e in errors)
+
+
+def test_keywords_present_in_the_law_text_pass():
+    assert validate_summary(valid_summary(keywords=["殺人", "窃盗"]), EVIDENCE) == []
+
+
+def test_empty_evidence_is_refused_outright():
+    # A caller that lost its evidence must not get a pass by default.
+    errors = validate_summary(valid_summary(), "")
+    assert any("evidence" in e for e in errors)
+
+
+# --- the evidence must actually reach the model -------------------------------
+#
+# Gate3 finding: nothing pinned the hand-off. generate_summary could be called
+# with the wrong string — or the evidence dropped from the prompt entirely —
+# and every test above would stay green, because they all mock it away.
+
+def test_the_prompt_contains_the_evidence(monkeypatch):
+    seen = {}
+
+    def fake_complete_json(client, model, prompt, max_tokens):
+        seen["prompt"] = prompt
+        return valid_summary()
+
+    monkeypatch.setattr(law_summary, "complete_json", fake_complete_json)
+    monkeypatch.setattr(law_summary.anthropic, "Anthropic", lambda *a, **k: object())
+
+    law_summary.generate_summary("刑法", "明治四十年法律第四十五号", "刑事", 16, EVIDENCE)
+
+    assert EVIDENCE in seen["prompt"], "the law text never reached the model"
+    assert "刑法" in seen["prompt"]
+
+
+def test_single_character_keyword_is_rejected():
+    # 「刑」 passes the grounding check because it occurs inside 「刑罰」, so the
+    # evidence rule cannot catch it. 刑法 shipped it as a keyword.
+    errors = validate_summary(valid_summary(keywords=["刑", "殺人"]), EVIDENCE)
+    assert any("too short" in e for e in errors)
+
+
+def test_main_does_not_save_when_the_day_changes_mid_generation(monkeypatch, tmp_path):
+    # Generation takes long enough to cross midnight. A summary written from
+    # yesterday's text and saved today claims to describe current law on a day
+    # an amendment may have come into force.
+    path = _timeline_fixture(tmp_path)
+    before = path.read_bytes()
+    monkeypatch.setattr(law_summary, "fetch_law_data", lambda *a, **k: _law_document())
+    monkeypatch.setattr(law_summary, "DATA_DIR", tmp_path)
+    monkeypatch.setattr(law_summary, "FRONTEND_DIR", tmp_path / "frontend")
+    monkeypatch.setattr(law_summary, "load_env", lambda: None)
+    monkeypatch.setattr(law_summary, "generate_summary", lambda *a, **k: valid_summary())
+    monkeypatch.setattr(sys, "argv", ["law_summary.py", "140AC0000000045"])
+
+    real_now = datetime.datetime.now
+    calls = []
+
+    class Clock(datetime.datetime):
+        @classmethod
+        def now(cls, tz=None):
+            calls.append(1)
+            # first call: the fetch date; later: one day on
+            base = real_now(tz)
+            return base if len(calls) == 1 else base + datetime.timedelta(days=1)
+
+    monkeypatch.setattr(law_summary.datetime, "datetime", Clock)
+
+    with pytest.raises(SystemExit) as exc:
+        law_summary.main()
+
+    assert exc.value.code == 3
+    assert path.read_bytes() == before

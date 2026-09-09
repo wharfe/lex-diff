@@ -21,7 +21,7 @@ import pytest
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
 from diff import compute_stats
-from law_summary import validate_summary
+from law_summary import validate_summary_shape
 
 SHIPPED = Path(__file__).parent.parent / "frontend" / "public" / "data"
 
@@ -54,8 +54,10 @@ def test_shipped_stats_match_compute_stats(path):
 @pytest.mark.parametrize("path", shipped_timelines(), ids=lambda p: p.name)
 def test_shipped_law_summaries_are_valid(path):
     summary = json.loads(path.read_text()).get("summary")
-    if summary is None:
-        # Four laws have no summary yet (issue #14). Missing is a content gap,
-        # not a validity failure; what must never ship is an invalid one.
-        return
-    assert validate_summary(summary) == [], f"{path.name}: {validate_summary(summary)}"
+    # Every shipped law must have one. This used to skip when summary was None,
+    # because four laws (民法・道路交通法・労働基準法・著作権法 — the biggest ones)
+    # had never had law_summary.py run over them at all and shipped a /law page
+    # with no overview block, issue #14. Closing that issue means the gap
+    # cannot reopen silently the next time a law is added.
+    assert summary is not None, f"{path.name}: no summary — run law_summary.py"
+    assert validate_summary_shape(summary) == [], f"{path.name}: {validate_summary_shape(summary)}"
