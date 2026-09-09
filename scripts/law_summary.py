@@ -23,12 +23,15 @@ Two guards, in different places, because they can run in different places:
 Neither can judge prose. A description that invents a requirement still passes;
 what the evidence buys is that the model has no reason to invent one.
 
-The evidence must also be *current*. data/raw holds whatever dates someone
-fetched for a diff, which is unrelated to "now": every snapshot of 刑法 here
+The evidence must also be *current*, so this script fetches it rather than
+reading data/raw. Those files carry whatever asof someone needed for a diff,
+and asof is the point in time being asked about, not the moment of asking —
+nothing on disk records when a file was obtained. Every 刑法 snapshot there
 predated the 2025-06-01 merger of 懲役/禁錮 into 拘禁刑, so the prompt asked for
 a description of current law while handing over repealed penalty names and
-banning their use in the same breath. main() now refuses to run when the newest
-snapshot is older than the law's latest enforced revision.
+banning their use in the same breath. Fetching in the same call removes the
+question instead of answering it: a failed fetch raises, "today" is Asia/Tokyo,
+and main() will not save if that date changes while the model is answering.
 """
 
 import sys
@@ -130,9 +133,18 @@ def build_evidence(law_full_text: dict) -> str:
     # it. A present-but-empty <Sentence/> is what a truncated API response
     # looks like, and it passed a check for the tag alone.
     first_article = ""
-    if articles and any(
-        extract_text(n).strip() for n in walk_tags(articles[0], {"Sentence"})
-    ):
+    if articles:
+        if not any(
+            extract_text(n).strip() for n in walk_tags(articles[0], {"Sentence"})
+        ):
+            # The article is there and empty — a truncated response, not a law
+            # that has no article 1. Those are different situations and only
+            # one of them is safe to continue from: here the prompt would still
+            # say the evidence contains article 1 while `scope` had no basis.
+            raise ValueError(
+                "the first article has no sentence text — the response looks "
+                "truncated; refusing to build evidence with no basis for scope"
+            )
         first_article = extract_text(articles[0]).strip()
     # Do not call it 第一条 without checking. articles[0] is only the first in
     # document order; a law whose 第一条 was 削除 and dropped from the tree would
@@ -194,11 +206,19 @@ def fetch_evidence(raw_dir: Path, law_id: str, today: str) -> str:
         raise ValueError(
             f"the API returned no law_full_text for {law_id} asof {today}"
         )
+
+    # Build first, write second, and write atomically. data/raw is shared with
+    # the diff pipeline (diff.py reads these files), so a malformed response
+    # must not be able to replace a good snapshot on its way to failing — that
+    # would turn a failed summary into lost input for a different pipeline.
+    evidence = build_evidence(doc["law_full_text"])
+
     raw_dir.mkdir(parents=True, exist_ok=True)
-    (raw_dir / f"{law_id}_{today}.json").write_text(
-        json.dumps(doc, ensure_ascii=False, indent=2)
-    )
-    return build_evidence(doc["law_full_text"])
+    path = raw_dir / f"{law_id}_{today}.json"
+    tmp = path.with_suffix(".json.tmp")
+    tmp.write_text(json.dumps(doc, ensure_ascii=False, indent=2))
+    os.replace(tmp, path)
+    return evidence
 
 
 def validate_summary_shape(summary: dict) -> list[str]:

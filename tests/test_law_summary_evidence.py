@@ -260,3 +260,41 @@ def test_article_whose_sentence_is_empty_is_not_evidence():
     )
     with pytest.raises(ValueError):
         build_evidence(tree)
+
+
+def test_headings_do_not_excuse_a_missing_article_body():
+    # The reviewer's exact case: chapter heading + article caption + an empty
+    # <Sentence/>. The earlier check let this through because the headings
+    # alone made the evidence non-empty — while the prompt still told the model
+    # the evidence contained article 1, and `scope` had nothing to stand on.
+    tree = node(
+        "Law",
+        node("MainProvision", node(
+            "Chapter",
+            node("ChapterTitle", text_node("第一章　総則")),
+            node("Article",
+                 node("ArticleCaption", text_node("（目的）")),
+                 node("ArticleTitle", text_node("第一条")),
+                 node("Paragraph", node("ParagraphSentence", node("Sentence"))),
+                 Num="1"))),
+    )
+    with pytest.raises(ValueError):
+        build_evidence(tree)
+
+
+def test_a_bad_response_does_not_destroy_the_existing_snapshot(monkeypatch, tmp_path):
+    # data/raw is shared with the diff pipeline (diff.py reads these files), so
+    # a failed summary must not take a good snapshot down with it.
+    path = tmp_path / "999AC0000000001_2026-09-09.json"
+    good = json.dumps({"law_full_text": {"tag": "Law", "attr": {}, "children": []},
+                       "marker": "the good one"}, ensure_ascii=False)
+    path.write_text(good)
+
+    # truthy law_full_text, but nothing build_evidence can use
+    monkeypatch.setattr(law_summary, "fetch_law_data",
+                        lambda *a, **k: {"law_full_text": node("Law", node("MainProvision"))})
+    with pytest.raises(ValueError):
+        law_summary.fetch_evidence(tmp_path, "999AC0000000001", "2026-09-09")
+
+    assert path.read_text() == good, "the existing snapshot was overwritten"
+    assert not list(tmp_path.glob("*.tmp")), "a temp file was left behind"
