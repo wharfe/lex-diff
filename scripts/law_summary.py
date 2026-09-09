@@ -31,7 +31,6 @@ banning their use in the same breath. main() now refuses to run when the newest
 snapshot is older than the law's latest enforced revision.
 """
 
-import re
 import sys
 import json
 import os
@@ -42,6 +41,7 @@ from pathlib import Path
 import anthropic
 from llm import complete_json
 from lawtext import extract_text, walk_tags
+from fetch import fetch_law_data
 
 MODEL = "claude-sonnet-5"
 DATA_DIR = Path(__file__).parent.parent / "data"
@@ -70,11 +70,6 @@ MIN_KEYWORD_LEN = 2
 # UTC runner every Japanese midnight-to-09:00 would otherwise be yesterday.
 JST = ZoneInfo("Asia/Tokyo")
 
-# data/raw filenames are "<law_id>_<YYYY-MM-DD>.json". Match the date strictly:
-# a stray "<law_id>_2025-01-01_copy.json" would otherwise sort after the real
-# file and be picked as the newest, with its non-date suffix then compared as
-# a string.
-SNAPSHOT_RE = re.compile(r"^(\d{4}-\d{2}-\d{2})$")
 
 # Headings that make up a law's table of contents, outermost first.
 STRUCTURE_TITLE_TAGS = {"PartTitle", "ChapterTitle", "SectionTitle", "SubsectionTitle"}
@@ -131,9 +126,13 @@ def build_evidence(law_full_text: dict) -> str:
     articles = walk_tags(law_full_text, {"Article"}, stop_at=SKIP_SUBTREES)
     # An Article carrying only its own title yields "第一条" — a label, not
     # text. extract_text cannot tell the two apart, so the test is structural:
-    # the article must actually contain a sentence.
+    # the article must contain a sentence, and that sentence must have words in
+    # it. A present-but-empty <Sentence/> is what a truncated API response
+    # looks like, and it passed a check for the tag alone.
     first_article = ""
-    if articles and walk_tags(articles[0], {"Sentence"}):
+    if articles and any(
+        extract_text(n).strip() for n in walk_tags(articles[0], {"Sentence"})
+    ):
         first_article = extract_text(articles[0]).strip()
     # Do not call it 第一条 without checking. articles[0] is only the first in
     # document order; a law whose 第一条 was 削除 and dropped from the tree would
@@ -171,67 +170,35 @@ def build_evidence(law_full_text: dict) -> str:
     return evidence
 
 
-def snapshot_date(path: Path, law_id: str) -> str | None:
-    """The asof date in a raw snapshot's filename, or None if it is not one.
+def fetch_evidence(raw_dir: Path, law_id: str, today: str) -> str:
+    """Fetch the law as it stands today and build the evidence from it.
 
-    None covers `<law_id>_revisions.json` and anything else the glob picks up:
-    only a strict YYYY-MM-DD is a snapshot date, so a stray copy cannot sort
-    itself to the front and then be string-compared as if it were a date.
+    The fetch is here, in the same call as the generation, on purpose. Reading
+    whatever happened to be in data/raw was tried twice and failed twice, for
+    the same reason both times: nothing on disk says when it was obtained.
+
+    - Comparing the snapshot against <law_id>_revisions.json trusted a second
+      file whose own freshness nobody guaranteed, and failed open when it was
+      missing, malformed or empty.
+    - Requiring the newest asof to be today's date only checked the *filename*.
+      asof is the point in time being asked about, not when the answer was
+      obtained: 129AC0000000089_2026-04-01.json was written on 2026-03-26, and
+      would have passed as "today's" on April 1st.
+
+    Fetching immediately before the call removes the question rather than
+    answering it. A failed fetch raises; there is no fall-back to an older
+    file, because an older file is exactly the thing that caused this.
     """
-    stem = path.name[len(law_id) + 1 : -len(".json")]
-    return stem if SNAPSHOT_RE.match(stem) else None
-
-
-def newest_snapshot(raw_dir: Path, law_id: str, today: str) -> Path:
-    """The newest snapshot of a law that is not dated in the future."""
-    candidates = sorted(
-        p for p in raw_dir.glob(f"{law_id}_*.json")
-        if (d := snapshot_date(p, law_id)) is not None and d <= today
+    doc = fetch_law_data(law_id, today)
+    if not isinstance(doc, dict) or not doc.get("law_full_text"):
+        raise ValueError(
+            f"the API returned no law_full_text for {law_id} asof {today}"
+        )
+    raw_dir.mkdir(parents=True, exist_ok=True)
+    (raw_dir / f"{law_id}_{today}.json").write_text(
+        json.dumps(doc, ensure_ascii=False, indent=2)
     )
-    if not candidates:
-        raise FileNotFoundError(
-            f"no snapshot of {law_id} dated on or before {today} in {raw_dir} — "
-            f"run: uv run python scripts/fetch.py {law_id} {today} {today}"
-        )
-    return candidates[-1]
-
-
-def load_evidence(raw_dir: Path, law_id: str, today: str | None = None) -> str:
-    """Build evidence from the law as it stands on `today`.
-
-    data/raw holds one file per point-in-time fetch, and those dates are
-    whatever someone needed for a *diff* — they have no relationship to now.
-    Two things follow, and both were live bugs:
-
-    - A snapshot dated in the future is not the current law. The pipeline
-      routinely fetches an enforcement date months ahead to diff against, so
-      the newest file on disk is regularly one that has not taken effect.
-    - The newest file may still be years old. Every 刑法 snapshot here predates
-      the 2025-06-01 merger into 拘禁刑, so the evidence contained the very
-      penalty names validate_summary_shape() exists to reject.
-
-    The caller checks the second one (it needs the revision list); this
-    function refuses the first, and refuses a newest-candidate that will not
-    parse rather than quietly falling back to an older, more-wrong snapshot.
-    """
-    today = today or datetime.datetime.now(JST).date().isoformat()
-    newest = newest_snapshot(raw_dir, law_id, today)
-    try:
-        doc = json.loads(newest.read_text())
-    except (json.JSONDecodeError, OSError) as exc:
-        raise ValueError(
-            f"newest snapshot {newest.name} could not be read ({exc}) — refusing "
-            "to fall back to an older one, which would describe superseded law "
-            "as current"
-        ) from exc
-    body = doc.get("law_full_text") if isinstance(doc, dict) else None
-    if not body:
-        raise ValueError(
-            f"newest snapshot {newest.name} has no law_full_text — refusing to "
-            "fall back to an older one, which would describe superseded law as "
-            "current"
-        )
-    return build_evidence(body)
+    return build_evidence(doc["law_full_text"])
 
 
 def validate_summary_shape(summary: dict) -> list[str]:
@@ -384,33 +351,11 @@ def main():
         if rev_data.get("revisions"):
             category = rev_data["revisions"][0].get("category", "")
 
-    # The law's own text, not the model's memory, and the text as it stands
-    # today. Raises when there is no snapshot: a summary is not written
-    # without evidence.
+    # The law's own text, as it stands right now: fetched in this call rather
+    # than read off disk, because nothing on disk records when it was obtained.
     raw_dir = DATA_DIR / "raw"
     today = datetime.datetime.now(JST).date().isoformat()
-    evidence = load_evidence(raw_dir, law_id, today)
-
-    # A summary describes the law as it stands, so the evidence must be the
-    # law as it stands — which means fetched today.
-    #
-    # The first attempt at this compared the snapshot against the newest
-    # enforced revision in <law_id>_revisions.json. That machinery bought
-    # almost nothing: nobody guarantees the *revision list* is current either,
-    # and timeline.py reuses an existing one indefinitely, so the ordinary case
-    # of "both files are old together" satisfied the comparison and passed.
-    # A missing, malformed or empty list failed open on top of that. Requiring
-    # today's fetch needs no second file to be trusted, and fetch.py takes
-    # seconds. Summaries are written rarely; the cost is not the constraint.
-    used = snapshot_date(newest_snapshot(raw_dir, law_id, today), law_id)
-    if used != today:
-        print(
-            f"Refusing to summarise from law text that is not today's:\n"
-            f"  newest snapshot: {used}\n"
-            f"  today (JST):     {today}\n"
-            f"  run: uv run python scripts/fetch.py {law_id} {used} {today}"
-        )
-        sys.exit(3)
+    evidence = fetch_evidence(raw_dir, law_id, today)
 
     print(f"Generating summary for {timeline['law_title']}...")
     print(f"  Evidence: {len(evidence)} chars from the law text")
@@ -449,6 +394,17 @@ def main():
 
     # Sort by count descending
     contributor_list = sorted(contributors.values(), key=lambda x: x["count"], reverse=True)
+
+    # The generation takes long enough to cross midnight. A summary written
+    # from yesterday's text and saved today would claim to describe current law
+    # on a day an amendment may have come into force.
+    if datetime.datetime.now(JST).date().isoformat() != today:
+        print(
+            f"The JST date changed during generation ({today} -> "
+            f"{datetime.datetime.now(JST).date().isoformat()}); not saving. "
+            "Re-run to fetch today's text."
+        )
+        sys.exit(3)
 
     # Update timeline data
     timeline["summary"] = summary

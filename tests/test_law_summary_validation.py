@@ -119,61 +119,40 @@ def _timeline_fixture(tmp_path):
     return path
 
 
-def _raw_fixture(tmp_path):
-    """main() refuses to run without today's law text, so give it today's.
-
-    The date is computed rather than hardcoded because the guard compares
-    against today in Asia/Tokyo: a fixed filename would pass on the day it was
-    written and fail every day after.
-    """
-    raw_dir = tmp_path / "raw"
-    raw_dir.mkdir()
-    today = datetime.datetime.now(law_summary.JST).date().isoformat()
-    (raw_dir / f"140AC0000000045_{today}.json").write_text(
-        json.dumps(
-            {
-                "law_full_text": {
-                    "tag": "Law",
-                    "attr": {},
-                    "children": [
-                        {
-                            "tag": "Chapter",
-                            "attr": {},
-                            "children": [
-                                {"tag": "ChapterTitle", "attr": {}, "children": ["第一章　総則"]},
-                                {
-                                    "tag": "Article",
-                                    "attr": {"Num": "1"},
-                                    "children": [
-                                        {"tag": "ArticleCaption", "attr": {}, "children": ["（国内犯）"]},
-                                        {
-                                            "tag": "Paragraph",
-                                            "attr": {},
-                                            "children": [{
-                                                "tag": "ParagraphSentence",
-                                                "attr": {},
-                                                "children": [{
-                                                    "tag": "Sentence",
-                                                    "attr": {},
-                                                    "children": ["犯罪 刑罰 拘禁刑 罰金 殺人"],
-                                                }],
-                                            }],
-                                        },
-                                    ],
-                                },
-                            ],
-                        }
-                    ],
-                }
-            },
-            ensure_ascii=False,
-        )
-    )
-    return raw_dir
+def _law_document():
+    """What the e-Gov API returns, in the shape build_evidence expects."""
+    return {
+        "law_full_text": {
+            "tag": "Law",
+            "attr": {},
+            "children": [{
+                "tag": "Chapter",
+                "attr": {},
+                "children": [
+                    {"tag": "ChapterTitle", "attr": {}, "children": ["第一章　総則"]},
+                    {
+                        "tag": "Article",
+                        "attr": {"Num": "1"},
+                        "children": [
+                            {"tag": "ArticleCaption", "attr": {}, "children": ["（国内犯）"]},
+                            {"tag": "Paragraph", "attr": {}, "children": [{
+                                "tag": "ParagraphSentence", "attr": {}, "children": [{
+                                    "tag": "Sentence", "attr": {},
+                                    "children": ["犯罪 刑罰 拘禁刑 罰金 殺人"],
+                                }],
+                            }]},
+                        ],
+                    },
+                ],
+            }],
+        }
+    }
 
 
 def _run_main(monkeypatch, tmp_path, generated):
-    _raw_fixture(tmp_path)
+    # The evidence is fetched in the same call as the generation, so this is
+    # where the network would be. Never let the suite reach it.
+    monkeypatch.setattr(law_summary, "fetch_law_data", lambda *a, **k: _law_document())
     monkeypatch.setattr(law_summary, "DATA_DIR", tmp_path)
     monkeypatch.setattr(law_summary, "FRONTEND_DIR", tmp_path / "frontend")
     monkeypatch.setattr(law_summary, "load_env", lambda: None)
@@ -251,3 +230,36 @@ def test_single_character_keyword_is_rejected():
     # evidence rule cannot catch it. 刑法 shipped it as a keyword.
     errors = validate_summary(valid_summary(keywords=["刑", "殺人"]), EVIDENCE)
     assert any("too short" in e for e in errors)
+
+
+def test_main_does_not_save_when_the_day_changes_mid_generation(monkeypatch, tmp_path):
+    # Generation takes long enough to cross midnight. A summary written from
+    # yesterday's text and saved today claims to describe current law on a day
+    # an amendment may have come into force.
+    path = _timeline_fixture(tmp_path)
+    before = path.read_bytes()
+    monkeypatch.setattr(law_summary, "fetch_law_data", lambda *a, **k: _law_document())
+    monkeypatch.setattr(law_summary, "DATA_DIR", tmp_path)
+    monkeypatch.setattr(law_summary, "FRONTEND_DIR", tmp_path / "frontend")
+    monkeypatch.setattr(law_summary, "load_env", lambda: None)
+    monkeypatch.setattr(law_summary, "generate_summary", lambda *a, **k: valid_summary())
+    monkeypatch.setattr(sys, "argv", ["law_summary.py", "140AC0000000045"])
+
+    real_now = datetime.datetime.now
+    calls = []
+
+    class Clock(datetime.datetime):
+        @classmethod
+        def now(cls, tz=None):
+            calls.append(1)
+            # first call: the fetch date; later: one day on
+            base = real_now(tz)
+            return base if len(calls) == 1 else base + datetime.timedelta(days=1)
+
+    monkeypatch.setattr(law_summary.datetime, "datetime", Clock)
+
+    with pytest.raises(SystemExit) as exc:
+        law_summary.main()
+
+    assert exc.value.code == 3
+    assert path.read_bytes() == before
