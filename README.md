@@ -98,7 +98,8 @@ npm run dev -- -p 3002
 │   ├── timeline.py     Build amendment timeline
 │   ├── proposer.py     Fetch bill proposer from NDL API
 │   ├── enrich.py       Enrich data with proposer info
-│   └── law_summary.py  Generate AI law summary
+│   ├── law_summary.py  Generate AI law summary
+│   └── lawtext.py      Shared reader for the e-Gov law tree
 ├── frontend/           Next.js application
 │   ├── app/            Pages (home, /law, /diff, /theme, /about)
 │   ├── components/     UI components

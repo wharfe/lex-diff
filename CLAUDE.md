@@ -21,6 +21,7 @@ uv run python scripts/fetch.py <law_id> <date_before> <date_after>
 uv run python scripts/diff.py <law_id> <date_before> <date_after>
 uv run python scripts/timeline.py <law_id>     # Amendment history for /law/<law_id>
 uv run python scripts/explainer.py <law_id>    # Plain-language "recent amendments" section
+uv run python scripts/law_summary.py <law_id>  # /law overview — fetches today's text itself
 uv run pytest                                  # Python tests
 
 # Frontend (in frontend/ directory)
@@ -46,10 +47,11 @@ npm run lint   # Lint
 │   ├── law_summary.py     AI-generated law overview
 │   ├── explainer.py       AI-generated "recent amendments" section (see below)
 │   ├── llm.py             Shared Claude API helpers for the three scripts above
+│   ├── lawtext.py         Reading the e-Gov law tree (shared by diff/law_summary)
 │   └── requirements.txt   Python dependencies (legacy, use pyproject.toml)
 ├── tests/                 pytest suite — the pure functions in scripts/, plus
 │                          test_shipped_data.py over frontend/public/data/
-│                          (not run in CI yet — issue #17)
+│                          (run in CI on every PR)
 ├── data/                  Generated data (not committed — all subdirs gitignored)
 │   ├── raw/               Raw API responses
 │   ├── diffs/             Computed diff JSON files
