@@ -268,3 +268,73 @@ def summary_is_safe(summary: str, current_text: str) -> bool:
     return not any(
         term in summary and term not in current_text for term in ABOLISHED_PENALTIES
     )
+
+
+def build_alias_table(pages: dict[str, dict]) -> dict[str, str]:
+    """Japanese article label -> article_num, for this law only."""
+    return {p["label"]: num for num, p in pages.items() if p.get("label")}
+
+
+# An article number continues after の only with a numeral: 第七百七十八条の四
+# is another article, 第七百七十八条の規定 is the same one.
+# Kanji today; Arabic too, so that adding display_num ("第778条の4") to the
+# alias table later cannot make 第778条の4 resolve to 第778条.
+_KANJI_DIGITS = set("一二三四五六七八九十百千0123456789０１２３４５６７８９")
+
+
+def _normalise_ref_num(raw: str) -> str:
+    """The many shapes an LLM wrote an article number in, as one shape."""
+    return raw.replace("-", "_").replace("の", "_").strip()
+
+
+def resolve_cross_references(
+    refs: list[dict], alias_to_num: dict[str, str], self_num: str
+) -> tuple[list[dict], int]:
+    """Decide which references may become links.
+
+    The `article_num` these carry is free-form LLM output: it names other laws,
+    it is sometimes empty, and it is written three different ways. So the label
+    decides, and article_num only gets a veto.
+    """
+    resolved = []
+    unresolved = 0
+    for ref in refs:
+        label = (ref.get("ref") or "").strip()
+        target = None
+        # A reference that opens with a law name is about another law. One that
+        # mentions 附則 is about provisions this page set never covers.
+        if label.startswith("第") and "附則" not in label:
+            # Longest alias first: 民法 ships 778, 778_2, 778_3 and 778_4 at
+            # once, and 第七百七十八条 is a prefix of 第七百七十八条の四.
+            for alias in sorted(alias_to_num, key=len, reverse=True):
+                if not label.startswith(alias):
+                    continue
+                # Even the longest match can be a prefix when the sub-article
+                # itself has no page: 第七百七十八条の四 would otherwise link to
+                # 第七百七十八条. "の" + a kanji numeral continues the number.
+                rest = label[len(alias):]
+                if rest[:1] == "の" and rest[1:2] in _KANJI_DIGITS:
+                    break  # a sub-article we do not have a page for
+                target = alias_to_num[alias]
+                break
+        if target == self_num:
+            target = None
+        raw_num = _normalise_ref_num(ref.get("article_num") or "")
+        # "7782" is 778_2 with the separator missing, not a different article,
+        # and 8 shipped references are written that way. "824" against 824_2 is
+        # a different article and must still lose the link.
+        if target is not None and raw_num and raw_num not in (target, target.replace("_", "")):
+            # The two halves of the reference disagree. Do not guess.
+            target = None
+        if target is None:
+            unresolved += 1
+        resolved.append(
+            {
+                "ref": label,
+                "article_num": ref.get("article_num", ""),
+                "context": ref.get("context", ""),
+                "slug": article_slug(target) if target else None,
+                "has_page": target is not None,
+            }
+        )
+    return resolved, unresolved

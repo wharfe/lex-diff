@@ -295,3 +295,96 @@ def test_texts_do_not_match_when_only_leading_indentation_differs():
     after = [{"num": "1", "text": "　共益の費用"}]
     current = [{"num": "1", "text": "共益の費用"}]
     assert articles.texts_match(after, current) is False
+
+
+# 民法は 778 / 778_2 / 778_3 / 778_4 を同時に持つ（実測）。短い条名が長い条名の
+# 接頭辞になるので、別名表は必ずこの形でテストする。
+ALIASES = {
+    "第三百六条": "306",
+    "第三百八条の二": "308_2",
+    "第七百六十六条": "766",
+    "第七百七十八条": "778",
+    "第七百七十八条の四": "778_4",
+}
+
+
+def test_a_reference_to_another_law_is_not_linked():
+    refs = [{"ref": "民法第八百十七条の二第一項", "article_num": "817-2", "context": "c"}]
+    resolved, unresolved = articles.resolve_cross_references(refs, ALIASES, "2")
+    assert resolved[0]["has_page"] is False
+    assert resolved[0]["slug"] is None
+    assert unresolved == 1
+
+
+def test_a_reference_to_a_supplementary_provision_is_not_linked():
+    refs = [{"ref": "附則第三条", "article_num": "3", "context": "c"}]
+    resolved, _ = articles.resolve_cross_references(refs, ALIASES, "306")
+    assert resolved[0]["has_page"] is False
+
+
+def test_a_same_law_reference_resolves_by_its_japanese_label():
+    refs = [{"ref": "第三百八条の二", "article_num": "308_2", "context": "c"}]
+    resolved, unresolved = articles.resolve_cross_references(refs, ALIASES, "306")
+    assert resolved[0]["has_page"] is True
+    assert resolved[0]["slug"] == "308-2"
+    assert unresolved == 0
+
+
+def test_a_self_reference_is_not_linked():
+    refs = [{"ref": "第三百六条", "article_num": "306", "context": "c"}]
+    resolved, _ = articles.resolve_cross_references(refs, ALIASES, "306")
+    assert resolved[0]["has_page"] is False
+
+
+def test_a_reference_whose_article_num_contradicts_its_label_is_not_linked():
+    refs = [{"ref": "第三百八条の二", "article_num": "766", "context": "c"}]
+    resolved, _ = articles.resolve_cross_references(refs, ALIASES, "306")
+    assert resolved[0]["has_page"] is False
+
+
+def test_a_reference_with_an_empty_article_num_still_resolves_by_label():
+    refs = [{"ref": "第七百六十六条に定める", "article_num": "", "context": "c"}]
+    resolved, _ = articles.resolve_cross_references(refs, ALIASES, "306")
+    assert resolved[0]["has_page"] is True
+    assert resolved[0]["slug"] == "766"
+
+
+def test_a_longer_article_label_wins_over_its_own_prefix():
+    # 民法 ships 778, 778_2, 778_3 and 778_4 together. First-match-wins makes
+    # 第七百七十八条 swallow 第七百七十八条の四, and the article_num veto then
+    # hides the damage by dropping the link entirely.
+    refs = [{"ref": "第七百七十八条の四", "article_num": "778_4", "context": "c"}]
+    resolved, unresolved = articles.resolve_cross_references(refs, ALIASES, "306")
+    assert resolved[0]["slug"] == "778-4"
+    assert unresolved == 0
+
+
+def test_a_prefix_label_still_resolves_to_itself():
+    refs = [{"ref": "第七百七十八条に定める", "article_num": "778", "context": "c"}]
+    resolved, _ = articles.resolve_cross_references(refs, ALIASES, "306")
+    assert resolved[0]["slug"] == "778"
+
+
+def test_a_sub_article_without_a_page_does_not_link_to_its_parent():
+    # 第七百七十八条の四 is a different article from 第七百七十八条. When only the
+    # parent has a page, the reference must not quietly point at it.
+    aliases = {"第七百七十八条": "778"}
+    refs = [{"ref": "第七百七十八条の四", "article_num": "778_4", "context": "c"}]
+    resolved, unresolved = articles.resolve_cross_references(refs, aliases, "306")
+    assert resolved[0]["has_page"] is False
+    assert unresolved == 1
+
+
+def test_a_reference_continuing_with_non_numeral_text_still_resolves():
+    aliases = {"第七百七十八条": "778"}
+    refs = [{"ref": "第七百七十八条の規定により", "article_num": "778", "context": "c"}]
+    resolved, _ = articles.resolve_cross_references(refs, aliases, "306")
+    assert resolved[0]["slug"] == "778"
+
+
+def test_build_alias_table_maps_japanese_labels_to_numbers():
+    pages = {"306": {"label": "第三百六条"}, "308_2": {"label": "第三百八条の二"}}
+    assert articles.build_alias_table(pages) == {
+        "第三百六条": "306",
+        "第三百八条の二": "308_2",
+    }
