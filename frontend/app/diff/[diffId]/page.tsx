@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
-import { getDiffIds, getDiffData, mainChangeCounts } from "@/lib/data";
+import {
+  getDiffIds,
+  getDiffData,
+  mainChangeCounts,
+  getArticleLawIds,
+  getArticleData,
+} from "@/lib/data";
 import { RevisionHeader } from "@/components/revision-header";
 import { PrSummaryCard } from "@/components/pr-summary";
 import { DiffViewer } from "@/components/diff-viewer";
@@ -45,6 +51,16 @@ export default async function DiffPage({
 }) {
   const { diffId } = await params;
   const data = getDiffData(decodeURIComponent(diffId));
+  // 労働基準法 has 0 本則 changes and ships no articles/ file; calling
+  // getArticleData unconditionally would throw and break its two
+  // 附則-only diff builds.
+  const articleSlugs: Record<string, string> = getArticleLawIds().includes(
+    data.law_id
+  )
+    ? Object.fromEntries(
+        getArticleData(data.law_id).articles.map((a) => [a.article_num, a.slug])
+      )
+    : {};
 
   return (
     <div className="flex flex-col gap-6">
@@ -63,7 +79,11 @@ export default async function DiffPage({
       />
       <RevisionHeader data={data} />
       {data.pr_summary && <PrSummaryCard summary={data.pr_summary} />}
-      <DiffViewer diffs={data.diffs} />
+      <DiffViewer
+        diffs={data.diffs}
+        lawId={data.law_id}
+        articleSlugs={articleSlugs}
+      />
     </div>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { ArticleDiff } from "@/lib/types";
 
 function DiffLine({ line }: { line: string }) {
@@ -105,9 +106,13 @@ function AnnotationCard({ diff }: { diff: ArticleDiff }) {
 
 export function ArticleDiffCard({
   diff,
+  lawId,
+  articleSlugs,
   defaultExpanded = true,
 }: {
   diff: ArticleDiff;
+  lawId: string;
+  articleSlugs: Record<string, string>;
   defaultExpanded?: boolean;
 }) {
   const [expanded, setExpanded] = useState(defaultExpanded);
@@ -117,29 +122,43 @@ export function ArticleDiffCard({
   const sectionLabel = diff.is_suppl
     ? diff.amend_law_num || "附則"
     : diff.section_path.join("/");
+  const slug = articleSlugs[diff.article_num];
 
   return (
     <div className="border border-[var(--border)] rounded-lg overflow-hidden">
-      <button
-        onClick={() => setExpanded(!expanded)}
-        className="w-full flex items-center gap-2 px-4 py-3 bg-[var(--muted)] hover:bg-[var(--muted)]/80 text-left cursor-pointer"
-      >
-        <span className="text-[13px] opacity-50 shrink-0">
-          {expanded ? "▾" : "▸"}
-        </span>
-        <TypeBadge type={diff.type} />
-        {sectionLabel && (
-          <span className="text-[13px] font-mono opacity-40 hidden md:inline">
-            {sectionLabel}/
+      {/* id on the card itself: this is what /article links back to with a hash. */}
+      <div id={diff.article_num} className="scroll-mt-4">
+        <button
+          onClick={() => setExpanded(!expanded)}
+          className="w-full flex items-center gap-2 px-4 py-3 bg-[var(--muted)] hover:bg-[var(--muted)]/80 text-left cursor-pointer"
+        >
+          <span className="text-[13px] opacity-50 shrink-0">
+            {expanded ? "▾" : "▸"}
           </span>
+          <TypeBadge type={diff.type} />
+          {sectionLabel && (
+            <span className="text-[13px] font-mono opacity-40 hidden md:inline">
+              {sectionLabel}/
+            </span>
+          )}
+          <span className="font-mono font-medium text-[14px]">{title}</span>
+          {diff.annotation?.plain_summary && (
+            <span className="text-[13px] opacity-50 hidden lg:inline ml-2">
+              — {diff.annotation.plain_summary}
+            </span>
+          )}
+        </button>
+        {slug && (
+          // Outside the button, so a click goes to the page and not also to
+          // the expand toggle.
+          <Link
+            href={`/law/${lawId}/article/${slug}`}
+            className="ml-2 text-[13px] text-[var(--diff-hunk-text)]"
+          >
+            この条文のページ →
+          </Link>
         )}
-        <span className="font-mono font-medium text-[14px]">{title}</span>
-        {diff.annotation?.plain_summary && (
-          <span className="text-[13px] opacity-50 hidden lg:inline ml-2">
-            — {diff.annotation.plain_summary}
-          </span>
-        )}
-      </button>
+      </div>
       {expanded && (
         <div className="border-t border-[var(--border)]">
           <AnnotationCard diff={diff} />
@@ -177,7 +196,15 @@ function SectionHeading({
   );
 }
 
-export function DiffViewer({ diffs }: { diffs: ArticleDiff[] }) {
+export function DiffViewer({
+  diffs,
+  lawId,
+  articleSlugs,
+}: {
+  diffs: ArticleDiff[];
+  lawId: string;
+  articleSlugs: Record<string, string>;
+}) {
   // 附則 (施行期日・経過措置) is numbered independently of the main text, so it
   // gets its own section instead of being mixed in as if it were 第1条.
   const main = diffs.filter((d) => !d.is_suppl);
@@ -199,7 +226,12 @@ export function DiffViewer({ diffs }: { diffs: ArticleDiff[] }) {
         ) : (
           <div className="flex flex-col gap-5">
             {main.map((diff) => (
-              <ArticleDiffCard key={diff.article_num} diff={diff} />
+              <ArticleDiffCard
+                key={diff.article_num}
+                diff={diff}
+                lawId={lawId}
+                articleSlugs={articleSlugs}
+              />
             ))}
           </div>
         )}
@@ -220,6 +252,8 @@ export function DiffViewer({ diffs }: { diffs: ArticleDiff[] }) {
               <ArticleDiffCard
                 key={diff.article_num}
                 diff={diff}
+                lawId={lawId}
+                articleSlugs={articleSlugs}
                 defaultExpanded={false}
               />
             ))}
