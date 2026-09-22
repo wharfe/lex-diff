@@ -32,3 +32,6 @@ frontend/out/
 
 # Agent tooling (local settings, per-machine memory)
 .claude/
+
+# SDD workspace (plan ledger, briefs, review packages)
+.superpowers/
