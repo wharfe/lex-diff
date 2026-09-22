@@ -146,3 +146,97 @@ export interface LawTimeline {
   contributors?: Contributor[];
   explainer?: LawExplainer;
 }
+
+// Article page types
+
+export interface ArticleSource {
+  asof: string;
+  fetched_at: string;
+  law_revision_id: string;
+  amendment_enforcement_date: string;
+}
+
+/** A paragraph of today's text. `mark` is what the printed law shows in the
+ *  margin ("" for the first paragraph, "２" onward); `num` is what a citation
+ *  uses. Both come from the Article node, not from a position counter. */
+export interface ArticleParagraph extends Paragraph {
+  mark: string;
+}
+
+/** current.status has three values, not two: an article can be repealed
+ *  standalone ("deleted") or folded into a range node that replaced it
+ *  ("merged_deleted"). The two need different sentences on the page -- a
+ *  standalone repeal was folded into nothing, so the 欠番 wording used for
+ *  merged_deleted would be false for it. TOMBSTONE_STATUSES / isTombstone
+ *  below are the one place that draws this line; nothing else compares
+ *  against a bare status string. Mirrors scripts/articles.py's
+ *  TOMBSTONE_STATUSES. */
+export const TOMBSTONE_STATUSES = ["deleted", "merged_deleted"] as const;
+
+export type TombstoneStatus = (typeof TOMBSTONE_STATUSES)[number];
+
+export function isTombstone(status: CurrentText["status"]): status is TombstoneStatus {
+  return (TOMBSTONE_STATUSES as readonly string[]).includes(status);
+}
+
+export interface CurrentText {
+  status: "present" | "deleted" | "merged_deleted";
+  source_article_num: string;
+  source_label: string;
+  paragraphs: ArticleParagraph[];
+}
+
+export interface FormerText {
+  as_of: string;
+  label: string;
+  paragraphs: Paragraph[];
+}
+
+/** Present only when the article's text has not moved on since the note was
+ *  written. null is the normal outcome for an article amended again since. */
+export interface CurrentSummary {
+  text: string;
+  evidence_date: string;
+}
+
+export interface ArticleChange {
+  diff_id: string;
+  enforcement_date: string;
+  year: string;
+  type: "added" | "modified" | "deleted";
+  amendment_law_title: string;
+  change_description: string;
+  plain_summary: string;
+  /** Shown as text on the history card, never as links: a reference written
+   *  about an older version of this article may point at a moved provision. */
+  cross_references: { ref: string; context: string }[];
+}
+
+export interface RelatedArticle {
+  ref: string;
+  article_num: string;
+  context: string;
+  slug: string | null;
+  has_page: boolean;
+}
+
+export interface ArticlePage {
+  article_num: string;
+  slug: string;
+  display_num: string;
+  label: string;
+  caption: string;
+  section_path: string[];
+  current: CurrentText;
+  current_summary: CurrentSummary | null;
+  former: FormerText | null;
+  changes: ArticleChange[];
+  related_articles: RelatedArticle[];
+}
+
+export interface LawArticles {
+  law_id: string;
+  law_title: string;
+  source: ArticleSource;
+  articles: ArticlePage[];
+}
