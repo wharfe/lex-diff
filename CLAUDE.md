@@ -22,6 +22,7 @@ uv run python scripts/diff.py <law_id> <date_before> <date_after>
 uv run python scripts/timeline.py <law_id>     # Amendment history for /law/<law_id>
 uv run python scripts/explainer.py <law_id>    # Plain-language "recent amendments" section
 uv run python scripts/law_summary.py <law_id>  # /law overview — fetches today's text itself
+uv run python scripts/articles.py --all        # Per-article pages — fetches today's text itself
 uv run pytest                                  # Python tests
 
 # Frontend (in frontend/ directory)
@@ -171,6 +172,9 @@ blank field, because a typo would silently revert a page that took months to ran
 
 ```
 e-Gov API v2  →  fetch.py (raw JSON)  →  diff.py (structured diff)  →  frontend/public/data/
+
+articles.py reads the shipped diffs back and pairs each amended article with
+today's text, fetched in the same run  →  frontend/public/data/articles/
 ```
 
 ## API Notes
