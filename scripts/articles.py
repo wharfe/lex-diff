@@ -9,6 +9,9 @@ other -- see texts_match() and the version gate it guards.
 
 import re
 
+from lawtext import extract_text, walk_tags
+from diff import format_paragraph, find_section_path
+
 # e-Gov numbers an article of the main text as "306", a sub-article as "308_2"
 # (第308条の2), and a merged pair as "753:754". Only the first two are article
 # numbers; the third is an element id that no reader searches for.
@@ -99,3 +102,123 @@ def collect_changes(diff_docs: list[dict], today: str) -> dict[str, list[dict]]:
     for num in by_num:
         by_num[num].sort(key=lambda c: c["enforcement_date"], reverse=True)
     return by_num
+
+
+# 附則 is numbered independently of the main text, so it must never enter the
+# index keyed by article number.
+SKIP_SUBTREES = {"SupplProvision"}
+
+# What e-Gov leaves behind where an article used to be.
+_DELETED_BODY = {"削除"}
+
+
+def _text_without_ruby(node) -> str:
+    """extract_text, minus the reading gloss.
+
+    e-Gov marks up rare kanji as <Ruby>踪<Rt>そう</Rt></Ruby>, and extract_text
+    concatenates both, yielding 失踪そうの宣告. That is fine inside a paragraph
+    the reader skims and wrong in a <title>.
+    """
+    if isinstance(node, str):
+        return node
+    if node.get("tag") == "Rt":
+        return ""
+    return "".join(_text_without_ruby(c) for c in node.get("children", []) or [])
+
+
+def extract_article_body(node: dict) -> dict:
+    """An Article node split into the three things a page shows separately.
+
+    diff.find_articles concatenates the caption onto the title and then lets the
+    ArticleTitle child overwrite the result, so the caption is lost there. The
+    caption is the phrase readers actually type ("夫婦間の契約の取消権"), so it
+    is read on its own here.
+    """
+    label = ""
+    caption = ""
+    paragraphs = []
+    for child in node.get("children", []) or []:
+        if not isinstance(child, dict):
+            continue
+        tag = child.get("tag")
+        if tag == "ArticleTitle":
+            label = extract_text(child).strip()
+        elif tag == "ArticleCaption":
+            caption = _text_without_ruby(child).strip().strip("（）()")
+        elif tag == "Paragraph":
+            # Two different numbers live here and format_paragraph drops both.
+            # Paragraph@Num is what a citation uses (民法772条第2項);
+            # ParagraphNum is what the printed law puts in the margin -- empty
+            # for the first paragraph, ２ ３ ４ after it. Renumbering by
+            # position instead would hide 項 boundaries on the 107 shipped
+            # entries with more than one, and 民法772条第1項 holds two sentences
+            # that a reader would then count as two 項.
+            attr_num = (child.get("attr") or {}).get("Num") or str(len(paragraphs) + 1)
+            marks = walk_tags(child, {"ParagraphNum"})
+            paragraphs.append(
+                {
+                    "num": attr_num,
+                    "mark": extract_text(marks[0]).strip() if marks else "",
+                    "text": format_paragraph(child),
+                }
+            )
+    return {"label": label, "caption": caption, "paragraphs": paragraphs}
+
+
+def index_current_articles(law_full_text: dict) -> dict[str, dict]:
+    """Article@Num -> Article node, for the main text only."""
+    index = {}
+    for node in walk_tags(law_full_text, {"Article"}, stop_at=SKIP_SUBTREES):
+        num = (node.get("attr") or {}).get("Num")
+        if num:
+            index[num] = node
+    return index
+
+
+def _body_is_only_deleted(body: dict) -> bool:
+    joined = "".join(p["text"] for p in body["paragraphs"]).strip()
+    return joined in _DELETED_BODY
+
+
+def resolve_current(index: dict, article_num: str, latest_type: str) -> dict:
+    """The article as it stands today, or an error.
+
+    Never returns "the article is gone": an article we have an enforced diff for
+    must be findable, or our reading of the law's structure is wrong and the run
+    should stop rather than ship a page with no text.
+    """
+    node = index.get(article_num)
+    if node is not None:
+        body = extract_article_body(node)
+        return {
+            "status": "present",
+            "source_article_num": article_num,
+            "source_label": body["label"],
+            "caption": body["caption"],
+            "paragraphs": body["paragraphs"],
+        }
+
+    if latest_type == "deleted":
+        for key, candidate in index.items():
+            if not is_range_num(key) or article_num not in range_members(key):
+                continue
+            body = extract_article_body(candidate)
+            if not _body_is_only_deleted(body):
+                # A range node whose body is anything but 削除 is a drafting
+                # device, not a tombstone. (Do not cite 育児介護休業法's 36:52
+                # here: measured 2026-09-22, its body IS 削除 and Article_40
+                # returns 400, so it is a tombstone too. The rule stands on the
+                # body, not on an example.)
+                continue
+            return {
+                "status": "merged_deleted",
+                "source_article_num": key,
+                "source_label": body["label"],
+                "caption": body["caption"],
+                "paragraphs": body["paragraphs"],
+            }
+
+    raise LookupError(
+        f"article {article_num!r} has an enforced diff but is not in today's "
+        "text, and no merged-deleted range accounts for it"
+    )
