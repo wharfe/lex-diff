@@ -29,9 +29,19 @@ export function ArticleHistory({
               // c.type here read 改正直後 over three repeals e-Gov records as
               // "modified" (民法733/746, 刑法178), labelling a description of
               // the repealed rule as a description of the word 削除.
+              //
+              // 改正直後 is the value that has to be positively present, so a
+              // missing or unexpected summary_basis falls onto 改正直前 rather
+              // than back onto exactly that defect. 改正直前 is the weaker
+              // claim -- the note describes the text as it stood before this
+              // amendment, which is true of any note written about it -- while
+              // 改正直後 asserts the note describes what replaced that text.
+              // Python already rejects any other value (validate_articles
+              // against SUMMARY_BASES), so this is the direction of the
+              // fallback, not a second gate.
               <p className="mt-2 text-[13px] opacity-70">
                 {jpDate(c.enforcement_date)}
-                {c.summary_basis === "before" ? "改正直前" : "改正直後"}
+                {c.summary_basis === "after" ? "改正直後" : "改正直前"}
                 の条文についての説明: {c.plain_summary}
               </p>
             )}

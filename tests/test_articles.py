@@ -1113,25 +1113,40 @@ def test_an_article_containing_a_table_ships_without_a_current_summary():
 # --- a reference naming a range of articles never becomes a link ---
 
 
-@pytest.mark.parametrize(
-    "ref",
-    [
-        "第七百七十八条から第七百七十八条の四まで",
-        "第三百六条及び第七百六十六条",
-        "第三百六条又は第七百六十六条",
-        "第三百六条並びに第七百六十六条",
-        "第三百六条、第七百六十六条",
-    ],
-)
+# One case per entry of MULTI_ARTICLE_CONNECTIVES, so dropping any single
+# connective goes red on its own case and names itself in the failure.
+MULTI_ARTICLE_REFS = [
+    "第七百七十八条から第七百七十八条の四まで",
+    "第三百六条乃至第七百六十六条",
+    "第三百六条及び第七百六十六条",
+    "第三百六条並びに第七百六十六条",
+    "第三百六条又は第七百六十六条",
+    "第三百六条若しくは第七百六十六条",
+    "第三百六条、第七百六十六条",
+    "第三百六条・第七百六十六条",
+]
+
+
+@pytest.mark.parametrize("ref", MULTI_ARTICLE_REFS)
 def test_a_reference_naming_more_than_one_article_is_not_linked(ref):
     # startswith against the alias table would make the whole phrase a link to
-    # the first article it names.
+    # the first article it names. 及び/又は are the inner level of statutory
+    # drafting and 並びに/若しくは the outer one, so guarding only one of each
+    # pair guards only half the shapes.
     resolved, unresolved = articles.resolve_cross_references(
         [{"ref": ref, "article_num": "", "context": "c"}], ALIASES, "2"
     )
     assert resolved[0]["has_page"] is False
     assert resolved[0]["slug"] is None
     assert unresolved == 1
+
+
+def test_every_multi_article_connective_has_a_case_of_its_own():
+    # MULTI_ARTICLE_REFS is the guard; this is the guard on the guard. A
+    # connective added to the constant without a case would otherwise ship
+    # untested, and its mutation proof would pass vacuously.
+    for connective in articles.MULTI_ARTICLE_CONNECTIVES:
+        assert any(connective in ref for ref in MULTI_ARTICLE_REFS), connective
 
 
 def test_a_reference_naming_one_article_still_links():

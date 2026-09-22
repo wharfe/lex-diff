@@ -396,12 +396,31 @@ _KANJI_DIGITS = set("一二三四五六七八九十百千0123456789０１２３�
 # turn the whole phrase into a link to the first of them
 # (第七条から第七条の四まで -> 第七条). Unresolved refs already fall back to
 # plain text, which is the right outcome for a range.
-#   から   a range: 第二百二十四条から第二百二十八条まで
-#   及び   conjunction of two articles
-#   並びに conjunction of groups of articles (the outer 及び)
-#   又は   disjunction of two articles
-#   、     the enumeration comma between numbers in a list
-MULTI_ARTICLE_CONNECTIVES = ("から", "及び", "並びに", "又は", "、")
+#
+# Statutory drafting pairs each connective with a wider one: 及び inside 並びに,
+# 若しくは inside 又は. A list holding only one of each pair is half a rule --
+# it guarded 第七条及び第八条 and let 第七条若しくは第八条 through. The other two
+# are not drafting conventions but shapes that occur in the free-form LLM refs
+# this function reads -- the nakaguro as a bare enumerator, and 乃至 as the
+# pre-war spelling of から that older statutes and quotations still use.
+#   から     a range: 第二百二十四条から第二百二十八条まで
+#   乃至     the same range, written the old way: 第二百二十四条乃至第二百二十八条
+#   及び     conjunction of two articles (inner level)
+#   並びに   conjunction of groups of articles (outer level)
+#   又は     disjunction of two articles (outer level)
+#   若しくは disjunction of two articles (inner level)
+#   、       the enumeration comma between numbers in a list
+#   ・       the nakaguro, the same enumeration without the comma
+MULTI_ARTICLE_CONNECTIVES = (
+    "から",
+    "乃至",
+    "及び",
+    "並びに",
+    "又は",
+    "若しくは",
+    "、",
+    "・",
+)
 
 
 def _normalise_ref_num(raw: str) -> str:
