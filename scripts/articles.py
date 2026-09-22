@@ -7,10 +7,25 @@ side is what the page is for, and it is also where they can contradict each
 other -- see texts_match() and the version gate it guards.
 """
 
+import datetime
+import json
+import os
 import re
+import sys
+from pathlib import Path
+from zoneinfo import ZoneInfo
+
+import httpx
 
 from lawtext import extract_text, walk_tags
 from diff import format_paragraph, find_section_path
+
+sys.path.insert(0, str(Path(__file__).parent))
+from fetch import fetch_law_data
+
+JST = ZoneInfo("Asia/Tokyo")
+DATA_DIR = Path(__file__).parent.parent / "data"
+FRONTEND_DIR = Path(__file__).parent.parent / "frontend" / "public" / "data"
 
 # e-Gov numbers an article of the main text as "306", a sub-article as "308_2"
 # (第308条の2), and a merged pair as "753:754". Only the first two are article
@@ -533,3 +548,128 @@ def validate_articles(doc: dict) -> list[str]:
             if not former or not former.get("paragraphs"):
                 errors.append(f"{num}: a deleted article has no former text")
     return errors
+
+
+# <lawId>_<YYYY-MM-DD>_<YYYY-MM-DD>.json
+_DIFF_NAME = re.compile(r"^([0-9A-Z]+)_(\d{4}-\d{2}-\d{2})_(\d{4}-\d{2}-\d{2})\.json$")
+
+
+def shipped_diff_docs(data_dir: Path) -> dict[str, list[dict]]:
+    """law_id -> its shipped diff documents, each tagged with its diff_id."""
+    by_law: dict[str, list[dict]] = {}
+    for path in sorted(data_dir.glob("*.json")):
+        m = _DIFF_NAME.match(path.name)
+        if not m:
+            continue
+        doc = json.loads(path.read_text())
+        doc["_diff_id"] = path.stem
+        by_law.setdefault(m.group(1), []).append(doc)
+    return by_law
+
+
+def _write_atomic(path: Path, payload: str) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_suffix(".json.tmp")
+    tmp.write_text(payload)
+    os.replace(tmp, path)
+
+
+def main():
+    args = [a for a in sys.argv[1:] if not a.startswith("-")]
+    by_law = shipped_diff_docs(FRONTEND_DIR)
+    law_ids = args or sorted(by_law)
+
+    today = datetime.datetime.now(JST).date().isoformat()
+    built: dict[str, dict] = {}
+
+    for law_id in law_ids:
+        docs = by_law.get(law_id)
+        if not docs:
+            print(f"{law_id}: no shipped diff; skipping")
+            continue
+        changes = collect_changes(docs, today)
+        if not changes:
+            # 労働基準法 has only 附則 changes. Nothing to build, nothing wrong.
+            print(f"{law_id}: no 本則 change; no file")
+            continue
+        print(f"{law_id}: fetching today's text ({len(changes)} articles)")
+        # There is deliberately no older file to fall back to: falling back is
+        # how the text silently goes stale. Exit rather than let the exception
+        # out, so a caller can tell "the fetch failed" (4) from "the data is
+        # wrong" (2) and "the day changed" (3).
+        try:
+            document = fetch_law_data(law_id, today)
+        except httpx.HTTPError as exc:
+            print(f"  error: fetching {law_id} failed: {exc}")
+            sys.exit(4)
+        law_full_text = document.get("law_full_text")
+        if not law_full_text:
+            print(f"  error: {law_id}: the API returned no law_full_text for asof {today}")
+            sys.exit(4)
+        revision = document.get("revision_info") or {}
+
+        fetched_at = datetime.datetime.now(JST).replace(microsecond=0)
+        # Midnight between deciding the asof and holding the text. Checked here
+        # rather than only before saving, so the run stops at the first law that
+        # crossed it -- and so this never reaches validate_articles, which would
+        # report it as "asof and fetched_at are different days" (exit 2) and
+        # bury the one thing the caller needs to know.
+        if fetched_at.date().isoformat() != today:
+            print(
+                f"The JST date changed during generation ({today} -> "
+                f"{fetched_at.date().isoformat()}); not saving."
+            )
+            sys.exit(3)
+
+        # The law's name as of today, not as of the shipped diff. 情プラ法
+        # (413AC0000000137) was renamed: the diffs still say 特定電気通信役務提供者
+        # の損害賠償責任の制限…, today's revision_info and the site's own /law page
+        # say 特定電気通信による情報の流通によって発生する権利侵害等への対処…. A page
+        # headed "現在の条文（取得日時点）" must not carry the pre-rename name.
+        law_title = (revision.get("law_title") or "").strip()
+        if not law_title:
+            print(f"  error: {law_id}: revision_info carries no law_title")
+            sys.exit(4)
+
+        source = {
+            "asof": today,
+            "fetched_at": fetched_at.isoformat(),
+            "law_revision_id": revision.get("law_revision_id", ""),
+            "amendment_enforcement_date": revision.get("amendment_enforcement_date", ""),
+        }
+        doc = build_law_articles(law_id, law_title, changes, law_full_text, source)
+        errors = validate_articles(doc)
+        if errors:
+            for e in errors:
+                print(f"  error: {e}")
+            sys.exit(2)
+        built[law_id] = doc
+
+    # Nothing is published until every requested law has been built and checked.
+    if datetime.datetime.now(JST).date().isoformat() != today:
+        print(
+            f"The JST date changed during generation ({today} -> "
+            f"{datetime.datetime.now(JST).date().isoformat()}); not saving."
+        )
+        sys.exit(3)
+
+    for law_id, doc in built.items():
+        payload = json.dumps(doc, ensure_ascii=False, indent=2)
+        _write_atomic(DATA_DIR / "articles" / f"{law_id}.json", payload)
+        _write_atomic(FRONTEND_DIR / "articles" / f"{law_id}.json", payload)
+        print(f"  -> {law_id}: {len(doc['articles'])} articles")
+
+    # A law that drops to zero target articles leaves its previous file behind,
+    # and the stale copy keeps shipping pages the diffs no longer support.
+    if not args:
+        for directory in (DATA_DIR / "articles", FRONTEND_DIR / "articles"):
+            if not directory.exists():
+                continue
+            for path in directory.glob("*.json"):
+                if path.stem not in built:
+                    print(f"  removing stale {path.name}")
+                    path.unlink()
+
+
+if __name__ == "__main__":
+    main()

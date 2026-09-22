@@ -591,3 +591,181 @@ def test_validate_reports_but_does_not_raise_on_a_range_shaped_article_num():
     errors = articles.validate_articles(doc)
     assert isinstance(errors, list)
     assert any("article_num is not in a form" in e for e in errors)
+
+
+import datetime
+import json
+
+import httpx
+
+
+def _law_document(tree=None):
+    return {
+        "law_full_text": tree or _tree(_article("306", "第三百六条", "一般の先取特権")),
+        "revision_info": {
+            "law_revision_id": "129AC0000000089_20260624_508AC0000000045",
+            "amendment_enforcement_date": "2026-06-24",
+            "law_title": "民法",
+        },
+    }
+
+
+def _shipped_diff(tmp_path, entries=None):
+    tmp_path.mkdir(parents=True, exist_ok=True)
+    path = tmp_path / "129AC0000000089_2026-03-31_2026-04-01.json"
+    path.write_text(
+        json.dumps(
+            _doc("2026-04-01", entries or [_entry("306", paragraphs_after=[{"num": "1", "text": "本文"}])]),
+            ensure_ascii=False,
+        )
+    )
+    return path
+
+
+def _prepare(monkeypatch, tmp_path, fetch):
+    shipped = tmp_path / "frontend" / "public" / "data"
+    _shipped_diff(shipped)
+    monkeypatch.setattr(articles, "DATA_DIR", tmp_path / "data")
+    monkeypatch.setattr(articles, "FRONTEND_DIR", shipped)
+    monkeypatch.setattr(articles, "fetch_law_data", fetch)
+    monkeypatch.setattr(sys, "argv", ["articles.py", "--all"])
+    return shipped
+
+
+def _written(tmp_path):
+    out = list((tmp_path / "frontend" / "public" / "data" / "articles").glob("*.json"))
+    return out + list((tmp_path / "data" / "articles").glob("*.json"))
+
+
+def test_main_exits_nonzero_and_saves_nothing_when_the_fetch_fails(monkeypatch, tmp_path):
+    def boom(*a, **k):
+        raise httpx.HTTPError("e-Gov is down")
+
+    _prepare(monkeypatch, tmp_path, boom)
+    with pytest.raises(SystemExit) as exc:
+        articles.main()
+    assert exc.value.code != 0
+    assert _written(tmp_path) == []
+
+
+def test_main_saves_nothing_when_the_api_returns_no_law_full_text(monkeypatch, tmp_path):
+    _prepare(monkeypatch, tmp_path, lambda *a, **k: {"revision_info": {}})
+    with pytest.raises(SystemExit) as exc:
+        articles.main()
+    assert exc.value.code != 0
+    assert _written(tmp_path) == []
+
+
+def test_main_saves_nothing_when_validation_fails(monkeypatch, tmp_path):
+    # An article with no paragraphs at all: a truncated response.
+    empty = _tree({"tag": "Article", "attr": {"Num": "306"}, "children": []})
+    _prepare(monkeypatch, tmp_path, lambda *a, **k: _law_document(empty))
+    with pytest.raises(SystemExit) as exc:
+        articles.main()
+    assert exc.value.code == 2
+    assert _written(tmp_path) == []
+
+
+def test_main_does_not_save_when_the_day_changes_mid_generation(monkeypatch, tmp_path):
+    _prepare(monkeypatch, tmp_path, lambda *a, **k: _law_document())
+    real_now = datetime.datetime.now
+    calls = []
+
+    class Clock(datetime.datetime):
+        @classmethod
+        def now(cls, tz=None):
+            calls.append(1)
+            base = real_now(tz)
+            return base if len(calls) == 1 else base + datetime.timedelta(days=1)
+
+    monkeypatch.setattr(articles.datetime, "datetime", Clock)
+    with pytest.raises(SystemExit) as exc:
+        articles.main()
+    assert exc.value.code == 3
+    assert _written(tmp_path) == []
+
+
+def test_main_writes_both_copies_on_success(monkeypatch, tmp_path):
+    _prepare(monkeypatch, tmp_path, lambda *a, **k: _law_document())
+    articles.main()
+    assert (tmp_path / "frontend" / "public" / "data" / "articles" / "129AC0000000089.json").exists()
+    assert (tmp_path / "data" / "articles" / "129AC0000000089.json").exists()
+
+
+def test_the_law_title_comes_from_todays_revision_not_the_shipped_diff(monkeypatch, tmp_path):
+    # 413AC0000000137 was renamed. The shipped diff keeps the old name; a page
+    # headed "current text as of today" must not.
+    renamed = _law_document()
+    renamed["revision_info"]["law_title"] = "新しい名前の法律"
+    _prepare(monkeypatch, tmp_path, lambda *a, **k: renamed)
+    articles.main()
+    doc = json.loads(
+        (tmp_path / "frontend" / "public" / "data" / "articles" / "129AC0000000089.json").read_text()
+    )
+    assert doc["law_title"] == "新しい名前の法律"
+
+
+def test_main_fails_when_the_revision_carries_no_law_title(monkeypatch, tmp_path):
+    nameless = _law_document()
+    nameless["revision_info"].pop("law_title", None)
+    _prepare(monkeypatch, tmp_path, lambda *a, **k: nameless)
+    with pytest.raises(SystemExit) as exc:
+        articles.main()
+    assert exc.value.code == 4
+    assert _written(tmp_path) == []
+
+
+def test_no_law_is_published_when_a_later_law_fails_validation(monkeypatch, tmp_path):
+    # The all-or-nothing promise is only tested by a run where an earlier law
+    # already succeeded. One law proves nothing about it.
+    shipped = tmp_path / "frontend" / "public" / "data"
+    _shipped_diff(shipped)
+    (shipped / "140AC0000000045_2023-07-12_2023-07-13.json").write_text(
+        json.dumps(
+            _doc("2023-07-13", [_entry("183", paragraphs_after=[{"num": "1", "text": "本文"}])],
+                 law_id="140AC0000000045", date_before="2023-07-12"),
+            ensure_ascii=False,
+        )
+    )
+
+    def fetch(law_id, asof):
+        if law_id == "140AC0000000045":
+            # An article that is present but empty: a truncated response.
+            return _law_document(_tree({"tag": "Article", "attr": {"Num": "183"}, "children": []}))
+        return _law_document()
+
+    monkeypatch.setattr(articles, "DATA_DIR", tmp_path / "data")
+    monkeypatch.setattr(articles, "FRONTEND_DIR", shipped)
+    monkeypatch.setattr(articles, "fetch_law_data", fetch)
+    monkeypatch.setattr(sys, "argv", ["articles.py", "--all"])
+
+    with pytest.raises(SystemExit) as exc:
+        articles.main()
+    assert exc.value.code == 2
+    # 129AC... was built successfully before 140AC... failed. Neither ships.
+    assert _written(tmp_path) == []
+
+
+def test_a_stale_articles_file_is_removed_when_the_law_drops_out(monkeypatch, tmp_path):
+    _prepare(monkeypatch, tmp_path, lambda *a, **k: _law_document())
+    stale = tmp_path / "frontend" / "public" / "data" / "articles" / "999AC0000000001.json"
+    stale.parent.mkdir(parents=True, exist_ok=True)
+    stale.write_text("{}")
+    articles.main()
+    assert not stale.exists()
+
+
+def test_a_law_with_no_main_text_change_is_a_success_with_no_file(monkeypatch, tmp_path):
+    # 労働基準法 ships only 附則 changes. This must not be an error.
+    shipped = tmp_path / "frontend" / "public" / "data"
+    shipped.mkdir(parents=True)
+    (shipped / "322AC0000000049_2024-05-30_2024-05-31.json").write_text(
+        json.dumps(_doc("2024-05-31", [_entry("1", suppl=True)], law_id="322AC0000000049"),
+                   ensure_ascii=False)
+    )
+    monkeypatch.setattr(articles, "DATA_DIR", tmp_path / "data")
+    monkeypatch.setattr(articles, "FRONTEND_DIR", shipped)
+    monkeypatch.setattr(articles, "fetch_law_data", lambda *a, **k: _law_document())
+    monkeypatch.setattr(sys, "argv", ["articles.py", "--all"])
+    articles.main()
+    assert _written(tmp_path) == []
