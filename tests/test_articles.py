@@ -972,3 +972,217 @@ def test_a_link_to_a_page_that_kept_its_summary_keeps_its_context():
     doc = _build(entries, _tree(_article("306", "第三百六条"), _article("308", "第三百八条")))
     page = next(a for a in doc["articles"] if a["article_num"] == "306")
     assert page["related_articles"][0]["context"] == "雇用関係の先取特権"
+
+
+# --- the history card's time label is decided on the text, not on `type` ---
+
+
+def test_summary_basis_of_a_normal_amendment_is_the_text_after_it():
+    assert articles.summary_basis([{"num": "1", "text": "新しい本文"}]) == "after"
+
+
+def test_summary_basis_of_a_deleted_entry_is_the_text_before_it():
+    # A "deleted" entry carries paragraphs_after == [] (民法753/754, measured).
+    assert articles.summary_basis([]) == "before"
+
+
+def test_summary_basis_of_a_repeal_recorded_as_a_modification_is_before():
+    # 民法733/746 and 刑法178 are typed "modified" and their new body is the
+    # single word 削除. Keying the label on `type` labelled a description of the
+    # repealed rule as a description of 削除.
+    assert articles.summary_basis([{"num": "1", "text": "削除"}]) == "before"
+
+
+def test_a_repeal_typed_as_a_modification_labels_its_card_改正直前():
+    entries = [
+        _entry(
+            "733",
+            "modified",
+            paragraphs_after=[{"num": "1", "text": "削除"}],
+            paragraphs_before=[{"num": "1", "text": "女性は…再婚することができない"}],
+        )
+    ]
+    doc = _build(entries, _tree(_article("733", "第七百三十三条", text="削除")))
+    change = doc["articles"][0]["changes"][0]
+    assert change["type"] == "modified"
+    assert change["summary_basis"] == "before"
+
+
+def test_an_ordinary_amendment_labels_its_card_改正直後():
+    entries = [_entry("306", paragraphs_after=[{"num": "1", "text": "本文"}])]
+    doc = _build(entries, _tree(_article("306", "第三百六条", "一般の先取特権")))
+    assert doc["articles"][0]["changes"][0]["summary_basis"] == "after"
+
+
+def test_a_deleted_entry_still_labels_its_card_改正直前():
+    entries = [
+        _entry("753", "deleted", paragraphs_after=[]),
+        _entry("754", "deleted", paragraphs_after=[]),
+        _entry("753:754", "added"),
+    ]
+    doc = _build(entries, _tree(_article("753:754", "第七百五十三条及び第七百五十四条", text="削除")))
+    page = next(a for a in doc["articles"] if a["article_num"] == "754")
+    assert page["changes"][0]["summary_basis"] == "before"
+
+
+# --- a history card's own note goes through the penalty check too ---
+
+
+def test_a_card_summary_naming_a_penalty_absent_from_its_own_new_text_is_dropped():
+    # 著作権法119: the amendment IS the 懲役 -> 拘禁刑 rename, so a note saying
+    # the post-amendment article defines 懲役 contradicts the change_description
+    # printed one line above it.
+    entries = [
+        _entry(
+            "119",
+            paragraphs_after=[{"num": "1", "text": "十年以下の拘禁刑"}],
+            annotation={
+                "plain_summary": "刑事罰(懲役・罰金)を定めるルール",
+                "change_description": "「懲役」から「拘禁刑」に変更されました",
+                "cross_references": [],
+            },
+        )
+    ]
+    doc = _build(entries, _tree(_article("119", "第百十九条", text="十年以下の拘禁刑")))
+    change = doc["articles"][0]["changes"][0]
+    assert change["plain_summary"] == ""
+    # The diff's own prose about the rename is correct and stays.
+    assert change["change_description"] == "「懲役」から「拘禁刑」に変更されました"
+
+
+def test_a_card_summary_naming_a_penalty_its_own_new_text_still_carries_is_kept():
+    # 道路交通法117条の2の2 / 118条, enforced 2024-11-01: 懲役 was law then, and
+    # the card is dated. A blanket ban on the word would delete a true sentence.
+    entries = [
+        _entry(
+            "118",
+            paragraphs_after=[{"num": "1", "text": "三年以下の懲役又は五十万円以下の罰金"}],
+            annotation={
+                "plain_summary": "罰則(懲役や罰金)を定め…",
+                "change_description": "d",
+                "cross_references": [],
+            },
+        )
+    ]
+    doc = _build(entries, _tree(_article("118", "第百十八条", text="今日の本文")))
+    assert doc["articles"][0]["changes"][0]["plain_summary"] == "罰則(懲役や罰金)を定め…"
+
+
+def test_a_repealed_articles_card_summary_is_checked_against_its_former_text():
+    # The card says 改正直前, so the text it describes is paragraphs_before.
+    # Checking a repeal against its empty paragraphs_after would drop a note
+    # that is true of the version the card is dated to.
+    entries = [
+        _entry(
+            "178",
+            "modified",
+            paragraphs_after=[{"num": "1", "text": "削除"}],
+            paragraphs_before=[{"num": "1", "text": "三年以上の懲役に処する"}],
+            annotation={
+                "plain_summary": "3年以上の懲役にあたる準強制わいせつの規定",
+                "change_description": "d",
+                "cross_references": [],
+            },
+        )
+    ]
+    doc = _build(entries, _tree(_article("178", "第百七十八条", text="削除")))
+    change = doc["articles"][0]["changes"][0]
+    assert change["summary_basis"] == "before"
+    assert change["plain_summary"] == "3年以上の懲役にあたる準強制わいせつの規定"
+
+
+# --- the lossy [表] marker must not be read as agreement ---
+
+
+def test_texts_do_not_match_when_a_table_placeholder_is_on_either_side():
+    # diff.py renders every TableStruct as "[表]", so an article whose only
+    # change was inside a table produces the identical string on both sides.
+    after = [{"num": "1", "text": "次の表のとおりとする。\n[表]"}]
+    current = [{"num": "1", "text": "次の表のとおりとする。\n[表]"}]
+    assert articles.texts_match(after, current) is False
+
+
+def test_an_article_containing_a_table_ships_without_a_current_summary():
+    entries = [_entry("306", paragraphs_after=[{"num": "1", "text": "[表]"}])]
+    doc = _build(entries, _tree(_article("306", "第三百六条", text="[表]")))
+    page = doc["articles"][0]
+    assert page["current_summary"] is None
+    assert page["related_articles"] == []
+
+
+# --- a reference naming a range of articles never becomes a link ---
+
+
+@pytest.mark.parametrize(
+    "ref",
+    [
+        "第七百七十八条から第七百七十八条の四まで",
+        "第三百六条及び第七百六十六条",
+        "第三百六条又は第七百六十六条",
+        "第三百六条並びに第七百六十六条",
+        "第三百六条、第七百六十六条",
+    ],
+)
+def test_a_reference_naming_more_than_one_article_is_not_linked(ref):
+    # startswith against the alias table would make the whole phrase a link to
+    # the first article it names.
+    resolved, unresolved = articles.resolve_cross_references(
+        [{"ref": ref, "article_num": "", "context": "c"}], ALIASES, "2"
+    )
+    assert resolved[0]["has_page"] is False
+    assert resolved[0]["slug"] is None
+    assert unresolved == 1
+
+
+def test_a_reference_naming_one_article_still_links():
+    resolved, unresolved = articles.resolve_cross_references(
+        [{"ref": "第七百六十六条の規定により", "article_num": "766", "context": "c"}],
+        ALIASES,
+        "306",
+    )
+    assert resolved[0]["slug"] == "766"
+    assert unresolved == 0
+
+
+# --- a link's description needs positive evidence, not merely no evidence ---
+
+
+def test_a_link_to_a_pageless_target_keeps_the_link_and_loses_the_description():
+    # 民法740's link to 第七百三十一条: 731 has no page here, so nothing ever
+    # compared its text against today's. An unchecked claim gets the same
+    # answer as a claim checked and found stale.
+    refs = [
+        {"ref": "第七百六十六条", "article_num": "766", "context": "離婚後の子の監護について"},
+    ]
+    entries = [
+        _entry(
+            "306",
+            paragraphs_after=[{"num": "1", "text": "本文"}],
+            annotation={"plain_summary": "s", "change_description": "d", "cross_references": refs},
+        )
+    ]
+    doc = _build(entries, _tree(_article("306", "第三百六条", text="本文")))
+    related = doc["articles"][0]["related_articles"]
+    assert len(related) == 1
+    # 766 has no page in this build, so the alias table has no entry for it.
+    assert related[0]["has_page"] is False
+    assert related[0]["context"] == ""
+
+
+def test_a_link_to_a_target_that_kept_its_summary_keeps_its_description():
+    refs = [{"ref": "第七百六十六条", "article_num": "766", "context": "離婚後の子の監護について"}]
+    entries = [
+        _entry(
+            "306",
+            paragraphs_after=[{"num": "1", "text": "本文"}],
+            annotation={"plain_summary": "s", "change_description": "d", "cross_references": refs},
+        ),
+        _entry("766", paragraphs_after=[{"num": "1", "text": "本文"}]),
+    ]
+    doc = _build(
+        entries,
+        _tree(_article("306", "第三百六条", text="本文"), _article("766", "第七百六十六条", text="本文")),
+    )
+    page = next(a for a in doc["articles"] if a["article_num"] == "306")
+    assert page["related_articles"][0]["slug"] == "766"
+    assert page["related_articles"][0]["context"] == "離婚後の子の監護について"

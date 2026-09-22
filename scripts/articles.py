@@ -100,6 +100,7 @@ def collect_changes(diff_docs: list[dict], today: str) -> dict[str, list[dict]]:
             by_num.setdefault(num, []).append(
                 {
                     "diff_id": doc["_diff_id"],
+                    "summary_basis": summary_basis(entry.get("paragraphs_after", [])),
                     "enforcement_date": doc["date_after"],
                     "date_before": doc["date_before"],
                     "year": doc["date_after"][:4],
@@ -190,9 +191,38 @@ def index_current_articles(law_full_text: dict) -> dict[str, dict]:
     return index
 
 
-def _body_is_only_deleted(body: dict) -> bool:
-    joined = "".join(p["text"] for p in body["paragraphs"]).strip()
+def _paragraphs_are_only_deleted(paragraphs: list[dict]) -> bool:
+    """Whether a run of paragraphs is the tombstone e-Gov leaves behind."""
+    joined = "".join(p.get("text", "") for p in paragraphs).strip()
     return joined in _DELETED_BODY
+
+
+def _body_is_only_deleted(body: dict) -> bool:
+    return _paragraphs_are_only_deleted(body["paragraphs"])
+
+
+# Which version of the article a history card's note describes. The card prints
+# a date, so it has to print the right side of it.
+SUMMARY_BASIS_BEFORE = "before"
+SUMMARY_BASIS_AFTER = "after"
+SUMMARY_BASES = frozenset({SUMMARY_BASIS_BEFORE, SUMMARY_BASIS_AFTER})
+
+
+def summary_basis(paragraphs_after: list[dict]) -> str:
+    """Which side of the amendment the note is about, decided on the text.
+
+    Not on the amendment's recorded `type`: e-Gov records some repeals as a
+    modification whose new body is the single word 削除, so 民法733/746 and
+    刑法178 are typed "modified" while nothing stands there afterwards. A note
+    can only be about what the article said before, and labelling it
+    「改正直後の条文についての説明」 turns a description of the repealed rule
+    into a description of the word 削除. An entry typed "deleted" carries
+    paragraphs_after == [] (measured on 民法753/754), which is the same fact in
+    the other shape.
+    """
+    if not paragraphs_after or _paragraphs_are_only_deleted(paragraphs_after):
+        return SUMMARY_BASIS_BEFORE
+    return SUMMARY_BASIS_AFTER
 
 
 def resolve_current(index: dict, article_num: str, latest_type: str) -> dict:
@@ -260,6 +290,13 @@ CURRENT_STATUSES = frozenset({"present"}) | TOMBSTONE_STATUSES
 ABOLISHED_PENALTIES = {"懲役", "禁錮", "禁固", "禁こ"}
 
 
+# diff.py renders every TableStruct as this one fixed string, so two different
+# tables -- and a table that changed -- are the same six bytes on both sides of
+# the version comparison. diff.py is out of scope for this plan, so the gate
+# guards against its lossiness from here instead of reading through it.
+LOSSY_TABLE_MARKER = "[表]"
+
+
 def _normalise(text: str) -> str:
     # Line endings and per-line trailing spaces are formatting. Leading
     # indentation is not: diff.format_item indents with a full-width space,
@@ -277,6 +314,14 @@ def texts_match(paragraphs_after: list[dict], current_paragraphs: list[dict]) ->
         return False
     if len(paragraphs_after) != len(current_paragraphs):
         return False
+    if any(
+        LOSSY_TABLE_MARKER in p.get("text", "")
+        for p in (*paragraphs_after, *current_paragraphs)
+    ):
+        # Equality of two placeholders is not evidence that the tables agree.
+        # Fail closed: the page ships without a current summary (and therefore
+        # without related_articles, which hangs off the same boolean).
+        return False
     # num can come from different fallbacks on each side (diff.py:159 yields
     # "" when Paragraph@Num is missing; articles.py's index falls back to a
     # positional number instead), so the two sides are not guaranteed to
@@ -287,6 +332,29 @@ def texts_match(paragraphs_after: list[dict], current_paragraphs: list[dict]) ->
         and _normalise(a.get("text", "")) == _normalise(b.get("text", ""))
         for a, b in zip(paragraphs_after, current_paragraphs)
     )
+
+
+def _card_summary(change: dict) -> str:
+    """A history card's note, or "" when it is about neither side of the card.
+
+    summary_is_safe was only ever applied to `current_summary`, so a note that
+    names an abolished penalty still shipped on the card. The body it is
+    checked against is the one the card's own date points at -- the text after
+    the amendment normally, the text before it when the amendment repealed the
+    article (summary_basis), because that is the text the note describes.
+    Checking a repeal against its empty paragraphs_after would drop notes that
+    are true of the version the card is labelled with.
+    """
+    summary = change["plain_summary"]
+    if not summary:
+        return ""
+    basis = (
+        change["paragraphs_before"]
+        if change["summary_basis"] == SUMMARY_BASIS_BEFORE
+        else change["paragraphs_after"]
+    )
+    body = "".join(p.get("text", "") for p in basis)
+    return summary if summary_is_safe(summary, body) else ""
 
 
 def summary_is_safe(summary: str, current_text: str) -> bool:
@@ -323,6 +391,18 @@ def build_alias_table(pages: dict[str, dict]) -> dict[str, str]:
 # alias table later cannot make 第778条の4 resolve to 第778条.
 _KANJI_DIGITS = set("一二三四五六七八九十百千0123456789０１２３４５６７８９")
 
+# How statutory Japanese joins article numbers. A ref containing any of these
+# names more than one article, and `startswith` against the alias table would
+# turn the whole phrase into a link to the first of them
+# (第七条から第七条の四まで -> 第七条). Unresolved refs already fall back to
+# plain text, which is the right outcome for a range.
+#   から   a range: 第二百二十四条から第二百二十八条まで
+#   及び   conjunction of two articles
+#   並びに conjunction of groups of articles (the outer 及び)
+#   又は   disjunction of two articles
+#   、     the enumeration comma between numbers in a list
+MULTI_ARTICLE_CONNECTIVES = ("から", "及び", "並びに", "又は", "、")
+
 
 def _normalise_ref_num(raw: str) -> str:
     """The many shapes an LLM wrote an article number in, as one shape."""
@@ -345,7 +425,8 @@ def resolve_cross_references(
         target = None
         # A reference that opens with a law name is about another law. One that
         # mentions 附則 is about provisions this page set never covers.
-        if label.startswith("第") and "附則" not in label:
+        names_many = any(c in label for c in MULTI_ARTICLE_CONNECTIVES)
+        if label.startswith("第") and "附則" not in label and not names_many:
             # Longest alias first: 民法 ships 778, 778_2, 778_3 and 778_4 at
             # once, and 第七百七十八条 is a prefix of 第七百七十八条の四.
             for alias in sorted(alias_to_num, key=len, reverse=True):
@@ -471,10 +552,20 @@ def build_law_articles(
                     "year": c["year"],
                     "type": c["type"],
                     "amendment_law_title": c["amendment_law_title"],
+                    # Which side of this amendment the note below describes,
+                    # decided on that entry's own text -- see summary_basis().
+                    # The card's time label reads this; it must never be
+                    # re-derived from `type` on the TypeScript side.
+                    "summary_basis": c["summary_basis"],
                     "change_description": c["change_description"],
                     # Kept even when it cannot be the current description: on a
-                    # history card it is a dated claim, which is true.
-                    "plain_summary": c["plain_summary"],
+                    # history card it is a dated claim, which is true -- but
+                    # only if it is true of the version the card is dated to.
+                    # 著作権法119's note said the article defines 懲役 one line
+                    # under a change_description saying that amendment renamed
+                    # 懲役 to 拘禁刑. change_description is the diff's own prose
+                    # and stays; the note goes.
+                    "plain_summary": _card_summary(c),
                     # Plain text on the card, never links. A reference written
                     # about an older version of this article may point at an
                     # article that has since moved.
@@ -504,17 +595,26 @@ def build_law_articles(
         unresolved_total += unresolved
 
     # A reference's `context` is one line of prose about the TARGET article,
-    # written when the note was written. When the target's own page could not
-    # keep its summary, that line describes a version of the target that is
-    # gone: 著作権法121条 links to 122条の2 saying it is about 秘密保持命令違反,
-    # while today's 122条の2 is about 帳簿 -- and 122条の2's own page correctly
-    # drops that claim. The link is still right, so only the sentence goes.
+    # written when the note was written. It survives only on positive evidence
+    # that the target's text is still that version: the target has a page AND
+    # that page kept its own current_summary, i.e. it went through the version
+    # gate and passed. Everything else loses the sentence and keeps the link.
+    #
+    # Two ways it fails. The target has a page that lost its summary:
+    # 著作権法121条 links to 122条の2 saying it is about 秘密保持命令違反, while
+    # today's 122条の2 is about 帳簿 -- and 122条の2's own page correctly drops
+    # that claim. Or the target has no page at all, so nothing ever compared it
+    # against today's text: 民法740条's link to 第七百三十一条 asserts
+    # 「婚姻できる年齢などの婚姻の要件を定めた条文」 and 第731条 was amended in
+    # 2022. An unchecked claim is not a weaker claim; it is the same claim with
+    # no evidence, so it gets the same answer.
     by_slug = {page["slug"]: page for page in pages.values()}
     dropped_contexts = 0
     for page in pages.values():
         for ref in page["related_articles"]:
             target = by_slug.get(ref["slug"]) if ref["slug"] else None
-            if target is not None and target["current_summary"] is None and ref["context"]:
+            kept = target is not None and target["current_summary"] is not None
+            if ref["context"] and not kept:
                 ref["context"] = ""
                 dropped_contexts += 1
     print(f"  stale link descriptions dropped: {dropped_contexts}")
@@ -587,6 +687,11 @@ def validate_articles(doc: dict) -> list[str]:
         for change in page.get("changes", []):
             if not (change.get("change_description") or "").strip():
                 errors.append(f"{num}: a change has no description")
+            if change.get("summary_basis") not in SUMMARY_BASES:
+                errors.append(
+                    f"{num}: a change has no summary_basis "
+                    f"({change.get('summary_basis')!r})"
+                )
         if page.get("current", {}).get("status") in TOMBSTONE_STATUSES:
             former = page.get("former")
             if not former or not former.get("paragraphs"):

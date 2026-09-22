@@ -205,6 +205,13 @@ export interface ArticleChange {
   year: string;
   type: "added" | "modified" | "deleted";
   amendment_law_title: string;
+  /** Which side of this amendment `plain_summary` describes, decided in Python
+   *  on that entry's own post-amendment text (scripts/articles.py's
+   *  summary_basis). Not derivable from `type` here: e-Gov records some
+   *  repeals as a modification whose new body is the single word 削除, so
+   *  民法733/746 and 刑法178 are "modified" with nothing standing after them.
+   *  Render from this field; never branch on `type` for the time label. */
+  summary_basis: "before" | "after";
   change_description: string;
   plain_summary: string;
   /** Shown as text on the history card, never as links: a reference written

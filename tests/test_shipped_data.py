@@ -77,6 +77,35 @@ def test_shipped_article_files_are_present():
     assert len(shipped_articles()) >= 1
 
 
+def test_every_law_that_should_have_an_articles_file_has_one():
+    """The SET of files, not their count.
+
+    Every other check here is parametrized over the files that exist, so
+    deleting ten of the eleven left the whole suite green: a test that vanishes
+    with its data is not a guard. generateStaticParams() does not catch it
+    either -- it only throws on an empty or duplicated param list.
+
+    The expected set is derived from the shipped diffs, the same way
+    test_shipped_articles_match_the_shipped_diffs derives each file's page set,
+    so adding a law cannot make this red and no count is written down.
+    労働基準法 322AC0000000049 has only 附則 changes, so collect_changes returns
+    nothing for it and it falls out here without being named.
+    """
+    import articles
+
+    files = shipped_articles()
+    assert files, "no shipped articles/*.json at all"
+    # One generation run writes them all, so they share an asof; max() picks it
+    # without depending on the wall clock (an unenforced diff must stay out).
+    asof = max(json.loads(p.read_text())["source"]["asof"] for p in files)
+    expected = {
+        law_id
+        for law_id, docs in articles.shipped_diff_docs(SHIPPED).items()
+        if articles.collect_changes(docs, asof)
+    }
+    assert {p.stem for p in files} == expected
+
+
 @pytest.mark.parametrize("path", shipped_articles(), ids=lambda p: p.stem)
 def test_shipped_articles_pass_validate_articles(path):
     import articles
@@ -164,12 +193,15 @@ def test_shipped_articles_match_the_shipped_diffs(path):
 @pytest.mark.parametrize("path", shipped_articles(), ids=lambda p: p.stem)
 def test_a_link_describes_only_a_target_whose_own_summary_survived(path):
     # The context line describes the TARGET article and was written when the
-    # note was. If the target's own page could not keep its summary, that line
-    # is making the claim the target's page refused to make.
+    # note was. It may stand only on positive evidence that the target still
+    # reads that way: the target has a page AND that page passed the version
+    # gate. A target with no page was never checked at all, and "not checked"
+    # is not weaker than "checked and stale" -- it is the same claim with no
+    # evidence behind it.
     doc = json.loads(path.read_text())
     by_slug = {p["slug"]: p for p in doc["articles"]}
     for page in doc["articles"]:
         for ref in page["related_articles"]:
             target = by_slug.get(ref["slug"]) if ref["slug"] else None
-            if target is not None and target["current_summary"] is None:
+            if target is None or target["current_summary"] is None:
                 assert ref["context"] == "", (page["article_num"], ref["ref"])

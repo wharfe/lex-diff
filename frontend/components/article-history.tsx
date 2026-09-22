@@ -24,14 +24,15 @@ export function ArticleHistory({
             </p>
             <p className="mt-2 whitespace-pre-wrap leading-[26px]">{c.change_description}</p>
             {c.plain_summary && (
-              // A deleted article has no text just after the amendment -- the
-              // note describes what stood there just before. 民法754条's
-              // paragraphs_after is empty (measured), so "改正直後" would label
-              // a description of the repealed rule as a description of 削除.
+              // The time label comes from summary_basis, which Python decided
+              // on that amendment's own post-amendment text. Branching on
+              // c.type here read 改正直後 over three repeals e-Gov records as
+              // "modified" (民法733/746, 刑法178), labelling a description of
+              // the repealed rule as a description of the word 削除.
               <p className="mt-2 text-[13px] opacity-70">
                 {jpDate(c.enforcement_date)}
-                {c.type === "deleted" ? "改正直前" : "改正直後"}の条文についての説明:{" "}
-                {c.plain_summary}
+                {c.summary_basis === "before" ? "改正直前" : "改正直後"}
+                の条文についての説明: {c.plain_summary}
               </p>
             )}
             {c.cross_references.length > 0 && (

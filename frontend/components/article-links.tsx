@@ -25,8 +25,9 @@ export function ArticleLinks({
             ) : (
               <span>{r.ref}</span>
             )}
-            {/* context can be "" (48 of 497 shipped): Python blanks it when the
-                link target is on an older version. Rendering the span anyway
+            {/* context is often "": Python blanks it unless the target has a
+                page that passed the version gate, so an unverified sentence
+                about the target is never printed. Rendering the span anyway
                 would leave a dangling margin with nothing after it. */}
             {r.context && <span className="ml-2 opacity-70">{r.context}</span>}
           </li>
