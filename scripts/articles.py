@@ -574,10 +574,38 @@ def _write_atomic(path: Path, payload: str) -> None:
     os.replace(tmp, path)
 
 
+# Exit codes (part of the contract -- nothing parses them today, but a caller
+# may in future):
+#   2 = validation failed
+#   3 = the JST date changed mid-run
+#   4 = the fetch failed, or the API returned something unusable
+#   5 = the invocation or its input is wrong (bad flag, a requested law with no
+#       shipped diff, or a full run over an input directory with nothing to
+#       build from) -- distinct from 2/3/4, which are all about a request that
+#       was well-formed but failed partway through
+_KNOWN_FLAGS = {"--all"}
+
+
 def main():
-    args = [a for a in sys.argv[1:] if not a.startswith("-")]
+    raw_args = sys.argv[1:]
+    unknown_flags = [a for a in raw_args if a.startswith("-") and a not in _KNOWN_FLAGS]
+    if unknown_flags:
+        # A silently-dropped flag used to fall through to "no explicit law
+        # ids" -- i.e. a full run, which ends by deleting every unrecognised
+        # articles/*.json. `--dry-run` must not delete shipped data.
+        print(f"error: unrecognized argument(s): {' '.join(unknown_flags)}")
+        sys.exit(5)
+
+    args = [a for a in raw_args if not a.startswith("-")]
+    explicit_law_ids = bool(args)
     by_law = shipped_diff_docs(FRONTEND_DIR)
     law_ids = args or sorted(by_law)
+
+    if not explicit_law_ids and not law_ids:
+        # Nothing in FRONTEND_DIR at all is a broken invocation (wrong path,
+        # empty checkout), not an instruction to unpublish every shipped law.
+        print(f"error: no shipped diffs found under {FRONTEND_DIR}; refusing to run")
+        sys.exit(5)
 
     today = datetime.datetime.now(JST).date().isoformat()
     built: dict[str, dict] = {}
@@ -585,6 +613,11 @@ def main():
     for law_id in law_ids:
         docs = by_law.get(law_id)
         if not docs:
+            if explicit_law_ids:
+                # A requested law with no shipped diff is a failed request,
+                # not a skip -- a typo'd law id must not exit 0.
+                print(f"error: {law_id}: no shipped diff for this law id")
+                sys.exit(5)
             print(f"{law_id}: no shipped diff; skipping")
             continue
         changes = collect_changes(docs, today)

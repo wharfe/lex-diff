@@ -769,3 +769,92 @@ def test_a_law_with_no_main_text_change_is_a_success_with_no_file(monkeypatch, t
     monkeypatch.setattr(sys, "argv", ["articles.py", "--all"])
     articles.main()
     assert _written(tmp_path) == []
+
+
+def test_an_unrecognized_flag_exits_without_touching_shipped_data(monkeypatch, tmp_path):
+    # A dropped, unrecognised flag used to fall through to "no explicit law
+    # ids" -- a full run, which ends by deleting every unmatched
+    # articles/*.json. `--dry-run` must not be able to delete shipped data.
+    _prepare(monkeypatch, tmp_path, lambda *a, **k: _law_document())
+    stale = tmp_path / "frontend" / "public" / "data" / "articles" / "999AC0000000001.json"
+    stale.parent.mkdir(parents=True, exist_ok=True)
+    stale.write_text("{}")
+    monkeypatch.setattr(sys, "argv", ["articles.py", "--dry-run"])
+    with pytest.raises(SystemExit) as exc:
+        articles.main()
+    assert exc.value.code == 5
+    assert stale.exists()
+
+
+def test_an_explicit_law_id_with_no_shipped_diff_fails_the_run(monkeypatch, tmp_path):
+    # A typo'd law id ("129ac..." for "129AC...") used to print "skipping"
+    # and exit 0, so a broken CI invocation would go green.
+    _prepare(monkeypatch, tmp_path, lambda *a, **k: _law_document())
+    monkeypatch.setattr(sys, "argv", ["articles.py", "129ac0000000089"])
+    with pytest.raises(SystemExit) as exc:
+        articles.main()
+    assert exc.value.code == 5
+    assert _written(tmp_path) == []
+
+
+def test_a_full_run_with_no_shipped_diffs_at_all_refuses_rather_than_deleting(monkeypatch, tmp_path):
+    # An empty FRONTEND_DIR (wrong path, empty checkout) used to build zero
+    # laws and then "clean up" by deleting every existing articles/*.json.
+    shipped = tmp_path / "frontend" / "public" / "data"
+    shipped.mkdir(parents=True)
+    stale = shipped / "articles" / "129AC0000000089.json"
+    stale.parent.mkdir(parents=True, exist_ok=True)
+    stale.write_text("{}")
+    monkeypatch.setattr(articles, "DATA_DIR", tmp_path / "data")
+    monkeypatch.setattr(articles, "FRONTEND_DIR", shipped)
+    monkeypatch.setattr(articles, "fetch_law_data", lambda *a, **k: _law_document())
+    monkeypatch.setattr(sys, "argv", ["articles.py", "--all"])
+    with pytest.raises(SystemExit) as exc:
+        articles.main()
+    assert exc.value.code == 5
+    assert stale.exists()
+
+
+def test_main_does_not_save_when_the_day_changes_after_all_laws_are_built(monkeypatch, tmp_path):
+    # A single-law run exits 3 at the per-law check, so the post-loop
+    # sentinel -- the one that guards the moment right before anything is
+    # written -- is never exercised without a second law that finishes
+    # cleanly before the day rolls over.
+    shipped = tmp_path / "frontend" / "public" / "data"
+    _shipped_diff(shipped)
+    (shipped / "140AC0000000045_2023-07-12_2023-07-13.json").write_text(
+        json.dumps(
+            _doc("2023-07-13", [_entry("183", paragraphs_after=[{"num": "1", "text": "本文"}])],
+                 law_id="140AC0000000045", date_before="2023-07-12"),
+            ensure_ascii=False,
+        )
+    )
+
+    def fetch(law_id, asof):
+        if law_id == "140AC0000000045":
+            return _law_document(_tree(_article("183", "第百八十三条", "占有の性質の変更")))
+        return _law_document()
+
+    monkeypatch.setattr(articles, "DATA_DIR", tmp_path / "data")
+    monkeypatch.setattr(articles, "FRONTEND_DIR", shipped)
+    monkeypatch.setattr(articles, "fetch_law_data", fetch)
+    monkeypatch.setattr(sys, "argv", ["articles.py", "--all"])
+
+    real_now = datetime.datetime.now
+    calls = []
+
+    class Clock(datetime.datetime):
+        @classmethod
+        def now(cls, tz=None):
+            calls.append(1)
+            base = real_now(tz)
+            # Calls 1-3 are "today" plus each of the two laws' fetched_at --
+            # all must land on the same day so both per-law checks pass.
+            # Only the 4th call (the post-loop check) sees the day change.
+            return base if len(calls) <= 3 else base + datetime.timedelta(days=1)
+
+    monkeypatch.setattr(articles.datetime, "datetime", Clock)
+    with pytest.raises(SystemExit) as exc:
+        articles.main()
+    assert exc.value.code == 3
+    assert _written(tmp_path) == []
