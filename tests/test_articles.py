@@ -579,12 +579,15 @@ def test_validate_rejects_a_slug_that_does_not_match_its_article_num():
     assert any("does not match article_num" in e for e in articles.validate_articles(doc))
 
 
-def test_validate_does_not_raise_on_a_range_shaped_article_num():
+def test_validate_reports_but_does_not_raise_on_a_range_shaped_article_num():
     doc = {"law_id": "x", "law_title": "y", "source": SOURCE, "articles": [
         {"article_num": "753:754", "slug": "753", "label": "l",
          "current": {"status": "present", "paragraphs": [{"num": "1", "text": "t"}]},
          "changes": [{"change_description": "d"}]}
     ]}
-    # Must return a list of strings, never raise, even for a range-shaped num.
+    # Must return a list of strings, never raise -- but a range-shaped
+    # article_num should never reach here (collect_changes excludes ranges),
+    # so its arrival must be reported, not silently skipped.
     errors = articles.validate_articles(doc)
     assert isinstance(errors, list)
+    assert any("article_num is not in a form" in e for e in errors)

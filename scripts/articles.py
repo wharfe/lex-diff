@@ -507,13 +507,15 @@ def validate_articles(doc: dict) -> list[str]:
         seen.add(slug)
         try:
             expected_slug = article_slug(num)
-        except ValueError:
-            # A range-shaped article_num should never reach here as `num`
-            # (changes are keyed per-article, not per-range), but
-            # validate_articles must return a list, never raise.
-            expected_slug = None
-        if expected_slug is not None and slug != expected_slug:
-            errors.append(f"{num}: slug {slug!r} does not match article_num {num!r}")
+        except ValueError as exc:
+            # A range-shaped or otherwise malformed article_num should never
+            # reach here (collect_changes excludes ranges), so one arriving
+            # is itself a condition worth reporting -- not a silent skip.
+            # validate_articles must still return a list, never raise.
+            errors.append(f"{num}: article_num is not in a form a page can be built from ({exc})")
+        else:
+            if slug != expected_slug:
+                errors.append(f"{num}: slug {slug!r} does not match article_num {num!r}")
         if page.get("current", {}).get("status") not in ("present", "merged_deleted"):
             errors.append(f"{num}: unknown current.status")
         text = "".join(p.get("text", "") for p in page.get("current", {}).get("paragraphs", []))
