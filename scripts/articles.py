@@ -338,3 +338,166 @@ def resolve_cross_references(
             }
         )
     return resolved, unresolved
+
+
+_SLUG_RE = re.compile(r"^[0-9]+(-[0-9]+)*$")
+
+
+def _num_sort_key(article_num: str) -> tuple[int, ...]:
+    """第3条 before 第241条, 第117条の2の2 between 第117条 and 第118条."""
+    return tuple(int(part) for part in article_num.split("_"))
+
+
+def build_law_articles(
+    law_id: str, law_title: str, changes: dict[str, list[dict]], law_full_text: dict, source: dict
+) -> dict:
+    """The shipped shape for one law.
+
+    Takes the whole tree, not just the article index: the section path is read
+    from today's text too. See the provenance table in spec §5 -- everything a
+    "current" block shows comes from today's fetch or from a gated field, and
+    the section path was the last one still coming from the shipped diff.
+    """
+    index = index_current_articles(law_full_text)
+    pages: dict[str, dict] = {}
+    for num, history in changes.items():
+        latest = history[0]
+        current = resolve_current(index, num, latest["type"])
+        current_text = "".join(p["text"] for p in current["paragraphs"])
+
+        # The gate. The note and the body must be the same version, and the note
+        # must not name a penalty the body no longer carries.
+        matched = texts_match(latest["paragraphs_after"], current["paragraphs"])
+        safe = summary_is_safe(latest["plain_summary"], current_text)
+        current_summary = (
+            {"text": latest["plain_summary"], "evidence_date": latest["enforcement_date"]}
+            if matched and safe and latest["plain_summary"]
+            else None
+        )
+
+        former = None
+        if latest["type"] == "deleted":
+            former = {
+                "as_of": latest["date_before"],
+                "label": latest.get("title_before") or "",
+                "paragraphs": latest["paragraphs_before"],
+            }
+
+        pages[num] = {
+            "article_num": num,
+            "slug": article_slug(num),
+            "display_num": display_num(num),
+            # Today's ArticleTitle only. Falling back to the diff's
+            # title_before would put a past heading into the alias table and
+            # reopen the hole spec §5's provenance table closed; an empty label
+            # is caught by validate_articles instead.
+            "label": current["source_label"],
+            "caption": current["caption"],
+            # Today's tree, not the diff's: 編章の移動 would otherwise leave the
+            # breadcrumb describing a structure the law no longer has.
+            #
+            # Looked up by the number that resolved, not by `num`: a deleted
+            # article is not an Article node today, so find_section_path(tree,
+            # "753") returns None while the range it folded into, "753:754",
+            # returns 第四編 親族 › 第二章 婚姻 › 第二節 婚姻の効力 (measured
+            # 2026-09-22). Using `num` would blank the breadcrumb on exactly the
+            # two pages whose breadcrumb matters most.
+            "section_path": find_section_path(law_full_text, current["source_article_num"]) or [],
+            "current": {
+                "status": current["status"],
+                "source_article_num": current["source_article_num"],
+                "source_label": current["source_label"],
+                "paragraphs": current["paragraphs"],
+            },
+            "current_summary": current_summary,
+            "former": former,
+            "changes": [
+                {
+                    "diff_id": c["diff_id"],
+                    "enforcement_date": c["enforcement_date"],
+                    "year": c["year"],
+                    "type": c["type"],
+                    "amendment_law_title": c["amendment_law_title"],
+                    "change_description": c["change_description"],
+                    # Kept even when it cannot be the current description: on a
+                    # history card it is a dated claim, which is true.
+                    "plain_summary": c["plain_summary"],
+                    # Plain text on the card, never links. A reference written
+                    # about an older version of this article may point at an
+                    # article that has since moved.
+                    "cross_references": [
+                        {"ref": r.get("ref", ""), "context": r.get("context", "")}
+                        for r in c["cross_references"]
+                    ],
+                }
+                for c in history
+            ],
+            "related_articles": [],
+            # Only a page whose text still matches may show current links. The
+            # gate governs the whole "what this article is about" block, not
+            # just its prose -- spec §4.
+            "_refs": latest["cross_references"] if current_summary else [],
+        }
+
+    aliases = build_alias_table(pages)
+    unresolved_total = 0
+    for num, page in pages.items():
+        page["related_articles"], unresolved = resolve_cross_references(
+            page.pop("_refs"), aliases, num
+        )
+        unresolved_total += unresolved
+    print(f"  cross references: {unresolved_total} unresolved")
+
+    return {
+        "law_id": law_id,
+        "law_title": law_title,
+        "source": source,
+        # Numeric order, not string order. This list is the table of contents on
+        # /law/<lawId> and the only crawl path to these pages; sorting slugs as
+        # strings puts 刑法第3条 after 第241条.
+        "articles": [pages[n] for n in sorted(pages, key=_num_sort_key)],
+    }
+
+
+def validate_articles(doc: dict) -> list[str]:
+    """Everything that must hold before anything is written."""
+    errors = []
+    source = doc.get("source") or {}
+    for key in ("asof", "fetched_at", "law_revision_id", "amendment_enforcement_date"):
+        if not source.get(key):
+            errors.append(f"source.{key} is missing")
+    if source.get("asof") and source.get("fetched_at"):
+        if not source["fetched_at"].startswith(source["asof"]):
+            errors.append("source.asof and source.fetched_at are different days")
+    if source.get("amendment_enforcement_date") and source.get("asof"):
+        if source["amendment_enforcement_date"] > source["asof"]:
+            errors.append("source.amendment_enforcement_date is after the asof")
+
+    pages = doc.get("articles") or []
+    if not pages:
+        errors.append("articles is empty")
+
+    seen = set()
+    for page in pages:
+        num = page.get("article_num", "?")
+        slug = page.get("slug", "")
+        if not _SLUG_RE.match(slug):
+            errors.append(f"{num}: slug {slug!r} is not in the canonical form")
+        if slug in seen:
+            errors.append(f"{num}: duplicate slug {slug!r}")
+        seen.add(slug)
+        if page.get("current", {}).get("status") not in ("present", "merged_deleted"):
+            errors.append(f"{num}: unknown current.status")
+        text = "".join(p.get("text", "") for p in page.get("current", {}).get("paragraphs", []))
+        if not text.strip():
+            errors.append(f"{num}: current text is empty")
+        if not (page.get("label") or "").strip():
+            errors.append(f"{num}: no label in today's text")
+        if not page.get("changes"):
+            errors.append(f"{num}: no changes")
+        for change in page.get("changes", []):
+            if not (change.get("change_description") or "").strip():
+                errors.append(f"{num}: a change has no description")
+        if page.get("current", {}).get("status") == "merged_deleted" and not page.get("former"):
+            errors.append(f"{num}: a deleted article has no former text")
+    return errors

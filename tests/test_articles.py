@@ -388,3 +388,159 @@ def test_build_alias_table_maps_japanese_labels_to_numbers():
         "第三百六条": "306",
         "第三百八条の二": "308_2",
     }
+
+
+SOURCE = {
+    "asof": "2026-09-22",
+    "fetched_at": "2026-09-22T14:07:31+09:00",
+    "law_revision_id": "129AC0000000089_20260624_508AC0000000045",
+    "amendment_enforcement_date": "2026-06-24",
+}
+
+
+def _build(entries, tree, today="2026-09-22"):
+    changes = articles.collect_changes([_doc("2026-04-01", entries)], today)
+    return articles.build_law_articles("129AC0000000089", "民法", changes, tree, SOURCE)
+
+
+def test_current_summary_is_kept_when_the_text_still_matches():
+    entries = [_entry("306", paragraphs_after=[{"num": "1", "text": "本文"}])]
+    doc = _build(entries, _tree(_article("306", "第三百六条", "一般の先取特権")))
+    page = doc["articles"][0]
+    assert page["current_summary"]["text"] == "306 の説明"
+    assert page["current_summary"]["evidence_date"] == "2026-04-01"
+    assert page["caption"] == "一般の先取特権"
+
+
+def test_current_summary_is_dropped_when_the_text_has_moved_on():
+    entries = [_entry("306", paragraphs_after=[{"num": "1", "text": "昔の本文"}])]
+    doc = _build(entries, _tree(_article("306", "第三百六条", text="今日の本文")))
+    assert doc["articles"][0]["current_summary"] is None
+
+
+def test_the_dropped_summary_survives_on_its_history_card():
+    entries = [_entry("306", paragraphs_after=[{"num": "1", "text": "昔の本文"}])]
+    doc = _build(entries, _tree(_article("306", "第三百六条", text="今日の本文")))
+    assert doc["articles"][0]["changes"][0]["plain_summary"] == "306 の説明"
+
+
+def test_a_matching_text_with_an_abolished_penalty_still_loses_its_summary():
+    entries = [
+        _entry(
+            "183",
+            paragraphs_after=[{"num": "1", "text": "拘禁刑"}],
+            annotation={
+                "plain_summary": "3年以下の懲役に処する",
+                "change_description": "d",
+                "cross_references": [],
+            },
+        )
+    ]
+    doc = _build(entries, _tree(_article("183", "第百八十三条", text="拘禁刑")))
+    assert doc["articles"][0]["current_summary"] is None
+
+
+def test_a_deleted_article_keeps_the_text_it_had_before():
+    # Real deleted entries carry paragraphs_after == [] (measured on 民法753/754),
+    # so the gate can never match and current_summary is always None here.
+    entries = [
+        _entry("753", "deleted", paragraphs_after=[]),
+        _entry(
+            "754",
+            "deleted",
+            paragraphs_after=[],
+            paragraphs_before=[{"num": "1", "text": "夫婦間でした契約は…"}],
+        ),
+        _entry("753:754", "added"),
+    ]
+    doc = _build(entries, _tree(_article("753:754", "第七百五十三条及び第七百五十四条", text="削除")))
+    page = next(a for a in doc["articles"] if a["article_num"] == "754")
+    assert page["current"]["status"] == "merged_deleted"
+    assert page["former"]["paragraphs"][0]["text"] == "夫婦間でした契約は…"
+    assert page["former"]["as_of"] == "2026-03-31"
+    assert page["current_summary"] is None
+
+
+def test_a_deleted_article_takes_its_section_path_from_the_range_it_folded_into():
+    # find_section_path(tree, "754") is None today -- 754 is not an Article node
+    # any more. The range that absorbed it still is.
+    entries = [
+        _entry("753", "deleted", paragraphs_after=[]),
+        _entry("754", "deleted", paragraphs_after=[]),
+        _entry("753:754", "added"),
+    ]
+    tree = {
+        "tag": "Law",
+        "attr": {},
+        "children": [
+            {
+                "tag": "Chapter",
+                "attr": {},
+                "children": [
+                    {"tag": "ChapterTitle", "attr": {}, "children": ["第二章　婚姻"]},
+                    _article("753:754", "第七百五十三条及び第七百五十四条", text="削除"),
+                ],
+            }
+        ],
+    }
+    doc = _build(entries, tree)
+    page = next(a for a in doc["articles"] if a["article_num"] == "754")
+    assert page["section_path"] == ["第二章　婚姻"]
+
+
+def test_related_articles_are_empty_when_the_text_has_moved_on():
+    # spec §4: the gate covers the whole "about this article" block. A link
+    # written about an older version can point at an article that has moved.
+    refs = [{"ref": "第七百六十六条", "article_num": "766", "context": "c"}]
+    entries = [
+        _entry(
+            "306",
+            paragraphs_after=[{"num": "1", "text": "昔の本文"}],
+            annotation={"plain_summary": "s", "change_description": "d", "cross_references": refs},
+        )
+    ]
+    doc = _build(entries, _tree(_article("306", "第三百六条", text="今日の本文")))
+    page = doc["articles"][0]
+    assert page["related_articles"] == []
+    # but the card still carries them, as dated text
+    assert page["changes"][0]["cross_references"][0]["ref"] == "第七百六十六条"
+
+
+def test_articles_are_ordered_numerically_not_by_slug_string():
+    # 刑法 ships 3, 3_2, 176..183, 241. Sorting slugs as strings puts 3 last,
+    # and this order is the table of contents on /law/<lawId>.
+    entries = [_entry(n, paragraphs_after=[{"num": "1", "text": "本文"}]) for n in ("241", "3", "176")]
+    tree = _tree(
+        _article("241", "第二百四十一条"),
+        _article("3", "第三条"),
+        _article("176", "第百七十六条"),
+    )
+    doc = _build(entries, tree)
+    assert [a["article_num"] for a in doc["articles"]] == ["3", "176", "241"]
+
+
+def test_validate_rejects_an_empty_current_text():
+    doc = {"law_id": "x", "law_title": "y", "source": SOURCE, "articles": [
+        {"article_num": "306", "slug": "306", "label": "第三百六条",
+         "current": {"status": "present", "paragraphs": [{"num": "1", "text": "  "}]},
+         "changes": [{"change_description": "d"}]}
+    ]}
+    assert any("empty" in e for e in articles.validate_articles(doc))
+
+
+def test_validate_rejects_a_duplicate_slug():
+    page = {"article_num": "306", "slug": "306", "label": "l",
+            "current": {"status": "present", "paragraphs": [{"num": "1", "text": "t"}]},
+            "changes": [{"change_description": "d"}]}
+    doc = {"law_id": "x", "law_title": "y", "source": SOURCE, "articles": [page, dict(page)]}
+    assert any("duplicate" in e for e in articles.validate_articles(doc))
+
+
+def test_validate_rejects_an_enforcement_date_after_the_asof():
+    source = dict(SOURCE, amendment_enforcement_date="2099-01-01")
+    doc = {"law_id": "x", "law_title": "y", "source": source, "articles": [
+        {"article_num": "306", "slug": "306", "label": "l",
+         "current": {"status": "present", "paragraphs": [{"num": "1", "text": "t"}]},
+         "changes": [{"change_description": "d"}]}
+    ]}
+    assert any("enforcement" in e for e in articles.validate_articles(doc))
