@@ -119,15 +119,26 @@ def test_a_shipped_summary_means_the_text_still_matched(path):
 
 @pytest.mark.parametrize("path", shipped_articles(), ids=lambda p: p.stem)
 def test_a_shipped_deleted_article_carries_its_former_text(path):
-    # validate_articles checks former only when status is merged_deleted, so a
-    # deleted article shipped as `present` would slip through. Pin it on the
-    # bytes: every page whose newest change is a deletion must be a tombstone.
+    # Keyed on the page being a tombstone, not on the amendment's type. The
+    # type was the hole: e-Gov records some repeals as a modification that
+    # replaces the body with 削除, so 民法733/746 and 刑法178 shipped as
+    # `present` with a present-tense summary and live links, and this test
+    # skipped every one of them.
+    import articles
+
     doc = json.loads(path.read_text())
     for page in doc["articles"]:
-        if page["changes"][0]["type"] != "deleted":
+        body = "".join(p["text"] for p in page["current"]["paragraphs"]).strip()
+        status = page["current"]["status"]
+        if body != "削除" and status not in articles.TOMBSTONE_STATUSES:
             continue
-        assert page["current"]["status"] == "merged_deleted", page["article_num"]
+        # Each side implies the other: a 削除 body is a tombstone, and a
+        # tombstone's body is 削除.
+        assert status in articles.TOMBSTONE_STATUSES, page["article_num"]
+        assert body == "削除", page["article_num"]
         assert page["former"] and page["former"]["paragraphs"], page["article_num"]
+        assert page["current_summary"] is None, page["article_num"]
+        assert page["related_articles"] == [], page["article_num"]
 
 
 @pytest.mark.parametrize("path", shipped_articles(), ids=lambda p: p.stem)
@@ -148,3 +159,17 @@ def test_shipped_articles_match_the_shipped_diffs(path):
     docs = articles.shipped_diff_docs(ARTICLES_DIR.parent)[doc["law_id"]]
     expected = set(articles.collect_changes(docs, doc["source"]["asof"]))
     assert {p["article_num"] for p in doc["articles"]} == expected
+
+
+@pytest.mark.parametrize("path", shipped_articles(), ids=lambda p: p.stem)
+def test_a_link_describes_only_a_target_whose_own_summary_survived(path):
+    # The context line describes the TARGET article and was written when the
+    # note was. If the target's own page could not keep its summary, that line
+    # is making the claim the target's page refused to make.
+    doc = json.loads(path.read_text())
+    by_slug = {p["slug"]: p for p in doc["articles"]}
+    for page in doc["articles"]:
+        for ref in page["related_articles"]:
+            target = by_slug.get(ref["slug"]) if ref["slug"] else None
+            if target is not None and target["current_summary"] is None:
+                assert ref["context"] == "", (page["article_num"], ref["ref"])

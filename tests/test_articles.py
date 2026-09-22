@@ -858,3 +858,117 @@ def test_main_does_not_save_when_the_day_changes_after_all_laws_are_built(monkey
         articles.main()
     assert exc.value.code == 3
     assert _written(tmp_path) == []
+
+
+def test_resolve_current_calls_a_standalone_deleted_body_a_tombstone():
+    # 民法733, 民法746 and 刑法178 were repealed by an amendment e-Gov records as
+    # a modification: the body was replaced with the word 削除. The article is
+    # still in today's index, so the status has to come from the body.
+    index = articles.index_current_articles(
+        _tree(_article("733", "第七百三十三条", text="削除"))
+    )
+    current = articles.resolve_current(index, "733", "modified")
+    assert current["status"] == "deleted"
+    assert current["source_article_num"] == "733"
+
+
+def test_a_repeal_recorded_as_a_modification_loses_its_summary_and_links():
+    # Both sides of the gate are the word 削除, so texts_match says True and
+    # summary_is_safe finds nothing wrong. The status has to override them.
+    refs = [{"ref": "第七百四十六条", "article_num": "746", "context": "c"}]
+    entries = [
+        _entry(
+            "733",
+            paragraphs_after=[{"num": "1", "text": "削除"}],
+            paragraphs_before=[{"num": "1", "text": "女は、前婚の解消…"}],
+            annotation={
+                "plain_summary": "再婚禁止期間を定めたルール",
+                "change_description": "d",
+                "cross_references": refs,
+            },
+        )
+    ]
+    doc = _build(entries, _tree(_article("733", "第七百三十三条", text="削除")))
+    page = doc["articles"][0]
+    assert page["current"]["status"] == "deleted"
+    assert page["current_summary"] is None
+    assert page["related_articles"] == []
+    # The note survives as a dated claim on its history card.
+    assert page["changes"][0]["plain_summary"] == "再婚禁止期間を定めたルール"
+
+
+def test_a_repeal_recorded_as_a_modification_still_shows_its_former_text():
+    entries = [
+        _entry(
+            "733",
+            paragraphs_after=[{"num": "1", "text": "削除"}],
+            paragraphs_before=[{"num": "1", "text": "女は、前婚の解消…"}],
+        )
+    ]
+    doc = _build(entries, _tree(_article("733", "第七百三十三条", text="削除")))
+    page = doc["articles"][0]
+    assert page["former"]["paragraphs"][0]["text"] == "女は、前婚の解消…"
+    assert page["former"]["as_of"] == "2026-03-31"
+
+
+def test_validate_rejects_a_deleted_page_with_empty_former_paragraphs():
+    doc = {"source": SOURCE,
+           "articles": [{"article_num": "733", "slug": "733", "label": "第七百三十三条",
+                         "current": {"status": "deleted", "paragraphs": [{"num": "1", "text": "削除"}]},
+                         "former": {"as_of": "2026-03-31", "label": "l", "paragraphs": []},
+                         "current_summary": None,
+                         "changes": [{"change_description": "d"}]}]}
+    assert any("former text" in e for e in articles.validate_articles(doc))
+
+
+def test_validate_rejects_a_tombstone_that_kept_a_current_summary():
+    doc = {"source": SOURCE,
+           "articles": [{"article_num": "733", "slug": "733", "label": "第七百三十三条",
+                         "current": {"status": "deleted", "paragraphs": [{"num": "1", "text": "削除"}]},
+                         "former": {"as_of": "2026-03-31", "label": "l",
+                                    "paragraphs": [{"num": "1", "text": "旧"}]},
+                         "current_summary": {"text": "s", "evidence_date": "2026-04-01"},
+                         "changes": [{"change_description": "d"}]}]}
+    assert any("current summary" in e for e in articles.validate_articles(doc))
+
+
+def test_a_link_to_a_page_that_lost_its_summary_keeps_the_link_but_drops_the_context():
+    # 著作権法121条 describes 122条の2 as 秘密保持命令違反; today's 122条の2 is
+    # about 帳簿, which is why 122条の2's own page has no summary.
+    refs = [{"ref": "第百二十二条の二", "article_num": "122_2", "context": "秘密保持命令違反の処罰"}]
+    entries = [
+        _entry(
+            "121",
+            paragraphs_after=[{"num": "1", "text": "本文"}],
+            annotation={"plain_summary": "s", "change_description": "d", "cross_references": refs},
+        ),
+        _entry("122_2", paragraphs_after=[{"num": "1", "text": "昔の本文"}]),
+    ]
+    doc = _build(
+        entries,
+        _tree(
+            _article("121", "第百二十一条"),
+            _article("122_2", "第百二十二条の二", text="今日の本文"),
+        ),
+    )
+    page = next(a for a in doc["articles"] if a["article_num"] == "121")
+    target = next(a for a in doc["articles"] if a["article_num"] == "122_2")
+    assert target["current_summary"] is None
+    assert page["related_articles"][0]["slug"] == "122-2"
+    assert page["related_articles"][0]["has_page"] is True
+    assert page["related_articles"][0]["context"] == ""
+
+
+def test_a_link_to_a_page_that_kept_its_summary_keeps_its_context():
+    refs = [{"ref": "第三百八条", "article_num": "308", "context": "雇用関係の先取特権"}]
+    entries = [
+        _entry(
+            "306",
+            paragraphs_after=[{"num": "1", "text": "本文"}],
+            annotation={"plain_summary": "s", "change_description": "d", "cross_references": refs},
+        ),
+        _entry("308", paragraphs_after=[{"num": "1", "text": "本文"}]),
+    ]
+    doc = _build(entries, _tree(_article("306", "第三百六条"), _article("308", "第三百八条")))
+    page = next(a for a in doc["articles"] if a["article_num"] == "306")
+    assert page["related_articles"][0]["context"] == "雇用関係の先取特権"

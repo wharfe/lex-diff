@@ -205,8 +205,16 @@ def resolve_current(index: dict, article_num: str, latest_type: str) -> dict:
     node = index.get(article_num)
     if node is not None:
         body = extract_article_body(node)
+        # An article whose body is only 削除 is a tombstone however the
+        # amendment that repealed it was typed. e-Gov records some repeals as a
+        # modification that replaces the body with the word 削除, so the diff
+        # says "modified" while the article is gone; reading the status off the
+        # amendment type instead of the body shipped three pages headed
+        # "現在の条文" that described what the article used to do (民法733/746,
+        # 刑法178). Distinct from "merged_deleted", which is the same fact
+        # recorded by folding the article into a range node.
         return {
-            "status": "present",
+            "status": "deleted" if _body_is_only_deleted(body) else "present",
             "source_article_num": article_num,
             "source_label": body["label"],
             "caption": body["caption"],
@@ -237,6 +245,14 @@ def resolve_current(index: dict, article_num: str, latest_type: str) -> dict:
         f"article {article_num!r} has an enforced diff but is not in today's "
         "text, and no merged-deleted range accounts for it"
     )
+
+
+# The two ways today's text can say "this article is gone". Both mean the page
+# describes something that no longer exists, so both are treated alike wherever
+# that matters: the summary gate, the former block, and validation.
+TOMBSTONE_STATUSES = frozenset({"deleted", "merged_deleted"})
+
+CURRENT_STATUSES = frozenset({"present"}) | TOMBSTONE_STATUSES
 
 
 # 禁固 is the newspaper spelling and 禁こ the kana one; a list holding only 禁錮
@@ -395,14 +411,25 @@ def build_law_articles(
         # must not name a penalty the body no longer carries.
         matched = texts_match(latest["paragraphs_after"], current["paragraphs"])
         safe = summary_is_safe(latest["plain_summary"], current_text)
-        current_summary = (
-            {"text": latest["plain_summary"], "evidence_date": latest["enforcement_date"]}
-            if matched and safe and latest["plain_summary"]
-            else None
-        )
+        is_tombstone = current["status"] in TOMBSTONE_STATUSES
+        if is_tombstone:
+            # The gate cannot speak here: both sides of the comparison are the
+            # tombstone word, so texts_match returns True for a note about an
+            # article that no longer exists. An article that is gone has no
+            # current description, whatever the note says.
+            current_summary = None
+        else:
+            current_summary = (
+                {"text": latest["plain_summary"], "evidence_date": latest["enforcement_date"]}
+                if matched and safe and latest["plain_summary"]
+                else None
+            )
 
         former = None
-        if latest["type"] == "deleted":
+        # Keyed on the page being a tombstone, not on the amendment's type: a
+        # repeal recorded as "modified" leaves the same page needing the same
+        # block, and without it the reader sees 削除 and nothing else.
+        if is_tombstone and latest["paragraphs_before"]:
             former = {
                 "as_of": latest["date_before"],
                 "label": latest.get("title_before") or "",
@@ -475,6 +502,23 @@ def build_law_articles(
             refs, aliases, num
         )
         unresolved_total += unresolved
+
+    # A reference's `context` is one line of prose about the TARGET article,
+    # written when the note was written. When the target's own page could not
+    # keep its summary, that line describes a version of the target that is
+    # gone: 著作権法121条 links to 122条の2 saying it is about 秘密保持命令違反,
+    # while today's 122条の2 is about 帳簿 -- and 122条の2's own page correctly
+    # drops that claim. The link is still right, so only the sentence goes.
+    by_slug = {page["slug"]: page for page in pages.values()}
+    dropped_contexts = 0
+    for page in pages.values():
+        for ref in page["related_articles"]:
+            target = by_slug.get(ref["slug"]) if ref["slug"] else None
+            if target is not None and target["current_summary"] is None and ref["context"]:
+                ref["context"] = ""
+                dropped_contexts += 1
+    print(f"  stale link descriptions dropped: {dropped_contexts}")
+
     # Out of attempted, not just the raw count: a law where every summary was
     # gated away attempts 0 references and would otherwise print the same
     # "0 unresolved" as a perfectly healthy law (measured: 425AC0000000027,
@@ -531,7 +575,7 @@ def validate_articles(doc: dict) -> list[str]:
         else:
             if slug != expected_slug:
                 errors.append(f"{num}: slug {slug!r} does not match article_num {num!r}")
-        if page.get("current", {}).get("status") not in ("present", "merged_deleted"):
+        if page.get("current", {}).get("status") not in CURRENT_STATUSES:
             errors.append(f"{num}: unknown current.status")
         text = "".join(p.get("text", "") for p in page.get("current", {}).get("paragraphs", []))
         if not text.strip():
@@ -543,10 +587,12 @@ def validate_articles(doc: dict) -> list[str]:
         for change in page.get("changes", []):
             if not (change.get("change_description") or "").strip():
                 errors.append(f"{num}: a change has no description")
-        if page.get("current", {}).get("status") == "merged_deleted":
+        if page.get("current", {}).get("status") in TOMBSTONE_STATUSES:
             former = page.get("former")
             if not former or not former.get("paragraphs"):
                 errors.append(f"{num}: a deleted article has no former text")
+            if page.get("current_summary") is not None:
+                errors.append(f"{num}: a deleted article still carries a current summary")
     return errors
 
 

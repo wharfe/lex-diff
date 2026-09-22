@@ -3,7 +3,7 @@
   "law_title": "消費者契約法",
   "source": {
     "asof": "2026-09-22",
-    "fetched_at": "2026-09-22T21:42:31+09:00",
+    "fetched_at": "2026-09-22T21:54:16+09:00",
     "law_revision_id": "412AC0000000061_20260624_508AC0000000046",
     "amendment_enforcement_date": "2026-06-24"
   },
@@ -715,7 +715,7 @@
         {
           "ref": "第十三条",
           "article_num": "13",
-          "context": "本条の要請権限を持つ「適格消費者団体」となるための内閣総理大臣の認定制度を定めた条文",
+          "context": "",
           "slug": "13",
           "has_page": true
         }
