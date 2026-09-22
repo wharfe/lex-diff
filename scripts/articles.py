@@ -222,3 +222,39 @@ def resolve_current(index: dict, article_num: str, latest_type: str) -> dict:
         f"article {article_num!r} has an enforced diff but is not in today's "
         "text, and no merged-deleted range accounts for it"
     )
+
+
+# 禁固 is the newspaper spelling and 禁こ the kana one; a list holding only 禁錮
+# lets the same claim through in a different dress.
+ABOLISHED_PENALTIES = {"懲役", "禁錮", "禁固", "禁こ"}
+
+
+def _normalise(text: str) -> str:
+    # Line endings and trailing spaces are formatting. Everything else is the
+    # provision, and a difference there means the note describes another text.
+    return "\n".join(line.rstrip() for line in text.replace("\r\n", "\n").split("\n")).strip()
+
+
+def texts_match(paragraphs_after: list[dict], current_paragraphs: list[dict]) -> bool:
+    """Whether the note's article and today's article are the same text."""
+    if len(paragraphs_after) != len(current_paragraphs):
+        return False
+    # spec §4 says "段落番号と本文". Both sides take num from Paragraph@Num
+    # (measured: shipped 民法772条 carries "1".."4"), so it is comparable.
+    return all(
+        a.get("num") == b.get("num")
+        and _normalise(a.get("text", "")) == _normalise(b.get("text", ""))
+        for a, b in zip(paragraphs_after, current_paragraphs)
+    )
+
+
+def summary_is_safe(summary: str, current_text: str) -> bool:
+    """False when prose names a penalty the article no longer carries.
+
+    The 2025-06-01 merger into 拘禁刑 is the case this exists for: a note
+    written before it says 懲役 in the present tense, and printing that beside a
+    body that says 拘禁刑 is the accident CLAUDE.md records, in a new place.
+    """
+    return not any(
+        term in summary and term not in current_text for term in ABOLISHED_PENALTIES
+    )

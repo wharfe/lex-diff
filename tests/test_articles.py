@@ -238,3 +238,46 @@ def test_resolve_current_raises_when_an_enforced_article_is_absent():
     index = articles.index_current_articles(_tree(_article("306", "第三百六条")))
     with pytest.raises(LookupError, match="999"):
         articles.resolve_current(index, "999", "modified")
+
+
+def test_texts_match_ignores_trailing_whitespace_only():
+    after = [{"num": "1", "text": "次に掲げる原因によって\n　一　共益の費用  "}]
+    current = [{"num": "1", "text": "次に掲げる原因によって\n　一　共益の費用"}]
+    assert articles.texts_match(after, current) is True
+
+
+def test_texts_do_not_match_when_the_provision_was_renumbered():
+    # 著作権法 122_2: the shipped note describes 秘密保持命令違反, today's text is
+    # about 帳簿. Same number, different provision.
+    after = [{"num": "1", "text": "秘密保持命令に違反した者は…"}]
+    current = [{"num": "1", "text": "第百四条の二十七…に違反して帳簿を備えず…"}]
+    assert articles.texts_match(after, current) is False
+
+
+def test_texts_do_not_match_on_a_different_paragraph_count():
+    assert articles.texts_match([{"num": "1", "text": "あ"}], []) is False
+
+
+def test_texts_do_not_match_when_only_the_paragraph_numbers_differ():
+    after = [{"num": "1", "text": "あ"}, {"num": "2", "text": "い"}]
+    current = [{"num": "1", "text": "あ"}, {"num": "3", "text": "い"}]
+    assert articles.texts_match(after, current) is False
+
+
+def test_summary_with_an_abolished_penalty_absent_from_the_text_is_unsafe():
+    # 刑法183: body says 拘禁刑, the 2023 note says 懲役 in the present tense.
+    assert (
+        articles.summary_is_safe("3年以下の懲役に処する条文", "三年以下の拘禁刑又は…")
+        is False
+    )
+
+
+def test_summary_naming_a_penalty_that_is_still_in_the_text_is_safe():
+    # A note about the amendment that renamed it is legitimate where the word
+    # is still on the page.
+    assert articles.summary_is_safe("懲役から拘禁刑に変わった", "…懲役…") is True
+
+
+@pytest.mark.parametrize("term", ["懲役", "禁錮", "禁固", "禁こ"])
+def test_every_abolished_penalty_spelling_is_checked(term):
+    assert articles.summary_is_safe(f"{term}に処する", "拘禁刑に処する") is False
