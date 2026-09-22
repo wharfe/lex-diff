@@ -544,3 +544,47 @@ def test_validate_rejects_an_enforcement_date_after_the_asof():
          "changes": [{"change_description": "d"}]}
     ]}
     assert any("enforcement" in e for e in articles.validate_articles(doc))
+
+
+def test_build_alias_table_drops_a_label_claimed_by_two_pages():
+    # A deleted article's label comes from the range node that absorbed it,
+    # so e.g. 民法 753 and 754 both carry "753:754"'s title. An ambiguous
+    # alias must not resolve to either page.
+    pages = {
+        "753": {"label": "第七百五十三条及び第七百五十四条"},
+        "754": {"label": "第七百五十三条及び第七百五十四条"},
+        "306": {"label": "第三百六条"},
+    }
+    aliases = articles.build_alias_table(pages)
+    assert "第七百五十三条及び第七百五十四条" not in aliases
+    assert aliases == {"第三百六条": "306"}
+
+
+def test_validate_rejects_a_merged_deleted_page_with_empty_former_paragraphs():
+    doc = {"law_id": "x", "law_title": "y", "source": SOURCE, "articles": [
+        {"article_num": "754", "slug": "754", "label": "l",
+         "current": {"status": "merged_deleted", "paragraphs": [{"num": "1", "text": "t"}]},
+         "former": {"as_of": "2026-03-31", "label": "l", "paragraphs": []},
+         "changes": [{"change_description": "d"}]}
+    ]}
+    assert any("former text" in e for e in articles.validate_articles(doc))
+
+
+def test_validate_rejects_a_slug_that_does_not_match_its_article_num():
+    doc = {"law_id": "x", "law_title": "y", "source": SOURCE, "articles": [
+        {"article_num": "306", "slug": "999", "label": "l",
+         "current": {"status": "present", "paragraphs": [{"num": "1", "text": "t"}]},
+         "changes": [{"change_description": "d"}]}
+    ]}
+    assert any("does not match article_num" in e for e in articles.validate_articles(doc))
+
+
+def test_validate_does_not_raise_on_a_range_shaped_article_num():
+    doc = {"law_id": "x", "law_title": "y", "source": SOURCE, "articles": [
+        {"article_num": "753:754", "slug": "753", "label": "l",
+         "current": {"status": "present", "paragraphs": [{"num": "1", "text": "t"}]},
+         "changes": [{"change_description": "d"}]}
+    ]}
+    # Must return a list of strings, never raise, even for a range-shaped num.
+    errors = articles.validate_articles(doc)
+    assert isinstance(errors, list)

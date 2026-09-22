@@ -271,8 +271,19 @@ def summary_is_safe(summary: str, current_text: str) -> bool:
 
 
 def build_alias_table(pages: dict[str, dict]) -> dict[str, str]:
-    """Japanese article label -> article_num, for this law only."""
-    return {p["label"]: num for num, p in pages.items() if p.get("label")}
+    """Japanese article label -> article_num, for this law only.
+
+    A label claimed by more than one page is ambiguous and must not resolve
+    to either: a deleted article's label comes from the range node that
+    absorbed it, so e.g. 民法 753 and 754 both carry the label of "753:754"'s
+    title. An ambiguous alias may never produce a link.
+    """
+    by_label: dict[str, list[str]] = {}
+    for num, p in pages.items():
+        label = p.get("label")
+        if label:
+            by_label.setdefault(label, []).append(num)
+    return {label: nums[0] for label, nums in by_label.items() if len(nums) == 1}
 
 
 # An article number continues after の only with a numeral: 第七百七十八条の四
@@ -441,12 +452,20 @@ def build_law_articles(
 
     aliases = build_alias_table(pages)
     unresolved_total = 0
+    attempted_total = 0
     for num, page in pages.items():
+        refs = page.pop("_refs")
+        attempted_total += len(refs)
         page["related_articles"], unresolved = resolve_cross_references(
-            page.pop("_refs"), aliases, num
+            refs, aliases, num
         )
         unresolved_total += unresolved
-    print(f"  cross references: {unresolved_total} unresolved")
+    # Out of attempted, not just the raw count: a law where every summary was
+    # gated away attempts 0 references and would otherwise print the same
+    # "0 unresolved" as a perfectly healthy law (measured: 425AC0000000027,
+    # 6/6 articles lost their summary). This line is the operator's only
+    # feedback during generation.
+    print(f"  cross references: {unresolved_total}/{attempted_total} unresolved")
 
     return {
         "law_id": law_id,
@@ -486,6 +505,15 @@ def validate_articles(doc: dict) -> list[str]:
         if slug in seen:
             errors.append(f"{num}: duplicate slug {slug!r}")
         seen.add(slug)
+        try:
+            expected_slug = article_slug(num)
+        except ValueError:
+            # A range-shaped article_num should never reach here as `num`
+            # (changes are keyed per-article, not per-range), but
+            # validate_articles must return a list, never raise.
+            expected_slug = None
+        if expected_slug is not None and slug != expected_slug:
+            errors.append(f"{num}: slug {slug!r} does not match article_num {num!r}")
         if page.get("current", {}).get("status") not in ("present", "merged_deleted"):
             errors.append(f"{num}: unknown current.status")
         text = "".join(p.get("text", "") for p in page.get("current", {}).get("paragraphs", []))
@@ -498,6 +526,8 @@ def validate_articles(doc: dict) -> list[str]:
         for change in page.get("changes", []):
             if not (change.get("change_description") or "").strip():
                 errors.append(f"{num}: a change has no description")
-        if page.get("current", {}).get("status") == "merged_deleted" and not page.get("former"):
-            errors.append(f"{num}: a deleted article has no former text")
+        if page.get("current", {}).get("status") == "merged_deleted":
+            former = page.get("former")
+            if not former or not former.get("paragraphs"):
+                errors.append(f"{num}: a deleted article has no former text")
     return errors
