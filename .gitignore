@@ -35,3 +35,4 @@ frontend/out/
 
 # SDD workspace (plan ledger, briefs, review packages)
 .superpowers/
+data/articles/

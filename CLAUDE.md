@@ -48,6 +48,7 @@ npm run lint   # Lint
 │   ├── explainer.py       AI-generated "recent amendments" section (see below)
 │   ├── llm.py             Shared Claude API helpers for the three scripts above
 │   ├── lawtext.py         Reading the e-Gov law tree (shared by diff/law_summary)
+│   ├── articles.py        Per-article pages (current text + this article's history)
 │   └── requirements.txt   Python dependencies (legacy, use pyproject.toml)
 ├── tests/                 pytest suite — the pure functions in scripts/, plus
 │                          test_shipped_data.py over frontend/public/data/
@@ -56,7 +57,8 @@ npm run lint   # Lint
 │   ├── raw/               Raw API responses
 │   ├── diffs/             Computed diff JSON files
 │   ├── timelines/         Amendment history per law
-│   └── proposers/         Bill sponsor data from the NDL API
+│   ├── proposers/         Bill sponsor data from the NDL API
+│   └── articles/          Per-article pages (current text + history)
 └── frontend/              Next.js application
     ├── app/               Pages and layouts
     ├── components/        React components
