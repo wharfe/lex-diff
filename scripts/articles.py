@@ -52,3 +52,50 @@ def display_num(article_num: str) -> str:
         raise ValueError(f"a range has no display form: {article_num!r}")
     head, *rest = article_num.split("_")
     return "第" + head + "条" + "".join("の" + r for r in rest)
+
+
+def collect_changes(diff_docs: list[dict], today: str) -> dict[str, list[dict]]:
+    """Article number -> its amendments, newest first.
+
+    Drops 附則 (numbered independently of the main text), amendments not yet in
+    force, and range entries whose members already have entries of their own.
+    """
+    by_num: dict[str, list[dict]] = {}
+    for doc in diff_docs:
+        if doc["date_after"] > today:
+            continue
+        main = [e for e in doc["diffs"] if not e.get("is_suppl")]
+        individual = {e["article_num"] for e in main if not is_range_num(e["article_num"])}
+        for entry in main:
+            num = entry["article_num"]
+            if is_range_num(num):
+                members = range_members(num)
+                if all(m in individual for m in members):
+                    # The members speak for themselves, and with the right text.
+                    continue
+                raise ValueError(
+                    f"range entry {num!r} in {doc['_diff_id']} has no individual "
+                    f"entry for every member ({members}); refusing to spread one "
+                    "annotation over articles it was not written about"
+                )
+            annotation = entry.get("annotation") or {}
+            by_num.setdefault(num, []).append(
+                {
+                    "diff_id": doc["_diff_id"],
+                    "enforcement_date": doc["date_after"],
+                    "date_before": doc["date_before"],
+                    "year": doc["date_after"][:4],
+                    "type": entry["type"],
+                    "amendment_law_title": doc["revision_after"]["amendment_law_title"],
+                    "change_description": annotation.get("change_description", ""),
+                    "plain_summary": annotation.get("plain_summary", ""),
+                    "cross_references": annotation.get("cross_references", []),
+                    "section_path": entry.get("section_path", []),
+                    "paragraphs_before": entry.get("paragraphs_before", []),
+                    "paragraphs_after": entry.get("paragraphs_after", []),
+                    "title_before": entry.get("title_before"),
+                }
+            )
+    for num in by_num:
+        by_num[num].sort(key=lambda c: c["enforcement_date"], reverse=True)
+    return by_num
