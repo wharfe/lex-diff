@@ -230,17 +230,27 @@ ABOLISHED_PENALTIES = {"懲役", "禁錮", "禁固", "禁こ"}
 
 
 def _normalise(text: str) -> str:
-    # Line endings and trailing spaces are formatting. Everything else is the
-    # provision, and a difference there means the note describes another text.
-    return "\n".join(line.rstrip() for line in text.replace("\r\n", "\n").split("\n")).strip()
+    # Line endings and per-line trailing spaces are formatting. Leading
+    # indentation is not: diff.format_item indents with a full-width space,
+    # so a leading space is part of the provision's structure. A whole-string
+    # .strip() would eat that leading space too, so only rstrip each line.
+    return "\n".join(line.rstrip() for line in text.replace("\r\n", "\n").split("\n"))
 
 
 def texts_match(paragraphs_after: list[dict], current_paragraphs: list[dict]) -> bool:
     """Whether the note's article and today's article are the same text."""
+    if not paragraphs_after or not current_paragraphs:
+        # A gate must fail closed: an empty side (diff.py yields [] for a
+        # deleted entry) must never compare equal to anything, including
+        # another empty list.
+        return False
     if len(paragraphs_after) != len(current_paragraphs):
         return False
-    # spec §4 says "段落番号と本文". Both sides take num from Paragraph@Num
-    # (measured: shipped 民法772条 carries "1".."4"), so it is comparable.
+    # num can come from different fallbacks on each side (diff.py:159 yields
+    # "" when Paragraph@Num is missing; articles.py's index falls back to a
+    # positional number instead), so the two sides are not guaranteed to
+    # agree even for the same paragraph. When they disagree the comparison
+    # below reports a mismatch, which is the safe direction here.
     return all(
         a.get("num") == b.get("num")
         and _normalise(a.get("text", "")) == _normalise(b.get("text", ""))

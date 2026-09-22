@@ -281,3 +281,17 @@ def test_summary_naming_a_penalty_that_is_still_in_the_text_is_safe():
 @pytest.mark.parametrize("term", ["懲役", "禁錮", "禁固", "禁こ"])
 def test_every_abolished_penalty_spelling_is_checked(term):
     assert articles.summary_is_safe(f"{term}に処する", "拘禁刑に処する") is False
+
+
+def test_texts_do_not_match_when_both_sides_are_empty():
+    # A gate must fail closed: diff.py yields [] for a deleted entry's
+    # paragraphs_after, and that must never compare equal to anything.
+    assert articles.texts_match([], []) is False
+
+
+def test_texts_do_not_match_when_only_leading_indentation_differs():
+    # diff.format_item indents with a full-width space; that indentation is
+    # part of the provision's structure, not incidental formatting.
+    after = [{"num": "1", "text": "　共益の費用"}]
+    current = [{"num": "1", "text": "共益の費用"}]
+    assert articles.texts_match(after, current) is False
