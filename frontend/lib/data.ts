@@ -1,9 +1,10 @@
-import { ArticleDiff, LawDiffData, LawTimeline } from "./types";
+import { ArticleDiff, ArticlePage, LawArticles, LawDiffData, LawTimeline } from "./types";
 import fs from "fs";
 import path from "path";
 
 const DATA_DIR = path.join(process.cwd(), "public", "data");
 const TIMELINE_DIR = path.join(DATA_DIR, "timelines");
+const ARTICLE_DIR = path.join(DATA_DIR, "articles");
 
 export function getDiffIds(): string[] {
   const files = fs.readdirSync(DATA_DIR);
@@ -35,6 +36,31 @@ export function getTimelineData(lawId: string): LawTimeline {
   const filePath = path.join(TIMELINE_DIR, `${lawId}.json`);
   const raw = fs.readFileSync(filePath, "utf-8");
   return JSON.parse(raw) as LawTimeline;
+}
+
+export function getArticleLawIds(): string[] {
+  if (!fs.existsSync(ARTICLE_DIR)) return [];
+  return fs
+    .readdirSync(ARTICLE_DIR)
+    .filter((f) => f.endsWith(".json"))
+    .map((f) => f.replace(".json", ""));
+}
+
+export function getArticleData(lawId: string): LawArticles {
+  const raw = fs.readFileSync(path.join(ARTICLE_DIR, `${lawId}.json`), "utf-8");
+  return JSON.parse(raw) as LawArticles;
+}
+
+/** Every (lawId, articleSlug) that ships. The slug is read, never derived:
+ *  article numbers are interpreted in Python and nowhere else. */
+export function getArticleParams(): { lawId: string; articleSlug: string }[] {
+  return getArticleLawIds().flatMap((lawId) =>
+    getArticleData(lawId).articles.map((a) => ({ lawId, articleSlug: a.slug }))
+  );
+}
+
+export function findArticle(lawId: string, slug: string): ArticlePage | null {
+  return getArticleData(lawId).articles.find((a) => a.slug === slug) ?? null;
 }
 
 export interface OpenGikaiThread {

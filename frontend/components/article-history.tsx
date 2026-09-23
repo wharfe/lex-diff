@@ -1,0 +1,66 @@
+import Link from "next/link";
+import { ArticleChange } from "@/lib/types";
+import { jpDate } from "@/lib/format";
+
+export function ArticleHistory({
+  changes,
+  anchor,
+}: {
+  changes: ArticleChange[];
+  /** The article_num, which is the id the /diff card carries. */
+  anchor: string;
+}) {
+  return (
+    <section>
+      <h2 className="text-[14px] font-bold mb-3">この条文の改正履歴</h2>
+      <ol className="flex flex-col gap-4">
+        {changes.map((c) => (
+          <li
+            key={c.diff_id + c.enforcement_date}
+            className="border border-[var(--border)] rounded-lg p-4"
+          >
+            <p className="text-[13px] opacity-70">
+              {jpDate(c.enforcement_date)}施行・{c.amendment_law_title}
+            </p>
+            <p className="mt-2 whitespace-pre-wrap leading-[26px]">{c.change_description}</p>
+            {c.plain_summary && (
+              // The time label comes from summary_basis, which Python decided
+              // on that amendment's own post-amendment text. Branching on
+              // c.type here read 改正直後 over three repeals e-Gov records as
+              // "modified" (民法733/746, 刑法178), labelling a description of
+              // the repealed rule as a description of the word 削除.
+              //
+              // 改正直後 is the value that has to be positively present, so a
+              // missing or unexpected summary_basis falls onto 改正直前 rather
+              // than back onto exactly that defect. 改正直前 is the weaker
+              // claim -- the note describes the text as it stood before this
+              // amendment, which is true of any note written about it -- while
+              // 改正直後 asserts the note describes what replaced that text.
+              // Python already rejects any other value (validate_articles
+              // against SUMMARY_BASES), so this is the direction of the
+              // fallback, not a second gate.
+              <p className="mt-2 text-[13px] opacity-70">
+                {jpDate(c.enforcement_date)}
+                {c.summary_basis === "after" ? "改正直後" : "改正直前"}
+                の条文についての説明: {c.plain_summary}
+              </p>
+            )}
+            {c.cross_references.length > 0 && (
+              // Text, not links: a reference written about an older version of
+              // this article may point at a provision that has since moved.
+              <p className="mt-2 text-[13px] opacity-70">
+                当時の関連条文: {c.cross_references.map((r) => r.ref).join("、")}
+              </p>
+            )}
+            <Link
+              href={`/diff/${c.diff_id}#${anchor}`}
+              className="mt-2 inline-block text-[13px] text-[var(--diff-hunk-text)]"
+            >
+              この改正の全体を見る →
+            </Link>
+          </li>
+        ))}
+      </ol>
+    </section>
+  );
+}

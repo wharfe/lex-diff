@@ -61,3 +61,147 @@ def test_shipped_law_summaries_are_valid(path):
     # cannot reopen silently the next time a law is added.
     assert summary is not None, f"{path.name}: no summary — run law_summary.py"
     assert validate_summary_shape(summary) == [], f"{path.name}: {validate_summary_shape(summary)}"
+
+
+import datetime
+
+ARTICLES_DIR = Path(__file__).parent.parent / "frontend" / "public" / "data" / "articles"
+
+
+def shipped_articles():
+    return sorted(ARTICLES_DIR.glob("*.json"))
+
+
+def test_shipped_article_files_are_present():
+    # Without this, every test below passes vacuously on an empty glob.
+    assert len(shipped_articles()) >= 1
+
+
+def test_every_law_that_should_have_an_articles_file_has_one():
+    """The SET of files, not their count.
+
+    Every other check here is parametrized over the files that exist, so
+    deleting ten of the eleven left the whole suite green: a test that vanishes
+    with its data is not a guard. generateStaticParams() does not catch it
+    either -- it only throws on an empty or duplicated param list.
+
+    The expected set is derived from the shipped diffs, the same way
+    test_shipped_articles_match_the_shipped_diffs derives each file's page set,
+    so adding a law cannot make this red and no count is written down.
+    労働基準法 322AC0000000049 has only 附則 changes, so collect_changes returns
+    nothing for it and it falls out here without being named.
+    """
+    import articles
+
+    files = shipped_articles()
+    assert files, "no shipped articles/*.json at all"
+    # One generation run writes them all, so they share an asof; max() picks it
+    # without depending on the wall clock (an unenforced diff must stay out).
+    asof = max(json.loads(p.read_text())["source"]["asof"] for p in files)
+    expected = {
+        law_id
+        for law_id, docs in articles.shipped_diff_docs(SHIPPED).items()
+        if articles.collect_changes(docs, asof)
+    }
+    assert {p.stem for p in files} == expected
+
+
+@pytest.mark.parametrize("path", shipped_articles(), ids=lambda p: p.stem)
+def test_shipped_articles_pass_validate_articles(path):
+    import articles
+
+    assert articles.validate_articles(json.loads(path.read_text())) == []
+
+
+@pytest.mark.parametrize("path", shipped_articles(), ids=lambda p: p.stem)
+def test_shipped_article_source_records_one_run(path):
+    source = json.loads(path.read_text())["source"]
+    fetched = datetime.datetime.fromisoformat(source["fetched_at"])
+    assert fetched.tzinfo is not None
+    assert fetched.utcoffset() == datetime.timedelta(hours=9)
+    assert fetched.date().isoformat() == source["asof"]
+
+
+@pytest.mark.parametrize("path", shipped_articles(), ids=lambda p: p.stem)
+def test_a_shipped_summary_means_the_text_still_matched(path):
+    """The version gate, re-run on the bytes that ship.
+
+    Checking only for abolished penalty names would let 著作権法122条の2 through:
+    its note is about 秘密保持命令 while today's article is about 帳簿, and
+    neither string contains a penalty name. The comparison has to be the same
+    one the generator made, so it is made again here from the shipped diffs.
+    """
+    import articles
+
+    doc = json.loads(path.read_text())
+    docs = articles.shipped_diff_docs(ARTICLES_DIR.parent)[doc["law_id"]]
+    changes = articles.collect_changes(docs, doc["source"]["asof"])
+    for page in doc["articles"]:
+        if page["current_summary"] is None:
+            continue
+        latest = changes[page["article_num"]][0]
+        current = page["current"]["paragraphs"]
+        assert articles.texts_match(latest["paragraphs_after"], current), page["article_num"]
+        text = "".join(p["text"] for p in current)
+        assert articles.summary_is_safe(page["current_summary"]["text"], text), page["article_num"]
+
+
+@pytest.mark.parametrize("path", shipped_articles(), ids=lambda p: p.stem)
+def test_a_shipped_deleted_article_carries_its_former_text(path):
+    # Keyed on the page being a tombstone, not on the amendment's type. The
+    # type was the hole: e-Gov records some repeals as a modification that
+    # replaces the body with 削除, so 民法733/746 and 刑法178 shipped as
+    # `present` with a present-tense summary and live links, and this test
+    # skipped every one of them.
+    import articles
+
+    doc = json.loads(path.read_text())
+    for page in doc["articles"]:
+        body = "".join(p["text"] for p in page["current"]["paragraphs"]).strip()
+        status = page["current"]["status"]
+        if body != "削除" and status not in articles.TOMBSTONE_STATUSES:
+            continue
+        # Each side implies the other: a 削除 body is a tombstone, and a
+        # tombstone's body is 削除.
+        assert status in articles.TOMBSTONE_STATUSES, page["article_num"]
+        assert body == "削除", page["article_num"]
+        assert page["former"] and page["former"]["paragraphs"], page["article_num"]
+        assert page["current_summary"] is None, page["article_num"]
+        assert page["related_articles"] == [], page["article_num"]
+
+
+@pytest.mark.parametrize("path", shipped_articles(), ids=lambda p: p.stem)
+def test_a_page_without_a_current_summary_shows_no_current_links(path):
+    # spec §4: the gate covers the related-article links too, not just prose.
+    doc = json.loads(path.read_text())
+    for page in doc["articles"]:
+        if page["current_summary"] is None:
+            assert page["related_articles"] == [], page["article_num"]
+
+
+@pytest.mark.parametrize("path", shipped_articles(), ids=lambda p: p.stem)
+def test_shipped_articles_match_the_shipped_diffs(path):
+    # The page set is derived, not a magic number.
+    import articles
+
+    doc = json.loads(path.read_text())
+    docs = articles.shipped_diff_docs(ARTICLES_DIR.parent)[doc["law_id"]]
+    expected = set(articles.collect_changes(docs, doc["source"]["asof"]))
+    assert {p["article_num"] for p in doc["articles"]} == expected
+
+
+@pytest.mark.parametrize("path", shipped_articles(), ids=lambda p: p.stem)
+def test_a_link_describes_only_a_target_whose_own_summary_survived(path):
+    # The context line describes the TARGET article and was written when the
+    # note was. It may stand only on positive evidence that the target still
+    # reads that way: the target has a page AND that page passed the version
+    # gate. A target with no page was never checked at all, and "not checked"
+    # is not weaker than "checked and stale" -- it is the same claim with no
+    # evidence behind it.
+    doc = json.loads(path.read_text())
+    by_slug = {p["slug"]: p for p in doc["articles"]}
+    for page in doc["articles"]:
+        for ref in page["related_articles"]:
+            target = by_slug.get(ref["slug"]) if ref["slug"] else None
+            if target is None or target["current_summary"] is None:
+                assert ref["context"] == "", (page["article_num"], ref["ref"])

@@ -11,6 +11,7 @@ data/raw/
 data/diffs/
 data/timelines/
 data/proposers/
+data/articles/
 
 # Node
 frontend/node_modules/
@@ -32,3 +33,6 @@ frontend/out/
 
 # Agent tooling (local settings, per-machine memory)
 .claude/
+
+# SDD workspace (plan ledger, briefs, review packages)
+.superpowers/

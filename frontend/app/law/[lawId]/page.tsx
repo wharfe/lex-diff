@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getTimelineIds, getTimelineData, getOpenGikaiLinks } from "@/lib/data";
+import {
+  getTimelineIds,
+  getTimelineData,
+  getOpenGikaiLinks,
+  getArticleLawIds,
+  getArticleData,
+} from "@/lib/data";
 import { Timeline } from "@/components/timeline";
 import { Icon } from "@/components/icon";
 import { OpenGikaiLinks } from "@/components/opengikai-link";
@@ -8,6 +14,20 @@ import { getThemesForLaw } from "@/lib/life-themes";
 import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
 import { LawExplainerSection } from "@/components/law-explainer";
 import { lawSeo, assertLawSeoOverridesValid } from "@/lib/law-seo";
+
+/** The chapter an article sits in, with everything above it, as one key.
+ *
+ * section_path has no fixed depth. 民法 and 刑法 put 編 at [0] and 章 at [1];
+ * the other laws put 章 at [0] and 節 at [1]. Keying on [1] therefore files
+ * 道路交通法's 第18条 (第三章　車両及び路面電車の交通方法) and its 第125条
+ * (第九章　反則行為に関する処理手続の特例) under one 「第一節　通則」 -- measured.
+ * Find the 章 by its word rather than by position, and keep the path above it
+ * in the key so two chapters that share a name never merge.
+ */
+function chapterKey(sectionPath: string[]): string {
+  const i = sectionPath.findIndex((s) => /^第.+章/.test(s));
+  return i >= 0 ? sectionPath.slice(0, i + 1).join(" › ") : sectionPath[0] ?? "";
+}
 
 export function generateStaticParams() {
   const lawIds = getTimelineIds();
@@ -54,6 +74,10 @@ export default async function LawPage({
   const data = getTimelineData(lawId);
   const themes = getThemesForLaw(lawId);
   const gikaiLinks = getOpenGikaiLinks(lawId);
+  // 労働基準法 has 0 本則 changes and ships no articles/ file; calling
+  // getArticleData unconditionally would throw.
+  const hasArticles = getArticleLawIds().includes(lawId);
+  const articleData = hasArticles ? getArticleData(lawId) : null;
 
   return (
     <div className="flex flex-col gap-6">
@@ -167,6 +191,42 @@ export default async function LawPage({
 
       {data.explainer && (
         <LawExplainerSection lawTitle={data.law_title} explainer={data.explainer} />
+      )}
+
+      {articleData && (
+        <section>
+          <h2 className="mb-3 text-lg font-bold">改正された条文</h2>
+          {Object.entries(
+            articleData.articles.reduce<Record<string, typeof articleData.articles>>(
+              (acc, a) => {
+                (acc[chapterKey(a.section_path)] ||= []).push(a);
+                return acc;
+              },
+              {}
+            )
+          ).map(([section, items]) => (
+            <div key={section} className="mb-4">
+              {section && (
+                <h3 className="mb-2 text-[13px] opacity-70">
+                  {section.split(" › ").pop()}
+                </h3>
+              )}
+              <ul className="flex flex-wrap gap-x-4 gap-y-1">
+                {items.map((a) => (
+                  <li key={a.slug}>
+                    <Link
+                      href={`/law/${lawId}/article/${a.slug}`}
+                      className="text-[var(--diff-hunk-text)]"
+                    >
+                      {a.display_num}
+                      {a.caption && `（${a.caption}）`}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </section>
       )}
 
       <div className="flex flex-col lg:flex-row gap-6">

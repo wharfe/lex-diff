@@ -4,6 +4,8 @@ import {
   getDiffData,
   getTimelineIds,
   getTimelineData,
+  getArticleLawIds,
+  getArticleData,
 } from "@/lib/data";
 import { LIFE_THEMES } from "@/lib/life-themes";
 
@@ -68,5 +70,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly" as const,
       priority: 0.6,
     })),
+
+    // Article pages (from articles data files)
+    ...getArticleLawIds().flatMap((lawId) => {
+      const data = getArticleData(lawId);
+      return data.articles.map((a) => ({
+        url: `${BASE_URL}/law/${lawId}/article/${a.slug}`,
+        lastModified: data.source.asof,
+        priority: 0.7,
+      }));
+    }),
   ];
 }
