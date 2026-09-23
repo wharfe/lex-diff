@@ -127,6 +127,28 @@ that shape:
   known → prose stays within that, and `why`/`impact` are stripped).
 - Annotations are cached by a fingerprint of model + prompt version + prompt
   text. Changing a prompt means bumping `PROMPT_VERSION` in `annotate.py`.
+- `articles.py` reuses those annotations beside **today's** text, so it adds a
+  version-agreement gate on top (spec §4): the note ships only when today's body
+  equals the diff's `paragraphs_after` and names no abolished penalty. 36 of 163
+  pages ship with no explanation — that is the gate working. Three of its rules
+  exist because the same failure was shipped once each, and all three are the
+  same shape — **a lossy representation compared against itself, or a decision
+  keyed on the amendment's recorded `type` instead of on the text**:
+  - An article whose body is only 「削除」 is a tombstone however the amendment
+    was typed (e-Gov records some repeals as `modified`, replacing the body
+    *with* that word). `_DELETED_BODY` / `TOMBSTONE_STATUSES` hold that rule
+    once; never compare against the status literals directly.
+  - `diff.format_paragraph` collapses every table to `LOSSY_TABLE_MARKER`
+    (`[表]`), so a table-only amendment would compare equal. The gate fails
+    closed when either side carries the marker.
+  - Whether a history card describes the text *before* or *after* an amendment
+    is decided in Python from that change's own paragraphs (`summary_basis`),
+    never from `type`, and the penalty check runs against the side it names.
+    The frontend renders the field and falls back to 改正直前, the weaker claim.
+- A cross-reference links only when the label resolves to exactly one article:
+  a ref naming several (`MULTI_ARTICLE_CONNECTIVES`) stays plain text, and a
+  `context` sentence survives only when its target's own page kept its summary.
+  A missing link is fine; a wrong one is the failure this feature most fears.
 
 Hand-written copy is the blind spot of all of the above: `frontend/lib/law-seo.ts`
 supplies a page's `<title>` tail and meta description, and no validator sees it.
