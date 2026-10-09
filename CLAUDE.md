@@ -19,7 +19,7 @@ Related project: [open-gikai](../open-gikai/) — parliamentary proceeding viewe
 # Python pipeline
 uv run python scripts/fetch.py <law_id> <date_before> <date_after>
 uv run python scripts/diff.py <law_id> <date_before> <date_after>
-uv run python scripts/timeline.py <law_id>     # Amendment history for /law/<law_id>
+uv run python scripts/timeline.py <law_id>     # Amendment history (keeps later-added fields; links only shipped diffs)
 uv run python scripts/explainer.py <law_id>    # Plain-language "recent amendments" section
 uv run python scripts/law_summary.py <law_id>  # /law overview — fetches today's text itself
 uv run python scripts/articles.py --all        # Per-article pages — fetches today's text itself
@@ -145,6 +145,24 @@ that shape:
     is decided in Python from that change's own paragraphs (`summary_basis`),
     never from `type`, and the penalty check runs against the side it names.
     The frontend renders the field and falls back to 改正直前, the weaker claim.
+  - An article removed outright (a branch number cut with no 削除 body and no
+    range left behind — 建築基準法 第七十七条の五十九の二) gets no page and is
+    listed in `removed_articles`. Only when the latest diff says deleted AND no
+    node or range sits at that number; anything else unfound still stops the run.
+- **A diff names its own amendment, and every consumer reads it from the diff.**
+  Several laws can take effect on one day (刑法 2025-06-01: the 拘禁刑 merger
+  plus a 刑事訴訟法 amendment), and one diff cannot tell their changes apart.
+  `diff.py` writes every one of them (`amendment_law_titles`, one per revision,
+  not per title), the pr_summary and explainer prompts forbid attributing a
+  change to one law, and such a diff carries no proposer (`enrich.diff_proposer`
+  counts same-day timeline entries). Patching consumers one at a time leaked
+  twice in review before this was made the rule.
+- **Tables are invisible to `diff.py`** (条文中の表 collapse to `[表]`, 別表 are
+  never read). A pair whose tables changed is withheld (`tables_changed`, exit 3)
+  rather than published as if complete — #28 tracks diffing them.
+- A diff's proposer is copied from its timeline entry (searched by promulgation
+  year); searching NDL by the diff's enforcement year found another year's bill
+  for titles that pass every year.
 - A cross-reference links only when the label resolves to exactly one article:
   a ref naming several (`MULTI_ARTICLE_CONNECTIVES`) stays plain text, and a
   `context` sentence survives only when its target's own page kept its summary.
