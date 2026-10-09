@@ -43,6 +43,59 @@ def test_shipped_timeline_files_are_present():
     assert len(shipped_timelines()) >= 12
 
 
+def test_every_timeline_link_points_at_a_shipped_diff():
+    # The site is a static export, so a diff_id with no file is a 404 that
+    # the build never reports (#23).
+    shipped = {p.stem for p in shipped_diffs()}
+    for path in shipped_timelines():
+        for entry in json.loads(path.read_text())["timeline"]:
+            if entry.get("diff_id"):
+                assert entry["diff_id"] in shipped, (path.name, entry["diff_id"])
+
+
+def test_a_diffs_proposer_is_its_timeline_entrys():
+    # enrich.py copies it by revision id instead of searching NDL by year,
+    # and gives a diff that carries several same-day laws none at all.
+    from enrich import diff_proposer
+
+    timelines = {p.stem: json.loads(p.read_text()) for p in shipped_timelines()}
+    for path in shipped_diffs():
+        data = json.loads(path.read_text())
+        assert data.get("proposer") == diff_proposer(
+            data, timelines[data["law_id"]]
+        ), path.name
+
+
+# Published before same-day laws were named, and withheld from regeneration
+# because a table changed in it (#28). Kept as it was by decision on #23.
+KNOWN_SINGLE_TITLE_SAME_DAY = {"415AC0000000057_2025-03-31_2025-04-01"}
+
+
+def test_a_diff_names_every_law_enforced_that_day():
+    # Checked against the timeline, not against the diff's own field: a diff
+    # whose re-annotation failed keeps its old single title, and every test
+    # that reads only the diff would pass over it (#23 Gate 2 r3).
+    timelines = {p.stem: json.loads(p.read_text()) for p in shipped_timelines()}
+    for path in shipped_diffs():
+        if path.stem in KNOWN_SINGLE_TITLE_SAME_DAY:
+            continue
+        data = json.loads(path.read_text())
+        expected = {
+            e["amendment_law_title"]
+            for e in timelines[data["law_id"]]["timeline"]
+            if e["enforcement_date"] == data["date_after"]
+        }
+        after = data["revision_after"]
+        named = set(after.get("amendment_law_titles") or [after["amendment_law_title"]])
+        assert named == expected, path.name
+
+
+def test_the_known_exceptions_are_still_needed():
+    # Once #28 regenerates it, the exception must go rather than linger.
+    for stem in KNOWN_SINGLE_TITLE_SAME_DAY:
+        assert (SHIPPED / f"{stem}.json").exists(), stem
+
+
 @pytest.mark.parametrize("path", shipped_diffs(), ids=lambda p: p.name)
 def test_shipped_stats_match_compute_stats(path):
     data = json.loads(path.read_text())
@@ -186,8 +239,13 @@ def test_shipped_articles_match_the_shipped_diffs(path):
 
     doc = json.loads(path.read_text())
     docs = articles.shipped_diff_docs(ARTICLES_DIR.parent)[doc["law_id"]]
-    expected = set(articles.collect_changes(docs, doc["source"]["asof"]))
-    assert {p["article_num"] for p in doc["articles"]} == expected
+    changes = articles.collect_changes(docs, doc["source"]["asof"])
+    removed = set(doc.get("removed_articles", []))
+    # An article may be missing only as one removed outright, which the latest
+    # diff must itself call deleted (articles.resolve_current).
+    for num in removed:
+        assert changes[num][0]["type"] == "deleted", num
+    assert {p["article_num"] for p in doc["articles"]} == set(changes) - removed
 
 
 @pytest.mark.parametrize("path", shipped_articles(), ids=lambda p: p.stem)

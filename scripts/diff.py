@@ -378,6 +378,53 @@ def compute_stats(diffs: list[dict]) -> dict:
     }
 
 
+# Exit status when a table changed: the diff is withheld, not failed.
+TABLES_CHANGED_EXIT = 3
+
+
+def tables_changed(before_tree: dict, after_tree: dict) -> bool:
+    """Whether any table differs between the two texts, by its text alone.
+
+    format_paragraph collapses every table to LOSSY_TABLE_MARKER and
+    find_articles never reads 別表 (Appdx*), so a table change is invisible to
+    compute_diff: a table-only amendment would look like no change, and a diff
+    beside one would claim to be complete. Until tables are diffed, such a
+    revision is not published at all (#28). Attributes are ignored: e-Gov
+    drops AppdxTable Num="1" between snapshots with no change in content.
+    """
+    def tables(tree):
+        return [(n.get("tag"), extract_text(n)) for n in _outermost_tables(tree)]
+    return tables(before_tree) != tables(after_tree)
+
+
+def _outermost_tables(node) -> list[dict]:
+    if not isinstance(node, dict):
+        return []
+    tag = str(node.get("tag", ""))
+    if tag in ("TableStruct", "Table") or "Appdx" in tag:
+        return [node]
+    found = []
+    for child in node.get("children", []):
+        found.extend(_outermost_tables(child))
+    return found
+
+
+def amendment_titles_on(revisions: list[dict], date: str, own_title: str) -> list[str]:
+    """Every amending law that takes effect on `date`, the snapshot's own first.
+
+    The asof snapshot names one amendment, but e-Gov can enforce several on the
+    same day (刑法 2025-06-01: the 拘禁刑 merger and a 刑事訴訟法 amendment),
+    and a diff between the day before and that day carries all their changes
+    with no way to tell them apart. Naming only one would credit it with all.
+    """
+    titles = [own_title] if own_title else []
+    for rev in revisions:
+        title = rev.get("amendment_law_title")
+        if rev.get("amendment_enforcement_date") == date and title and title not in titles:
+            titles.append(title)
+    return titles
+
+
 def main():
     if len(sys.argv) < 4:
         print(__doc__)
@@ -421,6 +468,30 @@ def main():
         print(f"Error: {law_id} {date_before}->{date_after}: {e}")
         sys.exit(1)
     print(f"Changed articles: {len(diffs)}")
+    out_path = DIFF_DIR / f"{law_id}_{date_before}_{date_after}.json"
+    # A stale file from an earlier run must not survive either refusal below.
+    # Only data/diffs is touched: unpublishing a shipped page is a human call.
+    if tables_changed(before_data["law_full_text"], after_data["law_full_text"]):
+        out_path.unlink(missing_ok=True)
+        print("TABLES CHANGED — diff withheld until tables are diffed.")
+        sys.exit(TABLES_CHANGED_EXIT)
+    if not diffs:
+        # Nothing to show or to ground a summary in: no diff page, and the
+        # timeline leaves the revision unlinked.
+        out_path.unlink(missing_ok=True)
+        print("No article changes — no diff written.")
+        return
+
+    # fetch.py writes this in the same run as the snapshots.
+    rev_path = RAW_DIR / f"{law_id}_revisions.json"
+    if not rev_path.exists():
+        print(f"Error: {rev_path} missing. Run fetch.py first.")
+        sys.exit(1)
+    titles = amendment_titles_on(
+        json.loads(rev_path.read_text()).get("revisions", []),
+        date_after,
+        after_revision.get("amendment_law_title") or "",
+    )
 
     # Add section paths
     for d in diffs:
@@ -447,15 +518,18 @@ def main():
         },
         "revision_after": {
             "law_revision_id": after_revision.get("law_revision_id"),
-            "amendment_law_title": after_revision.get("amendment_law_title"),
+            # Every display reads this one field, so a same-day diff names
+            # all its laws here; amendment_law_titles keeps them separate.
+            "amendment_law_title": "／".join(titles) or after_revision.get("amendment_law_title"),
             "amendment_enforcement_date": after_revision.get("amendment_enforcement_date"),
         },
         "stats": stats,
         "diffs": diffs,
     }
+    if len(titles) > 1:
+        output["revision_after"]["amendment_law_titles"] = titles
 
     DIFF_DIR.mkdir(parents=True, exist_ok=True)
-    out_path = DIFF_DIR / f"{law_id}_{date_before}_{date_after}.json"
     out_path.write_text(json.dumps(output, ensure_ascii=False, indent=2))
     print(f"\nOutput: {out_path}")
     print(

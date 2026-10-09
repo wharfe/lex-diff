@@ -43,6 +43,40 @@ def fetch_law_title(law_id: str) -> str:
     return data["revision_info"]["law_title"]
 
 
+# Written into the timeline after it is built: law_summary.py (summary,
+# category, contributors), explainer.py (explainer) and enrich.py (each
+# entry's proposer). A rebuild from the revisions alone would drop them all.
+CARRIED_TOP_LEVEL = ("summary", "category", "contributors", "explainer")
+CARRIED_ENTRY = ("proposer",)
+
+
+def carry_over(output: dict, previous: dict | None) -> dict:
+    """Copy the later-added fields of the previous timeline into a rebuilt one.
+
+    Entries are matched by law_revision_id, not by date: several revisions
+    can share an enforcement date. Everything the rebuild computes itself
+    (diff_id above all) is left as the rebuild decided it.
+    """
+    if not previous:
+        return output
+    for key in CARRIED_TOP_LEVEL:
+        if key in previous:
+            output[key] = previous[key]
+    old_entries = {
+        e["law_revision_id"]: e
+        for e in previous.get("timeline", [])
+        if e.get("law_revision_id")
+    }
+    for entry in output["timeline"]:
+        old = old_entries.get(entry.get("law_revision_id"))
+        if not old:
+            continue
+        for key in CARRIED_ENTRY:
+            if key in old:
+                entry[key] = old[key]
+    return output
+
+
 def build_timeline(law_id: str) -> dict:
     """Build timeline data from revision history."""
     data = fetch_revisions(law_id)
@@ -55,13 +89,13 @@ def build_timeline(law_id: str) -> dict:
     # Get law title from the first revision
     law_title = revisions[0]["law_title"] if revisions else ""
 
-    # Check which diffs we already have
-    diff_dir = DATA_DIR / "diffs"
-    existing_diffs = set()
-    if diff_dir.exists():
-        for f in diff_dir.iterdir():
-            if f.suffix == ".json" and law_id in f.name:
-                existing_diffs.add(f.stem)
+    # Link only diffs that ship. data/diffs also holds diffs annotate.py
+    # refused to publish, and a link to one is a 404 the static build does not
+    # catch (#23).
+    diff_dir = Path(__file__).parent.parent / "frontend" / "public" / "data"
+    existing_diffs = {
+        f.stem for f in diff_dir.glob(f"{law_id}_*_*.json")
+    }
 
     timeline_entries = []
     for i, rev in enumerate(revisions):
@@ -105,10 +139,20 @@ def build_timeline(law_id: str) -> dict:
     out_dir = DATA_DIR / "timelines"
     out_dir.mkdir(parents=True, exist_ok=True)
     out_path = out_dir / f"{law_id}.json"
+    frontend_dir = Path(__file__).parent.parent / "frontend" / "public" / "data" / "timelines"
+
+    # The shipped copy is what readers see, so it is the one to carry from;
+    # data/ is gitignored and may not exist on this machine.
+    previous = None
+    for prev_path in (frontend_dir / f"{law_id}.json", out_path):
+        if prev_path.exists():
+            previous = json.loads(prev_path.read_text())
+            break
+    output = carry_over(output, previous)
+
     out_path.write_text(json.dumps(output, ensure_ascii=False, indent=2))
 
     # Also copy to frontend
-    frontend_dir = Path(__file__).parent.parent / "frontend" / "public" / "data" / "timelines"
     frontend_dir.mkdir(parents=True, exist_ok=True)
     (frontend_dir / f"{law_id}.json").write_text(
         json.dumps(output, ensure_ascii=False, indent=2)
