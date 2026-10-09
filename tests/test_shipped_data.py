@@ -92,8 +92,12 @@ def test_a_diff_names_every_law_enforced_that_day():
 
 def test_the_known_exceptions_are_still_needed():
     # Once #28 regenerates it, the exception must go rather than linger.
+    # Existing is not enough: #28 regenerates it under the same name.
     for stem in KNOWN_SINGLE_TITLE_SAME_DAY:
-        assert (SHIPPED / f"{stem}.json").exists(), stem
+        path = SHIPPED / f"{stem}.json"
+        assert path.exists(), stem
+        after = json.loads(path.read_text())["revision_after"]
+        assert "amendment_law_titles" not in after, f"{stem}: drop the exception"
 
 
 @pytest.mark.parametrize("path", shipped_diffs(), ids=lambda p: p.name)

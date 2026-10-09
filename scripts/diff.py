@@ -17,6 +17,7 @@ from lawtext import extract_text, walk_tags
 DATA_DIR = Path(__file__).parent.parent / "data"
 RAW_DIR = DATA_DIR / "raw"
 DIFF_DIR = DATA_DIR / "diffs"
+SHIPPED_DIR = Path(__file__).parent.parent / "frontend" / "public" / "data"
 
 
 # The 附則 a law was enacted with carries no AmendLawNum; every later block has
@@ -390,11 +391,19 @@ def tables_changed(before_tree: dict, after_tree: dict) -> bool:
     compute_diff: a table-only amendment would look like no change, and a diff
     beside one would claim to be complete. Until tables are diffed, such a
     revision is not published at all (#28). Attributes are ignored: e-Gov
-    drops AppdxTable Num="1" between snapshots with no change in content.
+    drops AppdxTable Num="1" between snapshots with no change in content. The
+    row and cell structure is kept: joining the text alone reads
+    ["A", "BC"] -> ["AB", "C"] as no change.
     """
     def tables(tree):
-        return [(n.get("tag"), extract_text(n)) for n in _outermost_tables(tree)]
+        return [_without_attrs(n) for n in _outermost_tables(tree)]
     return tables(before_tree) != tables(after_tree)
+
+
+def _without_attrs(node):
+    if not isinstance(node, dict):
+        return node
+    return [node.get("tag"), [_without_attrs(c) for c in node.get("children", [])]]
 
 
 def _outermost_tables(node) -> list[dict]:
@@ -409,19 +418,34 @@ def _outermost_tables(node) -> list[dict]:
     return found
 
 
-def amendment_titles_on(revisions: list[dict], date: str, own_title: str) -> list[str]:
+def amendment_titles_on(
+    revisions: list[dict], date: str, own_title: str, own_revision_id: str | None = None
+) -> list[str]:
     """Every amending law that takes effect on `date`, the snapshot's own first.
 
     The asof snapshot names one amendment, but e-Gov can enforce several on the
     same day (刑法 2025-06-01: the 拘禁刑 merger and a 刑事訴訟法 amendment),
     and a diff between the day before and that day carries all their changes
     with no way to tell them apart. Naming only one would credit it with all.
+
+    One entry per revision, not per title: two different laws can share a
+    title on the same day (著作権法 2020-04-28), so a repeated title is kept.
     """
     titles = [own_title] if own_title else []
+    own_seen = False
     for rev in revisions:
         title = rev.get("amendment_law_title")
-        if rev.get("amendment_enforcement_date") == date and title and title not in titles:
-            titles.append(title)
+        if rev.get("amendment_enforcement_date") != date or not title:
+            continue
+        is_own = (
+            rev.get("law_revision_id") == own_revision_id
+            if own_revision_id
+            else title == own_title and not own_seen
+        )
+        if is_own and not own_seen:
+            own_seen = True
+            continue
+        titles.append(title)
     return titles
 
 
@@ -479,6 +503,12 @@ def main():
         # Nothing to show or to ground a summary in: no diff page, and the
         # timeline leaves the revision unlinked.
         out_path.unlink(missing_ok=True)
+        shipped = SHIPPED_DIR / out_path.name
+        if shipped.exists():
+            # A published page for a pair that now has no changes would go on
+            # showing changes that do not exist; removing it is a human call.
+            print(f"Error: {shipped} is published but this pair now has no changes.")
+            sys.exit(1)
         print("No article changes — no diff written.")
         return
 
@@ -491,6 +521,7 @@ def main():
         json.loads(rev_path.read_text()).get("revisions", []),
         date_after,
         after_revision.get("amendment_law_title") or "",
+        after_revision.get("law_revision_id"),
     )
 
     # Add section paths
@@ -520,7 +551,7 @@ def main():
             "law_revision_id": after_revision.get("law_revision_id"),
             # Every display reads this one field, so a same-day diff names
             # all its laws here; amendment_law_titles keeps them separate.
-            "amendment_law_title": "／".join(titles) or after_revision.get("amendment_law_title"),
+            "amendment_law_title": "／".join(dict.fromkeys(titles)) or after_revision.get("amendment_law_title"),
             "amendment_enforcement_date": after_revision.get("amendment_enforcement_date"),
         },
         "stats": stats,

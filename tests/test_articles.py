@@ -242,6 +242,16 @@ def test_an_article_removed_outright_is_reported_not_raised():
     assert articles.resolve_current(index, "77_59_2", "deleted") == {"status": "removed"}
 
 
+def test_a_branch_article_inside_a_range_is_not_called_removed():
+    # Gate 3: range_members("77:78") lists only 77 and 78, yet the range sits
+    # where 第七十七条の二 would. Not knowing is a stop, not a silent drop.
+    index = articles.index_current_articles(
+        _tree(_article("77:78", "第七十七条及び第七十八条", text="削除"))
+    )
+    with pytest.raises(LookupError):
+        articles.resolve_current(index, "77_2", "deleted")
+
+
 def test_a_removed_article_gets_no_page_and_is_listed():
     entries = [_entry("306"), _entry("307", "deleted")]
     doc = _build(entries, _tree(_article("306", "第三百六条")))

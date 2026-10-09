@@ -172,12 +172,15 @@ def load_diff(diff_id: str) -> dict | None:
     return None
 
 
-def apply_diff(change: dict, diff: dict | None) -> dict:
+def apply_diff(change: dict, diff: dict | None, same_day_titles: list[str] | None = None) -> dict:
     """Ground a selected change in its diff, and name it as the diff does.
 
     The timeline entry that survived select_changes names one law, but a diff
     can carry several laws enforced on the same day (刑法 2025-06-01). The
-    diff's own title names all of them, so it is the one to show (#23).
+    diff's own title names all of them, so it is the one to show (#23). A diff
+    published before titles were collected names one law however many took
+    effect that day, so the timeline's count of that date (same_day_titles)
+    decides too.
     """
     pr_summary = (diff or {}).get("pr_summary")
     if not pr_summary:
@@ -186,8 +189,14 @@ def apply_diff(change: dict, diff: dict | None) -> dict:
         return change
     change["pr_summary"] = pr_summary
     after = diff.get("revision_after", {})
-    change["source_title"] = after.get("amendment_law_title") or change["source_title"]
-    change["multi_law"] = len(after.get("amendment_law_titles") or []) > 1
+    titles = after.get("amendment_law_titles") or []
+    if len(titles) < 2 and len(same_day_titles or []) > 1:
+        titles = list(same_day_titles)
+    change["multi_law"] = len(titles) > 1
+    change["source_title"] = (
+        "／".join(titles) if change["multi_law"]
+        else after.get("amendment_law_title") or change["source_title"]
+    )
     return change
 
 
@@ -276,7 +285,12 @@ def main():
         sys.exit(1)
     for c in changes:
         if c["grounded"] and c["diff_id"]:
-            apply_diff(c, load_diff(c["diff_id"]))
+            same_day = [
+                e["amendment_law_title"] for e in timeline["timeline"]
+                if e.get("enforcement_date") == c["enforcement_date"]
+                and e.get("amendment_law_title")
+            ]
+            apply_diff(c, load_diff(c["diff_id"]), same_day)
 
     print(f"Generating explainer for {timeline['law_title']} ({len(changes)} changes)...")
     raw = generate_explainer(

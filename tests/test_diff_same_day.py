@@ -3,6 +3,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
+import pytest
+
 import annotate
 from diff import amendment_titles_on
 from enrich import proposer_from_timeline
@@ -26,6 +28,17 @@ def test_every_law_taking_effect_that_day_is_named():
     ]
     titles = amendment_titles_on(revisions, "2025-06-01", "刑法等の一部を改正する法律")
     assert titles == ["刑法等の一部を改正する法律", "刑事訴訟法等の一部を改正する法律"]
+
+
+def test_two_laws_sharing_a_title_are_still_two():
+    # Gate 3: 著作権法 2020-04-28 has two 「著作権法の一部を改正する法律」.
+    # Deduping by title would make the day look like one law.
+    revisions = [
+        _rev("2020-04-28", "著作権法の一部を改正する法律", "own"),
+        _rev("2020-04-28", "著作権法の一部を改正する法律", "other"),
+    ]
+    titles = amendment_titles_on(revisions, "2020-04-28", "著作権法の一部を改正する法律", "own")
+    assert len(titles) == 2
 
 
 def test_a_single_law_that_day_is_just_its_own_title():
@@ -169,3 +182,101 @@ def test_a_changed_appendix_table_is_detected():
 def test_an_attribute_only_difference_is_not_a_change():
     # 労働基準法 2024-05-31: AppdxTable Num="1" vanished, content identical.
     assert tables_changed(_law("同", num="1"), _law("同", num=None)) is False
+
+
+def _cells(*texts):
+    return {"tag": "TableStruct", "children": [{"tag": "Table", "children": [
+        {"tag": "TableRow", "children": [
+            {"tag": "TableColumn", "children": [t]} for t in texts]}]}]}
+
+
+def test_moving_a_cell_boundary_is_a_change():
+    # codex Gate 3: ["A", "BC"] -> ["AB", "C"] joins to the same string.
+    assert tables_changed(_cells("A", "BC"), _cells("AB", "C")) is True
+
+
+def test_a_same_day_diff_published_with_one_title_is_still_multi_law():
+    # 415AC 2025-04-01 was published before titles were collected and names
+    # one law; the timeline knows the date carried two (codex Gate 3).
+    old = {"pr_summary": {"title": "t"},
+           "revision_after": {"amendment_law_title": "A法"}}
+    c = apply_diff(_change(), old, same_day_titles=["A法", "B法"])
+    assert c["multi_law"] is True
+    assert c["source_title"] == "A法／B法"
+
+
+# --- diff.main wiring, run against temporary directories ---
+
+import json as _json
+
+import diff as diff_mod
+
+
+def _snapshot(title, table, article_text):
+    return {
+        "revision_info": {"law_title": "テスト法", "law_revision_id": f"r-{title}",
+                          "amendment_law_title": title,
+                          "amendment_enforcement_date": "2026-04-01"},
+        "law_full_text": {"tag": "Law", "children": [{"tag": "LawBody", "children": [
+            {"tag": "MainProvision", "children": [
+                {"tag": "Article", "attr": {"Num": "1"}, "children": [
+                    {"tag": "ArticleTitle", "children": ["第一条"]},
+                    {"tag": "Paragraph", "attr": {"Num": "1"}, "children": [
+                        {"tag": "ParagraphSentence", "children": [
+                            {"tag": "Sentence", "children": [article_text]}]}]},
+                ]},
+            ]},
+            {"tag": "AppdxTable", "children": [table]},
+        ]}]},
+    }
+
+
+def _run_diff(tmp_path, monkeypatch, before, after, revisions):
+    raw, out, shipped = tmp_path / "raw", tmp_path / "diffs", tmp_path / "shipped"
+    for d in (raw, out, shipped):
+        d.mkdir(exist_ok=True)
+    (raw / "L_2026-03-31.json").write_text(_json.dumps(before, ensure_ascii=False))
+    (raw / "L_2026-04-01.json").write_text(_json.dumps(after, ensure_ascii=False))
+    (raw / "L_revisions.json").write_text(_json.dumps({"revisions": revisions}, ensure_ascii=False))
+    monkeypatch.setattr(diff_mod, "RAW_DIR", raw)
+    monkeypatch.setattr(diff_mod, "DIFF_DIR", out)
+    monkeypatch.setattr(diff_mod, "SHIPPED_DIR", shipped)
+    monkeypatch.setattr(sys, "argv", ["diff.py", "L", "2026-03-31", "2026-04-01"])
+    return out / "L_2026-03-31_2026-04-01.json", shipped / "L_2026-03-31_2026-04-01.json"
+
+
+def test_main_withholds_a_pair_whose_table_changed(tmp_path, monkeypatch):
+    out, _ = _run_diff(tmp_path, monkeypatch,
+                       _snapshot("A法", "旧", "旧"), _snapshot("A法", "新", "新"), [])
+    out.write_text("stale")
+    with pytest.raises(SystemExit) as e:
+        diff_mod.main()
+    assert e.value.code == diff_mod.TABLES_CHANGED_EXIT
+    assert not out.exists()
+
+
+def test_main_names_every_law_of_the_day(tmp_path, monkeypatch):
+    out, _ = _run_diff(
+        tmp_path, monkeypatch,
+        _snapshot("A法", "同", "旧"), _snapshot("A法", "同", "新"),
+        [{"amendment_enforcement_date": "2026-04-01", "amendment_law_title": "B法",
+          "law_revision_id": "r-B法"},
+         {"amendment_enforcement_date": "2026-04-01", "amendment_law_title": "A法",
+          "law_revision_id": "r-A法"}],
+    )
+    diff_mod.main()
+    after = _json.loads(out.read_text())["revision_after"]
+    assert after["amendment_law_titles"] == ["A法", "B法"]
+    assert after["amendment_law_title"] == "A法／B法"
+
+
+def test_main_refuses_when_a_shipped_diff_now_has_no_changes(tmp_path, monkeypatch):
+    # Deleting a published page is a human call, and leaving it linked would
+    # show changes that no longer exist: stop and say so (codex Gate 3).
+    out, shipped = _run_diff(tmp_path, monkeypatch,
+                             _snapshot("A法", "同", "同"), _snapshot("A法", "同", "同"), [])
+    shipped.write_text("{}")
+    with pytest.raises(SystemExit) as e:
+        diff_mod.main()
+    assert e.value.code == 1
+    assert shipped.exists()

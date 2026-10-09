@@ -256,11 +256,18 @@ def resolve_current(index: dict, article_num: str, latest_type: str) -> dict:
         }
 
     if latest_type == "deleted":
-        spanned = False
+        # "Spanned" is by the number's position, not by membership: the
+        # members of 77:78 are 77 and 78, yet 77_2 sits inside it.
+        base = int(article_num.split("_")[0]) if article_num.split("_")[0].isdigit() else None
+        spanned = base is None
         for key, candidate in index.items():
-            if not is_range_num(key) or article_num not in range_members(key):
+            if not is_range_num(key):
                 continue
-            spanned = True
+            members = range_members(key)
+            if base is not None and int(members[0]) <= base <= int(members[-1]):
+                spanned = True
+            if article_num not in members:
+                continue
             body = extract_article_body(candidate)
             if not _body_is_only_deleted(body):
                 # A range node whose body is anything but 削除 is a drafting

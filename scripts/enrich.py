@@ -63,7 +63,7 @@ def diff_proposer(diff: dict, timeline: dict) -> dict | None:
     One minister beside a diff that carries several same-day laws would credit
     the whole diff to one of them (#23). Counted from the timeline rather than
     the diff's own titles: a diff published before titles were collected
-    (415AC 2025-04-01, held back by #28) names one law but carries three.
+    (415AC 2025-04-01, held back by #28) names one law but carries two.
     """
     same_day = [
         e for e in timeline.get("timeline", [])
@@ -90,6 +90,16 @@ def enrich_diff_files():
             data["proposer"] = proposer
         print(f"  {f.name}: {'set' if proposer else 'cleared'}")
         f.write_text(json.dumps(data, ensure_ascii=False, indent=2))
+        # annotate.py rebuilds the shipped file from data/diffs, so the
+        # proposer must be there too or a re-annotation drops it.
+        for local in (DATA_DIR / "diffs" / f.name,):
+            if local.exists():
+                local_data = json.loads(local.read_text())
+                if proposer is None:
+                    local_data.pop("proposer", None)
+                else:
+                    local_data["proposer"] = proposer
+                local.write_text(json.dumps(local_data, ensure_ascii=False, indent=2))
 
 
 def enrich_timeline_files():
