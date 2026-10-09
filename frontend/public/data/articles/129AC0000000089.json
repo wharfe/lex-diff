@@ -2,8 +2,8 @@
   "law_id": "129AC0000000089",
   "law_title": "民法",
   "source": {
-    "asof": "2026-09-22",
-    "fetched_at": "2026-09-22T23:11:59+09:00",
+    "asof": "2026-10-09",
+    "fetched_at": "2026-10-09T14:55:19+09:00",
     "law_revision_id": "129AC0000000089_20260624_508AC0000000045",
     "amendment_enforcement_date": "2026-06-24"
   },
@@ -3586,5 +3586,6 @@
         }
       ]
     }
-  ]
+  ],
+  "removed_articles": []
 }
