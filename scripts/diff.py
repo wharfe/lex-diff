@@ -517,8 +517,15 @@ def main():
     if not rev_path.exists():
         print(f"Error: {rev_path} missing. Run fetch.py first.")
         sys.exit(1)
+    revisions = json.loads(rev_path.read_text()).get("revisions", [])
+    own_id = after_revision.get("law_revision_id")
+    if not own_id or not any(r.get("law_revision_id") == own_id for r in revisions):
+        # Without this revision in the list we cannot tell whether other laws
+        # took effect the same day, and "cannot tell" must not read as "one".
+        print(f"Error: {rev_path} does not list revision {own_id!r}. Re-run fetch.py.")
+        sys.exit(1)
     titles = amendment_titles_on(
-        json.loads(rev_path.read_text()).get("revisions", []),
+        revisions,
         date_after,
         after_revision.get("amendment_law_title") or "",
         after_revision.get("law_revision_id"),
@@ -551,7 +558,7 @@ def main():
             "law_revision_id": after_revision.get("law_revision_id"),
             # Every display reads this one field, so a same-day diff names
             # all its laws here; amendment_law_titles keeps them separate.
-            "amendment_law_title": "／".join(dict.fromkeys(titles)) or after_revision.get("amendment_law_title"),
+            "amendment_law_title": "／".join(titles) or after_revision.get("amendment_law_title"),
             "amendment_enforcement_date": after_revision.get("amendment_enforcement_date"),
         },
         "stats": stats,

@@ -82,24 +82,24 @@ def enrich_diff_files():
         if not timeline_path.exists():
             continue
         proposer = diff_proposer(data, json.loads(timeline_path.read_text()))
-        if proposer == data.get("proposer"):
-            continue
-        if proposer is None:
-            data.pop("proposer", None)
-        else:
-            data["proposer"] = proposer
-        print(f"  {f.name}: {'set' if proposer else 'cleared'}")
-        f.write_text(json.dumps(data, ensure_ascii=False, indent=2))
-        # annotate.py rebuilds the shipped file from data/diffs, so the
-        # proposer must be there too or a re-annotation drops it.
-        for local in (DATA_DIR / "diffs" / f.name,):
-            if local.exists():
-                local_data = json.loads(local.read_text())
-                if proposer is None:
-                    local_data.pop("proposer", None)
-                else:
-                    local_data["proposer"] = proposer
-                local.write_text(json.dumps(local_data, ensure_ascii=False, indent=2))
+        # annotate.py rebuilds the shipped file from data/diffs, so the local
+        # copy is synced too -- each on its own, since either may be the stale one.
+        for path in (f, DATA_DIR / "diffs" / f.name):
+            if path.exists() and _set_proposer(path, proposer):
+                print(f"  {path}: {'set' if proposer else 'cleared'}")
+
+
+def _set_proposer(path: Path, proposer: dict | None) -> bool:
+    """Write proposer into the diff at path; True if the file changed."""
+    data = json.loads(path.read_text())
+    if data.get("proposer") == proposer:
+        return False
+    if proposer is None:
+        data.pop("proposer", None)
+    else:
+        data["proposer"] = proposer
+    path.write_text(json.dumps(data, ensure_ascii=False, indent=2))
+    return True
 
 
 def enrich_timeline_files():

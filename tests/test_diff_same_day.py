@@ -280,3 +280,50 @@ def test_main_refuses_when_a_shipped_diff_now_has_no_changes(tmp_path, monkeypat
         diff_mod.main()
     assert e.value.code == 1
     assert shipped.exists()
+
+
+def test_main_stops_when_the_revisions_do_not_list_this_revision(tmp_path, monkeypatch):
+    # codex Gate 3 r2: no entry for the snapshot's own revision means we cannot
+    # tell whether other laws took effect that day; that is not "one law".
+    _run_diff(tmp_path, monkeypatch,
+              _snapshot("A法", "同", "旧"), _snapshot("A法", "同", "新"), [])
+    with pytest.raises(SystemExit) as e:
+        diff_mod.main()
+    assert e.value.code == 1
+
+
+def test_two_same_titled_laws_stay_two_in_the_shown_title(tmp_path, monkeypatch):
+    out, _ = _run_diff(
+        tmp_path, monkeypatch,
+        _snapshot("A法", "同", "旧"), _snapshot("A法", "同", "新"),
+        [{"amendment_enforcement_date": "2026-04-01", "amendment_law_title": "A法",
+          "law_revision_id": "r-A法"},
+         {"amendment_enforcement_date": "2026-04-01", "amendment_law_title": "A法",
+          "law_revision_id": "r-other"}],
+    )
+    diff_mod.main()
+    assert _json.loads(out.read_text())["revision_after"]["amendment_law_title"] == "A法／A法"
+
+
+import enrich as enrich_mod
+
+
+def test_enrich_syncs_the_local_copy_even_when_the_shipped_one_is_right(tmp_path, monkeypatch):
+    # codex Gate 3 r2: the shipped copy already matched, so the loop skipped
+    # before reaching data/diffs, and annotate.py then rebuilt the shipped
+    # file from a local copy with no proposer.
+    shipped, data = tmp_path / "shipped", tmp_path / "data"
+    (shipped / "timelines").mkdir(parents=True)
+    (data / "diffs").mkdir(parents=True)
+    name = "L_2026-03-31_2026-04-01.json"
+    prop = {"submission_type": "閣法"}
+    diff = {"law_id": "L", "date_after": "2026-04-01",
+            "revision_after": {"law_revision_id": "r"}}
+    (shipped / name).write_text(_json.dumps({**diff, "proposer": prop}))
+    (data / "diffs" / name).write_text(_json.dumps(diff))
+    (shipped / "timelines" / "L.json").write_text(_json.dumps({"timeline": [
+        {"law_revision_id": "r", "enforcement_date": "2026-04-01", "proposer": prop}]}))
+    monkeypatch.setattr(enrich_mod, "FRONTEND_DIR", shipped)
+    monkeypatch.setattr(enrich_mod, "DATA_DIR", data)
+    enrich_mod.enrich_diff_files()
+    assert _json.loads((data / "diffs" / name).read_text())["proposer"] == prop

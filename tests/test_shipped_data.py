@@ -80,13 +80,15 @@ def test_a_diff_names_every_law_enforced_that_day():
         if path.stem in KNOWN_SINGLE_TITLE_SAME_DAY:
             continue
         data = json.loads(path.read_text())
-        expected = {
+        # Compared as sorted lists, not sets: two different laws can share a
+        # title on one day, and a set would let one stale title pass for both.
+        expected = sorted(
             e["amendment_law_title"]
             for e in timelines[data["law_id"]]["timeline"]
             if e["enforcement_date"] == data["date_after"]
-        }
+        )
         after = data["revision_after"]
-        named = set(after.get("amendment_law_titles") or [after["amendment_law_title"]])
+        named = sorted(after.get("amendment_law_titles") or [after["amendment_law_title"]])
         assert named == expected, path.name
 
 
