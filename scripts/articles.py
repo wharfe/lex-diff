@@ -411,6 +411,9 @@ _KANJI_DIGITS = set("一二三四五六七八九十百千0123456789０１２３�
 #   若しくは disjunction of two articles (inner level)
 #   、       the enumeration comma between numbers in a list
 #   ・       the nakaguro, the same enumeration without the comma
+#   〜 ～    a tilde range (wave dash / fullwidth tilde) and
+#   ， ,     a comma list (fullwidth / ASCII): not drafting style, but ref is
+#            free text from the model, so it can write them (#25)
 MULTI_ARTICLE_CONNECTIVES = (
     "から",
     "乃至",
@@ -420,6 +423,10 @@ MULTI_ARTICLE_CONNECTIVES = (
     "若しくは",
     "、",
     "・",
+    "〜",
+    "～",
+    "，",
+    ",",
 )
 
 
