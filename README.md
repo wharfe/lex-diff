@@ -57,19 +57,24 @@ npm install
 uv run python scripts/fetch.py <law_id> <date_before> <date_after>
 
 # 2. Compute structural diff
+#    Exit 3 = a table changed; tables are not diffed yet, so the pair is withheld (#28)
 uv run python scripts/diff.py <law_id> <date_before> <date_after>
 
-# 3. Generate AI annotations (requires ANTHROPIC_API_KEY in .env)
+# 3. Generate AI annotations (requires ANTHROPIC_API_KEY in .env) — publishes the diff
 uv run python scripts/annotate.py data/diffs/<diff_file>.json
 
-# 4. Generate amendment timeline
+# 4. Generate amendment timeline (links only diffs that are published)
 uv run python scripts/timeline.py <law_id>
 
-# 5. Enrich with proposer info from NDL
+# 5. Enrich with proposer info from NDL (timeline entries, then copied into diffs)
 uv run python scripts/enrich.py
 
-# 6. Generate law summary
+# 6. Generate law summary, then the "recent amendments" section (in this order)
 uv run python scripts/law_summary.py <law_id>
+uv run python scripts/explainer.py <law_id>
+
+# 7. Per-article pages (fetches today's text itself)
+uv run python scripts/articles.py --all
 ```
 
 ### Example: Civil Code (共同親権改正)
