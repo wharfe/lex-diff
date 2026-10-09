@@ -234,6 +234,31 @@ def test_a_wide_range_whose_body_is_not_deleted_does_not_absorb_an_article():
         articles.resolve_current(index, "40", "deleted")
 
 
+def test_an_article_removed_outright_is_reported_not_raised():
+    # 建築基準法 第七十七条の五十九の二 (2025-12-01): a branch-numbered article
+    # removed outright, leaving neither a 削除 body nor a range. The diff says
+    # deleted and today's text agrees, so there is no page to build (#23).
+    index = articles.index_current_articles(_tree(_article("306", "第三百六条")))
+    assert articles.resolve_current(index, "77_59_2", "deleted") == {"status": "removed"}
+
+
+def test_a_branch_article_inside_a_range_is_not_called_removed():
+    # Gate 3: range_members("77:78") lists only 77 and 78, yet the range sits
+    # where 第七十七条の二 would. Not knowing is a stop, not a silent drop.
+    index = articles.index_current_articles(
+        _tree(_article("77:78", "第七十七条及び第七十八条", text="削除"))
+    )
+    with pytest.raises(LookupError):
+        articles.resolve_current(index, "77_2", "deleted")
+
+
+def test_a_removed_article_gets_no_page_and_is_listed():
+    entries = [_entry("306"), _entry("307", "deleted")]
+    doc = _build(entries, _tree(_article("306", "第三百六条")))
+    assert [p["article_num"] for p in doc["articles"]] == ["306"]
+    assert doc["removed_articles"] == ["307"]
+
+
 def test_resolve_current_raises_when_an_enforced_article_is_absent():
     index = articles.index_current_articles(_tree(_article("306", "第三百六条")))
     with pytest.raises(LookupError, match="999"):

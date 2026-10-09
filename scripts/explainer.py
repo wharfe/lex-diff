@@ -163,14 +163,41 @@ def load_env():
                 os.environ.setdefault(key.strip(), value.strip())
 
 
-def load_pr_summary(diff_id: str) -> dict | None:
-    """Load pr_summary for a diff_id from the frontend data dir or data/diffs."""
+def load_diff(diff_id: str) -> dict | None:
+    """Load a diff by id from the frontend data dir or data/diffs."""
     for base in (FRONTEND_DIR, DATA_DIR / "diffs"):
         path = base / f"{diff_id}.json"
         if path.exists():
-            data = json.loads(path.read_text())
-            return data.get("pr_summary")
+            return json.loads(path.read_text())
     return None
+
+
+def apply_diff(change: dict, diff: dict | None, same_day_titles: list[str] | None = None) -> dict:
+    """Ground a selected change in its diff, and name it as the diff does.
+
+    The timeline entry that survived select_changes names one law, but a diff
+    can carry several laws enforced on the same day (刑法 2025-06-01). The
+    diff's own title names all of them, so it is the one to show (#23). A diff
+    published before titles were collected names one law however many took
+    effect that day, so the timeline's count of that date (same_day_titles)
+    decides too.
+    """
+    pr_summary = (diff or {}).get("pr_summary")
+    if not pr_summary:
+        # diff file missing -> downgrade to ungrounded for safety
+        change["grounded"] = False
+        return change
+    change["pr_summary"] = pr_summary
+    after = diff.get("revision_after", {})
+    titles = after.get("amendment_law_titles") or []
+    if len(titles) < 2 and len(same_day_titles or []) > 1:
+        titles = list(same_day_titles)
+    change["multi_law"] = len(titles) > 1
+    change["source_title"] = (
+        "／".join(titles) if change["multi_law"]
+        else after.get("amendment_law_title") or change["source_title"]
+    )
+    return change
 
 
 def build_prompt(law_title, law_num, category, summary_desc, changes):
@@ -184,6 +211,10 @@ def build_prompt(law_title, law_num, category, summary_desc, changes):
             block.append(f"    概要: {pr.get('summary', '')}")
             block.append(f"    背景: {pr.get('background', '')}")
             block.append(f"    影響: {pr.get('impact', '')}")
+            if c.get("multi_law"):
+                block.append("  この差分には同じ日に施行された複数の法令の変更が含まれる。"
+                             "どの変更がどの法令によるものかは分からないので、"
+                             "個々の変更を特定の法令に帰属させないこと。")
         else:
             block.append("  根拠なし(ungrounded)。改正法名と施行年のみ確認済み。"
                          "whatは改正法名から言える範囲に留め、why/impactは書かないこと。")
@@ -254,10 +285,12 @@ def main():
         sys.exit(1)
     for c in changes:
         if c["grounded"] and c["diff_id"]:
-            c["pr_summary"] = load_pr_summary(c["diff_id"])
-            if not c["pr_summary"]:
-                # diff file missing -> downgrade to ungrounded for safety
-                c["grounded"] = False
+            same_day = [
+                e["amendment_law_title"] for e in timeline["timeline"]
+                if e.get("enforcement_date") == c["enforcement_date"]
+                and e.get("amendment_law_title")
+            ]
+            apply_diff(c, load_diff(c["diff_id"]), same_day)
 
     print(f"Generating explainer for {timeline['law_title']} ({len(changes)} changes)...")
     raw = generate_explainer(

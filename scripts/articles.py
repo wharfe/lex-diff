@@ -228,9 +228,13 @@ def summary_basis(paragraphs_after: list[dict]) -> str:
 def resolve_current(index: dict, article_num: str, latest_type: str) -> dict:
     """The article as it stands today, or an error.
 
-    Never returns "the article is gone": an article we have an enforced diff for
-    must be findable, or our reading of the law's structure is wrong and the run
-    should stop rather than ship a page with no text.
+    Returns "the article is gone" ({"status": "removed"}) in one case only:
+    the latest diff itself says deleted, and today's text has no node for the
+    number at all -- not even a range spanning it. Two independent sources then
+    agree (建築基準法 第七十七条の五十九の二 was removed outright on 2025-12-01,
+    leaving no 削除 body). Anything else that cannot be found means our reading
+    of the law's structure is wrong, and the run stops rather than ship a page
+    with no text.
     """
     node = index.get(article_num)
     if node is not None:
@@ -252,8 +256,17 @@ def resolve_current(index: dict, article_num: str, latest_type: str) -> dict:
         }
 
     if latest_type == "deleted":
+        # "Spanned" is by the number's position, not by membership: the
+        # members of 77:78 are 77 and 78, yet 77_2 sits inside it.
+        base = int(article_num.split("_")[0]) if article_num.split("_")[0].isdigit() else None
+        spanned = base is None
         for key, candidate in index.items():
-            if not is_range_num(key) or article_num not in range_members(key):
+            if not is_range_num(key):
+                continue
+            members = range_members(key)
+            if base is not None and int(members[0]) <= base <= int(members[-1]):
+                spanned = True
+            if article_num not in members:
                 continue
             body = extract_article_body(candidate)
             if not _body_is_only_deleted(body):
@@ -270,6 +283,8 @@ def resolve_current(index: dict, article_num: str, latest_type: str) -> dict:
                 "caption": body["caption"],
                 "paragraphs": body["paragraphs"],
             }
+        if not spanned:
+            return {"status": "removed"}
 
     raise LookupError(
         f"article {article_num!r} has an enforced diff but is not in today's "
@@ -509,9 +524,15 @@ def build_law_articles(
     """
     index = index_current_articles(law_full_text)
     pages: dict[str, dict] = {}
+    # Removed outright (see resolve_current): no page, but listed, so the
+    # shipped-data tests can tell a legitimate absence from a dropped page.
+    removed: list[str] = []
     for num, history in changes.items():
         latest = history[0]
         current = resolve_current(index, num, latest["type"])
+        if current["status"] == "removed":
+            removed.append(num)
+            continue
         current_text = "".join(p["text"] for p in current["paragraphs"])
 
         # The gate. The note and the body must be the same version, and the note
@@ -660,6 +681,7 @@ def build_law_articles(
         # /law/<lawId> and the only crawl path to these pages; sorting slugs as
         # strings puts 刑法第3条 after 第241条.
         "articles": [pages[n] for n in sorted(pages, key=_num_sort_key)],
+        "removed_articles": sorted(removed, key=_num_sort_key),
     }
 
 

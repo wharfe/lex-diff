@@ -1,7 +1,7 @@
 """Enrich diff and timeline data with proposer information.
 
-Reads existing diff/timeline JSON files, fetches proposer info from NDL,
-and writes enriched data back.
+Fetches each timeline entry's proposer from NDL (searched by promulgation
+year), then copies it into the shipped diff for that revision.
 
 Usage:
     python scripts/enrich.py
@@ -42,60 +42,64 @@ def extract_year_from_law_num(law_num: str) -> int | None:
     return None
 
 
+def proposer_from_timeline(diff: dict, timeline: dict) -> dict | None:
+    """The proposer of the timeline entry for the diff's own revision.
+
+    Searching NDL again for the diff by its enforcement year found a different
+    year's bill whenever the title was a common one (道路交通法の一部を改正する
+    法律 passes almost every year). The timeline entry was searched by its
+    promulgation year, so the diff takes that answer instead of its own.
+    """
+    revision_id = diff.get("revision_after", {}).get("law_revision_id")
+    for entry in timeline.get("timeline", []):
+        if revision_id and entry.get("law_revision_id") == revision_id:
+            return entry.get("proposer")
+    return None
+
+
+def diff_proposer(diff: dict, timeline: dict) -> dict | None:
+    """A diff's proposer, or None when the diff carries several laws.
+
+    One minister beside a diff that carries several same-day laws would credit
+    the whole diff to one of them (#23). Counted from the timeline rather than
+    the diff's own titles: a diff published before titles were collected
+    (415AC 2025-04-01, held back by #28) names one law but carries two.
+    """
+    same_day = [
+        e for e in timeline.get("timeline", [])
+        if e.get("enforcement_date") == diff.get("date_after")
+    ]
+    if len(same_day) > 1:
+        return None
+    return proposer_from_timeline(diff, timeline)
+
+
 def enrich_diff_files():
-    """Add proposer info to all diff JSON files."""
-    diff_dir = DATA_DIR / "diffs"
-    if not diff_dir.exists():
-        return
-
-    for f in sorted(diff_dir.glob("*.json")):
-        if f.name.endswith(".annotated.json"):
-            continue
-
+    """Copy each shipped diff's proposer from its law's timeline entry."""
+    for f in sorted(FRONTEND_DIR.glob("*_*_*.json")):
         data = json.loads(f.read_text())
-        rev_after = data.get("revision_after", {})
-        amendment_title = rev_after.get("amendment_law_title", "")
-
-        if not amendment_title:
+        timeline_path = FRONTEND_DIR / "timelines" / f"{data['law_id']}.json"
+        if not timeline_path.exists():
             continue
+        proposer = diff_proposer(data, json.loads(timeline_path.read_text()))
+        # annotate.py rebuilds the shipped file from data/diffs, so the local
+        # copy is synced too -- each on its own, since either may be the stale one.
+        for path in (f, DATA_DIR / "diffs" / f.name):
+            if path.exists() and _set_proposer(path, proposer):
+                print(f"  {path}: {'set' if proposer else 'cleared'}")
 
-        # Skip if already enriched
-        if data.get("proposer"):
-            print(f"  Skip (already enriched): {f.name}")
-            continue
 
-        # Determine the year to search
-        enforcement = rev_after.get("amendment_enforcement_date", "")
-        year = int(enforcement[:4]) if enforcement else None
-        if not year:
-            continue
-
-        print(f"  {amendment_title} ({year})...")
-        try:
-            info = fetch_proposer_info(amendment_title, year)
-            if info.get("found"):
-                data["proposer"] = {
-                    "submission_type": info["submission_type"],
-                    "minister": info["minister"],
-                    "committee": info["committee"],
-                }
-                f.write_text(json.dumps(data, ensure_ascii=False, indent=2))
-
-                # Also update frontend copy
-                frontend_path = FRONTEND_DIR / f.name
-                if frontend_path.exists():
-                    frontend_data = json.loads(frontend_path.read_text())
-                    frontend_data["proposer"] = data["proposer"]
-                    frontend_path.write_text(
-                        json.dumps(frontend_data, ensure_ascii=False, indent=2)
-                    )
-
-                minister_name = info["minister"]["name"] if info["minister"] else "?"
-                print(f"    -> {info['submission_type']} / {minister_name}")
-            else:
-                print(f"    -> Not found")
-        except Exception as e:
-            print(f"    -> Error: {e}")
+def _set_proposer(path: Path, proposer: dict | None) -> bool:
+    """Write proposer into the diff at path; True if the file changed."""
+    data = json.loads(path.read_text())
+    if data.get("proposer") == proposer:
+        return False
+    if proposer is None:
+        data.pop("proposer", None)
+    else:
+        data["proposer"] = proposer
+    path.write_text(json.dumps(data, ensure_ascii=False, indent=2))
+    return True
 
 
 def enrich_timeline_files():
@@ -151,10 +155,11 @@ def enrich_timeline_files():
 
 
 def main():
-    print("Enriching diff files...")
-    enrich_diff_files()
-    print("\nEnriching timeline files...")
+    # Timelines first: a diff's proposer is copied from its timeline entry.
+    print("Enriching timeline files...")
     enrich_timeline_files()
+    print("\nEnriching diff files...")
+    enrich_diff_files()
     print("\nDone.")
 
 

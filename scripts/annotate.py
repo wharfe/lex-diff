@@ -138,6 +138,16 @@ def build_pr_summary_prompt(data: dict) -> str:
         if main_count == 0
         else f"本則{main_count}条・附則{suppl_count}件が変わっています。"
     )
+    # A same-day diff carries several laws' changes with nothing saying which
+    # change came from which (#23). Only then does the prompt differ, so an
+    # ordinary diff's prompt stays byte-identical.
+    titles = data["revision_after"].get("amendment_law_titles") or []
+    if len(titles) > 1:
+        scope_note += (
+            "\nこの日には次の法令が同時に施行されました: " + "、".join(f"「{t}」" for t in titles)
+            + "。どの変更がどの法令によるものかは、この差分からは分かりません。"
+            "個々の変更を特定の法令に帰属させないでください。"
+        )
 
     return f"""あなたは日本の法律の専門家であり、法律の改正内容を一般市民にわかりやすく説明する役割を担っています。
 
