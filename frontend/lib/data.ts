@@ -24,6 +24,16 @@ export function getDiffData(diffId: string): LawDiffData {
   return JSON.parse(raw) as LawDiffData;
 }
 
+/** Every pending.py diff id, mapped to the JST date it was built. */
+export function getPendingGeneratedOn(): Map<string, string> {
+  const out = new Map<string, string>();
+  for (const id of getDiffIds()) {
+    const data = getDiffData(id);
+    if (data.pending) out.set(id, data.pending.generated_on);
+  }
+  return out;
+}
+
 export function getTimelineIds(): string[] {
   if (!fs.existsSync(TIMELINE_DIR)) return [];
   const files = fs.readdirSync(TIMELINE_DIR);

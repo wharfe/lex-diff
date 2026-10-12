@@ -6,6 +6,7 @@ import {
   getOpenGikaiLinks,
   getArticleLawIds,
   getArticleData,
+  getPendingGeneratedOn,
 } from "@/lib/data";
 import { Timeline } from "@/components/timeline";
 import { Icon } from "@/components/icon";
@@ -236,7 +237,11 @@ export default async function LawPage({
             <div className="px-4 py-3 bg-[var(--muted)] border-b border-[var(--border)] text-[14px] font-medium">
               改正履歴
             </div>
-            <Timeline entries={data.timeline} lawId={data.law_id} />
+            <Timeline
+              entries={data.timeline}
+              lawId={data.law_id}
+              pendingGeneratedOn={getPendingGeneratedOn()}
+            />
           </div>
         </div>
 

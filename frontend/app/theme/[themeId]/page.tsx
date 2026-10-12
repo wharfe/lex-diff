@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { LIFE_THEMES, getThemeById } from "@/lib/life-themes";
-import { getTimelineData } from "@/lib/data";
+import { getPendingGeneratedOn, getTimelineData } from "@/lib/data";
+import { isEnforcedEntry } from "@/lib/pending";
 import { Icon } from "@/components/icon";
 
 export function generateStaticParams() {
@@ -42,6 +43,7 @@ export default async function ThemePage({
   }
 
   // Load timeline data for each law in this theme
+  const pendingGeneratedOn = getPendingGeneratedOn();
   const laws = theme.lawIds
     .map((id) => {
       try {
@@ -85,8 +87,11 @@ export default async function ThemePage({
       {/* Law list */}
       <div className="space-y-4">
         {laws.map(({ id, data }) => {
-          // Find the most recent diff for this law
-          const recentWithDiff = data.timeline.find((e) => e.diff_id);
+          // Find the most recent diff for this law; a pending one is not
+          // "the latest change" (lib/pending.ts).
+          const recentWithDiff = data.timeline.find(
+            (e) => e.diff_id && isEnforcedEntry(e, pendingGeneratedOn)
+          );
 
           return (
             <Link
