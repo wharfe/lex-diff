@@ -119,13 +119,19 @@ def build_timeline(law_id: str) -> dict:
             if candidate in existing_diffs:
                 diff_id = candidate
 
-        timeline_entries.append({
+        entry = {
             "enforcement_date": enforcement_date,
             "promulgate_date": promulgate_date,
             "amendment_law_title": amendment_title,
             "law_revision_id": rev["law_revision_id"],
             "diff_id": diff_id,
-        })
+        }
+        # Only while the date is not fixed (e.g. 政令で定める日), when
+        # enforcement_date is e-Gov's scheduled date. Added only when present,
+        # so entries of enforced revisions keep their bytes.
+        if rev.get("amendment_enforcement_comment"):
+            entry["enforcement_comment"] = rev["amendment_enforcement_comment"]
+        timeline_entries.append(entry)
 
     output = {
         "law_id": law_id,

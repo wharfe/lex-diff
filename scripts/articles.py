@@ -80,7 +80,10 @@ def collect_changes(diff_docs: list[dict], today: str) -> dict[str, list[dict]]:
     """
     by_num: dict[str, list[dict]] = {}
     for doc in diff_docs:
-        if doc["date_after"] > today:
+        # A pending.py diff stays out even past its date: until the pipeline
+        # rebuilds it, its date may be a 政令 deadline and its text e-Gov's
+        # pre-enforcement copy.
+        if doc["date_after"] > today or "pending" in doc:
             continue
         main = [e for e in doc["diffs"] if not e.get("is_suppl")]
         individual = {e["article_num"] for e in main if not is_range_num(e["article_num"])}

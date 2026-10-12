@@ -12,6 +12,7 @@ import json
 import os
 import anthropic
 from llm import response_text, strip_code_fence
+from pending import today_jst
 from pathlib import Path
 
 MODEL = "claude-sonnet-5"
@@ -21,9 +22,30 @@ FRONTEND_DIR = ROOT / "frontend" / "public" / "data"
 MAX_CHANGES = 4
 
 
-def select_changes(timeline: list[dict]) -> list[dict]:
+def is_pending_entry(entry: dict, today: str, pending_ids: frozenset[str]) -> bool:
+    """Not yet enforced, as far as anything on disk can tell.
+
+    A 施行日 comment exists only while the date is not fixed (never on an
+    enforced revision), and a diff built by pending.py stays pending until the
+    pipeline rebuilds it — past its date it may still be e-Gov's
+    pre-enforcement text, or the date may have been a 政令 deadline.
+    """
+    return (
+        (entry.get("enforcement_date") or "") > today
+        or bool(entry.get("enforcement_comment"))
+        or entry.get("diff_id") in pending_ids
+    )
+
+
+def select_changes(
+    timeline: list[dict], today: str, pending_ids: frozenset[str] = frozenset()
+) -> list[dict]:
     """Deterministically select up to MAX_CHANGES meaningful amendments.
 
+    - a pending entry loses its diff_id first: a pending diff carries no AI
+      prose and grounds nothing. Done before the dedupe, which prefers the
+      diff_id-bearing entry — afterwards, a pending diff would beat the
+      enforced, grounded entry of the same title and drop it.
     - dedupe by amendment_law_title (keep the diff_id-bearing entry, else latest date)
     - grounded = bool(diff_id)
     - order: grounded first, then enforcement_date descending
@@ -36,7 +58,7 @@ def select_changes(timeline: list[dict]) -> list[dict]:
         cand = {
             "source_title": title,
             "enforcement_date": entry.get("enforcement_date", "") or "",
-            "diff_id": entry.get("diff_id"),
+            "diff_id": None if is_pending_entry(entry, today, pending_ids) else entry.get("diff_id"),
         }
         cur = by_title.get(title)
         if cur is None:
@@ -163,6 +185,15 @@ def load_env():
                 os.environ.setdefault(key.strip(), value.strip())
 
 
+def shipped_pending_ids() -> frozenset[str]:
+    """Shipped diffs built by pending.py (they carry a `pending` block)."""
+    ids = set()
+    for path in FRONTEND_DIR.glob("*_*_*.json"):
+        if "pending" in json.loads(path.read_text()):
+            ids.add(path.stem)
+    return frozenset(ids)
+
+
 def load_diff(diff_id: str) -> dict | None:
     """Load a diff by id from the frontend data dir or data/diffs."""
     for base in (FRONTEND_DIR, DATA_DIR / "diffs"):
@@ -279,7 +310,7 @@ def main():
         sys.exit(1)
     timeline = json.loads(timeline_path.read_text())
 
-    changes = select_changes(timeline["timeline"])
+    changes = select_changes(timeline["timeline"], today_jst(), shipped_pending_ids())
     if not changes:
         print(f"Error: no usable amendments for {law_id}")
         sys.exit(1)

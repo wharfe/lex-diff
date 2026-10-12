@@ -22,6 +22,7 @@ import anthropic
 from difflib import SequenceMatcher
 
 from llm import complete_json
+from pending import today_jst
 
 MODEL = "claude-sonnet-5"
 
@@ -380,6 +381,20 @@ def find_referenced_articles(text: str, all_articles: dict) -> str:
     return "\n".join(context_parts) if context_parts else "(参照先の条文はこの差分データに含まれていません)"
 
 
+def refuses_pending(data: dict, today: str) -> str | None:
+    """Why this diff must not be annotated, or None.
+
+    A pending (not yet enforced) diff ships with no AI prose by design
+    (docs/pending-amendments/spec.md): its text can still change before it
+    takes effect, and prose about it would read as describing the law in force.
+    """
+    if "pending" in data:
+        return "it was built by pending.py (not yet enforced when built)"
+    if data.get("date_after", "") > today:
+        return f"it takes effect on {data['date_after']}, after today ({today})"
+    return None
+
+
 def main():
     if len(sys.argv) < 2:
         print(__doc__)
@@ -393,6 +408,11 @@ def main():
         sys.exit(1)
 
     data = json.loads(diff_path.read_text())
+    reason = refuses_pending(data, today_jst())
+    if reason:
+        print(f"ERROR: {diff_path.name} is not annotated: {reason}. "
+              "Pending diffs carry no AI prose; publish them with pending.py.")
+        sys.exit(1)
     client = anthropic.Anthropic()
 
     # Build article context for cross-reference resolution

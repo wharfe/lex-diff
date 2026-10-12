@@ -13,7 +13,7 @@ def test_select_dedupes_by_title_prefers_diff_id():
         {"enforcement_date": "2026-04-01", "amendment_law_title": "民法等の一部を改正する法律",
          "diff_id": None},
     ]
-    result = select_changes(timeline)
+    result = select_changes(timeline, "2099-12-31")
     # same title collapses to one, the diff_id-bearing entry wins (grounded)
     assert len(result) == 1
     assert result[0]["grounded"] is True
@@ -27,7 +27,7 @@ def test_select_grounded_first_then_date_desc():
         {"enforcement_date": "2025-01-01", "amendment_law_title": "B法", "diff_id": None},
         {"enforcement_date": "2023-01-01", "amendment_law_title": "C法", "diff_id": None},
     ]
-    result = select_changes(timeline)
+    result = select_changes(timeline, "2099-12-31")
     # grounded (A) first, then ungrounded by date desc (B 2025, C 2023)
     assert [c["year"] for c in result] == ["2020", "2025", "2023"]
     assert result[0]["grounded"] is True
@@ -38,7 +38,7 @@ def test_select_caps_at_four_and_skips_empty_title():
     timeline = [{"enforcement_date": f"20{10+i}-01-01",
                  "amendment_law_title": f"法{i}", "diff_id": None} for i in range(6)]
     timeline.append({"enforcement_date": "2030-01-01", "amendment_law_title": "", "diff_id": None})
-    result = select_changes(timeline)
+    result = select_changes(timeline, "2099-12-31")
     assert len(result) == 4
     assert all(c["year"] for c in result)
 
@@ -142,7 +142,7 @@ def test_select_dedupes_by_diff_id_across_titles():
         {"enforcement_date": "2024-04-01", "amendment_law_title": "民法等改正", "diff_id": "416_2024"},
         {"enforcement_date": "2026-04-01", "amendment_law_title": "公益信託法", "diff_id": None},
     ]
-    result = select_changes(timeline)
+    result = select_changes(timeline, "2099-12-31")
     diff_ids = [c["diff_id"] for c in result if c["diff_id"]]
     assert diff_ids == ["416_2024"]  # the shared diff_id appears only once
     # the None-diff ungrounded entry survives
@@ -154,7 +154,7 @@ def test_select_does_not_collapse_distinct_none_diff_ids():
         {"enforcement_date": "2025-01-01", "amendment_law_title": "A法", "diff_id": None},
         {"enforcement_date": "2024-01-01", "amendment_law_title": "B法", "diff_id": None},
     ]
-    result = select_changes(timeline)
+    result = select_changes(timeline, "2099-12-31")
     assert len(result) == 2  # two None-diff entries are NOT merged
 
 
@@ -170,3 +170,45 @@ def test_normalize_skips_non_dict_change_items():
     assert any(c["title"] == "t" for c in result["recent_changes"])
     # non-list faq normalizes to []
     assert result["faq"] == []
+
+
+# A pending (not yet enforced) diff carries no AI prose and must never ground
+# an entry. The check has to run before the dedupe by title, which prefers the
+# diff_id-bearing entry: done afterwards, a pending diff would win and the
+# enforced, grounded entry of the same title would vanish (Gate2, 民法).
+
+def test_a_pending_diff_never_grounds_an_explainer_entry():
+    timeline = [{"amendment_law_title": "整備法", "enforcement_date": "2028-06-13",
+                 "diff_id": "L_2028-06-12_2028-06-13"}]
+    [c] = select_changes(timeline, "2026-10-11")
+    assert c["grounded"] is False and c["diff_id"] is None
+
+
+def test_same_title_keeps_the_enforced_grounded_entry():
+    timeline = [
+        {"amendment_law_title": "民法等の一部を改正する法律", "enforcement_date": "2029-06-23",
+         "diff_id": "L_2029-06-22_2029-06-23", "enforcement_comment": "政令で定める日"},
+        {"amendment_law_title": "民法等の一部を改正する法律", "enforcement_date": "2026-06-24",
+         "diff_id": "L_2026-06-23_2026-06-24"},
+    ]
+    [c] = select_changes(timeline, "2026-10-11")
+    assert c["grounded"] is True and c["enforcement_date"] == "2026-06-24"
+
+
+def test_an_overdue_pending_diff_does_not_beat_the_enforced_one():
+    # fixed-date pending diff past its date, not yet rebuilt by the pipeline
+    timeline = [
+        {"amendment_law_title": "整備法", "enforcement_date": "2026-11-02",
+         "diff_id": "L_2026-11-01_2026-11-02"},
+        {"amendment_law_title": "整備法", "enforcement_date": "2026-07-17",
+         "diff_id": "L_2026-07-16_2026-07-17"},
+    ]
+    [c] = select_changes(timeline, "2026-12-01", frozenset({"L_2026-11-01_2026-11-02"}))
+    assert c["grounded"] is True and c["enforcement_date"] == "2026-07-17"
+
+
+def test_a_commented_entry_stays_pending_after_its_date():
+    timeline = [{"amendment_law_title": "整備法", "enforcement_date": "2026-11-26",
+                 "diff_id": "L_2026-11-25_2026-11-26", "enforcement_comment": "政令で定める日"}]
+    [c] = select_changes(timeline, "2026-12-01")
+    assert c["grounded"] is False
