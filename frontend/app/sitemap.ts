@@ -6,8 +6,10 @@ import {
   getTimelineData,
   getArticleLawIds,
   getArticleData,
+  getPendingGeneratedOn,
 } from "@/lib/data";
 import { LIFE_THEMES } from "@/lib/life-themes";
+import { isEnforcedEntry, isPendingDiff } from "@/lib/pending";
 
 export const dynamic = "force-static";
 
@@ -18,8 +20,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const lawIds = getTimelineIds();
   const themeIds = LIFE_THEMES.map((t) => t.id);
 
-  // Compute the most recent diff date for the home page lastmod
-  const allDiffDates = diffIds.map((id) => getDiffData(id).date_after);
+  const diffs = diffIds.map((id) => ({ id, data: getDiffData(id) }));
+  const pendingGeneratedOn = getPendingGeneratedOn();
+
+  // Compute the most recent diff date for the home page lastmod. A pending
+  // diff's date is in the future (or a 政令 deadline): never a lastmod.
+  const allDiffDates = diffs
+    .filter(({ data }) => !isPendingDiff(data))
+    .map(({ data }) => data.date_after);
   const latestDiffDate =
     allDiffDates.length > 0
       ? allDiffDates.sort().reverse()[0]
@@ -42,8 +50,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Law pages (from timeline data)
     ...lawIds.map((id) => {
       const data = getTimelineData(id);
-      // Timeline is sorted newest-first; use the first entry as lastmod
-      const latestEntry = data.timeline[0];
+      // Timeline is sorted newest-first; the first enforced entry is the
+      // lastmod (the very first was 2029-06-23 for 民法, a future date).
+      const latestEntry = data.timeline.find((e) =>
+        isEnforcedEntry(e, pendingGeneratedOn)
+      );
       return {
         url: `${BASE_URL}/law/${id}`,
         lastModified: latestEntry?.enforcement_date,
@@ -53,11 +64,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }),
 
     // Diff pages (from diff data files)
-    ...diffIds.map((id) => {
-      const data = getDiffData(id);
+    ...diffs.map(({ id, data }) => {
       return {
         url: `${BASE_URL}/diff/${id}`,
-        lastModified: data.date_after,
+        // When the page was built, not when the amendment takes effect.
+        lastModified: isPendingDiff(data)
+          ? data.pending.generated_on
+          : data.date_after,
         changeFrequency: "monthly" as const,
         priority: 0.7,
       };

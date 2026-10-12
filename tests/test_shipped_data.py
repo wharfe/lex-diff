@@ -269,3 +269,46 @@ def test_a_link_describes_only_a_target_whose_own_summary_survived(path):
             target = by_slug.get(ref["slug"]) if ref["slug"] else None
             if target is None or target["current_summary"] is None:
                 assert ref["context"] == "", (page["article_num"], ref["ref"])
+
+
+# --- pending (not yet enforced) diffs: docs/pending-amendments/spec.md -------
+# Clock-free on purpose: whether a date has passed is the pipeline's question
+# (pending.py --check); these pin what must hold of the shipped bytes at any time.
+
+def _pending_diffs():
+    out = []
+    for p in shipped_diffs():
+        doc = json.loads(p.read_text())
+        if "pending" in doc:
+            out.append((p, doc))
+    return out
+
+
+def test_pending_diffs_carry_no_ai_prose():
+    for p, d in _pending_diffs():
+        assert "pr_summary" not in d, p.name
+        assert not any("annotation" in e for e in d["diffs"]), p.name
+
+
+def test_pending_diffs_agree_with_their_timeline():
+    for p, d in _pending_diffs():
+        tl = json.loads((SHIPPED / "timelines" / f"{d['law_id']}.json").read_text())
+        by_id = {e["law_revision_id"]: e for e in tl["timeline"]}
+        for r in d["pending"]["revisions"]:
+            e = by_id.get(r["law_revision_id"])
+            assert e is not None, (p.name, r["law_revision_id"])
+            assert e["enforcement_date"] == d["date_after"], (p.name, r["law_revision_id"])
+            assert e["diff_id"] == p.stem, (p.name, r["law_revision_id"])
+            # the page and the timeline must state the same certainty of the date
+            assert e.get("enforcement_comment") == r["enforcement_comment"], p.name
+        for u in d["pending"]["unenforced_before"]:
+            assert u["law_revision_id"] in by_id, (p.name, u["law_revision_id"])
+            assert u["enforcement_date"] < d["date_after"], p.name
+
+
+def test_a_pending_diff_names_its_amending_laws():
+    # The page is named by law number, never by a year that may not hold.
+    for p, d in _pending_diffs():
+        assert d["pending"]["revisions"], p.name
+        for r in d["pending"]["revisions"]:
+            assert r["amendment_law_num"] or r["amendment_law_title"], p.name

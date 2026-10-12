@@ -1,5 +1,6 @@
 import { mainChangeCounts } from "@/lib/data";
 import { LawDiffData } from "@/lib/types";
+import { isPendingDiff, pendingStatsLabel } from "@/lib/pending";
 
 export function DiffStats({ data }: { data: LawDiffData }) {
   // Counts come from mainChangeCounts so this badge, the home page and the
@@ -11,7 +12,11 @@ export function DiffStats({ data }: { data: LawDiffData }) {
   return (
     <div className="flex items-center gap-3 text-[13px] flex-wrap">
       <span className="font-medium">
-        {total > 0 ? `本則 ${total} 条が変更` : "本則の変更なし"}
+        {isPendingDiff(data)
+          ? pendingStatsLabel(total)
+          : total > 0
+            ? `本則 ${total} 条が変更`
+            : "本則の変更なし"}
       </span>
       {added > 0 && (
         <span className="text-[var(--diff-add-text)]">+{added} 追加</span>

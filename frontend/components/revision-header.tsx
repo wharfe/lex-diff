@@ -1,9 +1,38 @@
 import { LawDiffData } from "@/lib/types";
 import { DiffStats } from "./diff-stats";
 import { Icon } from "./icon";
+import {
+  PENDING_AFTER_CHIP,
+  PENDING_BEFORE_CHIP,
+  PENDING_OVERDUE_NOTE,
+  PendingDiff,
+  enforcementLine,
+  isOverduePending,
+  isPendingDiff,
+  pendingHeadline,
+  unenforcedBeforeNote,
+} from "@/lib/pending";
 
 function getEgovUrl(lawId: string): string {
   return `https://laws.e-gov.go.jp/law/${lawId}`;
+}
+
+function PendingNotice({ data }: { data: PendingDiff }) {
+  const before = unenforcedBeforeNote(data);
+  return (
+    <div className="mb-4 rounded-lg border border-[var(--diff-hunk-text)]/40 bg-[var(--diff-hunk-bg)] px-3 py-2.5 text-[13px] leading-[22px] text-[var(--diff-hunk-text)]">
+      <p className="font-medium">{pendingHeadline(data)}</p>
+      {isOverduePending(data) && <p>{PENDING_OVERDUE_NOTE}</p>}
+      <ul className="mt-1">
+        {data.pending.revisions.map((r) => (
+          <li key={r.law_revision_id}>
+            {enforcementLine(r, data.date_after)}
+          </li>
+        ))}
+      </ul>
+      {before && <p className="mt-1">{before}</p>}
+    </div>
+  );
 }
 
 export function RevisionHeader({ data }: { data: LawDiffData }) {
@@ -15,6 +44,7 @@ export function RevisionHeader({ data }: { data: LawDiffData }) {
       <p className="text-[14px] opacity-70 mb-4">
         {data.revision_after.amendment_law_title}
       </p>
+      {isPendingDiff(data) && <PendingNotice data={data} />}
 
       {/* Proposer info — git commit author style */}
       {proposer?.minister && (
@@ -39,12 +69,14 @@ export function RevisionHeader({ data }: { data: LawDiffData }) {
       )}
 
       <div className="flex items-center gap-2 text-[13px] mb-4 flex-wrap">
+        {/* A pending date may be a 政令 deadline, and the day before it is
+            just arithmetic on that: neither is shown as a bare date. */}
         <span className="inline-flex items-center gap-1 rounded-full bg-[var(--diff-del-bg)] px-3 py-1 text-[var(--diff-del-text)] font-mono">
-          {data.date_before}
+          {isPendingDiff(data) ? PENDING_BEFORE_CHIP : data.date_before}
         </span>
         <span className="opacity-30">&rarr;</span>
         <span className="inline-flex items-center gap-1 rounded-full bg-[var(--diff-add-bg)] px-3 py-1 text-[var(--diff-add-text)] font-mono">
-          {data.date_after}
+          {isPendingDiff(data) ? PENDING_AFTER_CHIP : data.date_after}
         </span>
       </div>
 

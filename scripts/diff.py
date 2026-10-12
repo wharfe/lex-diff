@@ -449,6 +449,77 @@ def amendment_titles_on(
     return titles
 
 
+def build_diff_document(
+    law_id: str,
+    date_before: str,
+    date_after: str,
+    before_data: dict,
+    after_data: dict,
+    revisions: list[dict],
+) -> dict:
+    """The published diff JSON for one pair of snapshots, with no I/O.
+
+    Refusals that delete files (a table changed, nothing changed) stay with the
+    caller, which owns the files; this only assembles. Raises ValueError when a
+    key collides (compute_diff) or the revision list does not name the after
+    snapshot's revision — without it, same-day amendments cannot be counted.
+    """
+    law_title = before_data["revision_info"]["law_title"]
+    before_revision = before_data["revision_info"]
+    after_revision = after_data["revision_info"]
+    diffs = compute_diff(
+        find_articles(before_data["law_full_text"]),
+        find_articles(after_data["law_full_text"]),
+    )
+    own_id = after_revision.get("law_revision_id")
+    if not own_id or not any(r.get("law_revision_id") == own_id for r in revisions):
+        raise ValueError(f"the revision list does not list revision {own_id!r}")
+    titles = amendment_titles_on(
+        revisions,
+        date_after,
+        after_revision.get("amendment_law_title") or "",
+        after_revision.get("law_revision_id"),
+    )
+
+    # Add section paths
+    for d in diffs:
+        if d.get("is_suppl"):
+            d["section_path"] = []
+            continue
+        num = d["article_num"]
+        source = after_data if d["type"] != "deleted" else before_data
+        section_path = find_section_path(source["law_full_text"], num)
+        d["section_path"] = section_path or []
+
+    # Build output
+    stats = compute_stats(diffs)
+
+    output = {
+        "law_id": law_id,
+        "law_title": law_title,
+        "date_before": date_before,
+        "date_after": date_after,
+        "revision_before": {
+            "law_revision_id": before_revision.get("law_revision_id"),
+            "amendment_law_title": before_revision.get("amendment_law_title"),
+            "amendment_enforcement_date": before_revision.get("amendment_enforcement_date"),
+        },
+        "revision_after": {
+            "law_revision_id": after_revision.get("law_revision_id"),
+            # Every display reads this one field, so a same-day diff names
+            # all its laws here; amendment_law_titles keeps them separate.
+            "amendment_law_title": "／".join(titles) or after_revision.get("amendment_law_title"),
+            "amendment_enforcement_date": after_revision.get("amendment_enforcement_date"),
+        },
+        "stats": stats,
+        "diffs": diffs,
+    }
+    if len(titles) > 1:
+        output["revision_after"]["amendment_law_titles"] = titles
+
+    return output
+
+
 def main():
     if len(sys.argv) < 4:
         print(__doc__)
@@ -524,48 +595,10 @@ def main():
         # took effect the same day, and "cannot tell" must not read as "one".
         print(f"Error: {rev_path} does not list revision {own_id!r}. Re-run fetch.py.")
         sys.exit(1)
-    titles = amendment_titles_on(
-        revisions,
-        date_after,
-        after_revision.get("amendment_law_title") or "",
-        after_revision.get("law_revision_id"),
+    output = build_diff_document(
+        law_id, date_before, date_after, before_data, after_data, revisions
     )
-
-    # Add section paths
-    for d in diffs:
-        if d.get("is_suppl"):
-            d["section_path"] = []
-            continue
-        num = d["article_num"]
-        source = after_data if d["type"] != "deleted" else before_data
-        section_path = find_section_path(source["law_full_text"], num)
-        d["section_path"] = section_path or []
-
-    # Build output
-    stats = compute_stats(diffs)
-
-    output = {
-        "law_id": law_id,
-        "law_title": law_title,
-        "date_before": date_before,
-        "date_after": date_after,
-        "revision_before": {
-            "law_revision_id": before_revision.get("law_revision_id"),
-            "amendment_law_title": before_revision.get("amendment_law_title"),
-            "amendment_enforcement_date": before_revision.get("amendment_enforcement_date"),
-        },
-        "revision_after": {
-            "law_revision_id": after_revision.get("law_revision_id"),
-            # Every display reads this one field, so a same-day diff names
-            # all its laws here; amendment_law_titles keeps them separate.
-            "amendment_law_title": "／".join(titles) or after_revision.get("amendment_law_title"),
-            "amendment_enforcement_date": after_revision.get("amendment_enforcement_date"),
-        },
-        "stats": stats,
-        "diffs": diffs,
-    }
-    if len(titles) > 1:
-        output["revision_after"]["amendment_law_titles"] = titles
+    stats = output["stats"]
 
     DIFF_DIR.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(output, ensure_ascii=False, indent=2))

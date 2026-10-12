@@ -5,7 +5,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
-from annotate import validate_annotation, validate_pr_summary
+from annotate import refuses_pending, validate_annotation, validate_pr_summary
 from llm import strip_code_fence
 
 
@@ -57,3 +57,9 @@ def test_strip_code_fence_handles_a_fence_without_a_newline():
     assert strip_code_fence('```json{"a": 1}```') == '{"a": 1}'
     assert strip_code_fence('```\n{"a": 1}\n```') == '{"a": 1}'
     assert strip_code_fence('{"a": 1}') == '{"a": 1}'
+
+
+def test_annotate_refuses_pending_diffs():
+    assert refuses_pending({"date_after": "2028-06-13"}, "2026-10-11")
+    assert refuses_pending({"date_after": "2026-04-01", "pending": {}}, "2026-10-11")
+    assert refuses_pending({"date_after": "2026-04-01"}, "2026-10-11") is None

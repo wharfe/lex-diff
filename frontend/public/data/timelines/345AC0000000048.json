@@ -10,7 +10,8 @@
       "promulgate_date": "2026-06-24",
       "amendment_law_title": "著作権法の一部を改正する法律",
       "law_revision_id": "345AC0000000048_20290623_508AC0000000048",
-      "diff_id": null,
+      "diff_id": "345AC0000000048_2029-06-22_2029-06-23",
+      "enforcement_comment": "公布の日から起算して三年を超えない範囲内において政令で定める日",
       "proposer": {
         "submission_type": "閣法",
         "minister": {
@@ -27,6 +28,7 @@
       "amendment_law_title": "民事関係手続等における情報通信技術の活用等の推進を図るための関係法律の整備に関する法律",
       "law_revision_id": "345AC0000000048_20280613_505AC0000000053",
       "diff_id": null,
+      "enforcement_comment": "公布の日から起算して五年を超えない範囲内において政令で定める日",
       "proposer": {
         "submission_type": "閣法",
         "minister": {

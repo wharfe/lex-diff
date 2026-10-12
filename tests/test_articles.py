@@ -88,6 +88,14 @@ def test_unenforced_diffs_are_skipped():
     assert set(changes) == {"306"}
 
 
+def test_pending_diffs_are_skipped_even_past_their_date():
+    # A pending diff past its date was never rebuilt: its date may be a 政令
+    # deadline and its text e-Gov's pre-enforcement copy, so it grounds nothing.
+    doc = _doc("2026-04-01", [_entry("306")])
+    doc["pending"] = {"generated_on": "2026-03-01", "revisions": [], "unenforced_before": []}
+    assert articles.collect_changes([doc], "2026-09-22") == {}
+
+
 def test_changes_are_newest_first():
     docs = [
         _doc("2024-11-01", [_entry("117_2_2")]),

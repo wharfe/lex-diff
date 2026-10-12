@@ -23,6 +23,8 @@ uv run python scripts/timeline.py <law_id>     # Amendment history (keeps later-
 uv run python scripts/explainer.py <law_id>    # Plain-language "recent amendments" section
 uv run python scripts/law_summary.py <law_id>  # /law overview — fetches today's text itself
 uv run python scripts/articles.py --all        # Per-article pages — fetches today's text itself
+uv run python scripts/pending.py --all         # Not-yet-enforced amendments as diffs (no AI); then timeline.py, enrich.py
+uv run python scripts/pending.py --all --check # Rebuild them from e-Gov and compare content; exit 1 on any drift
 uv run pytest                                  # Python tests
 
 # Frontend (in frontend/ directory)
@@ -50,6 +52,7 @@ npm run lint   # Lint
 │   ├── llm.py             Shared Claude API helpers for the three scripts above
 │   ├── lawtext.py         Reading the e-Gov law tree (shared by diff/law_summary)
 │   ├── articles.py        Per-article pages (current text + this article's history)
+│   ├── pending.py         Not-yet-enforced amendments as diffs, and their freshness check
 │   └── requirements.txt   Python dependencies (legacy, use pyproject.toml)
 ├── tests/                 pytest suite — the pure functions in scripts/, plus
 │                          test_shipped_data.py over frontend/public/data/
@@ -163,6 +166,20 @@ that shape:
 - A diff's proposer is copied from its timeline entry (searched by promulgation
   year); searching NDL by the diff's enforcement year found another year's bill
   for titles that pass every year.
+- **A pending (not yet enforced) diff carries no AI prose and grounds nothing**
+  (`docs/pending-amendments/spec.md`). `pending.py` publishes it directly with a
+  `pending` block; `annotate.refuses_pending` refuses it; `explainer.select_changes`
+  drops its `diff_id` *before* the dedupe by title (afterwards a pending diff beat
+  the enforced, grounded entry of the same title); `articles.collect_changes`
+  skips it even past its date. Its date may be a 政令 deadline (e-Gov then sets
+  `amendment_scheduled_enforcement_date` and a comment, and copies the scheduled
+  date into `amendment_enforcement_date`), so the frontend never names it by year
+  and dates every claim ("{generated_on}時点で未施行") — a static page is not
+  rebuilt when the date passes. All of that wording lives in `frontend/lib/pending.ts`.
+  The D-1 text already contains every amendment scheduled before D, so it is not
+  today's law; `unenforced_before` lists them and the page says so. Freshness is
+  judged by content: `--check` rebuilds and compares, because e-Gov updates a
+  pending revision's text without changing its id.
 - A cross-reference links only when the label resolves to exactly one article:
   a ref naming several (`MULTI_ARTICLE_CONNECTIVES`) stays plain text, and a
   `context` sentence survives only when its target's own page kept its summary.

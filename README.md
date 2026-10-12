@@ -75,6 +75,11 @@ uv run python scripts/explainer.py <law_id>
 
 # 7. Per-article pages (fetches today's text itself)
 uv run python scripts/articles.py --all
+
+# 8. Not-yet-enforced amendments as diffs, with no AI prose (then re-run 4 and 5)
+#    --check rebuilds them from e-Gov and exits 1 if anything drifted
+uv run python scripts/pending.py --all
+uv run python scripts/pending.py --all --check
 ```
 
 ### Example: Civil Code (共同親権改正)

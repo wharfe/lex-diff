@@ -55,6 +55,26 @@ export interface RevisionInfo {
   amendment_enforcement_date: string;
 }
 
+/** One amending law of a pending (not yet enforced) diff, as e-Gov listed it
+ *  when pending.py built the diff. */
+export interface PendingRevision {
+  law_revision_id: string;
+  amendment_law_title: string | null;
+  amendment_law_num: string | null;
+  /** e-Gov's own wording while the date is not fixed (e.g. 政令で定める日);
+   *  null when the date is fixed by statute. Shown verbatim. */
+  enforcement_comment: string | null;
+  scheduled_enforcement_date: string | null;
+}
+
+export interface PendingInfo {
+  /** JST date the diff was built; every pending claim is dated by it. */
+  generated_on: string;
+  revisions: PendingRevision[];
+  /** Pending amendments the "before" text already contains: it is not today's law. */
+  unenforced_before: (PendingRevision & { enforcement_date: string })[];
+}
+
 export interface LawDiffData {
   law_id: string;
   law_title: string;
@@ -74,6 +94,8 @@ export interface LawDiffData {
   diffs: ArticleDiff[];
   pr_summary?: PrSummary;
   proposer?: Proposer;
+  /** Present only on diffs built by pending.py (no AI prose). */
+  pending?: PendingInfo;
 }
 
 // Proposer types
@@ -98,6 +120,8 @@ export interface TimelineEntry {
   amendment_law_title: string;
   law_revision_id: string;
   diff_id: string | null;
+  /** Only while the date is not fixed; enforcement_date is then e-Gov's scheduled date. */
+  enforcement_comment?: string;
   proposer?: Proposer;
 }
 

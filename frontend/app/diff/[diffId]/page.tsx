@@ -10,6 +10,12 @@ import { RevisionHeader } from "@/components/revision-header";
 import { PrSummaryCard } from "@/components/pr-summary";
 import { DiffViewer } from "@/components/diff-viewer";
 import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
+import {
+  isPendingDiff,
+  pendingBreadcrumb,
+  pendingDescription,
+  pendingTitle,
+} from "@/lib/pending";
 
 export function generateStaticParams() {
   return getDiffIds().map((diffId) => ({ diffId }));
@@ -22,13 +28,25 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { diffId } = await params;
   const data = getDiffData(decodeURIComponent(diffId));
-  const title = data.pr_summary?.title || data.revision_after.amendment_law_title;
-  const year = data.date_after.slice(0, 4);
   // 本則 only — see mainChangeCounts. Folding 附則 in claimed "2条が変更され
   // ました" for an amendment that changed no article of the main text at all.
   const { total: mainCount, supplTotal: supplCount } = mainChangeCounts(
     data.diffs
   );
+  if (isPendingDiff(data)) {
+    // No year and no past tense: the date may be a 政令 deadline, and the
+    // page stays as built after it passes. Every claim is dated instead.
+    const title = pendingTitle(data);
+    const description = pendingDescription(data, mainCount, supplCount);
+    return {
+      title,
+      description,
+      alternates: { canonical: `/diff/${encodeURIComponent(diffId)}` },
+      openGraph: { title: `${title} | lexdiff`, description },
+    };
+  }
+  const title = data.pr_summary?.title || data.revision_after.amendment_law_title;
+  const year = data.date_after.slice(0, 4);
   const changeSummary =
     mainCount > 0
       ? `${title}で本則${mainCount}条が変更されました。`
@@ -72,7 +90,9 @@ export default async function DiffPage({
             url: `https://lexdiff.com/law/${data.law_id}`,
           },
           {
-            name: data.pr_summary?.title || data.date_after,
+            name: isPendingDiff(data)
+              ? pendingBreadcrumb(data)
+              : data.pr_summary?.title || data.date_after,
             url: `https://lexdiff.com/diff/${encodeURIComponent(diffId)}`,
           },
         ]}
@@ -80,6 +100,7 @@ export default async function DiffPage({
       <RevisionHeader data={data} />
       {data.pr_summary && <PrSummaryCard summary={data.pr_summary} />}
       <DiffViewer
+        pending={isPendingDiff(data)}
         diffs={data.diffs}
         lawId={data.law_id}
         articleSlugs={articleSlugs}

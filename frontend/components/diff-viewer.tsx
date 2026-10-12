@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { ArticleDiff } from "@/lib/types";
+import { PENDING_MAIN_SECTION_NOTE, PENDING_NO_MAIN_CHANGE } from "@/lib/pending";
 
 function DiffLine({ line }: { line: string }) {
   const isAdd = line.startsWith("+") && !line.startsWith("+++");
@@ -200,7 +201,10 @@ export function DiffViewer({
   diffs,
   lawId,
   articleSlugs,
+  pending,
 }: {
+  /** A pending.py diff: what changes once (if) it takes effect. */
+  pending: boolean;
   diffs: ArticleDiff[];
   lawId: string;
   articleSlugs: Record<string, string>;
@@ -215,13 +219,15 @@ export function DiffViewer({
       <div className="flex flex-col gap-3">
         <SectionHeading
           title="本則の改正"
-          note="法律の中身が変わった条文"
+          note={pending ? PENDING_MAIN_SECTION_NOTE : "法律の中身が変わった条文"}
           count={main.length}
           unit="条"
         />
         {main.length === 0 ? (
           <p className="text-[14px] opacity-60 border border-[var(--border)] rounded-lg px-4 py-3">
-            この改正では本則の条文は変わっていません（変更は附則のみ）。
+            {pending
+              ? PENDING_NO_MAIN_CHANGE
+              : "この改正では本則の条文は変わっていません（変更は附則のみ）。"}
           </p>
         ) : (
           <div className="flex flex-col gap-5">

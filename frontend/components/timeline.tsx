@@ -1,5 +1,11 @@
 import Link from "next/link";
 import { TimelineEntry } from "@/lib/types";
+import {
+  PendingGeneratedOn,
+  entryCommentLine,
+  entryDateSuffix,
+  entryPendingNote,
+} from "@/lib/pending";
 
 function shortHash(revisionId: string): string {
   let hash = 0;
@@ -13,11 +19,14 @@ function shortHash(revisionId: string): string {
 
 function EntryContent({
   entry,
+  pendingGeneratedOn,
 }: {
   entry: TimelineEntry;
+  pendingGeneratedOn: PendingGeneratedOn;
 }) {
   const hasDiff = entry.diff_id !== null;
   const hash = shortHash(entry.law_revision_id);
+  const pendingNote = entryPendingNote(entry, pendingGeneratedOn);
 
   return (
     <>
@@ -33,13 +42,26 @@ function EntryContent({
         >
           {hash}
         </span>
-        <span className="opacity-70">{entry.enforcement_date}</span>
+        <span className="opacity-70">
+          {entry.enforcement_date}
+          {entryDateSuffix(entry)}
+        </span>
+        {pendingNote && (
+          <span className="rounded-full bg-[var(--diff-hunk-bg)] text-[var(--diff-hunk-text)] px-2 py-0.5 text-[11px] font-sans">
+            {pendingNote}
+          </span>
+        )}
         {hasDiff && (
           <span className="text-[var(--diff-add-text)] text-[12px]">
             差分あり
           </span>
         )}
       </div>
+      {entryCommentLine(entry) && (
+        <div className="ml-8 mt-1 text-[12px] opacity-60">
+          {entryCommentLine(entry)}
+        </div>
+      )}
 
       {/* Line 2: commit message */}
       <div className="ml-8 mt-1.5">
@@ -77,9 +99,12 @@ function EntryContent({
 
 export function Timeline({
   entries,
+  pendingGeneratedOn,
 }: {
   entries: TimelineEntry[];
   lawId: string;
+  /** pending.py diff ids → build date; see getPendingGeneratedOn. */
+  pendingGeneratedOn: PendingGeneratedOn;
 }) {
   return (
     <div className="text-[14px]">
@@ -96,14 +121,14 @@ export function Timeline({
               href={`/diff/${encodeURIComponent(entry.diff_id!)}`}
               className={className}
             >
-              <EntryContent entry={entry} />
+              <EntryContent entry={entry} pendingGeneratedOn={pendingGeneratedOn} />
             </Link>
           );
         }
 
         return (
           <div key={entry.law_revision_id} className={className}>
-            <EntryContent entry={entry} />
+            <EntryContent entry={entry} pendingGeneratedOn={pendingGeneratedOn} />
           </div>
         );
       })}

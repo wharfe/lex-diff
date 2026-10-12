@@ -10,6 +10,15 @@ import {
 } from "@/lib/data";
 import { LIFE_THEMES } from "@/lib/life-themes";
 import { Icon } from "@/components/icon";
+import {
+  PENDING_SECTION_INTRO,
+  PENDING_SECTION_TITLE,
+  asOfLabel,
+  enforcementLinesFor,
+  isOverduePending,
+  isPendingDiff,
+  pendingName,
+} from "@/lib/pending";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/" },
@@ -51,9 +60,20 @@ export default function Home() {
     .sort((a, b) => b.data.revision_count - a.data.revision_count);
 
   const diffIds = getDiffIds();
-  const diffs = diffIds
-    .map((id) => ({ id, data: getDiffData(id) }))
+  const allDiffs = diffIds.map((id) => ({ id, data: getDiffData(id) }));
+  // "Recent" and the hero are enforced amendments only: a pending diff sorts
+  // first by date but is not a change that has happened (lib/pending.ts).
+  const diffs = allDiffs
+    .filter(({ data }) => !isPendingDiff(data))
     .sort((a, b) => b.data.date_after.localeCompare(a.data.date_after));
+  // Overdue ones (past their date, not yet rebuilt) are left out: they are
+  // no longer "upcoming", and whether they took effect is unknown.
+  const upcoming = allDiffs
+    .flatMap(({ id, data }) =>
+      isPendingDiff(data) && !isOverduePending(data) ? [{ id, data }] : []
+    )
+    .sort((a, b) => a.data.date_after.localeCompare(b.data.date_after))
+    .slice(0, 5);
 
   // Pick the most interesting diff for the hero preview (most changes)
   const heroDiff = diffs.length > 0
@@ -196,6 +216,38 @@ export default function Home() {
                 </Link>
               );
             })}
+          </div>
+        </section>
+      )}
+
+      {/* Pending amendments — every claim dated (lib/pending.ts) */}
+      {upcoming.length > 0 && (
+        <section>
+          <h2 className="text-[17px] font-bold mb-2">{PENDING_SECTION_TITLE}</h2>
+          <p className="text-[13px] opacity-50 mb-4">
+            {PENDING_SECTION_INTRO}
+          </p>
+          <div className="border border-[var(--border)] rounded-lg overflow-hidden">
+            {upcoming.map(({ id, data }, i) => (
+              <Link
+                key={id}
+                href={`/diff/${encodeURIComponent(id)}`}
+                className={`block px-4 py-3 hover:bg-[var(--muted)] transition-colors ${
+                  i < upcoming.length - 1 ? "border-b border-[var(--border)]" : ""
+                }`}
+              >
+                <div className="flex items-center gap-3 flex-wrap">
+                  <span className="font-bold text-[14px]">{data.law_title}</span>
+                  <span className="text-[13px] opacity-70">{pendingName(data)}</span>
+                  <span className="rounded-full bg-[var(--diff-hunk-bg)] text-[var(--diff-hunk-text)] px-2 py-0.5 text-[11px]">
+                    {asOfLabel(data.pending.generated_on)}
+                  </span>
+                </div>
+                <p className="text-[12px] opacity-50 mt-1">
+                  {enforcementLinesFor(data)}
+                </p>
+              </Link>
+            ))}
           </div>
         </section>
       )}
