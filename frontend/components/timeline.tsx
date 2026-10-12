@@ -1,6 +1,11 @@
 import Link from "next/link";
 import { TimelineEntry } from "@/lib/types";
-import { entryPendingNote } from "@/lib/pending";
+import {
+  PendingGeneratedOn,
+  entryCommentLine,
+  entryDateSuffix,
+  entryPendingNote,
+} from "@/lib/pending";
 
 function shortHash(revisionId: string): string {
   let hash = 0;
@@ -17,7 +22,7 @@ function EntryContent({
   pendingGeneratedOn,
 }: {
   entry: TimelineEntry;
-  pendingGeneratedOn: Map<string, string>;
+  pendingGeneratedOn: PendingGeneratedOn;
 }) {
   const hasDiff = entry.diff_id !== null;
   const hash = shortHash(entry.law_revision_id);
@@ -39,8 +44,7 @@ function EntryContent({
         </span>
         <span className="opacity-70">
           {entry.enforcement_date}
-          {/* Not fixed yet: the date above is e-Gov's scheduled one. */}
-          {entry.enforcement_comment && "（予定日）"}
+          {entryDateSuffix(entry)}
         </span>
         {pendingNote && (
           <span className="rounded-full bg-[var(--diff-hunk-bg)] text-[var(--diff-hunk-text)] px-2 py-0.5 text-[11px] font-sans">
@@ -53,9 +57,9 @@ function EntryContent({
           </span>
         )}
       </div>
-      {entry.enforcement_comment && (
+      {entryCommentLine(entry) && (
         <div className="ml-8 mt-1 text-[12px] opacity-60">
-          施行日: {entry.enforcement_comment}（e-Gov 上の予定日: {entry.enforcement_date}）
+          {entryCommentLine(entry)}
         </div>
       )}
 
@@ -100,7 +104,7 @@ export function Timeline({
   entries: TimelineEntry[];
   lawId: string;
   /** pending.py diff ids → build date; see getPendingGeneratedOn. */
-  pendingGeneratedOn: Map<string, string>;
+  pendingGeneratedOn: PendingGeneratedOn;
 }) {
   return (
     <div className="text-[14px]">

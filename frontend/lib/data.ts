@@ -24,14 +24,20 @@ export function getDiffData(diffId: string): LawDiffData {
   return JSON.parse(raw) as LawDiffData;
 }
 
-/** Every pending.py diff id, mapped to the JST date it was built. */
-export function getPendingGeneratedOn(): Map<string, string> {
-  const out = new Map<string, string>();
-  for (const id of getDiffIds()) {
-    const data = getDiffData(id);
-    if (data.pending) out.set(id, data.pending.generated_on);
+let pendingGeneratedOnCache: Map<string, string> | null = null;
+
+/** Every pending.py diff id, mapped to the JST date it was built. Read once
+ *  per build process: every law and theme page asks for it. */
+export function getPendingGeneratedOn(): ReadonlyMap<string, string> {
+  if (!pendingGeneratedOnCache) {
+    const out = new Map<string, string>();
+    for (const id of getDiffIds()) {
+      const data = getDiffData(id);
+      if (data.pending) out.set(id, data.pending.generated_on);
+    }
+    pendingGeneratedOnCache = out;
   }
-  return out;
+  return pendingGeneratedOnCache;
 }
 
 export function getTimelineIds(): string[] {

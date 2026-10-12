@@ -6,6 +6,7 @@ import {
   getTimelineData,
   getArticleLawIds,
   getArticleData,
+  getPendingGeneratedOn,
 } from "@/lib/data";
 import { LIFE_THEMES } from "@/lib/life-themes";
 import { isEnforcedEntry, isPendingDiff } from "@/lib/pending";
@@ -20,11 +21,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const themeIds = LIFE_THEMES.map((t) => t.id);
 
   const diffs = diffIds.map((id) => ({ id, data: getDiffData(id) }));
-  const pendingGeneratedOn = new Map(
-    diffs.flatMap(({ id, data }) =>
-      isPendingDiff(data) ? [[id, data.pending.generated_on] as const] : []
-    )
-  );
+  const pendingGeneratedOn = getPendingGeneratedOn();
 
   // Compute the most recent diff date for the home page lastmod. A pending
   // diff's date is in the future (or a 政令 deadline): never a lastmod.

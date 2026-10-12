@@ -11,9 +11,10 @@ import {
 import { LIFE_THEMES } from "@/lib/life-themes";
 import { Icon } from "@/components/icon";
 import {
-  BUILD_DATE_JST,
+  PENDING_SECTION_INTRO,
+  PENDING_SECTION_TITLE,
   asOfLabel,
-  enforcementLabel,
+  enforcementLinesFor,
   isOverduePending,
   isPendingDiff,
   pendingName,
@@ -222,9 +223,9 @@ export default function Home() {
       {/* Pending amendments — every claim dated (lib/pending.ts) */}
       {upcoming.length > 0 && (
         <section>
-          <h2 className="text-[17px] font-bold mb-2">施行予定の改正</h2>
+          <h2 className="text-[17px] font-bold mb-2">{PENDING_SECTION_TITLE}</h2>
           <p className="text-[13px] opacity-50 mb-4">
-            {BUILD_DATE_JST}時点で、成立済み・未施行の改正です。施行されると変わる条文を差分で確認できます（AIによる解説はありません）
+            {PENDING_SECTION_INTRO}
           </p>
           <div className="border border-[var(--border)] rounded-lg overflow-hidden">
             {upcoming.map(({ id, data }, i) => (
@@ -243,10 +244,7 @@ export default function Home() {
                   </span>
                 </div>
                 <p className="text-[12px] opacity-50 mt-1">
-                  施行日:{" "}
-                  {data.pending.revisions
-                    .map((r) => enforcementLabel(r, data.date_after))
-                    .join("／")}
+                  {enforcementLinesFor(data)}
                 </p>
               </Link>
             ))}

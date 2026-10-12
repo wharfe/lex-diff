@@ -71,9 +71,18 @@ def test_same_day_pending_revisions_are_all_listed():
     assert [r["law_revision_id"] for r in got] == ["a", "b"]
 
 
-def test_unenforced_without_a_date_stops():
-    with pytest.raises(ValueError):
-        pending.pending_dates([_rev("a", None)], TODAY)
+def test_unenforced_without_a_date_is_reported_and_the_law_continues():
+    # one undated revision must not stop every other pending date of the law
+    revs = REVS + [_rev("u", None)]
+    snaps = {
+        "2027-06-22": _law("cur", _article("1", "現行")),
+        "2027-06-23": _law("p1", _article("1", "一次")),
+        "2028-06-12": _law("p1", _article("1", "一次")),
+        "2028-06-13": _law("p2", _article("1", "二次")),
+    }
+    r = pending.process_law("L", revs, _fetcher(snaps), TODAY, frozenset())
+    assert len(r["published"]) == 2
+    assert any("u" in e for e in r["errors"])
 
 
 def test_pending_block_keeps_the_comment_verbatim_and_blank_as_none():
@@ -90,7 +99,7 @@ def test_unenforced_before_lists_what_the_before_text_already_contains():
     revs = [_rev("x", "2026-04-01", status="CurrentEnforced"),
             _rev("a", "2027-06-23", comment=C, sched="2027-06-23"),
             _rev("b", "2028-06-13"), _rev("c", "2029-01-01")]
-    got = pending.unenforced_before(revs, "2028-06-13", TODAY)
+    got = pending.unenforced_before(revs, "2028-06-13")
     assert [r["law_revision_id"] for r in got] == ["a"]
     assert got[0]["enforcement_comment"] == C
 
@@ -210,3 +219,36 @@ def test_check_reports_processing_errors():
 def test_check_does_not_report_a_withheld_pair_that_never_shipped():
     probs = pending.check({"L": {}}, {"L": _fresh({}, withheld=["L_e_f"])})
     assert probs == []
+
+
+def test_unenforced_before_keeps_an_overdue_unenforced_revision():
+    # past its date but e-Gov has not flipped it yet: the D-1 text still has it
+    revs = [_rev("o", "2026-10-01"), _rev("b", "2028-06-13")]
+    assert [r["law_revision_id"] for r in pending.unenforced_before(revs, "2028-06-13")] == ["o"]
+
+
+def test_check_does_not_tell_to_remove_what_it_could_not_rebuild():
+    probs = pending.check({"L": {"L_a_b": _doc("新")}},
+                          {"L": _fresh({}, errors=["L_a_b: fetch failed: timeout"])})
+    assert any("fetch failed" in p for p in probs)
+    assert not any("remove" in p for p in probs)
+
+
+def test_check_names_a_status_only_change_as_such():
+    old = _doc("新")
+    new = _doc("新")
+    new["pending"]["unenforced_before"] = [{"law_revision_id": "z"}]
+    [p] = pending.check({"L": {"L_a_b": old}}, {"L": _fresh({"L_a_b": new})})
+    assert "本文は同じ" in p
+
+
+def test_stale_shipped_lists_shipped_pending_diffs_not_rebuilt():
+    assert pending.stale_shipped({"L_a_b": _doc("新"), "L_c_d": _doc("x")},
+                                 _fresh({"L_c_d": _doc("x")})) == ["L_a_b"]
+
+
+def test_merge_for_write_keeps_the_shipped_proposer():
+    old = _doc("新", proposer={"submission_type": "閣法"})
+    new = _doc("改")
+    assert pending.merge_for_write(old, new)["proposer"] == {"submission_type": "閣法"}
+    assert pending.merge_for_write(None, new) is new

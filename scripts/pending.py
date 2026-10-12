@@ -52,17 +52,25 @@ def today_jst() -> str:
 
 
 def pending_dates(revisions: list[dict], today: str) -> dict[str, list[dict]]:
-    """Unenforced revisions dated after today, grouped by date, oldest first."""
+    """Unenforced revisions dated after today, grouped by date, oldest first.
+
+    An undated one is left out here and reported by undated_unenforced, so it
+    cannot stop the law's other dates.
+    """
     out: dict[str, list[dict]] = {}
     for r in revisions:
         if r.get("current_revision_status") != "UnEnforced":
             continue
         date = r.get("amendment_enforcement_date")
-        if not date:
-            raise ValueError(f"unenforced revision without a date: {r.get('law_revision_id')}")
-        if date > today:
+        if date and date > today:
             out.setdefault(date, []).append(r)
     return dict(sorted(out.items()))
+
+
+def undated_unenforced(revisions: list[dict]) -> list[str]:
+    return [r.get("law_revision_id") for r in revisions
+            if r.get("current_revision_status") == "UnEnforced"
+            and not r.get("amendment_enforcement_date")]
 
 
 def _describe(r: dict) -> dict:
@@ -77,12 +85,17 @@ def _describe(r: dict) -> dict:
     }
 
 
-def unenforced_before(revisions: list[dict], date: str, today: str) -> list[dict]:
-    """Pending revisions that the D-1 text already contains."""
+def unenforced_before(revisions: list[dict], date: str) -> list[dict]:
+    """Pending revisions that the D-1 text already contains.
+
+    Includes one past its date that e-Gov has not flipped yet: the D-1 text
+    has it all the same.
+    """
     found = [
         r for r in revisions
         if r.get("current_revision_status") == "UnEnforced"
-        and today < (r.get("amendment_enforcement_date") or "") < date
+        and r.get("amendment_enforcement_date")
+        and r["amendment_enforcement_date"] < date
     ]
     found.sort(key=lambda r: (r["amendment_enforcement_date"], r["law_revision_id"]))
     return [_describe(r) | {"enforcement_date": r["amendment_enforcement_date"]} for r in found]
@@ -121,11 +134,9 @@ def process_law(
     """
     result: dict = {"docs": {}, "raws": {}, "published": [], "withheld": [],
                     "skipped": [], "errors": []}
-    try:
-        by_date = pending_dates(revisions, today)
-    except ValueError as e:
-        result["errors"].append(f"{law_id}: {e}")
-        return result
+    by_date = pending_dates(revisions, today)
+    for rid in undated_unenforced(revisions):
+        result["errors"].append(f"{law_id}: unenforced revision {rid} has no date — not published")
 
     for date, revs in by_date.items():
         before_date = (datetime.date.fromisoformat(date) - timedelta(days=1)).isoformat()
@@ -173,7 +184,7 @@ def process_law(
                 result["skipped"].append(diff_id)
             continue
 
-        doc["pending"] = pending_block(revs, today, unenforced_before(revisions, date, today))
+        doc["pending"] = pending_block(revs, today, unenforced_before(revisions, date))
         result["docs"][diff_id] = doc
         result["published"].append(diff_id)
         result["raws"][f"{law_id}_{before_date}.json"] = before
@@ -189,19 +200,52 @@ def comparable(doc: dict) -> dict:
     return out
 
 
+def stale_shipped(ships: dict[str, dict], result: dict) -> list[str]:
+    """Shipped pending diffs this rebuild did not produce."""
+    return [diff_id for diff_id in ships if diff_id not in result["docs"]]
+
+
+def merge_for_write(old: dict | None, new: dict) -> dict:
+    """The doc to write: keeps what enrich.py added to the shipped one."""
+    if old is None:
+        return new
+    merged = dict(new)
+    for key in VOLATILE_KEYS:
+        if key in old:
+            merged[key] = old[key]
+    return merged
+
+
+def _about(diff_id: str, result: dict) -> list[str]:
+    return [e for e in result["errors"] if e.startswith(diff_id) or e.split(":")[0] == diff_id.split("_")[0]]
+
+
 def check(shipped: dict[str, dict[str, dict]], fresh: dict[str, dict]) -> list[str]:
     """Problems between shipped pending diffs and a fresh rebuild, per law."""
     problems: list[str] = []
     for law_id, result in fresh.items():
         problems.extend(result["errors"])
         ships = shipped.get(law_id, {})
-        for diff_id, doc in ships.items():
-            new = result["docs"].get(diff_id)
-            if new is None:
+        for diff_id in stale_shipped(ships, result):
+            if _about(diff_id, result):
+                # Not rebuilt because this run failed for it: whether it is
+                # still pending is unknown, so nothing may be removed on this.
+                problems.append(f"{diff_id}: could not be rebuilt (errors above) — re-run before acting")
+            else:
                 problems.append(
                     f"{diff_id}: no longer a pending diff (enforced, date moved, or withheld) — "
                     "regenerate through fetch.py → diff.py → annotate.py, or remove")
-            elif comparable(new) != comparable(doc):
+        for diff_id, doc in ships.items():
+            new = result["docs"].get(diff_id)
+            if new is None or comparable(new) == comparable(doc):
+                continue
+            if {k: v for k, v in comparable(new).items() if k != "pending"} == {
+                k: v for k, v in comparable(doc).items() if k != "pending"
+            }:
+                # e.g. an earlier pending amendment took effect: the text is
+                # the same, the page's record of what was pending is not.
+                problems.append(f"{diff_id}: 本文は同じだが施行状況の記録が変わった — re-run pending.py")
+            else:
                 problems.append(f"{diff_id}: e-Gov now holds different content — re-run pending.py")
         for diff_id in result["docs"]:
             if diff_id not in ships:
@@ -237,9 +281,15 @@ def main() -> None:
     shipped: dict[str, dict[str, dict]] = {}
     for law_id in law_ids:
         print(f"{law_id}: fetching revisions...")
-        data = fetch.fetch_law_revisions(law_id)
-        revision_lists[law_id] = data
         shipped[law_id] = shipped_pending(law_id)
+        try:
+            data = fetch.fetch_law_revisions(law_id)
+        except Exception as e:  # this law only; the others still run
+            fresh[law_id] = {"docs": {}, "raws": {}, "published": [], "withheld": [],
+                             "skipped": [], "errors": [f"{law_id}: revision list fetch failed: {e}"]}
+            print(f"  ERROR: {fresh[law_id]['errors'][0]}")
+            continue
+        revision_lists[law_id] = data
         fresh[law_id] = process_law(
             law_id, data["revisions"], fetch.fetch_law_data, today,
             frozenset(shipped[law_id]))
@@ -261,7 +311,11 @@ def main() -> None:
         sys.exit(1 if problems else 0)
 
     PENDING_RAW_DIR.mkdir(parents=True, exist_ok=True)
+    stale_any = False
     for law_id, result in fresh.items():
+        if law_id not in revision_lists:
+            print(f"ERROR: {result['errors'][0]}")
+            continue
         # The list timeline.py links from; fetched in this run.
         (RAW_DIR / f"{law_id}_revisions.json").write_text(
             json.dumps(revision_lists[law_id], ensure_ascii=False, indent=2))
@@ -271,18 +325,23 @@ def main() -> None:
             old = shipped[law_id].get(diff_id)
             if old is not None and comparable(old) == comparable(doc):
                 continue  # unchanged: keep generated_on and enrich's proposer
+            out = merge_for_write(old, doc)
             for out_dir in OUT_DIRS:
                 out_dir.mkdir(parents=True, exist_ok=True)
                 (out_dir / f"{diff_id}.json").write_text(
-                    json.dumps(doc, ensure_ascii=False, indent=2))
+                    json.dumps(out, ensure_ascii=False, indent=2))
             print(f"  wrote {diff_id}")
+        for diff_id in stale_shipped(shipped[law_id], result):
+            # Left in place: removing a published page is a human call.
+            stale_any = True
+            print(f"STALE: {diff_id} ships as pending but was not rebuilt — see --check")
         for e in result["errors"]:
             print(f"ERROR: {e}")
         for w in result["withheld"]:
             print(f"WITHHELD (tables changed, #28): {w}")
 
     print("Next: timeline.py for each law, then enrich.py.")
-    if any(r["errors"] for r in fresh.values()):
+    if stale_any or any(r["errors"] for r in fresh.values()):
         sys.exit(1)
 
 

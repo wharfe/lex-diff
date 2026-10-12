@@ -11,10 +11,10 @@ import { PrSummaryCard } from "@/components/pr-summary";
 import { DiffViewer } from "@/components/diff-viewer";
 import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
 import {
-  asOfLabel,
-  enforcementLabel,
   isPendingDiff,
-  pendingName,
+  pendingBreadcrumb,
+  pendingDescription,
+  pendingTitle,
 } from "@/lib/pending";
 
 export function generateStaticParams() {
@@ -36,22 +36,13 @@ export async function generateMetadata({
   if (isPendingDiff(data)) {
     // No year and no past tense: the date may be a 政令 deadline, and the
     // page stays as built after it passes. Every claim is dated instead.
-    const name = pendingName(data);
-    const asOf = asOfLabel(data.pending.generated_on);
-    const dates = data.pending.revisions
-      .map((r) => enforcementLabel(r, data.date_after))
-      .join("／");
-    const change =
-      mainCount > 0
-        ? `施行されると本則${mainCount}条が変わります。`
-        : `施行されると附則${supplCount}件が変わります（本則は変わりません）。`;
-    const pendingTitle = `${data.law_title}【${asOf}】${name}による改正`;
-    const description = `${data.law_title}の改正（${name}、${asOf}）による新旧条文の差分。施行日: ${dates}。${change}`;
+    const title = pendingTitle(data);
+    const description = pendingDescription(data, mainCount, supplCount);
     return {
-      title: pendingTitle,
+      title,
       description,
       alternates: { canonical: `/diff/${encodeURIComponent(diffId)}` },
-      openGraph: { title: `${pendingTitle} | lexdiff`, description },
+      openGraph: { title: `${title} | lexdiff`, description },
     };
   }
   const title = data.pr_summary?.title || data.revision_after.amendment_law_title;
@@ -100,7 +91,7 @@ export default async function DiffPage({
           },
           {
             name: isPendingDiff(data)
-              ? `${pendingName(data)}による改正（${asOfLabel(data.pending.generated_on)}）`
+              ? pendingBreadcrumb(data)
               : data.pr_summary?.title || data.date_after,
             url: `https://lexdiff.com/diff/${encodeURIComponent(diffId)}`,
           },
