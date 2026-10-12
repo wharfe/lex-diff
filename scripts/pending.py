@@ -142,54 +142,65 @@ def process_law(
         before_date = (datetime.date.fromisoformat(date) - timedelta(days=1)).isoformat()
         diff_id = f"{law_id}_{before_date}_{date}"
         try:
-            before = fetch_data(law_id, before_date)
-            after = fetch_data(law_id, date)
-        except Exception as e:  # network or HTTP error: this pair only
-            result["errors"].append(f"{diff_id}: fetch failed: {e}")
-            continue
-
-        own_ids = {r["law_revision_id"] for r in revs}
-        after_id = after["revision_info"].get("law_revision_id")
-        if after_id not in own_ids:
-            result["errors"].append(
-                f"{diff_id}: e-Gov returned {after_id!r} for {date}, expected one of {sorted(own_ids)}")
-            continue
-        before_id = before["revision_info"].get("law_revision_id")
-        expected = _expected_before_ids(revisions, date)
-        if before_id not in expected:
-            # Another version as the "before" side would mix several amendments
-            # into one diff and credit them to this one.
-            result["errors"].append(
-                f"{diff_id}: e-Gov returned {before_id!r} for {before_date}, expected one of {sorted(expected)}")
-            continue
-
-        # Same order as diff.main: tables first, since a table-only amendment
-        # also comes out of compute_diff as no change.
-        shipped = diff_id in shipped_ids
-        if diff.tables_changed(before["law_full_text"], after["law_full_text"]):
-            if shipped:
-                result["errors"].append(f"{diff_id}: published, but a table now changes (#28)")
-            else:
-                result["withheld"].append(diff_id)
-            continue
-        try:
-            doc = diff.build_diff_document(law_id, before_date, date, before, after, revisions)
-        except ValueError as e:
-            result["errors"].append(f"{diff_id}: {e}")
-            continue
-        if not doc["diffs"]:
-            if shipped:
-                result["errors"].append(f"{diff_id}: published, but the pair now has no changes")
-            else:
-                result["skipped"].append(diff_id)
-            continue
-
-        doc["pending"] = pending_block(revs, today, unenforced_before(revisions, date))
-        result["docs"][diff_id] = doc
-        result["published"].append(diff_id)
-        result["raws"][f"{law_id}_{before_date}.json"] = before
-        result["raws"][f"{law_id}_{date}.json"] = after
+            _process_pair(law_id, date, before_date, diff_id, revs, revisions,
+                          fetch_data, today, shipped_ids, result)
+        except (KeyError, TypeError, AttributeError) as e:
+            # e-Gov answered, but not in the shape we read: this pair only.
+            result["errors"].append(f"{diff_id}: malformed e-Gov response: {e!r}")
     return result
+
+
+def _process_pair(law_id, date, before_date, diff_id, revs, revisions,
+                  fetch_data, today, shipped_ids, result) -> None:
+    """One pending date of process_law; appends to `result`."""
+    try:
+        before = fetch_data(law_id, before_date)
+        after = fetch_data(law_id, date)
+    except Exception as e:  # network or HTTP error: this pair only
+        result["errors"].append(f"{diff_id}: fetch failed: {e}")
+        return
+
+    own_ids = {r["law_revision_id"] for r in revs}
+    after_id = after["revision_info"].get("law_revision_id")
+    if after_id not in own_ids:
+        result["errors"].append(
+            f"{diff_id}: e-Gov returned {after_id!r} for {date}, expected one of {sorted(own_ids)}")
+        return
+    before_id = before["revision_info"].get("law_revision_id")
+    expected = _expected_before_ids(revisions, date)
+    if before_id not in expected:
+        # Another version as the "before" side would mix several amendments
+        # into one diff and credit them to this one.
+        result["errors"].append(
+            f"{diff_id}: e-Gov returned {before_id!r} for {before_date}, expected one of {sorted(expected)}")
+        return
+
+    # Same order as diff.main: tables first, since a table-only amendment
+    # also comes out of compute_diff as no change.
+    shipped = diff_id in shipped_ids
+    if diff.tables_changed(before["law_full_text"], after["law_full_text"]):
+        if shipped:
+            result["errors"].append(f"{diff_id}: published, but a table now changes (#28)")
+        else:
+            result["withheld"].append(diff_id)
+        return
+    try:
+        doc = diff.build_diff_document(law_id, before_date, date, before, after, revisions)
+    except ValueError as e:
+        result["errors"].append(f"{diff_id}: {e}")
+        return
+    if not doc["diffs"]:
+        if shipped:
+            result["errors"].append(f"{diff_id}: published, but the pair now has no changes")
+        else:
+            result["skipped"].append(diff_id)
+        return
+
+    doc["pending"] = pending_block(revs, today, unenforced_before(revisions, date))
+    result["docs"][diff_id] = doc
+    result["published"].append(diff_id)
+    result["raws"][f"{law_id}_{before_date}.json"] = before
+    result["raws"][f"{law_id}_{date}.json"] = after
 
 
 def comparable(doc: dict) -> dict:
@@ -284,6 +295,8 @@ def main() -> None:
         shipped[law_id] = shipped_pending(law_id)
         try:
             data = fetch.fetch_law_revisions(law_id)
+            if not isinstance(data.get("revisions"), list):
+                raise ValueError("no revisions list in the response")
         except Exception as e:  # this law only; the others still run
             fresh[law_id] = {"docs": {}, "raws": {}, "published": [], "withheld": [],
                              "skipped": [], "errors": [f"{law_id}: revision list fetch failed: {e}"]}

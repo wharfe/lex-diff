@@ -252,3 +252,15 @@ def test_merge_for_write_keeps_the_shipped_proposer():
     new = _doc("改")
     assert pending.merge_for_write(old, new)["proposer"] == {"submission_type": "閣法"}
     assert pending.merge_for_write(None, new) is new
+
+
+def test_a_malformed_response_is_an_error_for_that_pair_only():
+    snaps = {
+        "2027-06-22": {"unexpected": "shape"},
+        "2027-06-23": _law("p1", _article("1", "一次")),
+        "2028-06-12": _law("p1", _article("1", "一次")),
+        "2028-06-13": _law("p2", _article("1", "二次")),
+    }
+    r = pending.process_law("L", REVS, _fetcher(snaps), TODAY, frozenset())
+    assert r["published"] == ["L_2028-06-12_2028-06-13"]
+    assert any("L_2027-06-22_2027-06-23" in e for e in r["errors"])
