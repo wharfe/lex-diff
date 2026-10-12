@@ -11,6 +11,7 @@
       "amendment_law_title": "社会経済の変化を踏まえた年金制度の機能強化のための国民年金法等の一部を改正する等の法律",
       "law_revision_id": "425AC0000000027_20300619_507AC0000000074",
       "diff_id": null,
+      "enforcement_comment": "公布の日から起算して五年を超えない範囲内において政令で定める日",
       "proposer": {
         "submission_type": "閣法",
         "minister": {
@@ -26,7 +27,8 @@
       "promulgate_date": "2024-06-07",
       "amendment_law_title": "情報通信技術の活用による行政手続等に係る関係者の利便性の向上並びに行政運営の簡素化及び効率化を図るためのデジタル社会形成基本法等の一部を改正する法律",
       "law_revision_id": "425AC0000000027_20290606_506AC0000000046",
-      "diff_id": null,
+      "diff_id": "425AC0000000027_2029-06-05_2029-06-06",
+      "enforcement_comment": "公布の日から起算して五年を超えない範囲内において政令で定める日",
       "proposer": {
         "submission_type": "閣法",
         "minister": {
@@ -43,6 +45,7 @@
       "amendment_law_title": "個人情報の保護に関する法律等の一部を改正する法律",
       "law_revision_id": "425AC0000000027_20280716_508AC0000000056",
       "diff_id": null,
+      "enforcement_comment": "公布の日から起算して二年を超えない範囲内において政令で定める日",
       "proposer": {
         "submission_type": "閣法",
         "minister": {
@@ -59,6 +62,7 @@
       "amendment_law_title": "健康保険法等の一部を改正する法律",
       "law_revision_id": "425AC0000000027_20280604_508AC0000000031",
       "diff_id": null,
+      "enforcement_comment": "公布の日から起算して二年を超えない範囲内において政令で定める日",
       "proposer": {
         "submission_type": "閣法",
         "minister": {
@@ -74,7 +78,7 @@
       "promulgate_date": "2026-07-17",
       "amendment_law_title": "個人情報の保護に関する法律等の一部を改正する法律",
       "law_revision_id": "425AC0000000027_20270117_508AC0000000056",
-      "diff_id": null,
+      "diff_id": "425AC0000000027_2027-01-16_2027-01-17",
       "proposer": {
         "submission_type": "閣法",
         "minister": {
@@ -90,7 +94,7 @@
       "promulgate_date": "2026-03-31",
       "amendment_law_title": "所得税法等の一部を改正する法律",
       "law_revision_id": "425AC0000000027_20270101_508AC0000000012",
-      "diff_id": null,
+      "diff_id": "425AC0000000027_2026-12-31_2027-01-01",
       "proposer": {
         "submission_type": "閣法",
         "minister": {

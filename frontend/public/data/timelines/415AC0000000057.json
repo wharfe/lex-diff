@@ -10,7 +10,8 @@
       "promulgate_date": "2026-06-24",
       "amendment_law_title": "民法等の一部を改正する法律の施行に伴う関係法律の整備等に関する法律",
       "law_revision_id": "415AC0000000057_20281223_508AC0000000046",
-      "diff_id": null,
+      "diff_id": "415AC0000000057_2028-12-22_2028-12-23",
+      "enforcement_comment": "民法等の一部を改正する法律（令和八年法律第四十五号）の施行の日",
       "proposer": {
         "submission_type": "閣法",
         "minister": {
@@ -26,7 +27,8 @@
       "promulgate_date": "2026-07-17",
       "amendment_law_title": "個人情報の保護に関する法律等の一部を改正する法律",
       "law_revision_id": "415AC0000000057_20280716_508AC0000000056",
-      "diff_id": null,
+      "diff_id": "415AC0000000057_2028-07-15_2028-07-16",
+      "enforcement_comment": "公布の日から起算して二年を超えない範囲内において政令で定める日",
       "proposer": {
         "submission_type": "閣法",
         "minister": {
@@ -43,6 +45,7 @@
       "amendment_law_title": "科学技術・イノベーション創出の活性化に関する法律の一部を改正する法律",
       "law_revision_id": "415AC0000000057_20270416_508AC0000000059",
       "diff_id": null,
+      "enforcement_comment": "公布の日から起算して九月を超えない範囲内において政令で定める日",
       "proposer": {
         "submission_type": "閣法",
         "minister": {
@@ -74,7 +77,7 @@
       "promulgate_date": "2026-07-17",
       "amendment_law_title": "個人情報の保護に関する法律等の一部を改正する法律",
       "law_revision_id": "415AC0000000057_20270117_508AC0000000056",
-      "diff_id": null,
+      "diff_id": "415AC0000000057_2027-01-16_2027-01-17",
       "proposer": {
         "submission_type": "閣法",
         "minister": {
@@ -90,7 +93,7 @@
       "promulgate_date": "2026-07-17",
       "amendment_law_title": "防災庁設置法の施行に伴う関係法律の整備等に関する法律",
       "law_revision_id": "415AC0000000057_20261102_508AC0000000062",
-      "diff_id": null,
+      "diff_id": "415AC0000000057_2026-11-01_2026-11-02",
       "proposer": {
         "submission_type": "閣法",
         "minister": {
