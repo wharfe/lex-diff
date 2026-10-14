@@ -229,6 +229,113 @@ def test_a_shipped_deleted_article_carries_its_former_text(path):
         assert page["related_articles"] == [], page["article_num"]
 
 
+def former_disagreements(doc, diff_docs):
+    """Pages whose former block and top history card tell different stories (#26).
+
+    Re-derived from the shipped diffs rather than read back through
+    validate_articles: the latest change is collect_changes' first entry at the
+    file's own asof (never the wall clock -- a pending diff rebuilt later would
+    otherwise enter the history), and its basis is decided again on its text.
+    """
+    import articles
+
+    history = articles.collect_changes(diff_docs, doc["source"]["asof"])
+    problems = []
+    for page in doc["articles"]:
+        num = page["article_num"]
+        if num not in history or not page["changes"]:
+            problems.append(f"{num}: no history to compare against")
+            continue
+        latest = history[num][0]
+        card = page["changes"][0]
+        if card["diff_id"] != latest["diff_id"]:
+            problems.append(f"{num}: the top card is {card['diff_id']}, the latest diff {latest['diff_id']}")
+            continue
+        if card["summary_basis"] != latest["summary_basis"]:
+            problems.append(f"{num}: the top card says {card['summary_basis']}, its diff {latest['summary_basis']}")
+        before = latest["summary_basis"] == articles.SUMMARY_BASIS_BEFORE
+        if (page["former"] is not None) != before:
+            problems.append(f"{num}: former is {page['former'] is not None} under a {latest['summary_basis']} change")
+        elif before and (
+            page["former"]["as_of"] != latest["date_before"]
+            or page["former"]["paragraphs"] != latest["paragraphs_before"]
+        ):
+            # 「今回の改正直前の条文」 must be the text just before THIS change.
+            problems.append(f"{num}: former is not the text before {latest['diff_id']}")
+    return problems
+
+
+@pytest.mark.parametrize("path", shipped_articles(), ids=lambda p: p.stem)
+def test_a_shipped_former_block_goes_with_a_latest_change_about_the_text_before(path):
+    import articles
+
+    doc = json.loads(path.read_text())
+    diff_docs = articles.shipped_diff_docs(ARTICLES_DIR.parent)[doc["law_id"]]
+    assert former_disagreements(doc, diff_docs) == []
+
+
+def test_the_shipped_former_check_sees_both_kinds_of_page():
+    # Most laws have no tombstone at all, so the per-file check above could go
+    # on passing over data in which no page ever carried a former block.
+    kinds = {
+        page["former"] is not None
+        for path in shipped_articles()
+        for page in json.loads(path.read_text())["articles"]
+    }
+    assert kinds == {True, False}
+
+
+def test_the_shipped_former_check_catches_a_page_broken_either_way():
+    """The per-file check only ever sees agreeing data; this is its red, kept.
+
+    Broken on both sides, one page per branch. The diff side matters: a check
+    that compared a page only with itself would catch the page-side breaks and
+    none of the diff-side ones.
+    """
+    import copy
+
+    import articles
+
+    doc = next(
+        d for d in (json.loads(p.read_text()) for p in shipped_articles())
+        if sum(page["former"] is not None for page in d["articles"]) >= 3
+    )
+    diff_docs = articles.shipped_diff_docs(ARTICLES_DIR.parent)[doc["law_id"]]
+    assert former_disagreements(doc, diff_docs) == []
+    latest = {
+        num: history[0]["diff_id"]
+        for num, history in articles.collect_changes(diff_docs, doc["source"]["asof"]).items()
+    }
+
+    broken, broken_diffs = copy.deepcopy(doc), copy.deepcopy(diff_docs)
+    tombs = [p for p in broken["articles"] if p["former"] is not None]
+    plain = [p for p in broken["articles"] if p["former"] is None]
+    # Page side: the former block moved from a repealed article to a standing one.
+    plain[0]["former"], tombs[0]["former"] = tombs[0]["former"], None
+    # Page side: a former block from some other version than its latest diff's.
+    tombs[1]["former"]["as_of"] = "1900-01-01"
+    tombs[2]["former"]["paragraphs"] = [{"num": "1", "text": "別の版の本文"}]
+    # Diff side: the latest diff now repeals the article; the page was not rebuilt.
+    relabelled = plain[1]["article_num"]
+    diff = next(d for d in broken_diffs if d["_diff_id"] == latest[relabelled])
+    entry = next(e for e in diff["diffs"] if e["article_num"] == relabelled and not e.get("is_suppl"))
+    entry["paragraphs_after"] = [{"num": "1", "text": "削除"}]
+    # The top card is not the latest diff at all.
+    plain[2]["changes"][0]["diff_id"] = "not-a-shipped-diff"
+
+    t0, t1, t2 = (p["article_num"] for p in tombs[:3])
+    p0, p2 = plain[0]["article_num"], plain[2]["article_num"]
+    assert sorted(former_disagreements(broken, broken_diffs)) == sorted([
+        f"{t0}: former is False under a before change",
+        f"{p0}: former is True under a after change",
+        f"{t1}: former is not the text before {latest[t1]}",
+        f"{t2}: former is not the text before {latest[t2]}",
+        f"{relabelled}: the top card says after, its diff before",
+        f"{relabelled}: former is False under a before change",
+        f"{p2}: the top card is not-a-shipped-diff, the latest diff {latest[p2]}",
+    ])
+
+
 @pytest.mark.parametrize("path", shipped_articles(), ids=lambda p: p.stem)
 def test_a_page_without_a_current_summary_shows_no_current_links(path):
     # spec §4: the gate covers the related-article links too, not just prose.

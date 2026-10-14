@@ -576,7 +576,9 @@ def test_validate_rejects_an_enforcement_date_after_the_asof():
          "current": {"status": "present", "paragraphs": [{"num": "1", "text": "t"}]},
          "changes": [{"change_description": "d"}]}
     ]}
-    assert any("enforcement" in e for e in articles.validate_articles(doc))
+    # The whole sentence: a change with no enforcement_date is reported with
+    # the same word, and this fixture's change has none.
+    assert "source.amendment_enforcement_date is after the asof" in articles.validate_articles(doc)
 
 
 def test_build_alias_table_drops_a_label_claimed_by_two_pages():
@@ -1239,3 +1241,180 @@ def test_a_link_to_a_target_that_kept_its_summary_keeps_its_description():
     page = next(a for a in doc["articles"] if a["article_num"] == "306")
     assert page["related_articles"][0]["slug"] == "766"
     assert page["related_articles"][0]["context"] == "離婚後の子の監護について"
+
+
+# --- the former block and the top history card tell the same story (#26) ---
+#
+# 「今回の改正直前の条文」 is drawn from `former`, the top card's 改正直前／改正直後
+# from changes[0].summary_basis. They come from different facts -- today's text
+# being a tombstone, and the latest diff's own new text -- so when they disagree
+# the shipped diffs are behind today's law, and the page says 改正直前 about a
+# text it does not show, or shows one under a card about what replaced it.
+
+FORMER_AFTER = "733: the former block is shown but the latest change's note is about the text after it"
+BEFORE_NO_FORMER = "733: the latest change's note is about the text before it, but no former block is shown"
+
+
+def _build_history(docs, tree, today="2026-09-22"):
+    # Several diffs: which change is latest is collect_changes' call, as in main().
+    changes = articles.collect_changes(docs, today)
+    return articles.build_law_articles("129AC0000000089", "民法", changes, tree, SOURCE)
+
+
+def test_a_repealed_page_agrees_with_its_latest_card():
+    entries = [
+        _entry(
+            "733",
+            paragraphs_after=[{"num": "1", "text": "削除"}],
+            paragraphs_before=[{"num": "1", "text": "女は、前婚の解消…"}],
+        )
+    ]
+    doc = _build(entries, _tree(_article("733", "第七百三十三条", text="削除")))
+    page = doc["articles"][0]
+    assert page["former"] is not None
+    assert page["changes"][0]["summary_basis"] == "before"
+    assert articles.validate_articles(doc) == []
+
+
+def test_an_ordinary_page_agrees_with_its_latest_card():
+    entries = [_entry("306", paragraphs_after=[{"num": "1", "text": "本文"}])]
+    doc = _build(entries, _tree(_article("306", "第三百六条", text="本文")))
+    page = doc["articles"][0]
+    assert page["former"] is None
+    assert page["changes"][0]["summary_basis"] == "after"
+    assert articles.validate_articles(doc) == []
+
+
+def test_a_tombstone_under_a_latest_card_about_the_text_after_is_rejected():
+    # Today's text is 削除 but the newest shipped diff still gives the article a
+    # body: the repeal is not in our diffs yet. The former block would show the
+    # text before a modification, under a card labelled 改正直後.
+    entries = [_entry("733", paragraphs_after=[{"num": "1", "text": "新しい本文"}])]
+    doc = _build(entries, _tree(_article("733", "第七百三十三条", text="削除")))
+    assert articles.validate_articles(doc) == [FORMER_AFTER]
+
+
+def test_a_latest_card_about_the_text_before_on_a_standing_article_is_rejected():
+    # The newest shipped diff repealed the article, yet today's text has a body
+    # again: a card saying 改正直前 with no former text to show.
+    entries = [_entry("733", paragraphs_after=[{"num": "1", "text": "削除"}])]
+    doc = _build(entries, _tree(_article("733", "第七百三十三条", text="再び置かれた本文")))
+    assert articles.validate_articles(doc) == [BEFORE_NO_FORMER]
+
+
+def _modified_then_repealed():
+    # Oldest first on purpose: the input order must not decide which is latest.
+    return [
+        _doc("2024-11-01", [_entry("733", paragraphs_after=[{"num": "1", "text": "改めた本文"}])],
+             date_before="2024-10-31"),
+        _doc("2026-04-01", [_entry("733", paragraphs_after=[{"num": "1", "text": "削除"}])]),
+    ]
+
+
+def test_only_the_latest_card_is_tied_to_the_former_block():
+    doc = _build_history(_modified_then_repealed(), _tree(_article("733", "第七百三十三条", text="削除")))
+    page = doc["articles"][0]
+    assert [c["summary_basis"] for c in page["changes"]] == ["before", "after"]
+    assert page["former"]["as_of"] == "2026-03-31"
+    assert articles.validate_articles(doc) == []
+
+    repealed_then_restored = [
+        _doc("2024-11-01", [_entry("733", paragraphs_after=[{"num": "1", "text": "削除"}])],
+             date_before="2024-10-31"),
+        _doc("2026-04-01", [_entry("733", paragraphs_after=[{"num": "1", "text": "本文"}])]),
+    ]
+    doc = _build_history(repealed_then_restored, _tree(_article("733", "第七百三十三条", text="本文")))
+    page = doc["articles"][0]
+    assert [c["summary_basis"] for c in page["changes"]] == ["after", "before"]
+    assert page["former"] is None
+    assert articles.validate_articles(doc) == []
+
+
+def test_a_history_reordered_so_an_older_card_is_the_latest_card_is_rejected():
+    doc = _build_history(_modified_then_repealed(), _tree(_article("733", "第七百三十三条", text="削除")))
+    doc["articles"][0]["changes"].reverse()
+    assert articles.validate_articles(doc) == ["733: changes are not newest first", FORMER_AFTER]
+
+
+def _page(status, text, former, changes):
+    return {"article_num": "733", "slug": "733", "label": "第七百三十三条",
+            "current": {"status": status, "paragraphs": [{"num": "1", "text": text}]},
+            "current_summary": None, "former": former, "changes": changes}
+
+
+_FORMER = {"as_of": "2026-03-31", "label": "l", "paragraphs": [{"num": "1", "text": "旧"}]}
+
+
+def _card(basis, date="2026-04-01"):
+    return {"change_description": "d", "summary_basis": basis, "enforcement_date": date}
+
+
+def test_validate_rejects_a_former_block_under_a_latest_card_about_the_text_after():
+    doc = {"source": SOURCE, "articles": [_page("deleted", "削除", _FORMER, [_card("after")])]}
+    assert articles.validate_articles(doc) == [FORMER_AFTER]
+
+
+def test_validate_rejects_a_latest_card_about_the_text_before_with_no_former_block():
+    doc = {"source": SOURCE, "articles": [_page("present", "本文", None, [_card("before")])]}
+    assert articles.validate_articles(doc) == [BEFORE_NO_FORMER]
+
+
+def test_validate_reads_the_latest_card_not_an_older_one():
+    cards = [_card("after", "2026-04-01"), _card("before", "2024-11-01")]
+    doc = {"source": SOURCE, "articles": [_page("present", "本文", None, cards)]}
+    assert articles.validate_articles(doc) == []
+
+
+def test_validate_accepts_a_latest_card_sharing_its_day_with_another():
+    # Ties are legitimate: collect_changes' sort is stable, so of two diffs
+    # taking effect the same day the first by file name stays first.
+    cards = [_card("after", "2026-04-01"), _card("after", "2026-04-01")]
+    doc = {"source": SOURCE, "articles": [_page("present", "本文", None, cards)]}
+    assert articles.validate_articles(doc) == []
+
+
+_NO_KEY = object()
+
+
+@pytest.mark.parametrize("position", [0, 1], ids=["latest_card", "older_card"])
+@pytest.mark.parametrize("date", [_NO_KEY, None, "", 20260401], ids=["no_key", "none", "empty", "int"])
+def test_validate_reports_a_latest_card_or_an_older_one_without_a_date_instead_of_raising(position, date):
+    cards = [_card("after"), _card("after")]
+    if date is _NO_KEY:
+        del cards[position]["enforcement_date"]
+    else:
+        cards[position]["enforcement_date"] = date
+    doc = {"source": SOURCE, "articles": [_page("present", "本文", None, cards)]}
+    assert articles.validate_articles(doc) == ["733: a change's enforcement_date is missing or not a string"]
+
+
+@pytest.mark.parametrize(
+    "changes,errors",
+    [
+        ([], ["733: no changes"]),
+        ([_card("sideways")], ["733: a change has no summary_basis ('sideways')"]),
+    ],
+    ids=["no_cards", "bad_basis"],
+)
+def test_validate_skips_the_latest_card_check_when_there_is_no_valid_latest_card(changes, errors):
+    # Each is already reported once; the former check must not add a second,
+    # misleading error on top (and must not raise on an empty history).
+    doc = {"source": SOURCE, "articles": [_page("deleted", "削除", _FORMER, changes)]}
+    assert articles.validate_articles(doc) == errors
+
+
+def test_main_saves_nothing_when_a_tombstone_disagrees_with_its_latest_card(monkeypatch, tmp_path, capsys):
+    # The shipped diff gives 306 a body; today's text has repealed it. main()
+    # must stop at validation, before either copy is written -- and on this
+    # check, not on some other error the fixture happens to trip.
+    _prepare(monkeypatch, tmp_path, lambda *a, **k: _law_document(
+        _tree(_article("306", "第三百六条", text="削除"))
+    ))
+    with pytest.raises(SystemExit) as exc:
+        articles.main()
+    assert exc.value.code == 2
+    assert _written(tmp_path) == []
+    errors = [line.strip() for line in capsys.readouterr().out.splitlines() if "error:" in line]
+    assert errors == [
+        "error: 306: the former block is shown but the latest change's note is about the text after it"
+    ]
