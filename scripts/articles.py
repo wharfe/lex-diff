@@ -749,6 +749,34 @@ def validate_articles(doc: dict) -> list[str]:
                 errors.append(f"{num}: a deleted article has no former text")
             if page.get("current_summary") is not None:
                 errors.append(f"{num}: a deleted article still carries a current summary")
+
+        # The former block (「今回の改正直前の条文」) and the top history card's
+        # 改正直前／改正直後 come from different facts: today's text being a
+        # tombstone, and the latest diff's own new text. Disagreement means the
+        # shipped diffs are behind today's law, and the page would say 改正直前
+        # about a text it does not show. "Latest" is changes[0], the same
+        # history[0] build_law_articles took `former` from; the order check is
+        # defence in depth for a doc that did not come from there.
+        changes = page.get("changes") or []
+        dates = [c.get("enforcement_date") for c in changes]
+        if not all(isinstance(d, str) and d for d in dates):
+            errors.append(f"{num}: a change's enforcement_date is missing or not a string")
+        elif dates != sorted(dates, reverse=True):
+            errors.append(f"{num}: changes are not newest first")
+        latest_basis = changes[0].get("summary_basis") if changes else None
+        # An empty history or a bad basis is already reported above.
+        if latest_basis in SUMMARY_BASES:
+            has_former = page.get("former") is not None
+            if has_former and latest_basis != SUMMARY_BASIS_BEFORE:
+                errors.append(
+                    f"{num}: the former block is shown but the latest change's note "
+                    "is about the text after it"
+                )
+            elif not has_former and latest_basis == SUMMARY_BASIS_BEFORE:
+                errors.append(
+                    f"{num}: the latest change's note is about the text before it, "
+                    "but no former block is shown"
+                )
     return errors
 
 
