@@ -179,3 +179,63 @@ export function explainerIntro(lawTitle: string, count: number): string {
 export function explainerScopeNote(generatedOn: string): string {
   return `${jpDate(generatedOn)}時点で施行済みの改正が対象です。施行予定の改正は改正履歴をご覧ください。`;
 }
+
+// --- The /upcoming page (docs/upcoming-page/spec.md) ----------------------------
+// scripts/check_upcoming_page.py compares the built page with these strings
+// verbatim; change both together.
+
+export const UPCOMING_TITLE = "施行予定の法改正一覧";
+// No date, month or year: a static page keeps naming one after it has passed,
+// and the nearest date may be a 政令 deadline (Gate 2 H2).
+export const UPCOMING_DESCRIPTION =
+  "成立済みで施行日前の法改正を、施行日ごとに一覧にしました。施行されると変わる条文を新旧の差分で確認できます。";
+export const UPCOMING_SCOPE =
+  "lexdiff が収録する法令のうち、差分を作れた改正のみを載せています（e-Gov に施行日の記載がない改正や、条文中の表が変わる改正は載せていません）";
+// Dated by each row: whether a date is fixed is e-Gov's record as of generated_on.
+export const UPCOMING_UNFIXED_HEADING =
+  "各行の日付の時点で、施行日が e-Gov 上で確定していなかった改正";
+export const UPCOMING_EMPTY = "掲載できる施行予定の改正はありません";
+export const UPCOMING_LINK_LABEL = "施行予定の改正をすべて見る →";
+
+/** Not overdue pending diffs, by date then id: the home list's first rows
+ *  and every row of /upcoming. */
+export function upcomingPending<T extends { id: string; data: LawDiffData }>(
+  all: T[]
+): (T & { data: PendingDiff })[] {
+  return all
+    .flatMap((x) =>
+      isPendingDiff(x.data) && !isOverduePending(x.data)
+        ? [x as T & { data: PendingDiff }]
+        : []
+    )
+    .sort(
+      (a, b) =>
+        a.data.date_after.localeCompare(b.data.date_after) || a.id.localeCompare(b.id)
+    );
+}
+
+/** e-Gov records the date as a deadline or another law's start, not a day. */
+export function isUnfixedPending(d: PendingDiff): boolean {
+  return d.pending.revisions.some((r) => !!r.enforcement_comment);
+}
+
+/** "2026-12" from the date string itself, independent of any time zone. */
+export function upcomingMonth(d: PendingDiff): string {
+  return d.date_after.slice(0, 7);
+}
+
+/** Restates the recorded date; "…に施行" would assert a future event. */
+export function upcomingMonthHeading(month: string): string {
+  const [y, m] = month.split("-");
+  return `施行日が${Number(y)}年${Number(m)}月の改正`;
+}
+
+/** The row's count is against a text that already holds earlier pending
+ *  amendments (unenforcedBeforeNote) — said here, since the row is all a
+ *  list reader sees (Gate 2 r2 M2). */
+export function upcomingBeforeNote(d: PendingDiff): string | null {
+  const n = d.pending.unenforced_before.length;
+  return n > 0
+    ? `（e-Gov 上の予定日の順で、先に施行予定の改正 ${n} 件を反映した条文との比較）`
+    : null;
+}

@@ -492,3 +492,11 @@ def test_an_explainer_holds_the_newest_eligible_diffs():
         eligible = sorted((d for d in dates if _eligible(tl, d)), key=lambda d: dates[d], reverse=True)
         shown = [c["diff_id"] for c in tl["explainer"]["recent_changes"]]
         assert shown == eligible[:MAX_CHANGES], path.name
+
+
+def test_a_pending_revisions_scheduled_date_is_its_diffs_date():
+    # The pages speak of one date per diff (enforcementLabels, /upcoming's
+    # month sections); a revision scheduled for another day would be mislabelled.
+    for p, d in _pending_diffs():
+        for r in d["pending"]["revisions"]:
+            assert r.get("scheduled_enforcement_date") in (None, d["date_after"]), p.name

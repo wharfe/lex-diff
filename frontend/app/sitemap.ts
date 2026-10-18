@@ -46,6 +46,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.5,
     },
+    // No lastModified: the list changes when a row's date passes, with no
+    // data change to date it by (docs/upcoming-page/spec.md).
+    {
+      url: `${BASE_URL}/upcoming`,
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
 
     // Law pages (from timeline data)
     ...lawIds.map((id) => {
