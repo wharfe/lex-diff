@@ -111,7 +111,7 @@ npm run dev -- -p 3002
 │   ├── law_summary.py  Generate AI law summary
 │   └── lawtext.py      Shared reader for the e-Gov law tree
 ├── frontend/           Next.js application
-│   ├── app/            Pages (home, /law, /diff, /theme, /about)
+│   ├── app/            Pages (home, /law, /law/…/article, /diff, /upcoming, /theme, /about)
 │   ├── components/     UI components
 │   ├── lib/            Types, data utilities, theme config
 │   └── public/data/    Static data for SSG

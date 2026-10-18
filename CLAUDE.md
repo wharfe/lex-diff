@@ -25,6 +25,7 @@ uv run python scripts/law_summary.py <law_id>  # /law overview — fetches today
 uv run python scripts/articles.py --all        # Per-article pages — fetches today's text itself
 uv run python scripts/pending.py --all         # Not-yet-enforced amendments as diffs (no AI); then timeline.py, enrich.py
 uv run python scripts/pending.py --all --check # Rebuild them from e-Gov and compare content; exit 1 on any drift
+uv run python scripts/check_upcoming_page.py frontend/out  # After a build: /upcoming against the shipped data (not run in CI)
 uv run pytest                                  # Python tests
 
 # Frontend (in frontend/ directory)
@@ -53,6 +54,7 @@ npm run lint   # Lint
 │   ├── lawtext.py         Reading the e-Gov law tree (shared by diff/law_summary)
 │   ├── articles.py        Per-article pages (current text + this article's history)
 │   ├── pending.py         Not-yet-enforced amendments as diffs, and their freshness check
+│   ├── check_upcoming_page.py  Built /upcoming HTML vs shipped pending diffs
 │   └── requirements.txt   Python dependencies (legacy, use pyproject.toml)
 ├── tests/                 pytest suite — the pure functions in scripts/, plus
 │                          test_shipped_data.py over frontend/public/data/
