@@ -16,6 +16,7 @@ frontend/lib/pending.ts on purpose: a change there has to be made here too.
 Exit 1 on any mismatch. Run by hand after a build (CI does not run it).
 """
 
+import argparse
 import json
 import sys
 import xml.etree.ElementTree as ET
@@ -50,7 +51,9 @@ def month_heading(month: str) -> str:
 
 
 def row_texts(doc: dict) -> list[str]:
-    """Every string a row must show, as lib/pending.ts builds it."""
+    """A row's strings in the order the page shows them, as lib/pending.ts
+    builds them. The row's text must be exactly their concatenation, so a
+    contradicting extra string fails too (code-review, Gate3)."""
     p = doc["pending"]
     name = "／".join(
         r.get("amendment_law_num") or r.get("amendment_law_title") or r["law_revision_id"]
@@ -61,13 +64,15 @@ def row_texts(doc: dict) -> list[str]:
         if r.get("enforcement_comment") else doc["date_after"]
         for r in p["revisions"]
     )
-    main = doc["stats"]["main"]
+    # Counted from the diffs, as the page's mainChangeCounts does — not from
+    # the published stats, which the page does not read.
+    main = sum(1 for d in doc["diffs"] if not d.get("is_suppl"))
     stats = f"施行されると本則 {main} 条が変わる" if main > 0 else "本則は変わらない"
-    texts = [doc["law_title"], name, f"施行日: {labels}",
-             f"{p['generated_on']}時点で未施行", stats]
+    texts = [doc["law_title"], name, f"{p['generated_on']}時点で未施行",
+             f"施行日: {labels}", stats]
     if p.get("unenforced_before"):
         texts.append(
-            f"（e-Gov 上の予定日の順で、先に施行予定の改正 {len(p['unenforced_before'])} 件を反映した条文との比較）"
+            f"（{p['generated_on']}時点で未施行の他の改正 {len(p['unenforced_before'])} 件を反映した条文との比較）"
         )
     return texts
 
@@ -89,7 +94,7 @@ def expected_rows(data_dir: Path, build_date: str) -> dict[str, dict]:
 
 
 class PageReader(HTMLParser):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.depth_main = 0
         self.mains = 0
@@ -109,7 +114,7 @@ class PageReader(HTMLParser):
         # One entry per open <section>, so a nested one closes only itself.
         self.section_stack: list[str] = []
 
-    def handle_starttag(self, tag, attrs):
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         a = dict(attrs)
         if tag == "main":
             self.mains += 1
@@ -149,7 +154,7 @@ class PageReader(HTMLParser):
                 else:
                     self.sections.append({"key": None, "heading": None, "rows": [self.row]})
 
-    def handle_endtag(self, tag):
+    def handle_endtag(self, tag: str) -> None:
         if tag == "main":
             self.depth_main -= 1
         if tag == "title" and self.title is not None:
@@ -168,7 +173,7 @@ class PageReader(HTMLParser):
             elif kind == "home":
                 self.in_home_section -= 1
 
-    def handle_data(self, data):
+    def handle_data(self, data: str) -> None:
         if self.title is not None:
             self.title.append(data)
         if self.h2 is not None:
@@ -271,9 +276,9 @@ def check(out_dir: Path, data_dir: Path, today: str | None) -> list[str]:
                 errors.append(f"{row['id']}: href {row['href']!r}")
             if s["key"] != x["where"]:
                 errors.append(f"{row['id']}: in section {s['key']!r}, expected {x['where']!r}")
-            for want in x["texts"]:
-                if want not in row["text"]:
-                    errors.append(f"{row['id']}: row lacks {want!r}")
+            want_text = "".join(x["texts"])
+            if row["text"] != want_text:
+                errors.append(f"{row['id']}: row text {row['text']!r} != {want_text!r}")
 
     if not expected and EMPTY not in text:
         errors.append("no rows and no empty-state message")
@@ -292,17 +297,13 @@ def check(out_dir: Path, data_dir: Path, today: str | None) -> list[str]:
 
 
 def main() -> None:
-    args = sys.argv[1:]
-    if not args:
-        print(__doc__)
-        sys.exit(2)
-    opts = {"--data-dir": str(SHIPPED), "--today": None}
-    for flag in list(opts):
-        if flag in args:
-            i = args.index(flag)
-            opts[flag] = args[i + 1]
-            del args[i:i + 2]
-    errors = check(Path(args[0]), Path(opts["--data-dir"]), opts["--today"])
+    ap = argparse.ArgumentParser(description="Check the built /upcoming page.")
+    ap.add_argument("out_dir", type=Path)
+    ap.add_argument("--data-dir", type=Path, default=SHIPPED)
+    ap.add_argument("--today", default=None,
+                    help="judge the build date against this day instead of the file's date")
+    args = ap.parse_args()
+    errors = check(args.out_dir, args.data_dir, args.today)
     for e in errors:
         print(e)
     print(f"{len(errors)} problem(s).")

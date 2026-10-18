@@ -260,7 +260,9 @@ export function upcomingMonthHeading(month: string): string {
  *  list reader sees (Gate 2 r2 M2). */
 export function upcomingBeforeNote(d: PendingDiff): string | null {
   const n = d.pending.unenforced_before.length;
+  // Dated, not "先に施行予定": unenforced_before can hold one already past its
+  // date that e-Gov had not flipped (code-review, Gate 3).
   return n > 0
-    ? `（e-Gov 上の予定日の順で、先に施行予定の改正 ${n} 件を反映した条文との比較）`
+    ? `（${asOfLabel(d.pending.generated_on)}の他の改正 ${n} 件を反映した条文との比較）`
     : null;
 }
