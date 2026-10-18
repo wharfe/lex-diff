@@ -210,10 +210,33 @@ export function upcomingPending<T extends { id: string; data: LawDiffData }>(
         ? [x as T & { data: PendingDiff }]
         : []
     )
-    .sort(
-      (a, b) =>
-        a.data.date_after.localeCompare(b.data.date_after) || a.id.localeCompare(b.id)
-    );
+    .sort((a, b) => byCodePoint(a.data.date_after, b.data.date_after) || byCodePoint(a.id, b.id));
+}
+
+/** Plain code-point order, as scripts/check_upcoming_page.py sorts: localeCompare
+ *  collates, and could part from it on ties (Layer 3, Gate 3). */
+function byCodePoint(a: string, b: string): number {
+  return a < b ? -1 : a > b ? 1 : 0;
+}
+
+/** /upcoming's sections: one per month of the fixed-date rows, ascending, then
+ *  one for the rows whose date e-Gov did not fix. No empty section. */
+export function groupUpcoming<T extends { id: string; data: PendingDiff }>(
+  rows: T[]
+): { key: string; heading: string; rows: T[] }[] {
+  const months = new Map<string, T[]>();
+  for (const r of rows.filter((r) => !isUnfixedPending(r.data))) {
+    const m = upcomingMonth(r.data);
+    months.set(m, [...(months.get(m) ?? []), r]);
+  }
+  const sections = [...months.keys()]
+    .sort(byCodePoint)
+    .map((m) => ({ key: m, heading: upcomingMonthHeading(m), rows: months.get(m)! }));
+  const unfixed = rows.filter((r) => isUnfixedPending(r.data));
+  if (unfixed.length > 0) {
+    sections.push({ key: "unfixed", heading: UPCOMING_UNFIXED_HEADING, rows: unfixed });
+  }
+  return sections;
 }
 
 /** e-Gov records the date as a deadline or another law's start, not a day. */

@@ -50,23 +50,32 @@ def data_dir(tmp_path):
     return d
 
 
-def render(data_dir, *, build_date=TODAY, drop=None, extra_link=None, move=None,
+def render(data_dir, *, build_date=TODAY, drop=None, extra_link=None, move=None, to_month=None,
            heading=None, empty_month=False, title=c.TITLE, swap_text=None,
            unfixed_last=True, lastmod=False, home_link=True, canonical="/upcoming",
-           og_type="website", empty_msg=False, mains=1, rows_override=None):
+           og_type="website", empty_msg=False, mains=1, rows_override=None,
+           meta=None, drop_text=None, reverse_month=None, bad_href=None, sitemap=True,
+           build_dates=1):
     rows = rows_override if rows_override is not None else c.expected_rows(data_dir, build_date)
     groups: dict[str, list[str]] = {}
     for pid, x in sorted(rows.items(), key=lambda kv: (kv[1]["date"], kv[0])):
         if pid == drop:
             continue
         where = "unfixed" if pid == move else x["where"]
+        if pid == UNFIXED and to_month:
+            where = to_month
         groups.setdefault(where, []).append(pid)
     if empty_month:
         groups["2027-07"] = []
     keys = sorted(k for k in groups if k != "unfixed")
     if "unfixed" in groups:
         keys = keys + ["unfixed"] if unfixed_last else ["unfixed"] + keys
-    body = f"<div data-build-date=\"{build_date}\"><h1>施行予定の法改正一覧</h1><p>{c.INTRO}</p><p>{c.SCOPE}</p>"
+    if reverse_month in groups:
+        groups[reverse_month].reverse()
+    intro = "" if drop_text == "intro" else c.INTRO
+    scope = "" if drop_text == "scope" else c.SCOPE
+    marks = "".join(f'<span data-build-date="{build_date}"></span>' for _ in range(build_dates - 1))
+    body = f"<div data-build-date=\"{build_date}\">{marks}<h1>施行予定の法改正一覧</h1><p>{intro}</p><p>{scope}</p>"
     for k in keys:
         h = c.UNFIXED_HEADING if k == "unfixed" else c.month_heading(k)
         if k == keys[0] and heading:
@@ -76,7 +85,8 @@ def render(data_dir, *, build_date=TODAY, drop=None, extra_link=None, move=None,
             texts = list(rows[pid]["texts"])
             if swap_text == pid:
                 texts[-1] = "本則は変わらない" if "本則は変わらない" not in texts else "施行されると本則 9 条が変わる"
-            body += (f'<a href="/diff/{pid}" data-pending-id="{pid}">'
+            href = f"/diff/{pid}x" if pid == bad_href else f"/diff/{pid}"
+            body += (f'<a href="{href}" data-pending-id="{pid}">'
                      + "<!-- -->".join(f"<span>{t}</span>" for t in texts) + "</a>")
         body += "</section>"
     if extra_link:
@@ -92,6 +102,8 @@ def render(data_dir, *, build_date=TODAY, drop=None, extra_link=None, move=None,
             f"<meta property=\"og:site_name\" content=\"lexdiff\"/>"
             f"<meta property=\"og:locale\" content=\"ja_JP\"/>"
             f"<meta property=\"og:type\" content=\"{og_type}\"/>")
+    for key, value in (meta or {}).items():
+        head = head.replace(f'"{key}" content="', f'"{key}" content="{value}', 1)
     html = f"<html><head>{head}</head><body>" + "<main>" * mains + body + "</main>" * mains + "</body></html>"
     out = data_dir.parent / "out"
     out.mkdir(exist_ok=True)
@@ -99,7 +111,7 @@ def render(data_dir, *, build_date=TODAY, drop=None, extra_link=None, move=None,
     sm = ('<?xml version="1.0"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
           f"<url><loc>{c.BASE}/upcoming</loc>" + ("<lastmod>2026-10-12</lastmod>" if lastmod else "")
           + "</url></urlset>")
-    (out / "sitemap.xml").write_text(sm)
+    (out / "sitemap.xml").write_text(sm if sitemap else sm.replace("/upcoming", "/about"))
     home = '<section data-home-upcoming=""><a href="/upcoming">すべて見る</a></section>' if home_link \
         else '<nav><a href="/upcoming">x</a></nav>'
     (out / "index.html").write_text(home)
@@ -111,6 +123,7 @@ def test_the_correct_page_passes(data_dir):
 
 
 FIRST = "A_2026-11-30_2026-12-01"
+UNFIXED = "D_2028-06-12_2028-06-13"
 
 
 @pytest.mark.parametrize("defect", [
@@ -130,7 +143,22 @@ FIRST = "A_2026-11-30_2026-12-01"
     {"empty_msg": True},                               # empty message beside rows
     {"mains": 2},                                      # page renders its own <main>
     {"build_date": "2026-10-10"},                      # a stale build date
-], ids=lambda d: next(iter(d)))
+    # Layer 3 (Gate3): one fixture per check
+    {"to_month": "2028-06"},                           # an unfixed row in a month section
+    {"build_date": "2026-10-17"},                      # build precedes a generated_on (C: 10-18)
+    {"build_dates": 2},                                # two build dates
+    {"meta": {"description": "x"}},
+    {"meta": {"og:title": "x"}},
+    {"meta": {"og:url": "x"}},
+    {"meta": {"og:site_name": "x"}},
+    {"meta": {"og:locale": "x"}},
+    {"meta": {"og:description": "x"}},
+    {"drop_text": "intro"},
+    {"drop_text": "scope"},
+    {"reverse_month": "2026-12"},                      # rows out of date order
+    {"bad_href": FIRST},
+    {"sitemap": False},                                # /upcoming not in the sitemap
+], ids=lambda d: f"{next(iter(d))}={d[next(iter(d))]}")
 def test_each_defect_is_reported(data_dir, defect):
     assert render(data_dir, **defect), defect
 
@@ -179,3 +207,19 @@ def test_a_lastmod_before_loc_is_reported(data_dir):
         '<?xml version="1.0"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
         f"<url><lastmod>2026-10-12</lastmod><loc>{c.BASE}/upcoming</loc></url></urlset>")
     assert c.check(out, data_dir, TODAY)
+
+
+def test_the_build_date_is_judged_against_the_files_own_date(data_dir):
+    # Spec: 「HTML の更新日（JST）か前日」, not the day the checker runs
+    # (Layer 3, Gate3): a check run two days after the build is not a defect.
+    import os
+    from datetime import datetime
+    assert render(data_dir) == []
+    out = data_dir.parent / "out"
+    page = out / "upcoming.html"
+    stamp = datetime(2026, 10, 18, 12, tzinfo=c.JST).timestamp()
+    os.utime(page, (stamp, stamp))
+    assert c.check(out, data_dir, None) == []
+    later = datetime(2026, 10, 25, 12, tzinfo=c.JST).timestamp()
+    os.utime(page, (later, later))
+    assert c.check(out, data_dir, None)

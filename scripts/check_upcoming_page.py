@@ -3,6 +3,9 @@
 Usage:
     python scripts/check_upcoming_page.py <out_dir> [--data-dir DIR] [--today YYYY-MM-DD]
 
+--today replaces the page file's modification date (JST) as the day its
+recorded build date is judged against.
+
 The page is static and the frontend has no test runner, so this reads the
 exported HTML and compares it with frontend/public/data/ (docs/upcoming-page/spec.md).
 It reads the visible text, not only the markers: a section is
@@ -190,7 +193,9 @@ def check_sitemap(path: Path) -> list[str]:
     return []
 
 
-def check(out_dir: Path, data_dir: Path, today: str) -> list[str]:
+def check(out_dir: Path, data_dir: Path, today: str | None) -> list[str]:
+    """`today` defaults to the page file's own date in JST: the build date it
+    records must be that day or the one before (a build crossing midnight)."""
     page = out_dir / "upcoming.html"
     if not page.exists():
         return [f"{page} does not exist"]
@@ -202,6 +207,8 @@ def check(out_dir: Path, data_dir: Path, today: str) -> list[str]:
     if len(r.build_dates) != 1:
         return [f"expected one data-build-date, found {r.build_dates}"]
     build_date = r.build_dates[0]
+    if today is None:
+        today = datetime.fromtimestamp(page.stat().st_mtime, JST).date().isoformat()
     day_before = (date.fromisoformat(today) - timedelta(days=1)).isoformat()
     if build_date not in (today, day_before):
         errors.append(f"data-build-date {build_date} is neither {today} nor the day before")
@@ -289,7 +296,7 @@ def main() -> None:
     if not args:
         print(__doc__)
         sys.exit(2)
-    opts = {"--data-dir": str(SHIPPED), "--today": datetime.now(JST).date().isoformat()}
+    opts = {"--data-dir": str(SHIPPED), "--today": None}
     for flag in list(opts):
         if flag in args:
             i = args.index(flag)

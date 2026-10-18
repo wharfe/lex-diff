@@ -5,7 +5,7 @@ import {
   asOfLabel,
   BUILD_DATE_JST,
   enforcementLinesFor,
-  isUnfixedPending,
+  groupUpcoming,
   pendingName,
   pendingStatsLabel,
   PENDING_SECTION_INTRO,
@@ -14,10 +14,7 @@ import {
   UPCOMING_EMPTY,
   UPCOMING_SCOPE,
   UPCOMING_TITLE,
-  UPCOMING_UNFIXED_HEADING,
   upcomingBeforeNote,
-  upcomingMonth,
-  upcomingMonthHeading,
   upcomingPending,
 } from "@/lib/pending";
 
@@ -80,12 +77,6 @@ function UpcomingSection({ k, heading, rows }: { k: string; heading: string; row
 
 export default function UpcomingPage() {
   const rows = upcomingPending(getDiffIds().map((id) => ({ id, data: getDiffData(id) })));
-  const months = new Map<string, Row[]>();
-  for (const r of rows.filter((r) => !isUnfixedPending(r.data))) {
-    const m = upcomingMonth(r.data);
-    months.set(m, [...(months.get(m) ?? []), r]);
-  }
-  const unfixed = rows.filter((r) => isUnfixedPending(r.data));
 
   return (
     <div className="flex flex-col gap-8" data-build-date={BUILD_DATE_JST}>
@@ -97,13 +88,9 @@ export default function UpcomingPage() {
 
       {rows.length === 0 && <p className="text-[14px] opacity-70">{UPCOMING_EMPTY}</p>}
 
-      {[...months.keys()].sort().map((m) => (
-        <UpcomingSection key={m} k={m} heading={upcomingMonthHeading(m)} rows={months.get(m)!} />
+      {groupUpcoming(rows).map((s) => (
+        <UpcomingSection key={s.key} k={s.key} heading={s.heading} rows={s.rows} />
       ))}
-
-      {unfixed.length > 0 && (
-        <UpcomingSection k="unfixed" heading={UPCOMING_UNFIXED_HEADING} rows={unfixed} />
-      )}
     </div>
   );
 }
