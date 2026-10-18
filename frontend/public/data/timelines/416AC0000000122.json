@@ -1,0 +1,209 @@
+{
+  "law_id": "416AC0000000122",
+  "law_title": "公益通報者保護法",
+  "law_num": "平成十六年法律第百二十二号",
+  "promulgation_date": "2004-06-18",
+  "revision_count": 10,
+  "timeline": [
+    {
+      "enforcement_date": "2026-12-01",
+      "promulgate_date": "2025-06-11",
+      "amendment_law_title": "公益通報者保護法の一部を改正する法律",
+      "law_revision_id": "416AC0000000122_20261201_507AC0000000062",
+      "diff_id": "416AC0000000122_2026-11-30_2026-12-01",
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "伊東良孝",
+          "position": "内閣府特命担当大臣（沖縄及び北方対策・消費者及び食品安全・地方創生・アイヌ施策）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "消費者問題に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2026-11-02",
+      "promulgate_date": "2026-07-17",
+      "amendment_law_title": "防災庁設置法の施行に伴う関係法律の整備等に関する法律",
+      "law_revision_id": "416AC0000000122_20261102_508AC0000000062",
+      "diff_id": "416AC0000000122_2026-11-01_2026-11-02",
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "牧野たかお",
+          "position": "復興大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "災害対策及び東日本大震災復興特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2026-07-17",
+      "promulgate_date": "2026-07-17",
+      "amendment_law_title": "防災庁設置法の施行に伴う関係法律の整備等に関する法律",
+      "law_revision_id": "416AC0000000122_20260717_508AC0000000062",
+      "diff_id": "416AC0000000122_2026-07-16_2026-07-17",
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "牧野たかお",
+          "position": "復興大臣",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "災害対策及び東日本大震災復興特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2025-06-11",
+      "promulgate_date": "2025-06-11",
+      "amendment_law_title": "公益通報者保護法の一部を改正する法律",
+      "law_revision_id": "416AC0000000122_20250611_507AC0000000062",
+      "diff_id": "416AC0000000122_2025-06-10_2025-06-11",
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "伊東良孝",
+          "position": "内閣府特命担当大臣（沖縄及び北方対策・消費者及び食品安全・地方創生・アイヌ施策）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "消費者問題に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2022-06-01",
+      "promulgate_date": "2020-06-12",
+      "amendment_law_title": "公益通報者保護法の一部を改正する法律",
+      "law_revision_id": "416AC0000000122_20220601_502AC0000000051",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "衛藤晟一",
+          "position": "内閣府特命担当大臣（沖縄及び北方対策・消費者及び食品安全・少子化対策・海洋政策）",
+          "party": "自由民主党・国民の声"
+        },
+        "committee": "消費者問題に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2021-09-01",
+      "promulgate_date": "2021-05-19",
+      "amendment_law_title": "デジタル庁設置法",
+      "law_revision_id": "416AC0000000122_20210901_503AC0000000036",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "平井卓也",
+          "position": "内閣府特命担当大臣（マイナンバー制度）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "政治倫理の確立及び選挙制度に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2021-05-19",
+      "promulgate_date": "2021-05-19",
+      "amendment_law_title": "デジタル庁設置法",
+      "law_revision_id": "416AC0000000122_20210519_503AC0000000036",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "平井卓也",
+          "position": "内閣府特命担当大臣（マイナンバー制度）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "政治倫理の確立及び選挙制度に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2020-06-12",
+      "promulgate_date": "2020-06-12",
+      "amendment_law_title": "公益通報者保護法の一部を改正する法律",
+      "law_revision_id": "416AC0000000122_20200612_502AC0000000051",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "衛藤晟一",
+          "position": "内閣府特命担当大臣（沖縄及び北方対策・消費者及び食品安全・少子化対策・海洋政策）",
+          "party": "自由民主党・国民の声"
+        },
+        "committee": "消費者問題に関する特別委員会"
+      }
+    },
+    {
+      "enforcement_date": "2018-04-01",
+      "promulgate_date": "2017-06-23",
+      "amendment_law_title": "農林物資の規格化等に関する法律及び独立行政法人農林水産消費安全技術センター法の一部を改正する法律",
+      "law_revision_id": "416AC0000000122_20180401_429AC0000000070",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": null,
+        "committee": "農林水産委員会"
+      }
+    },
+    {
+      "enforcement_date": "2015-04-01",
+      "promulgate_date": "2013-06-28",
+      "amendment_law_title": "食品表示法",
+      "law_revision_id": "416AC0000000122_20150401_425AC0000000070",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "森まさこ",
+          "position": "内閣府特命担当大臣（消費者及び食品安全・少子化対策・男女共同参画）",
+          "party": "自由民主党"
+        },
+        "committee": "消費者問題に関する特別委員会"
+      }
+    }
+  ],
+  "summary": {
+    "description": "この法律は、企業などの不正を知らせた人(公益通報者)が、そのことを理由に解雇されたり不利益な扱いを受けたりしないように保護するための法律です。また、事業者や行政機関が公益通報に関して取るべき対応についても定めています。これにより、国民の生命や財産などを守る法令がきちんと守られることを目指しています。",
+    "scope": "事業者、行政機関、及び公益通報を行う労働者等",
+    "keywords": [
+      "公益通報者",
+      "解雇の無効",
+      "不利益取扱いの禁止",
+      "事業者がとるべき措置",
+      "行政機関がとるべき措置"
+    ]
+  },
+  "category": "労働",
+  "contributors": [
+    {
+      "name": "伊東良孝",
+      "position": "内閣府特命担当大臣（沖縄及び北方対策・消費者及び食品安全・地方創生・アイヌ施策）",
+      "party": "自由民主党・無所属の会",
+      "count": 2
+    },
+    {
+      "name": "牧野たかお",
+      "position": "復興大臣",
+      "party": "自由民主党・無所属の会",
+      "count": 2
+    },
+    {
+      "name": "衛藤晟一",
+      "position": "内閣府特命担当大臣（沖縄及び北方対策・消費者及び食品安全・少子化対策・海洋政策）",
+      "party": "自由民主党・国民の声",
+      "count": 2
+    },
+    {
+      "name": "平井卓也",
+      "position": "内閣府特命担当大臣（マイナンバー制度）",
+      "party": "自由民主党・無所属の会",
+      "count": 2
+    },
+    {
+      "name": "森まさこ",
+      "position": "内閣府特命担当大臣（消費者及び食品安全・少子化対策・男女共同参画）",
+      "party": "自由民主党",
+      "count": 1
+    }
+  ]
+}
