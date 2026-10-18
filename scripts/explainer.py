@@ -185,7 +185,7 @@ def validate_explainer_shape(explainer: dict) -> list[str]:
     return errors
 
 
-def validate_explainer(explainer: dict, selected: list[dict]) -> list[str]:
+def validate_explainer(explainer: dict, selected: list[dict], raw: dict) -> list[str]:
     """Shape, plus agreement with the selection it was generated from."""
     errors = validate_explainer_shape(explainer)
     rc = explainer.get("recent_changes")
@@ -193,6 +193,22 @@ def validate_explainer(explainer: dict, selected: list[dict]) -> list[str]:
         # normalize zips by position: a dropped item would hand the next
         # item's prose this one's diff_id and date.
         errors.append(f"recent_changes count {len(rc)} != selected {len(selected)}")
+    items = raw.get("recent_changes")
+    if not isinstance(items, list) or len(items) != len(selected):
+        # Counted before normalize: zip() cuts surplus items off, so an extra
+        # item would leave the counts agreeing with every fact shifted.
+        n = len(items) if isinstance(items, list) else "no list"
+        errors.append(f"model returned count {n} != selected {len(selected)}")
+    if isinstance(rc, list):
+        for i, (sel, c) in enumerate(zip(selected, rc)):
+            if not isinstance(c, dict):
+                continue
+            # A fine's condition is part of the rule: 「怠ると過料」 for 「正当な
+            # 理由がないのに…怠ったときは…過料」 is wrong (CLAUDE.md, law-seo.ts).
+            evidence = json.dumps(sel.get("pr_summary") or {}, ensure_ascii=False)
+            text = "".join(c.get(k) or "" for k in ("title", "what", "why", "impact"))
+            if "正当な理由" in evidence and "過料" in text and "正当な理由" not in text:
+                errors.append(f"recent_changes[{i}] names a fine without its 正当な理由 condition")
     return errors
 
 
@@ -399,7 +415,7 @@ def main():
     )
     explainer = normalize_explainer(raw, changes, today)
 
-    errors = validate_explainer(explainer, changes)
+    errors = validate_explainer(explainer, changes, raw)
     if errors:
         print("VALIDATION FAILED:")
         for e in errors:

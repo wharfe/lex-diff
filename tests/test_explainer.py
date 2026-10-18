@@ -145,14 +145,14 @@ def test_normalize_attaches_the_deterministic_facts():
     assert [(c["diff_id"], c["year"], c["enforcement_date"]) for c in e["recent_changes"]] == [
         ("d1", "2026", "2026-04-01"), ("d2", "2024", "2024-04-01")]
     assert all(c["grounded"] is True for c in e["recent_changes"])
-    assert validate_explainer(e, SELECTED) == []
+    assert validate_explainer(e, SELECTED, _raw()) == []
 
 
 def test_a_dropped_item_fails_instead_of_shifting_the_facts():
     raw = _raw()
     raw["recent_changes"] = raw["recent_changes"][1:]
     e = normalize_explainer(raw, SELECTED, "2026-10-18")
-    assert any("count" in err for err in validate_explainer(e, SELECTED))
+    assert any("count" in err for err in validate_explainer(e, SELECTED, raw))
 
 
 def test_normalize_keeps_only_the_items():
@@ -211,3 +211,33 @@ def test_shape_checks_lengths_and_counts():
     e = _ok()
     e["recent_changes"][0] = "not a dict"
     assert any("recent_changes[0]" in err for err in validate_explainer_shape(e))
+
+
+def test_an_extra_model_item_fails_instead_of_being_cut():
+    # zip() would cut it off and the count would then agree (codex, Gate3).
+    raw = _raw()
+    raw["recent_changes"].insert(0, {"title": "余分", "what": "選んでいない変更。"})
+    e = normalize_explainer(raw, SELECTED, "2026-10-18")
+    assert any("count" in err for err in validate_explainer(e, SELECTED, raw))
+
+
+def test_a_missing_model_item_fails():
+    raw = _raw()
+    raw["recent_changes"] = raw["recent_changes"][:1]
+    e = normalize_explainer(raw, SELECTED, "2026-10-18")
+    assert any("count" in err for err in validate_explainer(e, SELECTED, raw))
+
+
+def test_a_fine_must_keep_its_condition_when_the_evidence_has_one():
+    # 不動産登記法 第164条: 「正当な理由がないのに…怠ったときは…過料」. The
+    # regenerated text said 「怠ると過料の対象」 (codex, Gate3) — the same error
+    # CLAUDE.md records for law-seo.ts.
+    selected = [dict(SELECTED[0], pr_summary={"summary": "正当な理由がないのに申請を怠ると5万円以下の過料。"}),
+                SELECTED[1]]
+    raw = _raw()
+    raw["recent_changes"][0]["impact"] = "申請を怠ると過料の対象になります。"
+    e = normalize_explainer(raw, selected, "2026-10-18")
+    assert any("正当な理由" in err for err in validate_explainer(e, selected, raw))
+    raw["recent_changes"][0]["impact"] = "正当な理由なく申請を怠ると過料の対象になります。"
+    e = normalize_explainer(raw, selected, "2026-10-18")
+    assert validate_explainer(e, selected, raw) == []
