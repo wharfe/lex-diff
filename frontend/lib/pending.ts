@@ -187,8 +187,10 @@ export function explainerScopeNote(generatedOn: string): string {
 export const UPCOMING_TITLE = "施行予定の法改正一覧";
 // No date, month or year: a static page keeps naming one after it has passed,
 // and the nearest date may be a 政令 deadline (Gate 2 H2).
+// "成立済みで施行日前" was an undated claim about the reader's present, and a
+// search snippet outlives the date it describes (codex, Gate 3).
 export const UPCOMING_DESCRIPTION =
-  "成立済みで施行日前の法改正を、施行日ごとに一覧にしました。施行されると変わる条文を新旧の差分で確認できます。";
+  "e-Gov の記録で未施行だった法改正の一覧です（記録の日付は各行に表示）。施行されると変わる条文を新旧の差分で確認できます。";
 export const UPCOMING_SCOPE =
   "lexdiff が収録する法令のうち、差分を作れた改正のみを載せています（e-Gov に施行日の記載がない改正や、条文中の表が変わる改正は載せていません）";
 // Dated by each row: whether a date is fixed is e-Gov's record as of generated_on.

@@ -96,7 +96,9 @@ def render(data_dir, *, build_date=TODAY, drop=None, extra_link=None, move=None,
     out = data_dir.parent / "out"
     out.mkdir(exist_ok=True)
     (out / "upcoming.html").write_text(html)
-    sm = f"<url><loc>{c.BASE}/upcoming</loc>" + ("<lastmod>2026-10-12</lastmod>" if lastmod else "") + "</url>"
+    sm = ('<?xml version="1.0"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+          f"<url><loc>{c.BASE}/upcoming</loc>" + ("<lastmod>2026-10-12</lastmod>" if lastmod else "")
+          + "</url></urlset>")
     (out / "sitemap.xml").write_text(sm)
     home = '<section data-home-upcoming=""><a href="/upcoming">すべて見る</a></section>' if home_link \
         else '<nav><a href="/upcoming">x</a></nav>'
@@ -149,3 +151,31 @@ def test_the_expected_rows_follow_the_spec(data_dir):
     assert rows[FIRST]["where"] == "2026-12"
     assert any("先に施行予定の改正 2 件" in t for t in rows[FIRST]["texts"])
     assert c.month_heading("2027-01") == "施行日が2027年1月の改正"
+
+
+# codex Gate3: three ways the first checker passed a wrong page.
+
+def test_rows_without_their_marker_are_reported(data_dir):
+    render(data_dir)
+    out = data_dir.parent / "out"
+    page = out / "upcoming.html"
+    page.write_text(page.read_text().replace(" data-pending-id=", " data-x="))
+    assert c.check(out, data_dir, TODAY)
+
+
+def test_a_nested_section_does_not_end_the_home_section(data_dir):
+    assert render(data_dir) == []
+    out = data_dir.parent / "out"
+    (out / "index.html").write_text(
+        '<section data-home-upcoming=""><section><p>x</p></section>'
+        '<a href="/upcoming">すべて見る</a></section>')
+    assert c.check(out, data_dir, TODAY) == []
+
+
+def test_a_lastmod_before_loc_is_reported(data_dir):
+    render(data_dir)
+    out = data_dir.parent / "out"
+    (out / "sitemap.xml").write_text(
+        '<?xml version="1.0"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+        f"<url><lastmod>2026-10-12</lastmod><loc>{c.BASE}/upcoming</loc></url></urlset>")
+    assert c.check(out, data_dir, TODAY)

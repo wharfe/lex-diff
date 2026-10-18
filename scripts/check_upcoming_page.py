@@ -14,8 +14,8 @@ Exit 1 on any mismatch. Run by hand after a build (CI does not run it).
 """
 
 import json
-import re
 import sys
+import xml.etree.ElementTree as ET
 from datetime import date, datetime, timedelta
 from html.parser import HTMLParser
 from pathlib import Path
@@ -26,10 +26,9 @@ SHIPPED = Path(__file__).parent.parent / "frontend" / "public" / "data"
 BASE = "https://lexdiff.com"
 
 TITLE = "施行予定の法改正一覧 | lexdiff"
-DESCRIPTION = (
-    "成立済みで施行日前の法改正を、施行日ごとに一覧にしました。"
-    "施行されると変わる条文を新旧の差分で確認できます。"
-)
+# Dated by each row's record, not asserted of the reader's present: a search
+# snippet outlives the date it describes (codex, Gate3).
+DESCRIPTION = "e-Gov の記録で未施行だった法改正の一覧です（記録の日付は各行に表示）。施行されると変わる条文を新旧の差分で確認できます。"
 INTRO = (
     "成立済みで、各行の日付の時点では未施行だった改正です。"
     "施行されると変わる条文を差分で確認できます（AIによる解説はありません）"
@@ -104,6 +103,8 @@ class PageReader(HTMLParser):
         self.main_text: list[str] = []
         self.home_section_links: list[str] = []
         self.in_home_section = 0
+        # One entry per open <section>, so a nested one closes only itself.
+        self.section_stack: list[str] = []
 
     def handle_starttag(self, tag, attrs):
         a = dict(attrs)
@@ -123,9 +124,13 @@ class PageReader(HTMLParser):
         if tag == "section":
             if "data-home-upcoming" in a:
                 self.in_home_section += 1
-            if "data-upcoming-section" in a:
+                self.section_stack.append("home")
+            elif "data-upcoming-section" in a:
                 self.section = {"key": a["data-upcoming-section"], "heading": None, "rows": []}
                 self.sections.append(self.section)
+                self.section_stack.append("upcoming")
+            else:
+                self.section_stack.append("other")
         if tag == "h2" and self.section is not None and self.section["heading"] is None:
             self.h2 = []
         if tag == "a":
@@ -153,10 +158,11 @@ class PageReader(HTMLParser):
         if tag == "a" and self.row is not None:
             self.row["text"] = "".join(self.row["text"])
             self.row = None
-        if tag == "section":
-            if self.section is not None:
+        if tag == "section" and self.section_stack:
+            kind = self.section_stack.pop()
+            if kind == "upcoming":
                 self.section = None
-            elif self.in_home_section:
+            elif kind == "home":
                 self.in_home_section -= 1
 
     def handle_data(self, data):
@@ -168,6 +174,20 @@ class PageReader(HTMLParser):
             self.row["text"].append(data)
         if self.depth_main:
             self.main_text.append(data)
+
+
+def check_sitemap(path: Path) -> list[str]:
+    """/upcoming is listed, with no lastmod in its <url> wherever it sits."""
+    if not path.exists():
+        return ["sitemap.xml does not exist"]
+    ns = "{http://www.sitemaps.org/schemas/sitemap/0.9}"
+    urls = [u for u in ET.parse(path).getroot().iter(f"{ns}url")
+            if u.findtext(f"{ns}loc") == f"{BASE}/upcoming"]
+    if len(urls) != 1:
+        return [f"sitemap.xml lists /upcoming {len(urls)} times"]
+    if urls[0].find(f"{ns}lastmod") is not None:
+        return ["sitemap gives /upcoming a lastmod"]
+    return []
 
 
 def check(out_dir: Path, data_dir: Path, today: str) -> list[str]:
@@ -215,6 +235,12 @@ def check(out_dir: Path, data_dir: Path, today: str) -> list[str]:
         dup = sorted({t for t in targets if targets.count(t) > 1})
         errors.append(f"/diff/ links: missing {missing} extra {extra} repeated {dup}")
 
+    # Rows, not only links: a row stripped of its marker would skip every
+    # text check below while the link set still agreed (codex, Gate3).
+    row_ids = [row["id"] for s in r.sections for row in s["rows"]]
+    if sorted(row_ids) != sorted(expected):
+        errors.append(f"rows {sorted(row_ids)} != expected {sorted(expected)}")
+
     keys = [s["key"] for s in r.sections]
     want_months = sorted({x["where"] for x in expected.values() if x["where"] != "unfixed"})
     want_keys = want_months + (["unfixed"] if any(x["where"] == "unfixed" for x in expected.values()) else [])
@@ -247,12 +273,7 @@ def check(out_dir: Path, data_dir: Path, today: str) -> list[str]:
     if expected and EMPTY in text:
         errors.append("empty-state message shown with rows")
 
-    sitemap = out_dir / "sitemap.xml"
-    sm = sitemap.read_text() if sitemap.exists() else ""
-    if f"<loc>{BASE}/upcoming</loc>" not in sm:
-        errors.append("sitemap.xml does not list /upcoming")
-    elif re.search(rf"<loc>{BASE}/upcoming</loc>\s*<lastmod>", sm):
-        errors.append("sitemap gives /upcoming a lastmod")
+    errors += check_sitemap(out_dir / "sitemap.xml")
 
     index = out_dir / "index.html"
     if expected:
