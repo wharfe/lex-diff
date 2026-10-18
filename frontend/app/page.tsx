@@ -15,9 +15,10 @@ import {
   PENDING_SECTION_TITLE,
   asOfLabel,
   enforcementLinesFor,
-  isOverduePending,
   isPendingDiff,
   pendingName,
+  UPCOMING_LINK_LABEL,
+  upcomingPending,
 } from "@/lib/pending";
 
 export const metadata: Metadata = {
@@ -68,12 +69,7 @@ export default function Home() {
     .sort((a, b) => b.data.date_after.localeCompare(a.data.date_after));
   // Overdue ones (past their date, not yet rebuilt) are left out: they are
   // no longer "upcoming", and whether they took effect is unknown.
-  const upcoming = allDiffs
-    .flatMap(({ id, data }) =>
-      isPendingDiff(data) && !isOverduePending(data) ? [{ id, data }] : []
-    )
-    .sort((a, b) => a.data.date_after.localeCompare(b.data.date_after))
-    .slice(0, 5);
+  const upcoming = upcomingPending(allDiffs).slice(0, 5);
 
   // Pick the most interesting diff for the hero preview (most changes)
   const heroDiff = diffs.length > 0
@@ -222,7 +218,7 @@ export default function Home() {
 
       {/* Pending amendments — every claim dated (lib/pending.ts) */}
       {upcoming.length > 0 && (
-        <section>
+        <section data-home-upcoming="">
           <h2 className="text-[17px] font-bold mb-2">{PENDING_SECTION_TITLE}</h2>
           <p className="text-[13px] opacity-50 mb-4">
             {PENDING_SECTION_INTRO}
@@ -249,6 +245,9 @@ export default function Home() {
               </Link>
             ))}
           </div>
+          <Link href="/upcoming" className="inline-block mt-3 text-[13px] text-[var(--diff-hunk-text)]">
+            {UPCOMING_LINK_LABEL}
+          </Link>
         </section>
       )}
 
