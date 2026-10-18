@@ -341,3 +341,10 @@ def test_the_explainer_prompt_scopes_each_item_to_its_day():
     assert "「予定」「見込」という語を使わない" in prompt
     assert "条件ごと書く" in prompt
     assert "intro" not in prompt and "faq" not in prompt
+
+
+def test_every_joined_name_loses_its_sho_suffix():
+    c = apply_diff(_change(), {"pr_summary": {"title": "t"},
+                               "revision_after": {"amendment_law_title": "A法　抄"}},
+                   ["A法　抄", "B法"])
+    assert c["source_title"] == "A法／B法"

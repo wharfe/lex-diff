@@ -170,6 +170,11 @@ def test_normalize_keeps_only_the_items():
     "令和九年四月一日から変わります。",
     "２０２８年から変わります。",       # full-width, caught after NFKC
     "令和１０年に見直します。",
+    # code-review Gate3: same year but after generated_on, a bracketed year,
+    # and a kanji 西暦 all passed.
+    "2026年12月1日から事業者に体制整備が義務付けられます。",
+    "2027（令和9）年から変わります。",
+    "二〇二七年から変わります。",
 ])
 def test_future_claims_are_rejected(text):
     e = _ok()
@@ -181,6 +186,8 @@ def test_future_claims_are_rejected(text):
     "2024年4月1日から施行されています。",
     "令和8年5月から変わりました。",
     "今後の手続きはオンラインで行えます。",
+    "2026年10月1日から施行されています。",
+    "2025（令和7）年に改正されました。",
 ])
 def test_statements_about_the_past_or_present_pass(text):
     e = _ok()
@@ -257,3 +264,14 @@ def test_a_law_with_no_item_loses_its_explainer(tmp_path, monkeypatch):
     monkeypatch.setattr(sys, "argv", ["explainer.py", "L"])
     ex.main()
     assert "explainer" not in json.loads(path.read_text())
+
+
+def test_each_sentence_naming_a_fine_keeps_its_condition():
+    # Per field: 「正当な理由」 in what does not excuse 「怠ると過料」 in impact.
+    selected = [dict(SELECTED[0], pr_summary={"summary": "正当な理由がないのに申請を怠ると過料。"}),
+                SELECTED[1]]
+    raw = _raw()
+    raw["recent_changes"][0]["what"] = "正当な理由なく怠ると過料の対象になります。"
+    raw["recent_changes"][0]["impact"] = "申請を怠ると過料が科される可能性があります。"
+    e = normalize_explainer(raw, selected, "2026-10-18")
+    assert any("正当な理由" in err for err in validate_explainer(e, selected, raw))

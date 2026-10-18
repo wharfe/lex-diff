@@ -481,3 +481,14 @@ def test_a_law_has_an_explainer_exactly_when_it_has_an_eligible_diff():
 def test_the_table_exceptions_name_shipped_diffs():
     for stem in SHIPPED_WITH_TABLE_CHANGES:
         assert (SHIPPED / f"{stem}.json").exists(), stem
+
+
+def test_an_explainer_holds_the_newest_eligible_diffs():
+    # Eligibility alone passed an explainer that a newer shipped diff had
+    # made stale (code-review Gate3): the reader is told 「新しい順」.
+    from explainer import MAX_CHANGES
+    for path, tl in _explained():
+        dates = {e["diff_id"]: e["enforcement_date"] for e in tl["timeline"] if e.get("diff_id")}
+        eligible = sorted((d for d in dates if _eligible(tl, d)), key=lambda d: dates[d], reverse=True)
+        shown = [c["diff_id"] for c in tl["explainer"]["recent_changes"]]
+        assert shown == eligible[:MAX_CHANGES], path.name

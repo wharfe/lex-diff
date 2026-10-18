@@ -79,10 +79,11 @@ def select_changes(
     for diff_id in sorted(dates, key=lambda d: dates[d], reverse=True):
         if diff_id in pending:
             continue
-        diff = load(diff_id)
-        if diff is None:
+        diff_data = load(diff_id)
+        if diff_data is None:
             raise ValueError(f"{diff_id}: linked from the timeline but cannot be read")
-        if "pending" in diff or diff["stats"]["main"] == 0 or has_table_change(diff_id):
+        if ("pending" in diff_data or diff_data["stats"]["main"] == 0
+                or has_table_change(diff_id)):
             continue
         change = {
             "year": dates[diff_id][:4],
@@ -91,7 +92,7 @@ def select_changes(
             "source_title": (names.get(diff_id) or [""])[0],
             "grounded": True,
         }
-        changes.append(apply_diff(change, diff, names.get(diff_id, [])))
+        changes.append(apply_diff(change, diff_data, names.get(diff_id, [])))
         if len(changes) == MAX_CHANGES:
             break
     return changes
@@ -117,16 +118,35 @@ def _kanji_number(text: str) -> int | None:
     return value if value > 0 else None
 
 
-def mentioned_years(text: str) -> list[int]:
-    """Western years in 西暦 and 令和 notation (Arabic or kanji), after NFKC."""
+def _normalize_numbers(text: str) -> str:
+    """NFKC, then a kanji 西暦 (二〇二七年) as Arabic digits."""
     text = unicodedata.normalize("NFKC", text)
-    years = [int(y) for y in re.findall(r"(\d{4})年", text)]
+    return re.sub(
+        r"[〇一二三四五六七八九]{4}(?=年)",
+        lambda m: "".join(str(_KANJI_DIGITS[c]) for c in m.group(0)),
+        text,
+    )
+
+
+def mentioned_years(text: str) -> list[int]:
+    """Western years in 西暦 (Arabic or kanji, also 「2027（令和9）年」) and 令和."""
+    text = _normalize_numbers(text)
+    years = [int(y) for y in re.findall(r"(\d{4})(?:年|[(（])", text)]
     years += [2018 + int(n) for n in re.findall(r"令和(\d{1,2})年", text)]
     for n in re.findall(r"令和([元〇一二三四五六七八九十]{1,3})年", text):
         value = _kanji_number(n)
         if value is not None:
             years.append(2018 + value)
     return years
+
+
+def mentioned_dates(text: str) -> list[str]:
+    """「YYYY年M月D日」 and 「YYYY年M月」 as comparable ISO prefixes."""
+    text = _normalize_numbers(text)
+    out = [f"{y}-{int(m):02d}-{int(d):02d}"
+           for y, m, d in re.findall(r"(\d{4})年(\d{1,2})月(\d{1,2})日", text)]
+    out += [f"{y}-{int(m):02d}" for y, m in re.findall(r"(\d{4})年(\d{1,2})月(?!\d{1,2}日)", text)]
+    return out
 
 
 def _texts(explainer: dict) -> list[str]:
@@ -182,6 +202,9 @@ def validate_explainer_shape(explainer: dict) -> list[str]:
                 errors.append(f"claims the future ({word}): {text[:40]}")
         if any(y > gen_year for y in mentioned_years(text)):
             errors.append(f"names a year after {gen_year}: {text[:40]}")
+        # Same year, later day: 「2026年12月1日から」 with generated_on 2026-10-18.
+        if any(d > gen[: len(d)] for d in mentioned_dates(text)):
+            errors.append(f"names a date after {gen}: {text[:40]}")
     return errors
 
 
@@ -206,9 +229,14 @@ def validate_explainer(explainer: dict, selected: list[dict], raw: dict) -> list
             # A fine's condition is part of the rule: 「怠ると過料」 for 「正当な
             # 理由がないのに…怠ったときは…過料」 is wrong (CLAUDE.md, law-seo.ts).
             evidence = json.dumps(sel.get("pr_summary") or {}, ensure_ascii=False)
-            text = "".join(c.get(k) or "" for k in ("title", "what", "why", "impact"))
-            if "正当な理由" in evidence and "過料" in text and "正当な理由" not in text:
-                errors.append(f"recent_changes[{i}] names a fine without its 正当な理由 condition")
+            if "正当な理由" not in evidence:
+                continue
+            # Per field: the condition in `what` does not qualify 「怠ると過料」
+            # in `impact`, which a reader may take on its own (codex, Gate3).
+            for key in ("title", "what", "why", "impact"):
+                text = unicodedata.normalize("NFKC", c.get(key) or "")
+                if "過料" in text and "正当な理由" not in text:
+                    errors.append(f"recent_changes[{i}].{key} names a fine without its 正当な理由 condition")
     return errors
 
 
@@ -286,12 +314,13 @@ def apply_diff(change: dict, diff: dict | None, same_day_titles: list[str] | Non
     if len(titles) < 2 and len(same_day_titles or []) > 1:
         titles = list(same_day_titles)
     change["multi_law"] = len(titles) > 1
-    title = (
+    # e-Gov marks a partial promulgation 「…　抄」 on some entries only; strip
+    # it per name, before joining.
+    titles = [t.removesuffix("　抄") for t in titles]
+    change["source_title"] = (
         "／".join(titles) if change["multi_law"]
-        else after.get("amendment_law_title") or change["source_title"]
+        else (after.get("amendment_law_title") or change["source_title"]).removesuffix("　抄")
     )
-    # e-Gov marks a partial promulgation 「…　抄」 on some entries only.
-    change["source_title"] = title.removesuffix("　抄")
     return change
 
 
