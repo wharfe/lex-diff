@@ -18,11 +18,13 @@ export function generateStaticParams() {
   return params;
 }
 
-/** "民法第306条（一般の先取特権）", or without the parenthesis when the current
- *  text carries no caption -- 民法754条 has none, and an empty （） is worse
- *  than no caption at all. */
-function head(lawTitle: string, displayNum: string, caption: string): string {
-  return caption ? `${lawTitle}${displayNum}（${caption}）` : `${lawTitle}${displayNum}`;
+/** "民法第306条（一般の先取特権）". A tombstone reads "民法第753条（削除）":
+ *  its body is that word, and the bare number told a searcher nothing. Any
+ *  other article without a caption drops the parenthesis -- an empty （） is
+ *  worse than no caption at all. */
+function head(lawTitle: string, displayNum: string, caption: string, tombstone: boolean): string {
+  const paren = tombstone ? "削除" : caption;
+  return paren ? `${lawTitle}${displayNum}（${paren}）` : `${lawTitle}${displayNum}`;
 }
 
 export async function generateMetadata({
@@ -33,13 +35,18 @@ export async function generateMetadata({
   const { lawId, articleSlug } = await params;
   const data = getArticleData(lawId);
   const article = findArticle(lawId, articleSlug)!;
-  const title = head(data.law_title, article.display_num, article.caption);
+  const title = head(
+    data.law_title,
+    article.display_num,
+    article.caption,
+    isTombstone(article.current.status),
+  );
   const years = [...new Set(article.changes.map((c) => c.year))].join("・");
   // Only what every page actually carries: the dated text and the amendment
   // years we hold. "改正前後の条文" is true of deleted articles alone, and the
   // related-article links are absent on a page whose text has moved on.
   return {
-    title: `${title}の条文と改正（${years}年改正）`,
+    title: `${title}｜条文と改正履歴`,
     description: `${title}の${jpDate(data.source.asof)}時点の条文と、${years}年の改正内容。`,
     alternates: { canonical: `/law/${lawId}/article/${articleSlug}` },
   };
@@ -53,7 +60,12 @@ export default async function ArticlePageRoute({
   const { lawId, articleSlug } = await params;
   const data = getArticleData(lawId);
   const article = findArticle(lawId, articleSlug)!;
-  const title = head(data.law_title, article.display_num, article.caption);
+  const title = head(
+    data.law_title,
+    article.display_num,
+    article.caption,
+    isTombstone(article.current.status),
+  );
 
   return (
     <div className="flex flex-col gap-6">
