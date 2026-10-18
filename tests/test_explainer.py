@@ -163,33 +163,48 @@ def test_normalize_keeps_only_the_items():
     assert "why" not in e["recent_changes"][1]
 
 
+# The page prints each item's enforcement date; the model writes none. Telling
+# a future date from a past one in free text failed twice, notation by
+# notation (Gate3: 令和, brackets, kanji); any date at all is simpler to see.
 @pytest.mark.parametrize("text", [
     "2027年に施行される予定です。",
     "改正の効果が見込まれます。",
     "令和9年から新しい制度が始まります。",
     "令和九年四月一日から変わります。",
-    "２０２８年から変わります。",       # full-width, caught after NFKC
+    "２０２８年から変わります。",
     "令和１０年に見直します。",
-    # code-review Gate3: same year but after generated_on, a bracketed year,
-    # and a kanji 西暦 all passed.
     "2026年12月1日から事業者に体制整備が義務付けられます。",
     "2027（令和9）年から変わります。",
     "二〇二七年から変わります。",
+    # codex, final re-review
+    "令和8年12月1日から義務になります。",
+    "2026（令和8）年12月1日から義務になります。",
+    "2026年十二月一日から義務になります。",
+    "二〇二七（令和九）年から義務になります。",
+    # past dates too: the page already shows the date
+    "2024年4月1日から施行されています。",
+    "令和元年に改正されました。",
+    "平成三十年の改正です。",
+    "4月1日から変わりました。",
 ])
-def test_future_claims_are_rejected(text):
+def test_dates_and_future_claims_are_rejected(text):
     e = _ok()
     e["recent_changes"][0]["impact"] = text
     assert validate_explainer_shape(e), text
 
 
 @pytest.mark.parametrize("text", [
-    "2024年4月1日から施行されています。",
-    "令和8年5月から変わりました。",
     "今後の手続きはオンラインで行えます。",
-    "2026年10月1日から施行されています。",
-    "2025（令和7）年に改正されました。",
+    "変更があった日から2年以内に申請が必要です。",
+    "相続を知った日から三年以内に登記します。",
+    "子が小学3年生になるまで利用できます。",
+    "3か月以内に届け出ます。",
+    "18歳未満の子が対象です。",
+    "一定の場合に限られます。",
+    "十分な説明が求められます。",
+    "最長1年間の休業ができます。",
 ])
-def test_statements_about_the_past_or_present_pass(text):
+def test_durations_and_counts_pass(text):
     e = _ok()
     e["recent_changes"][0]["impact"] = text
     assert validate_explainer_shape(e) == [], text

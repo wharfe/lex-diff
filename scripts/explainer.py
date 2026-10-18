@@ -103,50 +103,47 @@ def select_changes(
 # it write 「2028年に施行される予定」 and 「施行日は政令で定められます」.
 FUTURE_WORDS = ("予定", "見込")
 _KANJI_DIGITS = {c: i for i, c in enumerate("〇一二三四五六七八九")}
+_KANJI_UNITS = {"十": 10, "百": 100, "千": 1000}
 
 
-def _kanji_number(text: str) -> int | None:
-    """一 .. 九十九, enough for a 令和 year."""
-    if text == "元":
-        return 1
-    if "十" in text:
-        tens, _, ones = text.partition("十")
-        value = (_KANJI_DIGITS.get(tens, -1) if tens else 1) * 10
-        value += _KANJI_DIGITS.get(ones, -1) if ones else 0
-    else:
-        value = _KANJI_DIGITS.get(text, -1) if len(text) == 1 else -1
-    return value if value > 0 else None
+def _kanji_to_int(text: str) -> int:
+    """二〇二七 (positional) or 二十八 / 十二 (with units)."""
+    if not any(c in _KANJI_UNITS for c in text):
+        return int("".join(str(_KANJI_DIGITS[c]) for c in text))
+    total, digit = 0, 0
+    for c in text:
+        if c in _KANJI_UNITS:
+            total += (digit or 1) * _KANJI_UNITS[c]
+            digit = 0
+        else:
+            digit = _KANJI_DIGITS[c]
+    return total + digit
 
 
-def _normalize_numbers(text: str) -> str:
-    """NFKC, then a kanji 西暦 (二〇二七年) as Arabic digits."""
-    text = unicodedata.normalize("NFKC", text)
-    return re.sub(
-        r"[〇一二三四五六七八九]{4}(?=年)",
-        lambda m: "".join(str(_KANJI_DIGITS[c]) for c in m.group(0)),
-        text,
-    )
+def _arabic(text: str) -> str:
+    """NFKC, and every kanji number as Arabic digits, 元年 as 1年.
+
+    Only for detection: 一定 becomes 1定, which no date pattern matches."""
+    text = unicodedata.normalize("NFKC", text).replace("元年", "1年")
+    return re.sub(r"[〇一二三四五六七八九十百千]+",
+                  lambda m: str(_kanji_to_int(m.group(0))), text)
 
 
-def mentioned_years(text: str) -> list[int]:
-    """Western years in 西暦 (Arabic or kanji, also 「2027（令和9）年」) and 令和."""
-    text = _normalize_numbers(text)
-    years = [int(y) for y in re.findall(r"(\d{4})(?:年|[(（])", text)]
-    years += [2018 + int(n) for n in re.findall(r"令和(\d{1,2})年", text)]
-    for n in re.findall(r"令和([元〇一二三四五六七八九十]{1,3})年", text):
-        value = _kanji_number(n)
-        if value is not None:
-            years.append(2018 + value)
-    return years
+# Any calendar date or year, past or future. The page prints each item's
+# enforcement date, so the model needs none; telling a future date from a past
+# one in free text failed twice, one notation at a time (令和, 「2026（令和8）年」,
+# 十二月一日 — Gate3). Durations and counts (2年以内, 小学3年生, 3か月, 1年間)
+# are not dates and pass.
+_DATE_PATTERNS = (
+    r"\d{4}\s*(?:年|\()",       # 2027年, 2027(令和9)年
+    r"(?:令和|平成|昭和)\s*\d",   # any era year
+    r"\d{1,2}\s*月(?!間)",        # 12月, 4月1日 (not 3月間)
+)
 
 
-def mentioned_dates(text: str) -> list[str]:
-    """「YYYY年M月D日」 and 「YYYY年M月」 as comparable ISO prefixes."""
-    text = _normalize_numbers(text)
-    out = [f"{y}-{int(m):02d}-{int(d):02d}"
-           for y, m, d in re.findall(r"(\d{4})年(\d{1,2})月(\d{1,2})日", text)]
-    out += [f"{y}-{int(m):02d}" for y, m in re.findall(r"(\d{4})年(\d{1,2})月(?!\d{1,2}日)", text)]
-    return out
+def date_mentions(text: str) -> list[str]:
+    text = _arabic(text)
+    return [m.group(0) for pat in _DATE_PATTERNS for m in re.finditer(pat, text)]
 
 
 def _texts(explainer: dict) -> list[str]:
@@ -194,17 +191,13 @@ def validate_explainer_shape(explainer: dict) -> list[str]:
                 errors.append(f"recent_changes[{i}] duplicate diff_id {c.get('diff_id')}")
             seen.add(c.get("diff_id"))
 
-    gen_year = int(gen[:4])
     for text in _texts(explainer):
         normalized = unicodedata.normalize("NFKC", text)
         for word in FUTURE_WORDS:
             if word in normalized:
                 errors.append(f"claims the future ({word}): {text[:40]}")
-        if any(y > gen_year for y in mentioned_years(text)):
-            errors.append(f"names a year after {gen_year}: {text[:40]}")
-        # Same year, later day: 「2026年12月1日から」 with generated_on 2026-10-18.
-        if any(d > gen[: len(d)] for d in mentioned_dates(text)):
-            errors.append(f"names a date after {gen}: {text[:40]}")
+        if date_mentions(text):
+            errors.append(f"names a date ({date_mentions(text)[0]}): {text[:40]}")
     return errors
 
 
@@ -365,6 +358,7 @@ def build_prompt(law_title, law_num, category, summary_desc, changes):
 - 各項目は、その日に施行された変更だけを書く。改正法全体について述べない。
 - 入力に無い改正や変更について、あるとも無いとも書かない。法律全体についての一般化（「制度自体は変わらない」など）を書かない。
 - まだ施行されていない改正や、これからの施行について書かない。「予定」「見込」という語を使わない。
+- 年・月日・和暦を一切書かない（施行日はページが表示する）。「2年以内」のような期間は書いてよい。
 - 差分要約にある将来の表現（今後・政令で定める日から施行 など）を写さない。附則の施行期日の定めから、その改正が未施行だと推測しない。
 - 提供情報に無い事実（数値・期限・因果）を断定しない。不確実なら書かない。
 - 罰則や過料は、差分要約にある条件ごと書く（「正当な理由がないのに怠ったときは過料」を「怠ると過料」と縮めない）。
