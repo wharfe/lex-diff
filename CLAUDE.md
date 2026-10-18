@@ -137,10 +137,15 @@ that shape:
   intro and FAQ written over the whole law generalised past the items
   (「制度の仕組み自体は大きく変わらない」) — and the page writes the intro and
   the 「{generated_on}時点で施行済み」 note from `frontend/lib/pending.ts`.
-  `validate_explainer_shape` rejects 予定/見込 and any year after `generated_on`
-  (西暦, 令和 in Arabic or kanji, after NFKC) and also runs over shipped data; it
-  fails closed on legitimate prose too (建築基準法's evidence says 「見込まれる中」,
-  so a run may need a retry). A law with no such diff ships no explainer.
+  `validate_explainer_shape` rejects 予定/見込 and **any date or year at all**
+  (the page prints each item's date; telling future from past in free text
+  failed twice, one notation at a time — 令和, 「2026（令和8）年」, 十二月一日),
+  while durations and counts (2年以内, 小学3年生) pass. It also runs over shipped
+  data, and fails closed on legitimate prose too (建築基準法's evidence says
+  「見込まれる中」, so a run may need a retry). `validate_explainer` adds two
+  checks that need the evidence: the model's item count before normalising, and
+  that every field naming 過料 keeps 「正当な理由」 when the evidence has it. A law
+  with no such diff ships no explainer.
 - Annotations are cached by a fingerprint of model + prompt version + prompt
   text. Changing a prompt means bumping `PROMPT_VERSION` in `annotate.py`.
 - `articles.py` reuses those annotations beside **today's** text, so it adds a
