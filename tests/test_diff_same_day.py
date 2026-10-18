@@ -329,3 +329,15 @@ def test_enrich_syncs_the_local_copy_even_when_the_shipped_one_is_right(tmp_path
     monkeypatch.setattr(enrich_mod, "DATA_DIR", data)
     enrich_mod.enrich_diff_files()
     assert _json.loads((data / "diffs" / name).read_text())["proposer"] == prop
+
+
+def test_the_explainer_prompt_scopes_each_item_to_its_day():
+    # docs/issue-35/spec.md invariant 3: an item is one day's enforcement.
+    c = apply_diff(_change(), {"pr_summary": {"title": "t"},
+                               "revision_after": {"amendment_law_title": "A法"}})
+    prompt = build_prompt("刑法", "n", "c", "s", [c])
+    assert "2025-06-01の施行分" in prompt
+    assert "その日に施行された変更だけ" in prompt
+    assert "「予定」「見込」という語を使わない" in prompt
+    assert "条件ごと書く" in prompt
+    assert "intro" not in prompt and "faq" not in prompt

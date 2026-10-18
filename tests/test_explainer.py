@@ -241,3 +241,19 @@ def test_a_fine_must_keep_its_condition_when_the_evidence_has_one():
     raw["recent_changes"][0]["impact"] = "正当な理由なく申請を怠ると過料の対象になります。"
     e = normalize_explainer(raw, selected, "2026-10-18")
     assert validate_explainer(e, selected, raw) == []
+
+
+def test_a_law_with_no_item_loses_its_explainer(tmp_path, monkeypatch):
+    # Spec invariant 6: nothing to write from → no explainer, not a stale one.
+    import json
+    import explainer as ex
+    (tmp_path / "timelines").mkdir()
+    path = tmp_path / "timelines" / "L.json"
+    path.write_text(json.dumps({"law_title": "X法", "timeline": [],
+                                "explainer": {"intro": "古い"}}))
+    monkeypatch.setattr(ex, "DATA_DIR", tmp_path)
+    monkeypatch.setattr(ex, "FRONTEND_DIR", tmp_path / "frontend")
+    monkeypatch.setattr(ex, "load_env", lambda: None)
+    monkeypatch.setattr(sys, "argv", ["explainer.py", "L"])
+    ex.main()
+    assert "explainer" not in json.loads(path.read_text())
