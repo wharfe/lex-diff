@@ -131,8 +131,11 @@ export interface LawSummary {
   keywords: string[];
 }
 
+/** One enforced diff whose 本則 changed (docs/issue-35/spec.md). */
 export interface ExplainerChange {
   year: string;
+  enforcement_date: string;
+  diff_id: string;
   title: string;
   what: string;
   why?: string;
@@ -140,15 +143,10 @@ export interface ExplainerChange {
   grounded: boolean;
 }
 
-export interface ExplainerFaq {
-  q: string;
-  a: string;
-}
-
 export interface LawExplainer {
-  intro: string;
+  /** JST day the items were selected; "施行済み" is true as of this day. */
+  generated_on: string;
   recent_changes: ExplainerChange[];
-  faq: ExplainerFaq[];
 }
 
 export interface Contributor {

@@ -383,6 +383,16 @@ def compute_stats(diffs: list[dict]) -> dict:
 TABLES_CHANGED_EXIT = 3
 
 
+# Shipped before tables_changed existed, with a table change it never saw
+# (measured on data/raw, #35 Gate 2 r3). They stay published as they are; no
+# AI prose may treat them as the whole of their amendment. Remove an entry
+# once #28 regenerates it.
+SHIPPED_WITH_TABLE_CHANGES = frozenset({
+    "335AC0000000105_2026-03-31_2026-04-01",
+    "415AC0000000057_2025-03-31_2025-04-01",
+})
+
+
 def tables_changed(before_tree: dict, after_tree: dict) -> bool:
     """Whether any table differs between the two texts, by its text alone.
 

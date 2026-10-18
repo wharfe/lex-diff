@@ -125,9 +125,27 @@ that shape:
   falling back to an older file, "today" is Asia/Tokyo (these are Japanese
   enforcement dates), and main() refuses to save if the JST date changed while
   the model was answering.
-- `explainer.py` additionally marks each amendment `grounded` (a diff exists →
-  `why`/`impact` allowed) or ungrounded (only the amendment's name and year are
-  known → prose stays within that, and `why`/`impact` are stripped).
+- **An explainer item is one enforced diff whose 本則 changed, never one
+  amending law** (`docs/issue-35/spec.md`). Matching amendments by title folded
+  distinct laws that share one (11 of 13 laws), and an amending law could only
+  be grounded by one stage: a 附則-only stage went to the model as 「本則は変わらない」
+  while its 本則 was still pending (公益通報者保護法, days before 12/1). A diff
+  says what changed on its own day and nothing more. Skipped: pending entries
+  and diffs, diffs with no 本則 change, and diffs whose tables changed
+  (`diff.SHIPPED_WITH_TABLE_CHANGES` for the two shipped before the check;
+  `raw_tables_changed` for the rest). The model writes only per-item prose — an
+  intro and FAQ written over the whole law generalised past the items
+  (「制度の仕組み自体は大きく変わらない」) — and the page writes the intro and
+  the 「{generated_on}時点で施行済み」 note from `frontend/lib/pending.ts`.
+  `validate_explainer_shape` rejects 予定/見込 and **any date or year at all**
+  (the page prints each item's date; telling future from past in free text
+  failed twice, one notation at a time — 令和, 「2026（令和8）年」, 十二月一日),
+  while durations and counts (2年以内, 小学3年生) pass. It also runs over shipped
+  data, and fails closed on legitimate prose too (建築基準法's evidence says
+  「見込まれる中」, so a run may need a retry). `validate_explainer` adds two
+  checks that need the evidence: the model's item count before normalising, and
+  that every field naming 過料 keeps 「正当な理由」 when the evidence has it. A law
+  with no such diff ships no explainer.
 - Annotations are cached by a fingerprint of model + prompt version + prompt
   text. Changing a prompt means bumping `PROMPT_VERSION` in `annotate.py`.
 - `articles.py` reuses those annotations beside **today's** text, so it adds a
@@ -169,8 +187,7 @@ that shape:
 - **A pending (not yet enforced) diff carries no AI prose and grounds nothing**
   (`docs/pending-amendments/spec.md`). `pending.py` publishes it directly with a
   `pending` block; `annotate.refuses_pending` refuses it; `explainer.select_changes`
-  drops its `diff_id` *before* the dedupe by title (afterwards a pending diff beat
-  the enforced, grounded entry of the same title); `articles.collect_changes`
+  skips it (and every pending entry); `articles.collect_changes`
   skips it even past its date. Its date may be a 政令 deadline (e-Gov then sets
   `amendment_scheduled_enforcement_date` and a comment, and copies the scheduled
   date into `amendment_enforcement_date`), so the frontend never names it by year

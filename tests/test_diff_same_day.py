@@ -135,9 +135,11 @@ def test_the_explainer_prompt_for_a_single_law_diff_says_nothing_extra():
     assert "どの変更がどの法令によるものか" not in build_prompt("刑法", "n", "c", "s", [c])
 
 
-def test_a_missing_diff_downgrades_to_ungrounded():
-    c = apply_diff(_change(), None)
-    assert c["grounded"] is False
+def test_a_diff_without_pr_summary_stops_the_run():
+    # It used to downgrade to ungrounded silently; an item now exists only
+    # because its diff grounds it (docs/issue-35/spec.md, Gate2 r3 M2).
+    with pytest.raises(ValueError):
+        apply_diff(_change(), {"revision_after": {"amendment_law_title": "A法"}})
 
 
 def test_a_same_day_diff_has_no_single_proposer():
@@ -327,3 +329,22 @@ def test_enrich_syncs_the_local_copy_even_when_the_shipped_one_is_right(tmp_path
     monkeypatch.setattr(enrich_mod, "DATA_DIR", data)
     enrich_mod.enrich_diff_files()
     assert _json.loads((data / "diffs" / name).read_text())["proposer"] == prop
+
+
+def test_the_explainer_prompt_scopes_each_item_to_its_day():
+    # docs/issue-35/spec.md invariant 3: an item is one day's enforcement.
+    c = apply_diff(_change(), {"pr_summary": {"title": "t"},
+                               "revision_after": {"amendment_law_title": "A法"}})
+    prompt = build_prompt("刑法", "n", "c", "s", [c])
+    assert "2025-06-01の施行分" in prompt
+    assert "その日に施行された変更だけ" in prompt
+    assert "「予定」「見込」という語を使わない" in prompt
+    assert "条件ごと書く" in prompt
+    assert "intro" not in prompt and "faq" not in prompt
+
+
+def test_every_joined_name_loses_its_sho_suffix():
+    c = apply_diff(_change(), {"pr_summary": {"title": "t"},
+                               "revision_after": {"amendment_law_title": "A法　抄"}},
+                   ["A法　抄", "B法"])
+    assert c["source_title"] == "A法／B法"

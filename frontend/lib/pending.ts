@@ -1,3 +1,4 @@
+import { jpDate } from "./format";
 import { LawDiffData, PendingInfo, PendingRevision, TimelineEntry } from "./types";
 
 /*
@@ -165,4 +166,16 @@ export function isEnforcedEntry(
     !e.enforcement_comment &&
     e.enforcement_date <= BUILD_DATE_JST
   );
+}
+
+/** The explainer's intro, written here rather than by the model: a model
+ *  intro generalised past its items (「制度の仕組み自体は大きく変わらない」,
+ *  #35). Items exclude 附則-only and table-changing amendments, so this says
+ *  "選び", never "直近". */
+export function explainerIntro(lawTitle: string, count: number): string {
+  return `${lawTitle}の施行済みの改正から、法律の本文（本則）が変わった${count}回を選び、新しい順にまとめました。`;
+}
+
+export function explainerScopeNote(generatedOn: string): string {
+  return `${jpDate(generatedOn)}時点で施行済みの改正が対象です。施行予定の改正は改正履歴をご覧ください。`;
 }

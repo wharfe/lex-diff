@@ -1,5 +1,7 @@
 import { Icon } from "@/components/icon";
 import type { LawExplainer } from "@/lib/types";
+import { jpDate } from "@/lib/format";
+import { explainerIntro, explainerScopeNote } from "@/lib/pending";
 
 export function LawExplainerSection({
   lawTitle,
@@ -18,7 +20,9 @@ export function LawExplainerSection({
         <span className="text-[11px] opacity-40 ml-auto">AI要約</span>
       </div>
       <div className="px-4 py-4 space-y-5">
-        <p className="text-[15px] leading-[26px]">{explainer.intro}</p>
+        <p className="text-[15px] leading-[26px]">
+          {explainerIntro(lawTitle, explainer.recent_changes.length)}
+        </p>
 
         <div className="space-y-4">
           {explainer.recent_changes.map((c, i) => (
@@ -28,7 +32,7 @@ export function LawExplainerSection({
             >
               <div className="flex items-baseline gap-2 mb-2">
                 <span className="font-mono text-[13px] text-[var(--diff-hunk-text)]">
-                  {c.year}
+                  {jpDate(c.enforcement_date)}
                 </span>
                 <h3 className="text-[15px] font-bold">{c.title}</h3>
               </div>
@@ -54,21 +58,7 @@ export function LawExplainerSection({
           ))}
         </div>
 
-        {explainer.faq.length > 0 && (
-          <div className="pt-2">
-            <h3 className="text-[14px] font-medium mb-3">よくある質問</h3>
-            <div className="space-y-3">
-              {explainer.faq.map((f, i) => (
-                <div key={i}>
-                  <p className="text-[14px] font-bold">Q. {f.q}</p>
-                  <p className="text-[14px] leading-[24px] opacity-70 mt-0.5">
-                    A. {f.a}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+        <p className="text-[13px] opacity-70">{explainerScopeNote(explainer.generated_on)}</p>
       </div>
     </section>
   );

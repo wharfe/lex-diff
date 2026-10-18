@@ -47,7 +47,6 @@ export async function generateMetadata({
   const seo = lawSeo(lawId);
   const desc =
     seo?.description ||
-    data.explainer?.intro ||
     data.summary?.description ||
     `${data.law_title}の改正履歴を時系列で一覧。全${data.revision_count}回の改正について、いつ・どの条文が・どう変わったかをわかりやすく確認できます。`;
   // 改正履歴 stays in front: that phrasing is what the page already ranks for.
