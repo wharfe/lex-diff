@@ -135,9 +135,11 @@ def test_the_explainer_prompt_for_a_single_law_diff_says_nothing_extra():
     assert "どの変更がどの法令によるものか" not in build_prompt("刑法", "n", "c", "s", [c])
 
 
-def test_a_missing_diff_downgrades_to_ungrounded():
-    c = apply_diff(_change(), None)
-    assert c["grounded"] is False
+def test_a_diff_without_pr_summary_stops_the_run():
+    # It used to downgrade to ungrounded silently; an item now exists only
+    # because its diff grounds it (docs/issue-35/spec.md, Gate2 r3 M2).
+    with pytest.raises(ValueError):
+        apply_diff(_change(), {"revision_after": {"amendment_law_title": "A法"}})
 
 
 def test_a_same_day_diff_has_no_single_proposer():

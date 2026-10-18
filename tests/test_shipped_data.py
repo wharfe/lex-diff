@@ -419,3 +419,65 @@ def test_a_pending_diff_names_its_amending_laws():
         assert d["pending"]["revisions"], p.name
         for r in d["pending"]["revisions"]:
             assert r["amendment_law_num"] or r["amendment_law_title"], p.name
+
+
+# --- explainer: one item per enforced diff whose 本則 changed (#35) ---
+
+from diff import SHIPPED_WITH_TABLE_CHANGES
+from explainer import validate_explainer_shape
+
+
+def _explained():
+    for path in shipped_timelines():
+        tl = json.loads(path.read_text())
+        if "explainer" in tl:
+            yield path, tl
+
+
+def _eligible(tl: dict, diff_id: str) -> bool:
+    """Whether a shipped diff may ground an explainer item, from the data alone.
+
+    No date is needed: a pending.py diff carries `pending`, and every other
+    shipped diff was built from enforced text."""
+    data = json.loads((SHIPPED / f"{diff_id}.json").read_text())
+    commented = any(
+        e.get("enforcement_comment") for e in tl["timeline"] if e.get("diff_id") == diff_id
+    )
+    return (
+        "pending" not in data
+        and data["stats"]["main"] > 0
+        and diff_id not in SHIPPED_WITH_TABLE_CHANGES
+        and bool(data.get("pr_summary"))
+        and not commented
+    )
+
+
+def test_shipped_explainers_pass_the_shape_check():
+    # The same layer law_summary has: it needs no evidence, so it runs here.
+    for path, tl in _explained():
+        assert validate_explainer_shape(tl["explainer"]) == [], path.name
+
+
+def test_every_explainer_item_is_an_eligible_enforced_diff():
+    for path, tl in _explained():
+        gen = tl["explainer"]["generated_on"]
+        for c in tl["explainer"]["recent_changes"]:
+            assert (SHIPPED / f"{c['diff_id']}.json").exists(), (path.name, c["diff_id"])
+            assert _eligible(tl, c["diff_id"]), (path.name, c["diff_id"])
+            assert c["enforcement_date"] <= gen, (path.name, c["diff_id"])
+            date_after = c["diff_id"].rsplit("_", 1)[1]
+            assert c["enforcement_date"] == date_after, (path.name, c["diff_id"])
+
+
+def test_a_law_has_an_explainer_exactly_when_it_has_an_eligible_diff():
+    # A check that only reads existing explainers passes when one vanishes.
+    for path in shipped_timelines():
+        tl = json.loads(path.read_text())
+        ids = {e["diff_id"] for e in tl["timeline"] if e.get("diff_id")}
+        has_eligible = any(_eligible(tl, d) for d in ids)
+        assert ("explainer" in tl) == has_eligible, path.name
+
+
+def test_the_table_exceptions_name_shipped_diffs():
+    for stem in SHIPPED_WITH_TABLE_CHANGES:
+        assert (SHIPPED / f"{stem}.json").exists(), stem

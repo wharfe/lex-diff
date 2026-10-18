@@ -1,214 +1,213 @@
 import sys
 from pathlib import Path
 
+import pytest
+
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
-from explainer import select_changes, validate_explainer, normalize_explainer
+from explainer import (
+    MAX_CHANGES,
+    normalize_explainer,
+    select_changes,
+    validate_explainer,
+    validate_explainer_shape,
+)
+
+# An item is one enforced diff whose 本則 changed (docs/issue-35/spec.md). The
+# unit used to be one amending law, matched by title: distinct laws sharing a
+# title were folded together, and a 附則-only stage of a law whose 本則 was
+# still pending went to the model as "本則は変わらない" (公益通報者保護法).
 
 
-def test_select_dedupes_by_title_prefers_diff_id():
+def _diff(main=3, pending=False, titles=None, pr=True):
+    d = {
+        "stats": {"main": main},
+        "revision_after": {"amendment_law_title": (titles or ["A法"])[0]},
+    }
+    if titles and len(titles) > 1:
+        d["revision_after"]["amendment_law_titles"] = titles
+    if pr:
+        d["pr_summary"] = {"title": "t", "summary": "s", "background": "b", "impact": "i"}
+    if pending:
+        d["pending"] = {"generated_on": "2026-10-12"}
+    return d
+
+
+def _entry(date, diff_id, title="A法", **extra):
+    return {"enforcement_date": date, "amendment_law_title": title, "diff_id": diff_id, **extra}
+
+
+def _select(timeline, diffs, today="2026-10-18", pending_ids=frozenset(), tables=frozenset()):
+    def load(diff_id):
+        return diffs.get(diff_id)
+    return select_changes(timeline, today, pending_ids, load, lambda d: d in tables)
+
+
+def test_distinct_laws_with_one_title_are_separate_items():
+    # 公益通報者保護法: 令和2年 and 令和7年 amendments share their title.
+    timeline = [_entry("2025-06-11", "d2025", "公益通報者保護法の一部を改正する法律"),
+                _entry("2022-06-01", "d2022", "公益通報者保護法の一部を改正する法律")]
+    result = _select(timeline, {"d2025": _diff(), "d2022": _diff()})
+    assert [c["diff_id"] for c in result] == ["d2025", "d2022"]
+
+
+def test_a_diff_whose_main_text_did_not_change_is_not_an_item():
+    timeline = [_entry("2026-05-21", "suppl_only"), _entry("2025-06-12", "real")]
+    result = _select(timeline, {"suppl_only": _diff(main=0), "real": _diff(main=11)})
+    assert [c["diff_id"] for c in result] == ["real"]
+
+
+def test_pending_entries_and_pending_diffs_never_reach_the_model():
     timeline = [
-        {"enforcement_date": "2024-04-01", "amendment_law_title": "民法等の一部を改正する法律",
-         "diff_id": "129_2024"},
-        {"enforcement_date": "2026-04-01", "amendment_law_title": "民法等の一部を改正する法律",
-         "diff_id": None},
+        _entry("2026-12-01", "future"),                       # date after today
+        _entry("2026-11-26", "commented", enforcement_comment="政令で定める日"),
+        _entry("2026-10-01", "overdue"),                      # pending diff past its date
+        _entry("2026-07-17", "flagged"),                      # carries a pending block
+        _entry("2026-06-01", "ok"),
     ]
-    result = select_changes(timeline, "2099-12-31")
-    # same title collapses to one, the diff_id-bearing entry wins (grounded)
-    assert len(result) == 1
-    assert result[0]["grounded"] is True
-    assert result[0]["diff_id"] == "129_2024"
-    assert result[0]["year"] == "2024"
+    diffs = {k: _diff() for k in ("future", "commented", "overdue", "ok")}
+    diffs["flagged"] = _diff(pending=True)
+    result = _select(timeline, diffs, pending_ids=frozenset({"overdue"}))
+    assert [c["diff_id"] for c in result] == ["ok"]
 
 
-def test_select_grounded_first_then_date_desc():
-    timeline = [
-        {"enforcement_date": "2020-01-01", "amendment_law_title": "A法", "diff_id": "d1"},
-        {"enforcement_date": "2025-01-01", "amendment_law_title": "B法", "diff_id": None},
-        {"enforcement_date": "2023-01-01", "amendment_law_title": "C法", "diff_id": None},
-    ]
-    result = select_changes(timeline, "2099-12-31")
-    # grounded (A) first, then ungrounded by date desc (B 2025, C 2023)
-    assert [c["year"] for c in result] == ["2020", "2025", "2023"]
-    assert result[0]["grounded"] is True
-    assert result[1]["grounded"] is False
+def test_a_diff_whose_tables_changed_is_not_an_item():
+    # Shipped before diff.tables_changed existed (道交法 2026-04-01, 個情 2025-04-01).
+    timeline = [_entry("2026-04-01", "tab"), _entry("2024-11-01", "ok")]
+    result = _select(timeline, {"tab": _diff(), "ok": _diff()}, tables=frozenset({"tab"}))
+    assert [c["diff_id"] for c in result] == ["ok"]
 
 
-def test_select_caps_at_four_and_skips_empty_title():
-    timeline = [{"enforcement_date": f"20{10+i}-01-01",
-                 "amendment_law_title": f"法{i}", "diff_id": None} for i in range(6)]
-    timeline.append({"enforcement_date": "2030-01-01", "amendment_law_title": "", "diff_id": None})
-    result = select_changes(timeline, "2099-12-31")
-    assert len(result) == 4
-    assert all(c["year"] for c in result)
+def test_a_shared_diff_is_one_item_named_by_the_diff():
+    timeline = [_entry("2025-06-01", "d", "A法"), _entry("2025-06-01", "d", "B法")]
+    [c] = _select(timeline, {"d": _diff(titles=["A法", "B法"])})
+    assert c["source_title"] == "A法／B法" and c["multi_law"] is True
 
 
-VALID_YEARS = {"2024", "2026"}
+def test_newest_first_capped():
+    timeline = [_entry(f"20{10 + i}-01-01", f"d{i}") for i in range(6)]
+    result = _select(timeline, {f"d{i}": _diff() for i in range(6)})
+    assert [c["diff_id"] for c in result] == ["d5", "d4", "d3", "d2"][:MAX_CHANGES]
+    assert result[0]["enforcement_date"] == "2015-01-01" and result[0]["year"] == "2015"
 
 
-def _ok_explainer():
+def test_entries_without_a_diff_are_not_items():
+    timeline = [_entry("2025-01-01", None), _entry("2024-01-01", "d")]
+    assert [c["diff_id"] for c in _select(timeline, {"d": _diff()})] == ["d"]
+
+
+def test_an_unreadable_diff_stops_the_run():
+    with pytest.raises(ValueError):
+        _select([_entry("2025-01-01", "missing")], {})
+
+
+def test_a_diff_without_pr_summary_stops_the_run():
+    with pytest.raises(ValueError):
+        _select([_entry("2025-01-01", "d")], {"d": _diff(pr=False)})
+
+
+def test_same_day_names_come_only_from_entries_of_that_diff():
+    # An old diff names one law; the timeline's entries for the same diff_id
+    # fill in the rest. A pending entry on the same date is not one of them.
+    timeline = [_entry("2025-06-01", "d", "A法"), _entry("2025-06-01", "d", "B法"),
+                _entry("2025-06-01", None, "未施行法")]
+    [c] = _select(timeline, {"d": _diff(titles=["A法"])})
+    assert c["source_title"] == "A法／B法"
+
+
+# --- normalize / validate ---
+
+SELECTED = [
+    {"year": "2026", "enforcement_date": "2026-04-01", "diff_id": "d1", "source_title": "X"},
+    {"year": "2024", "enforcement_date": "2024-04-01", "diff_id": "d2", "source_title": "Y"},
+]
+
+
+def _raw():
     return {
-        "intro": "不動産登記法は近年、相続登記の義務化など大きな改正が続いています。マイホームや相続の手続きに直接関わる重要な変更です。",
         "recent_changes": [
-            {"year": "2024", "title": "相続登記の義務化", "what": "相続を知った日から3年以内の登記が必須になりました。",
-             "why": "所有者不明土地の増加が社会問題化したためです。", "impact": "相続人は期限内の手続きが必要です。", "grounded": True},
-            {"year": "2026", "title": "登記手続のデジタル化", "what": "オンラインでの手続きが拡充されました。", "grounded": False},
+            {"title": "登記のオンライン化", "what": "オンラインでの手続きが広がりました。",
+             "why": "手続きの負担を減らすためです。", "impact": "窓口に行かずに済む場面が増えます。"},
+            {"title": "相続登記の義務化", "what": "相続で不動産を取得したら登記が必要になりました。"},
         ],
-        "faq": [{"q": "相続登記はいつから義務？", "a": "2024年4月1日から施行されています。"}],
+        # A model that still writes these gets them dropped, not shipped.
+        "intro": "制度自体は大きく変わっていません。", "faq": [{"q": "q", "a": "a"}],
     }
 
 
-def test_validate_passes_on_good_explainer():
-    assert validate_explainer(_ok_explainer(), VALID_YEARS) == []
+def _ok():
+    return normalize_explainer(_raw(), SELECTED, "2026-10-18")
 
 
-def test_validate_flags_ungrounded_with_why():
-    bad = _ok_explainer()
-    bad["recent_changes"][1]["why"] = "推測の背景"
-    errors = validate_explainer(bad, VALID_YEARS)
-    assert any("ungrounded" in e for e in errors)
+def test_normalize_attaches_the_deterministic_facts():
+    e = _ok()
+    assert e["generated_on"] == "2026-10-18"
+    assert [(c["diff_id"], c["year"], c["enforcement_date"]) for c in e["recent_changes"]] == [
+        ("d1", "2026", "2026-04-01"), ("d2", "2024", "2024-04-01")]
+    assert all(c["grounded"] is True for c in e["recent_changes"])
+    assert validate_explainer(e, SELECTED) == []
 
 
-def test_validate_flags_year_not_in_timeline():
-    bad = _ok_explainer()
-    bad["recent_changes"][0]["year"] = "1999"
-    errors = validate_explainer(bad, VALID_YEARS)
-    assert any("year" in e for e in errors)
+def test_a_dropped_item_fails_instead_of_shifting_the_facts():
+    raw = _raw()
+    raw["recent_changes"] = raw["recent_changes"][1:]
+    e = normalize_explainer(raw, SELECTED, "2026-10-18")
+    assert any("count" in err for err in validate_explainer(e, SELECTED))
 
 
-def test_validate_flags_too_many_faq():
-    bad = _ok_explainer()
-    bad["faq"] = [{"q": f"Q{i}", "a": f"A{i}"} for i in range(4)]
-    errors = validate_explainer(bad, VALID_YEARS)
-    assert any("faq count exceeds 3" in e for e in errors)
+def test_normalize_keeps_only_the_items():
+    # intro and faq generalised past the items given (#35); the page writes
+    # its own intro.
+    e = _ok()
+    assert set(e) == {"generated_on", "recent_changes"}
+    assert "why" not in e["recent_changes"][1]
 
 
-def test_validate_flags_missing_key():
-    bad = _ok_explainer()
-    del bad["intro"]
-    errors = validate_explainer(bad, VALID_YEARS)
-    assert any("intro" in e for e in errors)
+@pytest.mark.parametrize("text", [
+    "2027年に施行される予定です。",
+    "改正の効果が見込まれます。",
+    "令和9年から新しい制度が始まります。",
+    "令和九年四月一日から変わります。",
+    "２０２８年から変わります。",       # full-width, caught after NFKC
+    "令和１０年に見直します。",
+])
+def test_future_claims_are_rejected(text):
+    e = _ok()
+    e["recent_changes"][0]["impact"] = text
+    assert validate_explainer_shape(e), text
 
 
-def test_normalize_reattaches_year_grounded_and_strips_ungrounded():
-    selected = [
-        {"year": "2024", "source_title": "民法等の一部を改正する法律", "grounded": True},
-        {"year": "2026", "source_title": "整理法", "grounded": False},
-    ]
-    raw = {
-        "intro": "  導入文  ",
-        "recent_changes": [
-            {"title": "相続登記の義務化", "what": "3年以内に登記。", "why": "所有者不明土地対策。", "impact": "過料あり。"},
-            {"title": "技術的整理", "what": "条ずれの整理。", "why": "LLMが勝手に書いた背景", "impact": "影響も勝手に"},
-        ],
-        # faq missing entirely
-    }
-    result = normalize_explainer(raw, selected)
-    assert result["intro"] == "導入文"
-    assert result["recent_changes"][0]["grounded"] is True
-    assert result["recent_changes"][0]["why"] == "所有者不明土地対策。"
-    # ungrounded: why/impact stripped
-    assert result["recent_changes"][1]["grounded"] is False
-    assert "why" not in result["recent_changes"][1]
-    assert "impact" not in result["recent_changes"][1]
-    # faq normalized to []
-    assert result["faq"] == []
+@pytest.mark.parametrize("text", [
+    "2024年4月1日から施行されています。",
+    "令和8年5月から変わりました。",
+    "今後の手続きはオンラインで行えます。",
+])
+def test_statements_about_the_past_or_present_pass(text):
+    e = _ok()
+    e["recent_changes"][0]["impact"] = text
+    assert validate_explainer_shape(e) == [], text
 
 
-def test_normalize_filters_incomplete_faq():
-    selected = [{"year": "2024", "source_title": "X", "grounded": True}]
-    raw = {"intro": "x", "recent_changes": [{"title": "t", "what": "w", "why": "y", "impact": "i"}],
-           "faq": [{"q": "問", "a": "答"}, {"q": "", "a": "答だけ"}, {"q": "問だけ"}]}
-    result = normalize_explainer(raw, selected)
-    assert result["faq"] == [{"q": "問", "a": "答"}]
+def test_shape_requires_the_recorded_facts():
+    for drop in ("generated_on",):
+        e = _ok()
+        del e[drop]
+        assert validate_explainer_shape(e)
+    e = _ok()
+    del e["recent_changes"][0]["diff_id"]
+    assert validate_explainer_shape(e)
+    e = _ok()
+    e["recent_changes"][1]["diff_id"] = "d1"
+    assert any("duplicate" in err for err in validate_explainer_shape(e))
 
 
-def test_validate_flags_non_dict_items_without_crashing():
-    bad = _ok_explainer()
-    bad["recent_changes"][0] = "not a dict"
-    errors = validate_explainer(bad, VALID_YEARS)
-    assert any("recent_changes[0]" in e for e in errors)
-
-    bad2 = _ok_explainer()
-    bad2["faq"] = ["not a dict"]
-    errors2 = validate_explainer(bad2, VALID_YEARS)
-    assert any("faq[0]" in e for e in errors2)
-
-
-def test_select_dedupes_by_diff_id_across_titles():
-    # Two different amendment titles share the SAME diff_id (same snapshot).
-    timeline = [
-        {"enforcement_date": "2024-04-01", "amendment_law_title": "デジタル改革法", "diff_id": "416_2024"},
-        {"enforcement_date": "2024-04-01", "amendment_law_title": "民法等改正", "diff_id": "416_2024"},
-        {"enforcement_date": "2026-04-01", "amendment_law_title": "公益信託法", "diff_id": None},
-    ]
-    result = select_changes(timeline, "2099-12-31")
-    diff_ids = [c["diff_id"] for c in result if c["diff_id"]]
-    assert diff_ids == ["416_2024"]  # the shared diff_id appears only once
-    # the None-diff ungrounded entry survives
-    assert any(c["diff_id"] is None for c in result)
-
-
-def test_select_does_not_collapse_distinct_none_diff_ids():
-    timeline = [
-        {"enforcement_date": "2025-01-01", "amendment_law_title": "A法", "diff_id": None},
-        {"enforcement_date": "2024-01-01", "amendment_law_title": "B法", "diff_id": None},
-    ]
-    result = select_changes(timeline, "2099-12-31")
-    assert len(result) == 2  # two None-diff entries are NOT merged
-
-
-def test_normalize_skips_non_dict_change_items():
-    selected = [
-        {"year": "2024", "source_title": "X", "grounded": True},
-        {"year": "2026", "source_title": "Y", "grounded": False},
-    ]
-    raw = {"intro": "i", "recent_changes": ["garbage", {"title": "t", "what": "w"}], "faq": "notalist"}
-    result = normalize_explainer(raw, selected)
-    # non-dict change item is skipped, not crashed on; valid one is kept
-    assert all(isinstance(c, dict) for c in result["recent_changes"])
-    assert any(c["title"] == "t" for c in result["recent_changes"])
-    # non-list faq normalizes to []
-    assert result["faq"] == []
-
-
-# A pending (not yet enforced) diff carries no AI prose and must never ground
-# an entry. The check has to run before the dedupe by title, which prefers the
-# diff_id-bearing entry: done afterwards, a pending diff would win and the
-# enforced, grounded entry of the same title would vanish (Gate2, 民法).
-
-def test_a_pending_diff_never_grounds_an_explainer_entry():
-    timeline = [{"amendment_law_title": "整備法", "enforcement_date": "2028-06-13",
-                 "diff_id": "L_2028-06-12_2028-06-13"}]
-    [c] = select_changes(timeline, "2026-10-11")
-    assert c["grounded"] is False and c["diff_id"] is None
-
-
-def test_same_title_keeps_the_enforced_grounded_entry():
-    timeline = [
-        {"amendment_law_title": "民法等の一部を改正する法律", "enforcement_date": "2029-06-23",
-         "diff_id": "L_2029-06-22_2029-06-23", "enforcement_comment": "政令で定める日"},
-        {"amendment_law_title": "民法等の一部を改正する法律", "enforcement_date": "2026-06-24",
-         "diff_id": "L_2026-06-23_2026-06-24"},
-    ]
-    [c] = select_changes(timeline, "2026-10-11")
-    assert c["grounded"] is True and c["enforcement_date"] == "2026-06-24"
-
-
-def test_an_overdue_pending_diff_does_not_beat_the_enforced_one():
-    # fixed-date pending diff past its date, not yet rebuilt by the pipeline
-    timeline = [
-        {"amendment_law_title": "整備法", "enforcement_date": "2026-11-02",
-         "diff_id": "L_2026-11-01_2026-11-02"},
-        {"amendment_law_title": "整備法", "enforcement_date": "2026-07-17",
-         "diff_id": "L_2026-07-16_2026-07-17"},
-    ]
-    [c] = select_changes(timeline, "2026-12-01", frozenset({"L_2026-11-01_2026-11-02"}))
-    assert c["grounded"] is True and c["enforcement_date"] == "2026-07-17"
-
-
-def test_a_commented_entry_stays_pending_after_its_date():
-    timeline = [{"amendment_law_title": "整備法", "enforcement_date": "2026-11-26",
-                 "diff_id": "L_2026-11-25_2026-11-26", "enforcement_comment": "政令で定める日"}]
-    [c] = select_changes(timeline, "2026-12-01")
-    assert c["grounded"] is False
+def test_shape_checks_lengths_and_counts():
+    e = _ok()
+    e["recent_changes"][0]["what"] = "長" * 121
+    assert validate_explainer_shape(e)
+    e = _ok()
+    e["recent_changes"] = e["recent_changes"] * 3
+    assert validate_explainer_shape(e)
+    e = _ok()
+    e["recent_changes"][0] = "not a dict"
+    assert any("recent_changes[0]" in err for err in validate_explainer_shape(e))
