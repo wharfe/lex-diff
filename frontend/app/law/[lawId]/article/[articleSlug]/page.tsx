@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getArticleParams, getArticleData, findArticle } from "@/lib/data";
-import { isTombstone } from "@/lib/types";
+import { isTombstone, type CurrentText } from "@/lib/types";
 import { ArticleText, FormerArticleText } from "@/components/article-text";
 import { ArticleHistory } from "@/components/article-history";
 import { ArticleLinks } from "@/components/article-links";
@@ -27,6 +27,25 @@ function head(lawTitle: string, displayNum: string, caption: string, tombstone: 
   return paren ? `${lawTitle}${displayNum}（${paren}）` : `${lawTitle}${displayNum}`;
 }
 
+const EXCERPT_MAX = 80;
+
+/** The opening of the article, quoted verbatim for the meta description so a
+ *  search result shows what the article says. Anything left out -- a later
+ *  sentence, the items, the other paragraphs -- ends the quote with "…": a
+ *  dropped ただし書 is a dropped condition, and the quote must not read as the
+ *  whole article. Null for a tombstone, whose body is only the word 削除. */
+function excerpt(current: CurrentText): string | null {
+  if (isTombstone(current.status) || current.paragraphs.length === 0) return null;
+  const full = current.paragraphs[0].text;
+  let text = full.split("\n")[0];
+  if (text.length > EXCERPT_MAX) {
+    const end = text.lastIndexOf("。", EXCERPT_MAX - 1);
+    text = end >= 0 ? text.slice(0, end + 1) : text.slice(0, EXCERPT_MAX - 1);
+  }
+  const omitted = text !== full || current.paragraphs.length > 1;
+  return omitted ? `${text}…` : text;
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -45,9 +64,11 @@ export async function generateMetadata({
   // Only what every page actually carries: the dated text and the amendment
   // years we hold. "改正前後の条文" is true of deleted articles alone, and the
   // related-article links are absent on a page whose text has moved on.
+  const quote = excerpt(article.current);
+  const facts = `${jpDate(data.source.asof)}時点の条文と、${years}年の改正内容。`;
   return {
     title: `${title}｜条文と改正履歴`,
-    description: `${title}の${jpDate(data.source.asof)}時点の条文と、${years}年の改正内容。`,
+    description: quote ? `${title}「${quote}」${facts}` : `${title}の${facts}`,
     alternates: { canonical: `/law/${lawId}/article/${articleSlug}` },
   };
 }
