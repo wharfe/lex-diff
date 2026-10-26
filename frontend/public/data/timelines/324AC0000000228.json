@@ -1,0 +1,421 @@
+{
+  "law_id": "324AC0000000228",
+  "law_title": "外国為替及び外国貿易法",
+  "law_num": "昭和二十四年法律第二百二十八号",
+  "promulgation_date": "1949-12-01",
+  "revision_count": 21,
+  "timeline": [
+    {
+      "enforcement_date": "2027-07-22",
+      "promulgate_date": "2026-07-23",
+      "amendment_law_title": "金融商品取引法及び資金決済に関する法律の一部を改正する法律",
+      "law_revision_id": "324AC0000000228_20270722_508AC0000000064",
+      "diff_id": null,
+      "enforcement_comment": "公布の日から起算して一年を超えない範囲内において政令で定める日",
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "片山さつき",
+          "position": "財務大臣・内閣府特命担当大臣（金融）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "財政金融委員会"
+      }
+    },
+    {
+      "enforcement_date": "2027-04-01",
+      "promulgate_date": "2026-07-23",
+      "amendment_law_title": "金融商品取引法及び資金決済に関する法律の一部を改正する法律",
+      "law_revision_id": "324AC0000000228_20270401_508AC0000000064",
+      "diff_id": "324AC0000000228_2027-03-31_2027-04-01",
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "片山さつき",
+          "position": "財務大臣・内閣府特命担当大臣（金融）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "財政金融委員会"
+      }
+    },
+    {
+      "enforcement_date": "2027-01-04",
+      "promulgate_date": "2026-06-05",
+      "amendment_law_title": "外国為替及び外国貿易法の一部を改正する法律",
+      "law_revision_id": "324AC0000000228_20270104_508AC0000000030",
+      "diff_id": "324AC0000000228_2027-01-03_2027-01-04",
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": null,
+        "committee": "財政金融委員会"
+      }
+    },
+    {
+      "enforcement_date": "2026-08-12",
+      "promulgate_date": "2026-07-23",
+      "amendment_law_title": "金融商品取引法及び資金決済に関する法律の一部を改正する法律",
+      "law_revision_id": "324AC0000000228_20260812_508AC0000000064",
+      "diff_id": "324AC0000000228_2026-08-11_2026-08-12",
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "片山さつき",
+          "position": "財務大臣・内閣府特命担当大臣（金融）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "財政金融委員会"
+      }
+    },
+    {
+      "enforcement_date": "2026-07-23",
+      "promulgate_date": "2026-07-23",
+      "amendment_law_title": "金融商品取引法及び資金決済に関する法律の一部を改正する法律",
+      "law_revision_id": "324AC0000000228_20260723_508AC0000000064",
+      "diff_id": "324AC0000000228_2026-07-22_2026-07-23",
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "片山さつき",
+          "position": "財務大臣・内閣府特命担当大臣（金融）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "財政金融委員会"
+      }
+    },
+    {
+      "enforcement_date": "2026-06-05",
+      "promulgate_date": "2026-06-05",
+      "amendment_law_title": "外国為替及び外国貿易法の一部を改正する法律",
+      "law_revision_id": "324AC0000000228_20260605_508AC0000000030",
+      "diff_id": "324AC0000000228_2026-06-04_2026-06-05",
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": null,
+        "committee": "財政金融委員会"
+      }
+    },
+    {
+      "enforcement_date": "2025-06-01",
+      "promulgate_date": "2022-06-17",
+      "amendment_law_title": "刑法等の一部を改正する法律の施行に伴う関係法律の整理等に関する法律",
+      "law_revision_id": "324AC0000000228_20250601_504AC0000000068",
+      "diff_id": "324AC0000000228_2025-05-31_2025-06-01",
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "古川禎久",
+          "position": "法務大臣",
+          "party": "自由民主党"
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2024-04-01",
+      "promulgate_date": "2022-12-09",
+      "amendment_law_title": "国際的な不正資金等の移動等に対処するための国際連合安全保障理事会決議第千二百六十七号等を踏まえ我が国が実施する国際テロリストの財産の凍結等に関する特別措置法等の一部を改正する法律",
+      "law_revision_id": "324AC0000000228_20240401_504AC0000000097",
+      "diff_id": "324AC0000000228_2024-03-31_2024-04-01",
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "谷公一",
+          "position": "国家公安委員会委員長・内閣府特命担当大臣（防災・海洋政策）",
+          "party": "自由民主党"
+        },
+        "committee": "内閣委員会"
+      }
+    },
+    {
+      "enforcement_date": "2023-06-01",
+      "promulgate_date": "2022-12-09",
+      "amendment_law_title": "国際的な不正資金等の移動等に対処するための国際連合安全保障理事会決議第千二百六十七号等を踏まえ我が国が実施する国際テロリストの財産の凍結等に関する特別措置法等の一部を改正する法律",
+      "law_revision_id": "324AC0000000228_20230601_504AC0000000097",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "谷公一",
+          "position": "国家公安委員会委員長・内閣府特命担当大臣（防災・海洋政策）",
+          "party": "自由民主党"
+        },
+        "committee": "内閣委員会"
+      }
+    },
+    {
+      "enforcement_date": "2023-06-01",
+      "promulgate_date": "2022-06-10",
+      "amendment_law_title": "安定的かつ効率的な資金決済制度の構築を図るための資金決済に関する法律等の一部を改正する法律",
+      "law_revision_id": "324AC0000000228_20230601_504AC0000000061",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "鈴木俊一",
+          "position": "財務大臣・内閣府特命担当大臣（金融）",
+          "party": "自由民主党"
+        },
+        "committee": "財政金融委員会"
+      }
+    },
+    {
+      "enforcement_date": "2023-06-01",
+      "promulgate_date": "2022-04-20",
+      "amendment_law_title": "外国為替及び外国貿易法の一部を改正する法律",
+      "law_revision_id": "324AC0000000228_20230601_504AC0000000028",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "鈴木俊一",
+          "position": "財務大臣・内閣府特命担当大臣（金融）",
+          "party": "自由民主党"
+        },
+        "committee": "財政金融委員会"
+      }
+    },
+    {
+      "enforcement_date": "2022-12-29",
+      "promulgate_date": "2022-12-09",
+      "amendment_law_title": "国際的な不正資金等の移動等に対処するための国際連合安全保障理事会決議第千二百六十七号等を踏まえ我が国が実施する国際テロリストの財産の凍結等に関する特別措置法等の一部を改正する法律",
+      "law_revision_id": "324AC0000000228_20221229_504AC0000000097",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "谷公一",
+          "position": "国家公安委員会委員長・内閣府特命担当大臣（防災・海洋政策）",
+          "party": "自由民主党"
+        },
+        "committee": "内閣委員会"
+      }
+    },
+    {
+      "enforcement_date": "2022-06-17",
+      "promulgate_date": "2022-06-17",
+      "amendment_law_title": "刑法等の一部を改正する法律の施行に伴う関係法律の整理等に関する法律",
+      "law_revision_id": "324AC0000000228_20220617_504AC0000000068",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "古川禎久",
+          "position": "法務大臣",
+          "party": "自由民主党"
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2022-06-10",
+      "promulgate_date": "2022-06-10",
+      "amendment_law_title": "安定的かつ効率的な資金決済制度の構築を図るための資金決済に関する法律等の一部を改正する法律",
+      "law_revision_id": "324AC0000000228_20220610_504AC0000000061",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "鈴木俊一",
+          "position": "財務大臣・内閣府特命担当大臣（金融）",
+          "party": "自由民主党"
+        },
+        "committee": "財政金融委員会"
+      }
+    },
+    {
+      "enforcement_date": "2022-05-10",
+      "promulgate_date": "2022-04-20",
+      "amendment_law_title": "外国為替及び外国貿易法の一部を改正する法律",
+      "law_revision_id": "324AC0000000228_20220510_504AC0000000028",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "鈴木俊一",
+          "position": "財務大臣・内閣府特命担当大臣（金融）",
+          "party": "自由民主党"
+        },
+        "committee": "財政金融委員会"
+      }
+    },
+    {
+      "enforcement_date": "2020-05-08",
+      "promulgate_date": "2019-11-29",
+      "amendment_law_title": "外国為替及び外国貿易法の一部を改正する法律",
+      "law_revision_id": "324AC0000000228_20200508_501AC0000000060",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": null,
+        "committee": "財政金融委員会"
+      }
+    },
+    {
+      "enforcement_date": "2019-12-16",
+      "promulgate_date": "2019-05-31",
+      "amendment_law_title": "情報通信技術の活用による行政手続等に係る関係者の利便性の向上並びに行政運営の簡素化及び効率化を図るための行政手続等における情報通信の技術の利用に関する法律等の一部を改正する法律",
+      "law_revision_id": "324AC0000000228_20191216_501AC0000000016",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "平井卓也",
+          "position": "内閣府特命担当大臣（クールジャパン戦略・知的財産戦略・科学技術政策・宇宙政策）",
+          "party": "自由民主党"
+        },
+        "committee": "内閣委員会"
+      }
+    },
+    {
+      "enforcement_date": "2019-11-29",
+      "promulgate_date": "2019-11-29",
+      "amendment_law_title": "外国為替及び外国貿易法の一部を改正する法律",
+      "law_revision_id": "324AC0000000228_20191129_501AC0000000060",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": null,
+        "committee": "財政金融委員会"
+      }
+    },
+    {
+      "enforcement_date": "2017-10-01",
+      "promulgate_date": "2017-05-24",
+      "amendment_law_title": "外国為替及び外国貿易法の一部を改正する法律",
+      "law_revision_id": "324AC0000000228_20171001_429AC0000000038",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "世耕弘成",
+          "position": "経済産業大臣・内閣府特命担当大臣（原子力損害賠償・廃炉等支援機構）",
+          "party": "自由民主党・こころ"
+        },
+        "committee": "経済産業委員会"
+      }
+    },
+    {
+      "enforcement_date": "2017-05-24",
+      "promulgate_date": "2017-05-24",
+      "amendment_law_title": "外国為替及び外国貿易法の一部を改正する法律",
+      "law_revision_id": "324AC0000000228_20170524_429AC0000000038",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "世耕弘成",
+          "position": "経済産業大臣・内閣府特命担当大臣（原子力損害賠償・廃炉等支援機構）",
+          "party": "自由民主党・こころ"
+        },
+        "committee": "経済産業委員会"
+      }
+    },
+    {
+      "enforcement_date": "2016-04-01",
+      "promulgate_date": "2014-06-13",
+      "amendment_law_title": "行政不服審査法の施行に伴う関係法律の整備等に関する法律",
+      "law_revision_id": "324AC0000000228_20160401_426AC0000000069",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "新藤義孝",
+          "position": "総務大臣・内閣府特命担当大臣（地方分権改革）",
+          "party": "自由民主党"
+        },
+        "committee": "法務委員会"
+      }
+    }
+  ],
+  "summary": {
+    "description": "この法律は、外国との間でお金のやり取りをしたり、外国と貿易を行ったりする際のルールを定めたものです。外国為替や外国貿易などの対外取引は基本的に自由に行えることを前提としつつ、必要最小限の管理や調整を行うことで、取引の健全な発展や国の平和・安全の維持を図っています。",
+    "scope": "外国為替取引や外国貿易、対外直接投資などの対外取引を行う事業者・個人および関連する金融機関等",
+    "keywords": [
+      "外国為替",
+      "外国貿易",
+      "資本取引",
+      "対内直接投資",
+      "支払等"
+    ]
+  },
+  "category": "外国為替・貿易",
+  "contributors": [
+    {
+      "name": "片山さつき",
+      "position": "財務大臣・内閣府特命担当大臣（金融）",
+      "party": "自由民主党・無所属の会",
+      "count": 4
+    },
+    {
+      "name": "鈴木俊一",
+      "position": "財務大臣・内閣府特命担当大臣（金融）",
+      "party": "自由民主党",
+      "count": 4
+    },
+    {
+      "name": "谷公一",
+      "position": "国家公安委員会委員長・内閣府特命担当大臣（防災・海洋政策）",
+      "party": "自由民主党",
+      "count": 3
+    },
+    {
+      "name": "古川禎久",
+      "position": "法務大臣",
+      "party": "自由民主党",
+      "count": 2
+    },
+    {
+      "name": "世耕弘成",
+      "position": "経済産業大臣・内閣府特命担当大臣（原子力損害賠償・廃炉等支援機構）",
+      "party": "自由民主党・こころ",
+      "count": 2
+    },
+    {
+      "name": "平井卓也",
+      "position": "内閣府特命担当大臣（クールジャパン戦略・知的財産戦略・科学技術政策・宇宙政策）",
+      "party": "自由民主党",
+      "count": 1
+    },
+    {
+      "name": "新藤義孝",
+      "position": "総務大臣・内閣府特命担当大臣（地方分権改革）",
+      "party": "自由民主党",
+      "count": 1
+    }
+  ],
+  "explainer": {
+    "generated_on": "2026-10-26",
+    "recent_changes": [
+      {
+        "year": "2026",
+        "enforcement_date": "2026-06-05",
+        "diff_id": "324AC0000000228_2026-06-04_2026-06-05",
+        "title": "対内直接投資等の安全保障審査における意見聴取規定の新設",
+        "what": "財務大臣等が安全保障審査の際に内閣総理大臣や外務大臣など関係行政機関の長の意見を求める規定が新設され、既存の条文番号が繰り下げられました。",
+        "grounded": true,
+        "why": "対内直接投資等が国の安全等に関わるか判断する際、関係行政機関の意見を求める手続きを法律上明確に位置づける必要があったためです。",
+        "impact": "企業が対内直接投資や特定取得を行う際の安全保障審査で関係省庁の意見が反映される仕組みが整い、罰則の対象行為や重さに実質的な変更はありません。"
+      },
+      {
+        "year": "2025",
+        "enforcement_date": "2025-06-01",
+        "diff_id": "324AC0000000228_2025-05-31_2025-06-01",
+        "title": "罰則規定における「懲役」から「拘禁刑」への用語整理",
+        "what": "罰則規定で使われていた「懲役」という言葉が「拘禁刑」に置き換えられました。処罰対象の行為や刑の重さに変更はありません。",
+        "grounded": true,
+        "why": "刑法上の刑罰の種類に関する制度変更を踏まえ、関係する法律の条文表現を統一的に整理するために行われました。",
+        "impact": "処罰対象となる違反行為や科される刑罰の重さには実質的な変更がないため、経済活動や貿易取引への規制内容に影響はありません。"
+      },
+      {
+        "year": "2024",
+        "enforcement_date": "2024-04-01",
+        "diff_id": "324AC0000000228_2024-03-31_2024-04-01",
+        "title": "資金移動業者・電子決済手段等取引業者への遵守基準の新設",
+        "what": "資金移動業者や電子決済手段等取引業者にも外国為替取引等取扱業者遵守基準が課され、違反のおそれがある業者には指導・助言・勧告・命令ができる仕組みが整備されました。新しい命令違反に対する罰則も追加されました。",
+        "grounded": true,
+        "why": "国連安全保障理事会決議を踏まえた国際テロリストの財産凍結等の実効性を確保するため、銀行等以外の新しい送金・決済サービス事業者にも確認態勢を整備する必要が生じたためです。",
+        "impact": "資金移動業者や電子決済手段等取引業者を利用する際の確認手続きが厳格化される可能性があり、基準違反の事業者は指導・勧告・命令や罰則の対象となります。"
+      }
+    ]
+  }
+}
