@@ -1,0 +1,81 @@
+{
+  "law_id": "324AC0000000228",
+  "law_title": "外国為替及び外国貿易法",
+  "date_before": "2027-03-31",
+  "date_after": "2027-04-01",
+  "revision_before": {
+    "law_revision_id": "324AC0000000228_20270104_508AC0000000030",
+    "amendment_law_title": "外国為替及び外国貿易法の一部を改正する法律",
+    "amendment_enforcement_date": "2027-01-04"
+  },
+  "revision_after": {
+    "law_revision_id": "324AC0000000228_20270401_508AC0000000064",
+    "amendment_law_title": "金融商品取引法及び資金決済に関する法律の一部を改正する法律",
+    "amendment_enforcement_date": "2027-04-01"
+  },
+  "stats": {
+    "added": 0,
+    "modified": 0,
+    "deleted": 0,
+    "main": 0,
+    "suppl": 1
+  },
+  "diffs": [
+    {
+      "type": "added",
+      "article_num": "suppl_令和八年七月二三日法律第六四号_88",
+      "title_before": null,
+      "title_after": "第八十八条",
+      "lines_before": [],
+      "lines_after": [
+        "第八十八条",
+        "この法律（附則第一条第四号に掲げる規定にあっては、当該規定。以下この条において同じ。）の施行前にこの法律による改正前のそれぞれの法律（これらに基づく命令を含む。以下この条において同じ。）の規定によってした処分、手続その他の行為であって、この法律による改正後のそれぞれの法律の規定に相当の規定があるものは、この附則に別段の定めがあるものを除き、この法律による改正後のそれぞれの法律の相当の規定によってしたものとみなす。"
+      ],
+      "diff": [
+        "+第八十八条",
+        "+この法律（附則第一条第四号に掲げる規定にあっては、当該規定。以下この条において同じ。）の施行前にこの法律による改正前のそれぞれの法律（これらに基づく命令を含む。以下この条において同じ。）の規定によってした処分、手続その他の行為であって、この法律による改正後のそれぞれの法律の規定に相当の規定があるものは、この附則に別段の定めがあるものを除き、この法律による改正後のそれぞれの法律の相当の規定によってしたものとみなす。"
+      ],
+      "paragraphs_before": [],
+      "paragraphs_after": [
+        {
+          "num": "1",
+          "text": "この法律（附則第一条第四号に掲げる規定にあっては、当該規定。以下この条において同じ。）の施行前にこの法律による改正前のそれぞれの法律（これらに基づく命令を含む。以下この条において同じ。）の規定によってした処分、手続その他の行為であって、この法律による改正後のそれぞれの法律の規定に相当の規定があるものは、この附則に別段の定めがあるものを除き、この法律による改正後のそれぞれの法律の相当の規定によってしたものとみなす。"
+        }
+      ],
+      "is_suppl": true,
+      "amend_law_num": "令和八年七月二三日法律第六四号",
+      "section_path": []
+    }
+  ],
+  "pending": {
+    "generated_on": "2026-10-26",
+    "revisions": [
+      {
+        "law_revision_id": "324AC0000000228_20270401_508AC0000000064",
+        "amendment_law_title": "金融商品取引法及び資金決済に関する法律の一部を改正する法律",
+        "amendment_law_num": "令和八年法律第六十四号",
+        "enforcement_comment": null,
+        "scheduled_enforcement_date": null
+      }
+    ],
+    "unenforced_before": [
+      {
+        "law_revision_id": "324AC0000000228_20270104_508AC0000000030",
+        "amendment_law_title": "外国為替及び外国貿易法の一部を改正する法律",
+        "amendment_law_num": "令和八年法律第三十号",
+        "enforcement_comment": null,
+        "scheduled_enforcement_date": null,
+        "enforcement_date": "2027-01-04"
+      }
+    ]
+  },
+  "proposer": {
+    "submission_type": "閣法",
+    "minister": {
+      "name": "片山さつき",
+      "position": "財務大臣・内閣府特命担当大臣（金融）",
+      "party": "自由民主党・無所属の会"
+    },
+    "committee": "財政金融委員会"
+  }
+}

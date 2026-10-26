@@ -1,0 +1,176 @@
+{
+  "law_id": "410AC0000000025",
+  "law_title": "電子計算機を使用して作成する国税関係帳簿書類の保存方法等の特例に関する法律",
+  "law_num": "平成十年法律第二十五号",
+  "promulgation_date": "1998-03-31",
+  "revision_count": 9,
+  "timeline": [
+    {
+      "enforcement_date": "2027-01-01",
+      "promulgate_date": "2025-03-31",
+      "amendment_law_title": "所得税法等の一部を改正する法律",
+      "law_revision_id": "410AC0000000025_20270101_507AC0000000013",
+      "diff_id": "410AC0000000025_2026-12-31_2027-01-01",
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "加藤勝信",
+          "position": "財務大臣・内閣府特命担当大臣（金融）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "財政金融委員会"
+      }
+    },
+    {
+      "enforcement_date": "2025-04-01",
+      "promulgate_date": "2025-03-31",
+      "amendment_law_title": "所得税法等の一部を改正する法律",
+      "law_revision_id": "410AC0000000025_20250401_507AC0000000013",
+      "diff_id": "410AC0000000025_2025-03-31_2025-04-01",
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "加藤勝信",
+          "position": "財務大臣・内閣府特命担当大臣（金融）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "財政金融委員会"
+      }
+    },
+    {
+      "enforcement_date": "2022-04-01",
+      "promulgate_date": "2020-03-31",
+      "amendment_law_title": "所得税法等の一部を改正する法律",
+      "law_revision_id": "410AC0000000025_20220401_502AC0000000008",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "麻生太郎",
+          "position": "財務大臣・内閣府特命担当大臣（金融）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2022-01-01",
+      "promulgate_date": "2021-03-31",
+      "amendment_law_title": "所得税法等の一部を改正する法律",
+      "law_revision_id": "410AC0000000025_20220101_503AC0000000011",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "麻生太郎",
+          "position": "財務大臣・内閣府特命担当大臣（金融）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "財政金融委員会"
+      }
+    },
+    {
+      "enforcement_date": "2020-04-01",
+      "promulgate_date": "2020-03-31",
+      "amendment_law_title": "所得税法等の一部を改正する法律",
+      "law_revision_id": "410AC0000000025_20200401_502AC0000000008",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "麻生太郎",
+          "position": "財務大臣・内閣府特命担当大臣（金融）",
+          "party": "自由民主党・無所属の会"
+        },
+        "committee": "法務委員会"
+      }
+    },
+    {
+      "enforcement_date": "2019-12-16",
+      "promulgate_date": "2019-05-31",
+      "amendment_law_title": "情報通信技術の活用による行政手続等に係る関係者の利便性の向上並びに行政運営の簡素化及び効率化を図るための行政手続等における情報通信の技術の利用に関する法律等の一部を改正する法律",
+      "law_revision_id": "410AC0000000025_20191216_501AC0000000016",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "平井卓也",
+          "position": "内閣府特命担当大臣（クールジャパン戦略・知的財産戦略・科学技術政策・宇宙政策）",
+          "party": "自由民主党"
+        },
+        "committee": "内閣委員会"
+      }
+    },
+    {
+      "enforcement_date": "2019-09-30",
+      "promulgate_date": "2019-03-29",
+      "amendment_law_title": "所得税法等の一部を改正する法律",
+      "law_revision_id": "410AC0000000025_20190930_431AC0000000006",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "麻生太郎",
+          "position": "財務大臣・内閣府特命担当大臣（金融）",
+          "party": "自由民主党"
+        },
+        "committee": "財政金融委員会"
+      }
+    },
+    {
+      "enforcement_date": "2019-04-01",
+      "promulgate_date": "2019-03-29",
+      "amendment_law_title": "所得税法等の一部を改正する法律",
+      "law_revision_id": "410AC0000000025_20190401_431AC0000000006",
+      "diff_id": null,
+      "proposer": {
+        "submission_type": "閣法",
+        "minister": {
+          "name": "麻生太郎",
+          "position": "財務大臣・内閣府特命担当大臣（金融）",
+          "party": "自由民主党"
+        },
+        "committee": "財政金融委員会"
+      }
+    },
+    {
+      "enforcement_date": "2007-09-30",
+      "promulgate_date": "2007-03-30",
+      "amendment_law_title": null,
+      "law_revision_id": "410AC0000000025_20070930_419AC0000000006",
+      "diff_id": null
+    }
+  ],
+  "summary": {
+    "description": "この法律は、情報化社会に対応するために、電子計算機(コンピュータ)を使って作成する国税関係の帳簿や書類の保存方法について、通常の国税に関する法律の特例を定めたものです。これにより、国税の納税義務がきちんと果たされるようにしつつ、納税者などが帳簿や書類を保存する際の負担を軽くすることを目指しています。",
+    "scope": "国税関係帳簿書類を電子計算機を使用して作成する納税者等",
+    "keywords": [
+      "国税関係帳簿書類",
+      "電磁的記録",
+      "電子取引",
+      "電子計算機出力マイクロフィルム",
+      "所得税法"
+    ]
+  },
+  "category": "国税",
+  "contributors": [
+    {
+      "name": "麻生太郎",
+      "position": "財務大臣・内閣府特命担当大臣（金融）",
+      "party": "自由民主党・無所属の会",
+      "count": 5
+    },
+    {
+      "name": "加藤勝信",
+      "position": "財務大臣・内閣府特命担当大臣（金融）",
+      "party": "自由民主党・無所属の会",
+      "count": 2
+    },
+    {
+      "name": "平井卓也",
+      "position": "内閣府特命担当大臣（クールジャパン戦略・知的財産戦略・科学技術政策・宇宙政策）",
+      "party": "自由民主党",
+      "count": 1
+    }
+  ]
+}
