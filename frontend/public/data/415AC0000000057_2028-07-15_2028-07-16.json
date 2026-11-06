@@ -5788,7 +5788,7 @@
     }
   ],
   "pending": {
-    "generated_on": "2026-10-12",
+    "generated_on": "2026-11-06",
     "revisions": [
       {
         "law_revision_id": "415AC0000000057_20280716_508AC0000000056",
@@ -5799,14 +5799,6 @@
       }
     ],
     "unenforced_before": [
-      {
-        "law_revision_id": "415AC0000000057_20261102_508AC0000000062",
-        "amendment_law_title": "防災庁設置法の施行に伴う関係法律の整備等に関する法律",
-        "amendment_law_num": "令和八年法律第六十二号",
-        "enforcement_comment": null,
-        "scheduled_enforcement_date": null,
-        "enforcement_date": "2026-11-02"
-      },
       {
         "law_revision_id": "415AC0000000057_20270117_508AC0000000056",
         "amendment_law_title": "個人情報の保護に関する法律等の一部を改正する法律",
