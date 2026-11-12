@@ -1552,25 +1552,28 @@ LONG_B = "薬事に関する審査若しくは調査のために必要と認め�
 
 
 def test_latest_change_is_none_when_most_removed_lines_moved_to_another_article():
-    # N4 partial: 著作権法42条 -- its 第2項 moved to 42条の2, so on 42's own diff
-    # those lines look repealed.
+    # N4 lines rule: 著作権法42条 -- its 第2項 moved to 42条の2, so on 42's own
+    # diff those lines look repealed. The bodies are kept far apart (42 keeps a
+    # long 第1項, 42_2 gains a third line) so that only the lines rule can catch it.
+    keep = "著作物は、裁判手続のために必要と認められる場合及び立法又は行政の目的のために内部資料として必要と認められる場合には、その必要と認められる限度において、複製することができる。ただし、当該著作物の種類及び用途並びにその複製の部数及び態様に照らし著作権者の利益を不当に害することとなる場合は、この限りでない。"
+    extra = "前項の規定は、行政庁の行う審判その他裁判に準ずる手続について準用する。この場合において、必要な読替えは政令で定める。"
     entries = [
         _entry(
             "42",
-            paragraphs_before=_p(f"本文\n{LONG_A}\n{LONG_B}"),
-            paragraphs_after=_p("本文"),
-            diff=["--- 旧", "+++ 新", "@@ -1,3 +1,1 @@", " 本文", f"-{LONG_A}", f"-{LONG_B}"],
+            paragraphs_before=_p(f"{keep}\n{LONG_A}\n{LONG_B}"),
+            paragraphs_after=_p(keep),
+            diff=["--- 旧", "+++ 新", "@@ -1,4 +1,2 @@", " 第四十二条", f" {keep}", f"-{LONG_A}", f"-{LONG_B}"],
         ),
-        _entry("42_2", "added", paragraphs_before=[], paragraphs_after=_p(f"{LONG_A}\n{LONG_B}"),
-               diff=["+++ 新", "@@ -0,0 +1,2 @@", f"+{LONG_A}", f"+{LONG_B}"]),
+        _entry("42_2", "added", paragraphs_before=[], paragraphs_after=_p(f"{LONG_A}\n{LONG_B}\n{extra}"),
+               diff=["+++ 新", f"+{LONG_A}", f"+{LONG_B}", f"+{extra}"]),
     ]
     tree = _tree(
-        _article("42", "第四十二条", text="本文"),
-        _article("42_2", "第四十二条の二", text=f"{LONG_A}\n{LONG_B}"),
+        _article("42", "第四十二条", text=keep),
+        _article("42_2", "第四十二条の二", text=f"{LONG_A}\n{LONG_B}\n{extra}"),
     )
     pages = {p["article_num"]: p for p in _build(entries, tree)["articles"]}
     assert pages["42"]["latest_change"] is None
-    # 42_2's added lines are 42's removed text: the same move seen from the other end.
+    # 2 of 42_2's 3 added lines are 42's removed lines: the same move from the other end.
     assert pages["42_2"]["latest_change"] is None
 
 
