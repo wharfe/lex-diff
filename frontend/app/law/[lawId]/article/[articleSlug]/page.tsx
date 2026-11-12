@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getArticleParams, getArticleData, findArticle } from "@/lib/data";
+import { getArticleParams, getArticleData, findArticle, getLatestChangeEntry } from "@/lib/data";
 import { isTombstone, type CurrentText } from "@/lib/types";
 import { ArticleText, FormerArticleText } from "@/components/article-text";
 import { ArticleHistory } from "@/components/article-history";
+import { ArticleLatestChange } from "@/components/article-latest-change";
 import { ArticleLinks } from "@/components/article-links";
 import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
 import { jpDate } from "@/lib/format";
@@ -112,6 +113,15 @@ export default async function ArticlePageRoute({
         asof={data.source.asof}
         displayNum={article.display_num}
       />
+
+      {article.latest_change && (
+        <ArticleLatestChange
+          change={article.latest_change}
+          entry={getLatestChangeEntry(article.latest_change.diff_id, article.article_num)}
+          asof={data.source.asof}
+          articleNum={article.article_num}
+        />
+      )}
 
       {/* spec §6: a tombstone page lists 現在の姿 → 改正直前の条文 → 改正履歴 →
           /diff リンク, with no summary slot. "現行本文に対応する解説は未収録

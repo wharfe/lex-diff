@@ -1,5 +1,6 @@
 import { ArticleDiff, ArticlePage, LawArticles, LawDiffData, LawTimeline } from "./types";
 import fs from "fs";
+import { isChangedLine } from "./diff-lines";
 import path from "path";
 
 const DATA_DIR = path.join(process.cwd(), "public", "data");
@@ -22,6 +23,28 @@ export function getDiffData(diffId: string): LawDiffData {
   const filePath = path.join(DATA_DIR, `${diffId}.json`);
   const raw = fs.readFileSync(filePath, "utf-8");
   return JSON.parse(raw) as LawDiffData;
+}
+
+const latestChangeDiffCache = new Map<string, LawDiffData>();
+
+/** This article's 本則 entry in one diff, for the article page's latest-change
+ *  block. Throws rather than rendering nothing: articles.py only ships a
+ *  latest_change that points at exactly one such entry, so a miss means the
+ *  diff and the article data disagree, and the build is the place to stop. */
+export function getLatestChangeEntry(diffId: string, articleNum: string): ArticleDiff {
+  let data = latestChangeDiffCache.get(diffId);
+  if (!data) {
+    data = getDiffData(diffId);
+    latestChangeDiffCache.set(diffId, data);
+  }
+  const entries = data.diffs.filter((d) => d.article_num === articleNum && !d.is_suppl);
+  if (entries.length !== 1) {
+    throw new Error(`${diffId}: expected one 本則 entry for ${articleNum}, found ${entries.length}`);
+  }
+  if (!entries[0].diff.some(isChangedLine)) {
+    throw new Error(`${diffId}: the entry for ${articleNum} has no changed line`);
+  }
+  return entries[0];
 }
 
 let pendingGeneratedOnCache: Map<string, string> | null = null;

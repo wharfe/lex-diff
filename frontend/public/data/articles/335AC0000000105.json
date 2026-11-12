@@ -2,8 +2,8 @@
   "law_id": "335AC0000000105",
   "law_title": "道路交通法",
   "source": {
-    "asof": "2026-11-06",
-    "fetched_at": "2026-11-06T10:17:37+09:00",
+    "asof": "2026-11-12",
+    "fetched_at": "2026-11-12T14:23:52+09:00",
     "law_revision_id": "335AC0000000105_20260721_508AC0000000052",
     "amendment_enforcement_date": "2026-07-21"
   },
@@ -42,6 +42,10 @@
       "current_summary": {
         "text": "道路交通法で使われる「道路」「車両」「運転」などの基本的な用語の意味を定義する条文",
         "evidence_date": "2024-11-01"
+      },
+      "latest_change": {
+        "diff_id": "335AC0000000105_2024-10-31_2024-11-01",
+        "enforcement_date": "2024-11-01"
       },
       "former": null,
       "changes": [
@@ -146,6 +150,7 @@
         "text": "車両が道路のどちら側を通行しなければならないか、また歩行者や特定小型原動機付自転車（電動キックボードなど）の側方を通過する際の注意義務を定めるルール",
         "evidence_date": "2026-04-01"
       },
+      "latest_change": null,
       "former": null,
       "changes": [
         {
@@ -244,6 +249,7 @@
         "text": "車両通行帯(車線)がある道路で、車がどの車線を通行すべきかについての基本ルールを定めた条文",
         "evidence_date": "2026-04-01"
       },
+      "latest_change": null,
       "former": null,
       "changes": [
         {
@@ -380,6 +386,7 @@
         "text": "パトカーや救急車などの緊急自動車が、通常の交通ルールの一部について適用除外を受けることを定めた規定",
         "evidence_date": "2026-04-01"
       },
+      "latest_change": null,
       "former": null,
       "changes": [
         {
@@ -553,6 +560,10 @@
         "text": "違法駐車の車両の使用者に科す「放置違反金」の納付命令の手続きや、使用者の所在が分からない場合の通知方法などを定めた条文",
         "evidence_date": "2026-05-21"
       },
+      "latest_change": {
+        "diff_id": "335AC0000000105_2026-05-20_2026-05-21",
+        "enforcement_date": "2026-05-21"
+      },
       "former": null,
       "changes": [
         {
@@ -618,6 +629,10 @@
       "current_summary": {
         "text": "車を運転する人や自転車に乗る人が交通中に必ず守らなければならないルールを定めた条文",
         "evidence_date": "2024-11-01"
+      },
+      "latest_change": {
+        "diff_id": "335AC0000000105_2024-10-31_2024-11-01",
+        "enforcement_date": "2024-11-01"
       },
       "former": null,
       "changes": [
@@ -733,6 +748,10 @@
         "text": "自動運転車(特定自動運行)の運行許可を公安委員会が審査する際の基準と、関係者から意見を聴く手続きを定めた条文",
         "evidence_date": "2026-06-14"
       },
+      "latest_change": {
+        "diff_id": "335AC0000000105_2026-06-13_2026-06-14",
+        "enforcement_date": "2026-06-14"
+      },
       "former": null,
       "changes": [
         {
@@ -809,6 +828,7 @@
         "text": "運転免許(第一種・第二種)や仮免許を与えることができない年齢や条件を定めるルール",
         "evidence_date": "2026-04-01"
       },
+      "latest_change": null,
       "former": null,
       "changes": [
         {
@@ -984,6 +1004,7 @@
         "text": "運転免許試験に合格した人に対して、公安委員会が免許を与える条件を定めた規定",
         "evidence_date": "2026-04-01"
       },
+      "latest_change": null,
       "former": null,
       "changes": [
         {
@@ -1105,6 +1126,10 @@
         "text": "運転免許の情報をマイナンバーカードに記録する仕組みと、その申請・返納・抹消などの手続きについて定めたルール",
         "evidence_date": "2026-06-14"
       },
+      "latest_change": {
+        "diff_id": "335AC0000000105_2026-06-13_2026-06-14",
+        "enforcement_date": "2026-06-14"
+      },
       "former": null,
       "changes": [
         {
@@ -1223,6 +1248,7 @@
         "text": "運転免許試験を受けるための年齢や免許保有歴などの条件を定める条文",
         "evidence_date": "2026-04-01"
       },
+      "latest_change": null,
       "former": null,
       "changes": [
         {
@@ -1294,6 +1320,10 @@
         "text": "運転免許の情報が記録されたマイナンバーカードを持つ人が、免許の取消しや失効などにあたった場合に、そのカードを提示して免許情報の記録を消してもらう手続きについて定めた規定",
         "evidence_date": "2026-06-14"
       },
+      "latest_change": {
+        "diff_id": "335AC0000000105_2026-06-13_2026-06-14",
+        "enforcement_date": "2026-06-14"
+      },
       "former": null,
       "changes": [
         {
@@ -1352,6 +1382,10 @@
       "current_summary": {
         "text": "飲酒運転や過労運転、無許可の自動運行など悪質な交通違反に対する罰則（5年以下の拘禁刑又は100万円以下の罰金）を定める条文",
         "evidence_date": "2026-07-21"
+      },
+      "latest_change": {
+        "diff_id": "335AC0000000105_2026-07-20_2026-07-21",
+        "enforcement_date": "2026-07-21"
       },
       "former": null,
       "changes": [
@@ -1477,6 +1511,10 @@
       "current_summary": {
         "text": "無免許運転や酒気帯び運転、あおり運転など悪質な交通違反に対する罰則(3年以下の拘禁刑または50万円以下の罰金)を定める条文",
         "evidence_date": "2026-07-21"
+      },
+      "latest_change": {
+        "diff_id": "335AC0000000105_2026-07-20_2026-07-21",
+        "enforcement_date": "2026-07-21"
       },
       "former": null,
       "changes": [
@@ -1654,6 +1692,7 @@
         ]
       },
       "current_summary": null,
+      "latest_change": null,
       "former": null,
       "changes": [
         {
@@ -1715,6 +1754,7 @@
         ]
       },
       "current_summary": null,
+      "latest_change": null,
       "former": null,
       "changes": [
         {
@@ -1803,6 +1843,7 @@
         "text": "道路交通法に違反した場合の罰則（拘禁刑や罰金）を定める条文です。",
         "evidence_date": "2026-04-01"
       },
+      "latest_change": null,
       "former": null,
       "changes": [
         {
@@ -1889,6 +1930,7 @@
         "text": "道路交通法の各種違反行為に対して5万円以下の罰金を科すルールを定めた条文",
         "evidence_date": "2026-04-01"
       },
+      "latest_change": null,
       "former": null,
       "changes": [
         {
@@ -1954,6 +1996,7 @@
         "text": "交通違反のうち軽微なものを『反則行為』として扱い、青切符などによる反則金制度の対象となる『反則者』の範囲を定める条文",
         "evidence_date": "2026-04-01"
       },
+      "latest_change": null,
       "former": null,
       "changes": [
         {

@@ -2,8 +2,8 @@
   "law_id": "140AC0000000045",
   "law_title": "刑法",
   "source": {
-    "asof": "2026-11-06",
-    "fetched_at": "2026-11-06T10:17:35+09:00",
+    "asof": "2026-11-12",
+    "fetched_at": "2026-11-12T14:23:51+09:00",
     "law_revision_id": "140AC0000000045_20260521_507AC0000000039",
     "amendment_enforcement_date": "2026-05-21"
   },
@@ -33,6 +33,10 @@
       "current_summary": {
         "text": "日本国外で罪を犯した日本人に対して、日本の刑法を適用する対象となる犯罪の種類を列挙した条文",
         "evidence_date": "2023-07-13"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2023-07-12_2023-07-13",
+        "enforcement_date": "2023-07-13"
       },
       "former": null,
       "changes": [
@@ -143,6 +147,10 @@
       "current_summary": {
         "text": "日本国外で日本国民が被害者となった一定の重大犯罪について、犯人が外国人であっても日本の刑法を適用できると定める規定",
         "evidence_date": "2023-07-13"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2023-07-12_2023-07-13",
+        "enforcement_date": "2023-07-13"
       },
       "former": null,
       "changes": [
@@ -342,6 +350,10 @@
         "text": "刑罰の種類(主刑・付加刑)を定める条文です。",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -440,6 +452,10 @@
         "text": "複数の刑罰の重さを比べるときの順序やルールを定めた条文",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -513,6 +529,10 @@
         ]
       },
       "current_summary": null,
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -589,6 +609,7 @@
         ]
       },
       "current_summary": null,
+      "latest_change": null,
       "former": {
         "as_of": "2025-05-31",
         "label": "第十三条",
@@ -657,6 +678,10 @@
       "current_summary": {
         "text": "死刑や無期の刑を軽くしたり、有期の刑を重くしたり軽くしたりする際の、刑期の上限・下限を定めるルール",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -762,6 +787,10 @@
         "text": "「拘留」という刑罰の期間や執行方法(刑事施設に収容すること)を定める条文",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -843,6 +872,10 @@
       "current_summary": {
         "text": "執行猶予(刑の実行を一定期間猶予する制度)を言い渡すことができる条件を定めた規定",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -943,6 +976,10 @@
         "text": "執行猶予中にさらに罪を犯すなどした場合に、執行猶予の言い渡しを必ず取り消さなければならないケースを定めるルール",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -1031,6 +1068,10 @@
         "text": "執行猶予中に一定の事情があった場合、裁判所の裁量で執行猶予の言い渡しを取り消すことができる場合を定めた規定",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -1085,6 +1126,10 @@
       "current_summary": {
         "text": "執行猶予の言渡しが取り消されたとき、その人が他に執行猶予中の刑を受けている場合には、その猶予も連動して取り消すことを定めたルール",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -1210,6 +1255,10 @@
         "text": "執行猶予の期間を問題なく過ごした場合に、刑の言い渡しの効力が失われる(前科として扱われなくなる)ルールを定めた条文",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -1319,6 +1368,10 @@
         "text": "一定の条件を満たす人が刑罰の言い渡しを受けた場合に、その刑の一部の執行を猶予できる制度について定めた条文",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -1418,6 +1471,10 @@
         "text": "刑の一部の執行猶予の言い渡しを、どのような場合に取り消さなければならないかを定める規定",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -1494,6 +1551,10 @@
       "current_summary": {
         "text": "刑の一部執行猶予が取り消された場合に、他に執行猶予中の刑についても取消しを行うルールを定めた条文",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -1630,6 +1691,10 @@
         "text": "刑の一部の執行猶予の期間が無事に終わったときに、刑がどのように軽くなるか（減刑）を定めるルール",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -1751,6 +1816,10 @@
         "text": "刑務所に入っている人が、反省の態度が認められる場合に、刑期の途中で仮に釈放できる条件を定めたルール",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -1816,6 +1885,10 @@
       "current_summary": {
         "text": "確定した刑罰を一定期間執行しないままでいると、その執行ができなくなる「刑の時効」の期間を定めたルール",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -1898,6 +1971,10 @@
       "current_summary": {
         "text": "刑罰の時効(一定期間執行されないと刑の執行ができなくなる制度)が、どのような場合に中断する(リセットされる)かを定めた規定",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -1992,6 +2069,10 @@
         "text": "刑の言い渡しの効力が一定期間経過後に消滅する（前科が消える）ルールを定めた条文",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -2079,6 +2160,10 @@
       "current_summary": {
         "text": "複数の犯罪をまとめて処罰する際の対象となる「併合罪」の範囲を定めるルール",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -2195,6 +2280,10 @@
         "text": "複数の罪(併合罪)のうち一つの罪に死刑や無期刑を科すときに、他の罪の刑をどう扱うかを定めるルール",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -2294,6 +2383,10 @@
         "text": "一つの裁判で複数の罪（併合罪）について有期の拘禁刑を言い渡す場合に、その刑期の上限をどう計算するかを定めるルール",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -2386,6 +2479,10 @@
       "current_summary": {
         "text": "複数の罪(併合罪)について別々の裁判で刑が言い渡された場合に、どのように刑を執行するかを定めるルール",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -2491,6 +2588,10 @@
         "text": "刑務所に入れられた人が刑を終えた後、一定期間内にまた罪を犯した場合に「再犯」として扱うための要件を定める条文",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -2590,6 +2691,10 @@
         "text": "再犯(以前に刑罰を受けた人が再び罪を犯した場合)の刑罰の上限を定めるルール",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -2666,6 +2771,10 @@
       "current_summary": {
         "text": "法律上の理由で刑を軽くする(減軽する)際に、刑の種類ごとにどのような範囲まで軽くできるかを定めたルール",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -2754,6 +2863,10 @@
       "current_summary": {
         "text": "刑を減軽した結果、刑期に1日未満の端数が出た場合はその端数を切り捨てるというルールを定めた条文",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -2859,6 +2972,10 @@
         "text": "国の政治体制を暴力で破壊しようとする「内乱罪」について、その行為者を役割に応じて処罰する内容を定めた条文",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -2947,6 +3064,10 @@
         "text": "内乱の予備(準備)や陰謀をした者に対する刑罰を定める条文",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -3012,6 +3133,10 @@
       "current_summary": {
         "text": "内乱の実行行為やその予備・陰謀を、武器や資金、食糧の提供などによって手助け(幇助)した者を処罰する規定",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -3090,6 +3215,10 @@
         "text": "外国からの武力攻撃に加担し、敵国の軍務についたり軍事上の利益を与えたりした者を処罰する規定",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -3155,6 +3284,10 @@
       "current_summary": {
         "text": "外国に通謀して武力行使をさせる「外患誘致罪」や、外国からの武力行使に加担する「外患援助罪」の準備行為・相談行為をした人を処罰するルール",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -3227,6 +3360,10 @@
         "text": "外国の国旗や国章を侮辱目的で傷つけたり汚したりした場合の処罰を定める条文",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -3268,6 +3405,10 @@
       "current_summary": {
         "text": "外国に対して個人的に戦闘行為をしようとする目的で準備や相談をした人を罰するルール",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -3334,6 +3475,10 @@
       "current_summary": {
         "text": "外国同士が戦争をしている時に、日本が中立の立場を守るための命令に違反した人を処罰するルール",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -3405,6 +3550,10 @@
       "current_summary": {
         "text": "公務員が仕事をしているときに暴力や脅しを加えたり、公務員に特定の行為をさせたり辞めさせたりするために暴力や脅しを加えた場合の罰則を定める規定",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -3483,6 +3632,10 @@
         "text": "公務員が仕事で使うコンピューターを壊したり、不正な命令を与えたりして正常に動かなくする行為を処罰する規定",
         "evidence_date": "2025-06-12"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-06-11_2025-06-12",
+        "enforcement_date": "2025-06-12"
+      },
       "former": null,
       "changes": [
         {
@@ -3525,6 +3678,10 @@
         "text": "公務員が行った封印や差押えの表示を壊したり、その効力を無効にする行為を罰する規定",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -3566,6 +3723,10 @@
       "current_summary": {
         "text": "借金の取り立て(強制執行)を妨害するために財産を隠したり壊したりする行為を処罰するルール",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -3671,6 +3832,10 @@
         "text": "強制執行の妨害行為(立入り妨害や申立権者への暴行・脅迫など)を処罰するルール",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -3770,6 +3935,10 @@
         "text": "強制執行における競売(入札)の公正を、偽計や威力によって害する行為を処罰する規定",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -3835,6 +4004,10 @@
       "current_summary": {
         "text": "報酬目的で他人の債務に関して強制執行妨害の罪を犯した者を通常より重く処罰するルール",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -3940,6 +4113,10 @@
         "text": "公共工事などの入札や競売で、不正な手段を使ったり談合をしたりする行為を処罰する規定",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -4005,6 +4182,10 @@
       "current_summary": {
         "text": "法律に基づいて捕まっている人が逃げ出した場合の罰則を定める条文",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -4116,6 +4297,10 @@
         "text": "すでに法令により身柄を拘束されている人が、脱出のために建物や拘束具を壊したり、暴力・脅しを使ったり、複数人で示し合わせて逃げた場合の処罰を定めた規定",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -4181,6 +4366,10 @@
       "current_summary": {
         "text": "法律に基づいて捕まっている人(被拘禁者)を無理やり奪い取る行為を処罰する規定",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -4297,6 +4486,10 @@
         "text": "法律により拘束されている人の逃走を手助けしたり、逃走させるために暴行・脅迫をした人を処罰するルール",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -4395,6 +4588,10 @@
       "current_summary": {
         "text": "法律により拘束されている人を見張ったり護送したりする立場の人が、その人を逃がしてしまった場合の罰則を定めた条文",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -4495,6 +4692,10 @@
         "text": "罪を犯した人や逃走中の人をかくまったり逃がしたりする行為（犯人蔵匿・隠避罪）を処罰するルール",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -4560,6 +4761,10 @@
       "current_summary": {
         "text": "他人の刑事事件の証拠を隠したり偽造したりした場合の罰則を定める条文",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -4638,6 +4843,10 @@
         "text": "刑事事件の証人になり得る人やその家族に対して、面会を無理強いしたり脅すような行為を処罰する規定",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -4679,6 +4888,10 @@
       "current_summary": {
         "text": "大勢で集まって暴力や脅しを行った場合の「騒乱罪」の処罰内容を定める規定",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -4746,6 +4959,10 @@
         "text": "大勢の人が暴行・脅迫をしようとして集まり、警察などから解散命令を3回以上受けても解散しなかった場合の罰則を定める規定",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -4811,6 +5028,10 @@
       "current_summary": {
         "text": "人が住んでいる建物や、電車・船・鉱坑などに放火して焼いた場合の重い刑罰を定める条文です。",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -4893,6 +5114,10 @@
       "current_summary": {
         "text": "人が住んでおらず、かつ誰もいない建物・船・鉱坑に放火して燃やした場合の刑罰を定める条文",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -5009,6 +5234,10 @@
         "text": "建物など(第108条・第109条に定める物)以外の物に放火して焼損させ、公共に危険を生じさせた場合の処罰について定める条文",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -5102,6 +5331,10 @@
         "text": "自分の家や物を燃やしたこと（失火や自己所有物への放火）が原因で、他人の建物など重要な物に燃え広がってしまった場合の罰則を定める条文",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -5178,6 +5411,10 @@
       "current_summary": {
         "text": "放火罪(現住建造物等放火・非現住建造物等放火)を実行する目的でその準備行為(予備)をした者を処罰する規定",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -5256,6 +5493,10 @@
         "text": "火事の際に消火活動を妨害する行為を処罰する規定",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -5310,6 +5551,10 @@
       "current_summary": {
         "text": "業務上の不注意や重大な過失によって失火を起こした場合の刑罰を定める条文",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -5382,6 +5627,10 @@
         "text": "ガスや電気、蒸気を漏らしたり流出させたり遮断したりして、人の生命・身体・財産に危険を生じさせたり、人を死傷させたりした場合の罰則を定める条文",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -5448,6 +5697,10 @@
         "text": "人が住んでいる建物や汽車・電車・鉱坑を水で浸水させて被害を与える「出水浸害罪」の刑罰を定める条文",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -5494,6 +5747,10 @@
       "current_summary": {
         "text": "水を出して(出水させて)、住居に使われていない建物など以外のものを水浸しにし、公共の危険を生じさせた場合の処罰について定めるルール",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -5561,6 +5818,10 @@
         "text": "水害の際に水防活動を妨害する行為を処罰する規定",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -5626,6 +5887,10 @@
       "current_summary": {
         "text": "堤防を壊したり水門を破壊したりして水利の妨害や洪水を引き起こす行為を処罰する規定",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -5698,6 +5963,10 @@
         "text": "道路や水路、橋を壊したり塞いだりして交通の妨害をする行為を処罰する規定",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -5768,6 +6037,10 @@
       "current_summary": {
         "text": "鉄道や灯台などを壊して、電車や船が安全に通行できなくする行為を罰するルール",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -5856,6 +6129,10 @@
         "text": "走行中の電車・汽車や船を転覆・破壊させる行為を処罰する規定",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -5927,6 +6204,10 @@
         "text": "電車や船などを運転する業務に従事する人が、不注意によって列車や船の転覆・衝突などの事故を起こした場合の処罰を定める条文",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -5993,6 +6274,10 @@
         "text": "正当な理由なく他人の住居や管理されている建物などに侵入したり、退去要求に応じなかった場合の罰則を定める条文です。",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -6058,6 +6343,10 @@
       "current_summary": {
         "text": "正当な理由なく他人の封をした手紙を開けた場合の処罰について定めた条文です",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -6130,6 +6419,10 @@
         "text": "医師や弁護士などが正当な理由なく業務上知った人の秘密を漏らした場合の罰則を定める規定",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -6195,6 +6488,10 @@
       "current_summary": {
         "text": "あへん煙を輸入・製造・販売・販売目的で所持する行為を処罰する規定",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -6262,6 +6559,10 @@
         "text": "あへん煙を吸う道具を輸入・製造・販売したり、販売目的で持っていた人を処罰するルール",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -6327,6 +6628,10 @@
       "current_summary": {
         "text": "税関職員があへん煙やその吸煙器具を自ら輸入したり、他人の輸入を見逃したりした場合の刑罰を定める規定",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -6399,6 +6704,10 @@
         "text": "あへん煙(アヘンの吸引用に加工された煙)を吸った人や、吸煙のために場所を提供して利益を得た人への刑罰を定める条文",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -6464,6 +6773,10 @@
       "current_summary": {
         "text": "麻薬の一種であるあへん煙や、それを吸うための道具を持っていた場合の罰則を定めた規定",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -6531,6 +6844,10 @@
         "text": "飲み水として使われているきれいな水を汚して使えなくした場合の罰則を定める条文",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -6597,6 +6914,10 @@
         "text": "水道水やその水源を汚染して使えなくする行為を処罰するルール",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -6662,6 +6983,10 @@
       "current_summary": {
         "text": "人が飲むための浄水(きれいな水)に毒物など健康を害する物を混ぜた場合の罰則を定める条文",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -6740,6 +7065,10 @@
         "text": "水道水やその水源に毒物などを混入する行為を処罰する規定",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -6816,6 +7145,10 @@
       "current_summary": {
         "text": "みんなが飲むための水道水の設備をわざと壊したり詰まらせたりする行為を処罰する規定",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -6921,6 +7254,10 @@
         "text": "通用している貨幣・紙幣・銀行券を偽造・変造したり、それを使用・交付・輸入したりする行為を処罰するルール",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -7014,6 +7351,10 @@
         "text": "日本国内で流通している外国のお金(貨幣・紙幣・銀行券)を偽造・変造したり、それを使ったりする行為を処罰するルール",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -7080,6 +7421,10 @@
         "text": "偽造・変造された貨幣や紙幣、銀行券であることを知りながら使う目的で手に入れた人を処罰するルール",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -7145,6 +7490,10 @@
       "current_summary": {
         "text": "偽の貨幣・紙幣・銀行券を作るために道具や材料を準備した人を罰するルール",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -7227,6 +7576,10 @@
       "current_summary": {
         "text": "天皇の印章や署名を悪用して詔書などの重要文書を偽造・変造した場合の重い刑罰を定めた条文",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -7314,6 +7667,10 @@
       "current_summary": {
         "text": "公務所や公務員が作成すべき文書・図画を偽造・変造する行為を処罰する規定",
         "evidence_date": "2025-06-12"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-06-11_2025-06-12",
+        "enforcement_date": "2025-06-12"
       },
       "former": null,
       "changes": [
@@ -7423,6 +7780,10 @@
         "text": "公務員が職務上、虚偽の内容の公文書を作成したり、公文書を不正に書き換えたりした場合の処罰について定めた条文",
         "evidence_date": "2025-06-12"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-06-11_2025-06-12",
+        "enforcement_date": "2025-06-12"
+      },
       "former": null,
       "changes": [
         {
@@ -7499,6 +7860,10 @@
         "text": "公務員に嘘の申立てをして、登記簿や戸籍簿、免状・鑑札・旅券などに事実と異なる内容を記載・記録させる行為を処罰する規定",
         "evidence_date": "2025-06-12"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-06-11_2025-06-12",
+        "enforcement_date": "2025-06-12"
+      },
       "former": null,
       "changes": [
         {
@@ -7565,6 +7930,10 @@
       "current_summary": {
         "text": "偽造・変造された公文書や電磁的記録を実際に使用した人を、偽造した本人と同じ重さの刑で処罰するルール",
         "evidence_date": "2025-06-12"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-06-11_2025-06-12",
+        "enforcement_date": "2025-06-12"
       },
       "former": null,
       "changes": [
@@ -7641,6 +8010,10 @@
       "current_summary": {
         "text": "他人の印鑑やサインを無断で使って、契約書や証明書などの私文書を偽造・変造する行為を処罰する規定",
         "evidence_date": "2025-06-12"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-06-11_2025-06-12",
+        "enforcement_date": "2025-06-12"
       },
       "former": null,
       "changes": [
@@ -7750,6 +8123,10 @@
         "text": "医師が役所に提出する診断書・検案書・死亡証書にうそを書いた場合の罰則を定めるルール",
         "evidence_date": "2025-06-12"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-06-11_2025-06-12",
+        "enforcement_date": "2025-06-12"
+      },
       "former": null,
       "changes": [
         {
@@ -7841,6 +8218,10 @@
         "text": "偽造・変造された文書や、虚偽の記載がされた診断書等を実際に使用（行使）した場合の処罰について定める規定",
         "evidence_date": "2025-06-12"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-06-11_2025-06-12",
+        "enforcement_date": "2025-06-12"
+      },
       "former": null,
       "changes": [
         {
@@ -7922,6 +8303,10 @@
         "text": "他人の業務に使われる電子データ(電磁的記録)を不正に作成したり、それを使用したりする行為を処罰するルール",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -7993,6 +8378,10 @@
         "text": "公債証書や株券などの有価証券を偽造・変造したり、虚偽の記載をした場合の処罰について定めた条文です。",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -8063,6 +8452,10 @@
       "current_summary": {
         "text": "偽造・変造された有価証券や虚偽記載のある有価証券を使ったり、使う目的で人に渡したり輸入したりした場合の罰則を定める条文",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -8140,6 +8533,10 @@
         "text": "クレジットカードなどの支払用カードや預貯金引出用カードの電磁的記録(ICチップ等のデータ)を不正に作ったり、不正に作られたものと知りながら使用したり譲渡・貸与・輸入したりする行為を処罰する規定",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -8205,6 +8602,10 @@
       "current_summary": {
         "text": "クレジットカードなどの偽造カードを不正に使う目的で所持した場合の罰則を定める条文",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -8293,6 +8694,10 @@
         "text": "クレジットカードなどの支払用カード情報を不正に取得・保管・提供した場合の刑罰を定める条文",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -8364,6 +8769,10 @@
         "text": "天皇の印章(御璽)や国の印章(国璽)、天皇の署名(御名)を偽造・不正使用した場合の処罰について定めるルール",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -8434,6 +8843,10 @@
       "current_summary": {
         "text": "国や公務員が使う印鑑やサインを偽造したり不正に使ったりする行為を処罰するルール",
         "evidence_date": "2025-06-12"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-06-11_2025-06-12",
+        "enforcement_date": "2025-06-12"
       },
       "former": null,
       "changes": [
@@ -8533,6 +8946,10 @@
         "text": "行政機関が使う「記号」(証明や許可を示すマーク)を偽造したり不正使用したりする行為を処罰するルール",
         "evidence_date": "2025-06-12"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-06-11_2025-06-12",
+        "enforcement_date": "2025-06-12"
+      },
       "former": null,
       "changes": [
         {
@@ -8623,6 +9040,10 @@
       "current_summary": {
         "text": "他人の印鑑やサインを勝手に偽造したり、不正に使ったりする行為を処罰する規定です。",
         "evidence_date": "2025-06-12"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-06-11_2025-06-12",
+        "enforcement_date": "2025-06-12"
       },
       "former": null,
       "changes": [
@@ -8731,6 +9152,10 @@
         "text": "正当な理由なくコンピュータウイルスを作成・提供する行為を処罰する規定",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -8796,6 +9221,10 @@
       "current_summary": {
         "text": "正当な理由なくコンピュータウイルスなどの不正なプログラムを取得・保管する行為を処罰する規定",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -8863,6 +9292,10 @@
         "text": "裁判で宣誓した証人が嘘の証言をした場合の刑罰を定める条文です。",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -8905,6 +9338,10 @@
         "text": "他人に刑事処分や懲戒処分を受けさせる目的で、嘘の告訴・告発をした人を罰するルール",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -8946,6 +9383,10 @@
       "current_summary": {
         "text": "人前でわいせつな行為をした人への刑罰を定める規定",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -9017,6 +9458,10 @@
       "current_summary": {
         "text": "わいせつな文書や画像などを配布・公然陳列・所持することを処罰する規定",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -9093,6 +9538,10 @@
       "current_summary": {
         "text": "暴行・脅迫や相手の状態につけこんでわいせつな行為をした場合の処罰について定める条文",
         "evidence_date": "2023-07-13"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2023-07-12_2023-07-13",
+        "enforcement_date": "2023-07-13"
       },
       "former": null,
       "changes": [
@@ -9214,6 +9663,10 @@
         "text": "同意なく性交等を行う「不同意性交等罪」の内容と処罰を定める条文",
         "evidence_date": "2023-07-13"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2023-07-12_2023-07-13",
+        "enforcement_date": "2023-07-13"
+      },
       "former": null,
       "changes": [
         {
@@ -9321,6 +9774,7 @@
         ]
       },
       "current_summary": null,
+      "latest_change": null,
       "former": {
         "as_of": "2023-07-12",
         "label": "第百七十八条",
@@ -9390,6 +9844,10 @@
         "text": "18歳未満の子どもに対し、監護者(親権者など)という立場の影響力を利用してわいせつな行為や性交等をした場合の処罰について定めた条文",
         "evidence_date": "2023-07-13"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2023-07-12_2023-07-13",
+        "enforcement_date": "2023-07-13"
+      },
       "former": null,
       "changes": [
         {
@@ -9455,6 +9913,10 @@
       "current_summary": {
         "text": "不同意わいせつ罪・不同意性交等罪などの未遂も処罰されることを定めた条文",
         "evidence_date": "2023-07-13"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2023-07-12_2023-07-13",
+        "enforcement_date": "2023-07-13"
       },
       "former": null,
       "changes": [
@@ -9548,6 +10010,10 @@
       "current_summary": {
         "text": "不同意わいせつ罪や不同意性交等罪などを犯して人を死傷させた場合の刑罰を定める規定",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -9664,6 +10130,7 @@
         "text": "16歳未満の子どもに対して、わいせつ目的で面会を要求したり、自分の裸などの映像を送らせたりする行為（いわゆるグルーミング行為）を処罰する規定",
         "evidence_date": "2023-07-13"
       },
+      "latest_change": null,
       "former": null,
       "changes": [
         {
@@ -9740,6 +10207,10 @@
       "current_summary": {
         "text": "営利目的で、ふだん性行為をする習慣のない女性を誘って性行為をさせた者を処罰する規定",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -9818,6 +10289,10 @@
         "text": "配偶者がいるのに別の人と結婚した場合(重婚)の罰則を定める条文",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -9888,6 +10363,10 @@
       "current_summary": {
         "text": "常習賭博や賭博場の開帳など、賭博に関する犯罪とその刑罰を定める条文",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -9965,6 +10444,10 @@
         "text": "宝くじのように許可を受けずに富くじ(違法な賭博的くじ)を発売・取次ぎ・授受した場合の罰則を定める規定",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -10036,6 +10519,10 @@
         "text": "神社や寺院、墓地などの礼拝所を汚したり、葬式などの宗教的儀式を妨害した人を罰するルール",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -10090,6 +10577,10 @@
       "current_summary": {
         "text": "他人の墓を無断で掘り返す行為を処罰する規定",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -10179,6 +10670,10 @@
         "text": "死体や遺骨、遺髪、棺の中にある物を壊したり捨てたり勝手に自分の物にしたりする行為を処罰するルール",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -10267,6 +10762,10 @@
         "text": "墓を掘り起こした上で、死体や遺骨、遺髪、棺の中の物を壊したり捨てたり盗んだりした場合の刑罰を定める規定",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -10321,6 +10820,10 @@
       "current_summary": {
         "text": "公務員が職権を濫用して人に義務のないことをさせたり、権利行使を妨害したりする行為(職権濫用罪)を処罰する規定",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -10387,6 +10890,10 @@
       "current_summary": {
         "text": "裁判官・検察官・警察官などが職権を乱用して人を不法に逮捕・監禁した場合の罰則を定める規定",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -10492,6 +10999,10 @@
         "text": "裁判官・検察官・警察官などが職務中に被告人や被疑者らに暴行や虐待行為をした場合の処罰、および拘置されている者を看守・護送する者が暴行・虐待をした場合の処罰を定める規定",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -10562,6 +11073,10 @@
       "current_summary": {
         "text": "公務員が自分の仕事に関連して賄賂を受け取ったり、要求・約束したりする行為(収賄罪)を処罰するルール",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -10650,6 +11165,10 @@
       "current_summary": {
         "text": "公務員が自分の仕事に関して頼みごとを聞き入れ、自分の代わりに第三者に賄賂を渡させたり、その要求・約束をした場合の処罰を定める条文",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -10749,6 +11268,10 @@
         "text": "公務員が職務に関して不正な行為をした場合(加重収賄)や、公務員でなくなった後に在職中の収賄が発覚した場合(事後収賄)の刑罰を定める条文",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -10826,6 +11349,10 @@
         "text": "公務員が口利き(あっせん)の報酬として賄賂を受け取った場合の処罰について定めるルール",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -10902,6 +11429,10 @@
       "current_summary": {
         "text": "公務員への賄賂を提供したり、提供を申し込んだり約束したりした人（贈賄側）を処罰するルール",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -11002,6 +11533,10 @@
         "text": "人を殺した場合の刑罰(死刑・無期または有期の拘禁刑)を定める殺人罪の規定",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -11079,6 +11614,10 @@
         "text": "殺人罪を犯す目的でその準備行為をした場合の処罰を定める規定",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -11145,6 +11684,10 @@
         "text": "人を自殺するようそそのかしたり手助けしたりして死なせた場合、または本人の頼みや同意を得て殺した場合の刑罰を定めるルール",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -11210,6 +11753,10 @@
       "current_summary": {
         "text": "人にけがをさせた者(傷害罪)に対する刑罰を定める規定",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -11310,6 +11857,10 @@
         "text": "人にケガをさせてその結果死亡させてしまった場合(傷害致死罪)の刑罰を定める条文",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -11386,6 +11937,10 @@
       "current_summary": {
         "text": "集団での傷害事件や傷害致死事件の現場で、直接手を出さなくても勢いを助けた人を処罰するルール",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -11475,6 +12030,10 @@
         "text": "暴行を加えたが相手にケガをさせるまでに至らなかった場合の罰則を定める条文",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -11557,6 +12116,10 @@
         "text": "複数人が凶器を準備して集まった場合(凶器準備集合罪・凶器準備結集罪)の刑罰を定める規定",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -11622,6 +12185,10 @@
       "current_summary": {
         "text": "仕事上の不注意や重大な過失によって人を死傷させた場合の刑罰を定める規定",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -11689,6 +12256,10 @@
         "text": "妊娠している女性が自分で薬を使うなどして人工的に妊娠を中絶させた場合(自己堕胎罪)の刑罰を定めた条文",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -11754,6 +12325,10 @@
       "current_summary": {
         "text": "妊婦本人から頼まれたり、その同意を得たりして人工的に妊娠を中絶させた人を処罰するルール",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -11854,6 +12429,10 @@
         "text": "医師・助産師・薬剤師・医薬品販売業者が女性の依頼や同意を受けて堕胎手術を行った場合の処罰を定めるルール",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -11947,6 +12526,10 @@
         "text": "女性の同意を得ずに堕胎(人工的に妊娠を中絶させること)をさせた者を処罰する規定",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -12035,6 +12618,10 @@
         "text": "高齢・幼少・障害・病気で助けが必要な人を見捨てた場合の処罰について定める条文",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -12100,6 +12687,10 @@
       "current_summary": {
         "text": "高齢者・子ども・障がい者・病人を保護する責任のある人が、その人を見捨てたり必要な世話をしなかったりした場合の罰則を定めた条文",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -12167,6 +12758,10 @@
         "text": "正当な理由なく人を不法に逮捕・監禁した場合の刑罰を定める条文",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -12226,6 +12821,10 @@
       "current_summary": {
         "text": "人や親族の生命・身体・自由・名誉・財産に危害を加えると告げて脅した場合の罰則を定める条文",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -12314,6 +12913,10 @@
         "text": "強要罪(他人を脅したり暴行を用いたりして、義務のないことをさせたり権利行使を妨げたりする行為)を処罰する規定",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -12391,6 +12994,10 @@
         "text": "未成年者を誘拐したり勝手に連れ去ったりした場合の刑罰を定める条文",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -12467,6 +13074,10 @@
       "current_summary": {
         "text": "営利・わいせつ・結婚・生命身体への加害目的で人を略取・誘拐する行為を処罰する規定",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -12561,6 +13172,10 @@
         "text": "身代金目的で人を誘拐したり、誘拐した後に身代金を要求したりする行為を処罰する規定",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -12637,6 +13252,10 @@
       "current_summary": {
         "text": "国外に連れ出す目的で人を略取・誘拐する行為を処罰する規定",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -12723,6 +13342,10 @@
       "current_summary": {
         "text": "人を買い受けたり売り渡したりする人身売買の罪とその刑罰を定める規定",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -12822,6 +13445,10 @@
       "current_summary": {
         "text": "略取・誘拐・売買された被害者を日本国外に連れ出した者を処罰する規定",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -12925,6 +13552,10 @@
       "current_summary": {
         "text": "略取・誘拐・人身売買された被害者を、犯人を助ける目的や営利・わいせつ目的などで引き渡したり隠したりする行為を処罰する規定",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -13047,6 +13678,10 @@
         "text": "身の代金目的の誘拐罪を実行する前の準備行為(予備)を処罰するルール",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -13117,6 +13752,10 @@
       "current_summary": {
         "text": "他人の社会的評価を傷つける事実を公然と示した場合の犯罪(名誉毀損罪)とその刑罰を定める規定",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -13195,6 +13834,10 @@
         "text": "事実を示さずに公然と人を侮辱した場合の刑罰を定める規定(侮辱罪)",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -13260,6 +13903,10 @@
       "current_summary": {
         "text": "嘘の噂を広めたり人をだますような手段を使って、他人の社会的信用を傷つけたり仕事を妨害したりする行為(信用毀損罪・業務妨害罪)を処罰する規定",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -13343,6 +13990,10 @@
         "text": "コンピュータを不正に操作したり壊したりして、他人の業務を妨害する行為(電子計算機損壊等業務妨害罪)を処罰するルール",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -13408,6 +14059,10 @@
       "current_summary": {
         "text": "他人の物を盗む「窃盗罪」について、その刑罰の内容を定める条文",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -13486,6 +14141,10 @@
         "text": "他人の土地や建物などの不動産を不法に奪い取る行為(不動産侵奪罪)を処罰するルール",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -13557,6 +14216,10 @@
         "text": "暴行や脅迫を使って他人の財物を奪う「強盗罪」の成立要件と刑罰を定めた条文",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -13611,6 +14274,10 @@
       "current_summary": {
         "text": "強盗罪を犯す目的で準備行為（予備）をした者を処罰するルールを定めた条文",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -13689,6 +14356,10 @@
         "text": "強盗犯が被害者を負傷させたり死亡させたりした場合(強盗致死傷罪)の刑罰を定める規定",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -13764,6 +14435,10 @@
       "current_summary": {
         "text": "強盗と強制性交等（性犯罪）の両方を犯した場合の重い刑罰について定める条文",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -13879,6 +14554,10 @@
         "text": "人をだまして財物やお金を得た場合の犯罪（詐欺罪）について定める条文",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -13944,6 +14623,10 @@
       "current_summary": {
         "text": "コンピューターに虚偽の情報や不正な指令を与えて不正な電磁的記録を作るなどして、不正に利益を得る行為(電子計算機使用詐欺罪)を処罰する規定",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -14011,6 +14694,10 @@
         "text": "他人の仕事を任されている人が、その任務に背いて本人に損害を与えた場合の『背任罪』の処罰について定めた条文",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -14076,6 +14763,10 @@
       "current_summary": {
         "text": "未成年者の判断力の未熟さや人の心神耗弱(判断力が弱っている状態)につけこんで、財物をだまし取ったり不正な利益を得たりする行為(準詐欺罪)を処罰する規定",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -14148,6 +14839,10 @@
         "text": "人を脅して金品を差し出させたり財産上の利益を得たりする「恐喝罪」の刑罰を定める条文",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -14219,6 +14914,10 @@
         "text": "自分が預かっている他人の物を勝手に自分の物にしてしまう「横領罪」について定めた条文",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -14284,6 +14983,10 @@
       "current_summary": {
         "text": "仕事で預かっている他人の物を横領した場合の刑罰を定める条文",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -14362,6 +15065,10 @@
         "text": "落とし物や忘れ物など、持ち主の手を離れた他人の物を自分のものにしてしまった場合の罰則を定める規定",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -14408,6 +15115,10 @@
       "current_summary": {
         "text": "盗んだ物と知りながら受け取ったり、運んだり、保管したり、売買を仲介したりする行為(盗品等関与罪)を処罰するルール",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -14475,6 +15186,10 @@
         "text": "役所が使う文書や電磁データを壊した場合の刑罰を定める条文",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -14540,6 +15255,10 @@
       "current_summary": {
         "text": "他人の持ち物である契約書やデータなどの重要な文書・電磁的記録を破壊した場合の刑罰を定めるルール",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -14607,6 +15326,10 @@
         "text": "他人の建物や船を壊した場合の処罰について定めるルール",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -14672,6 +15395,10 @@
       "current_summary": {
         "text": "他人の物を壊したり傷つけたりした場合の罰則（器物損壊罪）を定める条文",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -14739,6 +15466,10 @@
         "text": "他人の土地との境界を示す境界標(杭など)を壊したり動かしたりして、土地の境界が分からないようにする行為を処罰する規定",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -14804,6 +15535,10 @@
       "current_summary": {
         "text": "他人の手紙や封書を隠した場合の犯罪とその刑罰を定める条文",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "140AC0000000045_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [

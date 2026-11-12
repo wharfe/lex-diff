@@ -500,3 +500,83 @@ def test_a_pending_revisions_scheduled_date_is_its_diffs_date():
     for p, d in _pending_diffs():
         for r in d["pending"]["revisions"]:
             assert r.get("scheduled_enforcement_date") in (None, d["date_after"]), p.name
+
+
+@pytest.mark.parametrize("path", shipped_articles(), ids=lambda p: p.stem)
+def test_a_shipped_latest_change_is_the_gated_newest_change(path):
+    """latest_change, re-derived from the shipped diffs (#44, spec I1/I2).
+
+    The page says 「…の改正で今の形になりました」 and draws that diff's lines for
+    this article, read at build time from the diff JSON. So the referenced
+    entry must exist exactly once there with a real +/- line, and every
+    condition that nulls the block (N1-N4) must be decided again here.
+    """
+    import articles
+    import diff
+
+    doc = json.loads(path.read_text())
+    docs = articles.shipped_diff_docs(ARTICLES_DIR.parent)[doc["law_id"]]
+    changes = articles.collect_changes(docs, doc["source"]["asof"])
+    by_id = {d["_diff_id"]: d for d in docs}
+    for page in doc["articles"]:
+        num = page["article_num"]
+        assert "latest_change" in page, num
+        latest = changes[num][0]
+        expected = (
+            page["current"]["status"] not in articles.TOMBSTONE_STATUSES
+            and articles.texts_match(latest["paragraphs_after"], page["current"]["paragraphs"])
+            and latest["diff_id"] not in diff.SHIPPED_WITH_TABLE_CHANGES
+            and not latest["moved"]
+        )
+        assert (page["latest_change"] is not None) == expected, num
+        if page["latest_change"] is None:
+            continue
+        assert page["latest_change"] == {
+            "diff_id": latest["diff_id"],
+            "enforcement_date": latest["enforcement_date"],
+        }, num
+        entries = [
+            e for e in by_id[latest["diff_id"]]["diffs"]
+            if e["article_num"] == num and not e.get("is_suppl")
+        ]
+        assert len(entries) == 1, num
+        changed = [
+            line for line in entries[0]["diff"]
+            if line.startswith(("+", "-")) and not line.startswith(("+++", "---"))
+        ]
+        assert changed, num
+
+
+# Every page N4 withholds, checked by hand against the diffs (spec N4; Gate 2
+# r2 and Gate 3 r1 of #44). Pinned here rather than re-derived, because the
+# test above takes `moved` from the same moved_article_nums it would be
+# checking: a regression there -- a renumbering missed, or parallel provisions
+# like 刑法246/249 swept in -- must show up as a change to this list.
+EXPECTED_MOVED = {
+    ("140AC0000000045", "182"),  # 旧182 -> 183
+    *{("324AC0000000228", n) for n in ("69_4", "69_5", "69_6", "69_7", "69_8")},
+    *{("325AC0000000201", n) for n in ("77_60", "77_61", "77_62", "77_63")},
+    ("345AC0000000048", "42"),  # 第2項 moved to 42条の2
+    *{("345AC0000000048", n) for n in ("42_2", "42_3", "42_4")},
+}
+
+
+def test_the_pages_withheld_as_moved_are_exactly_the_known_moves():
+    import articles
+    import diff
+
+    moved = set()
+    for path in shipped_articles():
+        doc = json.loads(path.read_text())
+        docs = articles.shipped_diff_docs(ARTICLES_DIR.parent)[doc["law_id"]]
+        changes = articles.collect_changes(docs, doc["source"]["asof"])
+        for page in doc["articles"]:
+            latest = changes[page["article_num"]][0]
+            if (
+                page["current"]["status"] not in articles.TOMBSTONE_STATUSES
+                and articles.texts_match(latest["paragraphs_after"], page["current"]["paragraphs"])
+                and latest["diff_id"] not in diff.SHIPPED_WITH_TABLE_CHANGES
+                and latest["moved"]
+            ):
+                moved.add((doc["law_id"], page["article_num"]))
+    assert moved == EXPECTED_MOVED

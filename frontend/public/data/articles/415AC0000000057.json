@@ -2,8 +2,8 @@
   "law_id": "415AC0000000057",
   "law_title": "個人情報の保護に関する法律",
   "source": {
-    "asof": "2026-11-06",
-    "fetched_at": "2026-11-06T10:17:38+09:00",
+    "asof": "2026-11-12",
+    "fetched_at": "2026-11-12T14:23:53+09:00",
     "law_revision_id": "415AC0000000057_20261102_508AC0000000062",
     "amendment_enforcement_date": "2026-11-02"
   },
@@ -83,6 +83,10 @@
         "text": "個人情報保護法における「個人情報」「個人識別符号」「要配慮個人情報」「行政機関」などの重要な用語の定義を定めた条文",
         "evidence_date": "2026-11-02"
       },
+      "latest_change": {
+        "diff_id": "415AC0000000057_2026-11-01_2026-11-02",
+        "enforcement_date": "2026-11-02"
+      },
       "former": null,
       "changes": [
         {
@@ -137,6 +141,10 @@
       "current_summary": {
         "text": "個人情報保護の民間団体（認定個人情報保護団体)としての認定を受けられない欠格事由を定めたルール",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "415AC0000000057_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -204,6 +212,10 @@
         "text": "行政機関や独立行政法人などが、違法・不当な行為を助長したり誘発したりするおそれのある方法で個人情報を利用することを禁止するルール",
         "evidence_date": "2026-11-02"
       },
+      "latest_change": {
+        "diff_id": "415AC0000000057_2026-11-01_2026-11-02",
+        "enforcement_date": "2026-11-02"
+      },
       "former": null,
       "changes": [
         {
@@ -258,6 +270,10 @@
       "current_summary": {
         "text": "行政機関などが保有する匿名加工情報の利用提案ができない人の条件を定めた条文",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "415AC0000000057_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -325,6 +341,7 @@
         "text": "個人情報保護委員会がどのような仕事(事務)を担当するのかを定めた条文",
         "evidence_date": "2025-04-01"
       },
+      "latest_change": null,
       "former": null,
       "changes": [
         {
@@ -390,6 +407,10 @@
       "current_summary": {
         "text": "個人情報保護委員会の委員長・委員が、どのような場合に本人の意思に反して辞めさせられるかを定めたルール",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "415AC0000000057_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -473,6 +494,10 @@
       "current_summary": {
         "text": "個人情報保護委員会が持つ調査・監督権限の一部を、事業を所管する大臣など他の行政機関に委任できることを定めた条文",
         "evidence_date": "2026-05-21"
+      },
+      "latest_change": {
+        "diff_id": "415AC0000000057_2026-05-20_2026-05-21",
+        "enforcement_date": "2026-05-21"
       },
       "former": null,
       "changes": [
@@ -584,6 +609,10 @@
         "text": "個人情報保護委員会が書類を送達する際に、民事訴訟法のどの規定を準用し、どう読み替えるかを定めたルール",
         "evidence_date": "2026-05-21"
       },
+      "latest_change": {
+        "diff_id": "415AC0000000057_2026-05-20_2026-05-21",
+        "enforcement_date": "2026-05-21"
+      },
       "former": null,
       "changes": [
         {
@@ -661,6 +690,10 @@
         "text": "個人情報保護委員会がオンラインで書類を送達した場合に、紙の書面作成の代わりに電子データで記録することを定める規定",
         "evidence_date": "2026-05-21"
       },
+      "latest_change": {
+        "diff_id": "415AC0000000057_2026-05-20_2026-05-21",
+        "enforcement_date": "2026-05-21"
+      },
       "former": null,
       "changes": [
         {
@@ -736,6 +769,10 @@
       "current_summary": {
         "text": "行政機関等の職員などが正当な理由なく個人の秘密に関わる個人情報ファイルを漏らした場合の罰則を定める条文",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "415AC0000000057_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -824,6 +861,10 @@
         "text": "個人情報保護委員会の委員などが職務上知った秘密を漏らしたり盗用したりした場合の罰則を定める規定",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "415AC0000000057_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -877,6 +918,10 @@
       "current_summary": {
         "text": "個人情報保護委員会からの命令に違反した場合の罰則(刑罰)を定めた条文です",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "415AC0000000057_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -932,6 +977,10 @@
         "text": "個人情報を扱う事業者の従業員などが、不正な目的で個人情報データベースを漏らしたり盗用したりした場合の刑罰を定めた条文です。",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "415AC0000000057_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -986,6 +1035,10 @@
         "text": "行政機関などの職員が、仕事で知った個人情報を不正な目的で第三者に渡したり自分で悪用したりした場合の罰則を定めた条文です。",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "415AC0000000057_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -1039,6 +1092,10 @@
       "current_summary": {
         "text": "行政機関等の職員が権限を悪用して、職務以外の目的で個人の秘密に関わる文書などを集めた場合の罰則を定める規定",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "415AC0000000057_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [

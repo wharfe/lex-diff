@@ -2,8 +2,8 @@
   "law_id": "416AC0000000122",
   "law_title": "公益通報者保護法",
   "source": {
-    "asof": "2026-11-06",
-    "fetched_at": "2026-11-06T10:17:39+09:00",
+    "asof": "2026-11-12",
+    "fetched_at": "2026-11-12T14:23:53+09:00",
     "law_revision_id": "416AC0000000122_20261102_508AC0000000062",
     "amendment_enforcement_date": "2026-11-02"
   },
@@ -47,6 +47,10 @@
       "current_summary": {
         "text": "公益通報（不正を知った人が然るべき窓口に知らせること）の定義や、通報先となる「行政機関」の範囲を定めた条文",
         "evidence_date": "2026-11-02"
+      },
+      "latest_change": {
+        "diff_id": "416AC0000000122_2026-11-01_2026-11-02",
+        "enforcement_date": "2026-11-02"
       },
       "former": null,
       "changes": [

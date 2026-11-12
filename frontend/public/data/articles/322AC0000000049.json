@@ -2,8 +2,8 @@
   "law_id": "322AC0000000049",
   "law_title": "労働基準法",
   "source": {
-    "asof": "2026-11-06",
-    "fetched_at": "2026-11-06T10:17:36+09:00",
+    "asof": "2026-11-12",
+    "fetched_at": "2026-11-12T14:23:52+09:00",
     "law_revision_id": "322AC0000000049_20260717_508AC0000000060",
     "amendment_enforcement_date": "2026-07-17"
   },
@@ -67,6 +67,10 @@
       "current_summary": {
         "text": "解雇予告手当や休業手当などを計算するときの基礎となる「平均賃金」の算定方法を定めるルール",
         "evidence_date": "2025-04-01"
+      },
+      "latest_change": {
+        "diff_id": "322AC0000000049_2025-03-31_2025-04-01",
+        "enforcement_date": "2025-04-01"
       },
       "former": null,
       "changes": [
@@ -177,6 +181,10 @@
         "text": "労働基準法第5条(強制労働の禁止)に違反した者への罰則を定めた条文です。",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "322AC0000000049_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -235,6 +243,10 @@
       "current_summary": {
         "text": "労働基準法の中でも特に重要な規定(強制労働の禁止、妊産婦の保護、年少者の就労制限など)に違反した場合の刑罰を定めた条文です。",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "322AC0000000049_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -353,6 +365,10 @@
         ]
       },
       "current_summary": null,
+      "latest_change": {
+        "diff_id": "322AC0000000049_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
