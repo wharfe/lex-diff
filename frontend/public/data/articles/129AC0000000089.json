@@ -2,8 +2,8 @@
   "law_id": "129AC0000000089",
   "law_title": "民法",
   "source": {
-    "asof": "2026-11-06",
-    "fetched_at": "2026-11-06T10:17:35+09:00",
+    "asof": "2026-11-12",
+    "fetched_at": "2026-11-12T14:23:51+09:00",
     "law_revision_id": "129AC0000000089_20260624_508AC0000000045",
     "amendment_enforcement_date": "2026-06-24"
   },
@@ -35,6 +35,10 @@
       "current_summary": {
         "text": "特定の種類の債権を持つ人が、債務者の全財産から優先的に支払いを受けられる権利（一般の先取特権）が発生する原因を列挙した条文",
         "evidence_date": "2026-04-01"
+      },
+      "latest_change": {
+        "diff_id": "129AC0000000089_2026-03-31_2026-04-01",
+        "enforcement_date": "2026-04-01"
       },
       "former": null,
       "changes": [
@@ -114,6 +118,10 @@
       "current_summary": {
         "text": "離婚後の子どもの養育費（監護費用）について、支払いを受ける側が他の債権者より優先して支払いを受けられる権利（先取特権）を定める条文",
         "evidence_date": "2026-04-01"
+      },
+      "latest_change": {
+        "diff_id": "129AC0000000089_2026-03-31_2026-04-01",
+        "enforcement_date": "2026-04-01"
       },
       "former": null,
       "changes": [
@@ -257,6 +265,7 @@
         ]
       },
       "current_summary": null,
+      "latest_change": null,
       "former": {
         "as_of": "2024-03-31",
         "label": "第七百三十三条",
@@ -326,6 +335,10 @@
       "current_summary": {
         "text": "婚姻届を役所が受理する前に、法律違反がないかを確認しなければならないことを定めた条文",
         "evidence_date": "2024-04-01"
+      },
+      "latest_change": {
+        "diff_id": "129AC0000000089_2024-03-31_2024-04-01",
+        "enforcement_date": "2024-04-01"
       },
       "former": null,
       "changes": [
@@ -450,6 +463,10 @@
         "text": "婚姻を取り消せるのはどのような場合かを定めた条文で、取消しの根拠となる規定を限定するもの",
         "evidence_date": "2024-04-01"
       },
+      "latest_change": {
+        "diff_id": "129AC0000000089_2024-03-31_2024-04-01",
+        "enforcement_date": "2024-04-01"
+      },
       "former": null,
       "changes": [
         {
@@ -544,6 +561,10 @@
       "current_summary": {
         "text": "法律違反の結婚(近親婚や重婚など)を、誰が家庭裁判所に取り消してもらえるよう請求できるかを定めた条文",
         "evidence_date": "2024-04-01"
+      },
+      "latest_change": {
+        "diff_id": "129AC0000000089_2024-03-31_2024-04-01",
+        "enforcement_date": "2024-04-01"
       },
       "former": null,
       "changes": [
@@ -654,6 +675,7 @@
         ]
       },
       "current_summary": null,
+      "latest_change": null,
       "former": {
         "as_of": "2024-03-31",
         "label": "第七百四十六条",
@@ -727,6 +749,10 @@
       "current_summary": {
         "text": "婚姻が取り消された場合に、離婚に関する子の監護や財産分与などのルールをどこまで準用するかを定めた条文",
         "evidence_date": "2026-04-01"
+      },
+      "latest_change": {
+        "diff_id": "129AC0000000089_2026-03-31_2026-04-01",
+        "enforcement_date": "2026-04-01"
       },
       "former": null,
       "changes": [
@@ -825,6 +851,7 @@
         ]
       },
       "current_summary": null,
+      "latest_change": null,
       "former": {
         "as_of": "2026-03-31",
         "label": "第七百五十三条",
@@ -883,6 +910,7 @@
         ]
       },
       "current_summary": null,
+      "latest_change": null,
       "former": {
         "as_of": "2026-03-31",
         "label": "第七百五十四条",
@@ -940,6 +968,10 @@
       "current_summary": {
         "text": "離婚届を役所が受理する際に確認すべき条件を定めた規定",
         "evidence_date": "2026-04-01"
+      },
+      "latest_change": {
+        "diff_id": "129AC0000000089_2026-03-31_2026-04-01",
+        "enforcement_date": "2026-04-01"
       },
       "former": null,
       "changes": [
@@ -1034,6 +1066,10 @@
       "current_summary": {
         "text": "父母が離婚する際に、子どもをどちらが育てるか、面会交流、費用の分担など子どもの世話に関する事項をどう決めるかを定めるルール",
         "evidence_date": "2026-04-01"
+      },
+      "latest_change": {
+        "diff_id": "129AC0000000089_2026-03-31_2026-04-01",
+        "enforcement_date": "2026-04-01"
       },
       "former": null,
       "changes": [
@@ -1163,6 +1199,10 @@
         "text": "離婚後などに、祖父母やおじ・おばといった父母以外の親族が子と交流できるよう、家庭裁判所が定めることができるルール",
         "evidence_date": "2026-04-01"
       },
+      "latest_change": {
+        "diff_id": "129AC0000000089_2026-03-31_2026-04-01",
+        "enforcement_date": "2026-04-01"
+      },
       "former": null,
       "changes": [
         {
@@ -1262,6 +1302,10 @@
       "current_summary": {
         "text": "離婚時に養育費の取り決めをしなかった場合に、子を主に養育する親が他方の親に対して最低限度の養育費を請求できる権利を定める規定",
         "evidence_date": "2026-04-01"
+      },
+      "latest_change": {
+        "diff_id": "129AC0000000089_2026-03-31_2026-04-01",
+        "enforcement_date": "2026-04-01"
       },
       "former": null,
       "changes": [
@@ -1374,6 +1418,10 @@
         "text": "離婚した夫婦の一方が相手に財産の分配を求めることができる「財産分与」について定めたルール",
         "evidence_date": "2026-04-01"
       },
+      "latest_change": {
+        "diff_id": "129AC0000000089_2026-03-31_2026-04-01",
+        "enforcement_date": "2026-04-01"
+      },
       "former": null,
       "changes": [
         {
@@ -1446,6 +1494,10 @@
       "current_summary": {
         "text": "夫婦が離婚の訴え(裁判)を起こせる条件を定めるルール",
         "evidence_date": "2026-04-01"
+      },
+      "latest_change": {
+        "diff_id": "129AC0000000089_2026-03-31_2026-04-01",
+        "enforcement_date": "2026-04-01"
       },
       "former": null,
       "changes": [
@@ -1551,6 +1603,10 @@
         "text": "生まれた子どもの法律上の父親を、母親の婚姻関係に基づいて推定するルール",
         "evidence_date": "2024-04-01"
       },
+      "latest_change": {
+        "diff_id": "129AC0000000089_2024-03-31_2024-04-01",
+        "enforcement_date": "2024-04-01"
+      },
       "former": null,
       "changes": [
         {
@@ -1639,6 +1695,10 @@
       "current_summary": {
         "text": "婚姻が無効な形で行われた女性が出産した子について、通常の推定規定で父を決められない場合に裁判所が父を定めるというルール",
         "evidence_date": "2024-04-01"
+      },
+      "latest_change": {
+        "diff_id": "129AC0000000089_2024-03-31_2024-04-01",
+        "enforcement_date": "2024-04-01"
       },
       "former": null,
       "changes": [
@@ -1737,6 +1797,10 @@
       "current_summary": {
         "text": "婚姻中に生まれた子について、その子が夫（父）の子であるという推定を、誰が・どのような場合に否定できるかを定める条文",
         "evidence_date": "2024-04-01"
+      },
+      "latest_change": {
+        "diff_id": "129AC0000000089_2024-03-31_2024-04-01",
+        "enforcement_date": "2024-04-01"
       },
       "former": null,
       "changes": [
@@ -1876,6 +1940,10 @@
         "text": "「嫡出否認の訴え」を誰に対して起こすべきかを定めるルール",
         "evidence_date": "2024-04-01"
       },
+      "latest_change": {
+        "diff_id": "129AC0000000089_2024-03-31_2024-04-01",
+        "enforcement_date": "2024-04-01"
+      },
       "former": null,
       "changes": [
         {
@@ -1976,6 +2044,10 @@
         "text": "生まれた子どもが自分の嫡出子であると一度認めた場合に、その事実を後から否認する権利を失うことを定めた条文",
         "evidence_date": "2024-04-01"
       },
+      "latest_change": {
+        "diff_id": "129AC0000000089_2024-03-31_2024-04-01",
+        "enforcement_date": "2024-04-01"
+      },
       "former": null,
       "changes": [
         {
@@ -2064,6 +2136,10 @@
       "current_summary": {
         "text": "「嫡出否認の訴え(法律上の父子関係を否定する裁判)」をいつまでに起こさなければならないかを定めるルール",
         "evidence_date": "2024-04-01"
+      },
+      "latest_change": {
+        "diff_id": "129AC0000000089_2024-03-31_2024-04-01",
+        "enforcement_date": "2024-04-01"
       },
       "former": null,
       "changes": [
@@ -2175,6 +2251,10 @@
       "current_summary": {
         "text": "再婚後に生まれた子について嫡出否認がされた場合に、関係者が嫡出否認の訴えを起こせる期間の特別ルールを定めた条文",
         "evidence_date": "2024-04-01"
+      },
+      "latest_change": {
+        "diff_id": "129AC0000000089_2024-03-31_2024-04-01",
+        "enforcement_date": "2024-04-01"
       },
       "former": null,
       "changes": [
@@ -2291,6 +2371,10 @@
         "text": "子ども自身が嫡出否認の訴え（法律上の父子関係を否定する裁判）を起こせる期間について、通常より長く認める特別なルールを定めた条文",
         "evidence_date": "2024-04-01"
       },
+      "latest_change": {
+        "diff_id": "129AC0000000089_2024-03-31_2024-04-01",
+        "enforcement_date": "2024-04-01"
+      },
       "former": null,
       "changes": [
         {
@@ -2380,6 +2464,10 @@
         "text": "嫡出であることが後から否定された子どもが、それまで育ててもらった養育費を返す必要がないことを定めるルール",
         "evidence_date": "2024-04-01"
       },
+      "latest_change": {
+        "diff_id": "129AC0000000089_2024-03-31_2024-04-01",
+        "enforcement_date": "2024-04-01"
+      },
       "former": null,
       "changes": [
         {
@@ -2446,6 +2534,10 @@
       "current_summary": {
         "text": "嫡出否認によって新たに父が定められた結果、相続人となった人が、既に他の相続人が遺産分割を終えていた場合にどのような請求ができるかを定める規定",
         "evidence_date": "2024-04-01"
+      },
+      "latest_change": {
+        "diff_id": "129AC0000000089_2024-03-31_2024-04-01",
+        "enforcement_date": "2024-04-01"
       },
       "former": null,
       "changes": [
@@ -2524,6 +2616,10 @@
         "text": "父親が、まだ生まれていないお腹の中の子どもを自分の子として認める（認知する）ことができるルールを定めた条文",
         "evidence_date": "2024-04-01"
       },
+      "latest_change": {
+        "diff_id": "129AC0000000089_2024-03-31_2024-04-01",
+        "enforcement_date": "2024-04-01"
+      },
       "former": null,
       "changes": [
         {
@@ -2595,6 +2691,10 @@
         "text": "父親が子を認知したことに対して、その認知が事実に反する場合に無効を主張できる人・期間・条件を定めるルール",
         "evidence_date": "2024-04-01"
       },
+      "latest_change": {
+        "diff_id": "129AC0000000089_2024-03-31_2024-04-01",
+        "enforcement_date": "2024-04-01"
+      },
       "former": null,
       "changes": [
         {
@@ -2650,6 +2750,10 @@
       "current_summary": {
         "text": "結婚していない父母の間に生まれた子どもを父親が認知した場合に、子の監護（世話）に関するルールをどのように適用するかを定めた条文",
         "evidence_date": "2026-04-01"
+      },
+      "latest_change": {
+        "diff_id": "129AC0000000089_2026-03-31_2026-04-01",
+        "enforcement_date": "2026-04-01"
       },
       "former": null,
       "changes": [
@@ -2745,6 +2849,10 @@
         "text": "15歳未満の子どもを養子にする際、法定代理人が代わりに縁組を承諾し、監護すべき親の同意が必要となるルール",
         "evidence_date": "2026-04-01"
       },
+      "latest_change": {
+        "diff_id": "129AC0000000089_2026-03-31_2026-04-01",
+        "enforcement_date": "2026-04-01"
+      },
       "former": null,
       "changes": [
         {
@@ -2827,6 +2935,10 @@
         "text": "養子縁組を解消する(離縁する)際の手続きや、養子が15歳未満の場合に誰が離縁の協議・決定を行うかを定めるルール",
         "evidence_date": "2026-04-01"
       },
+      "latest_change": {
+        "diff_id": "129AC0000000089_2026-03-31_2026-04-01",
+        "enforcement_date": "2026-04-01"
+      },
       "former": null,
       "changes": [
         {
@@ -2898,6 +3010,10 @@
       "current_summary": {
         "text": "父母が子どもを育て、扶養する際に守るべき基本的な心構えや責務を定める規定",
         "evidence_date": "2026-04-01"
+      },
+      "latest_change": {
+        "diff_id": "129AC0000000089_2026-03-31_2026-04-01",
+        "enforcement_date": "2026-04-01"
       },
       "former": null,
       "changes": [
@@ -3008,6 +3124,10 @@
         "text": "離婚などで子どもと離れて暮らす父母以外の親族(祖父母など)と子どもとの面会交流について定めるルール",
         "evidence_date": "2026-04-01"
       },
+      "latest_change": {
+        "diff_id": "129AC0000000089_2026-03-31_2026-04-01",
+        "enforcement_date": "2026-04-01"
+      },
       "former": null,
       "changes": [
         {
@@ -3106,6 +3226,10 @@
       "current_summary": {
         "text": "未成年の子に対する親権を誰が持ち、どのような目的で行使すべきかを定めるルール",
         "evidence_date": "2026-04-01"
+      },
+      "latest_change": {
+        "diff_id": "129AC0000000089_2026-03-31_2026-04-01",
+        "enforcement_date": "2026-04-01"
       },
       "former": null,
       "changes": [
@@ -3242,6 +3366,10 @@
         "text": "離婚や認知の際に、子どもの親権者を父・母のどちらか（または両方）に定める手続きについてのルール",
         "evidence_date": "2026-04-01"
       },
+      "latest_change": {
+        "diff_id": "129AC0000000089_2026-03-31_2026-04-01",
+        "enforcement_date": "2026-04-01"
+      },
       "former": null,
       "changes": [
         {
@@ -3352,6 +3480,10 @@
         "text": "父母が共同で親権者である場合に、親権をどのように行使するか(共同か単独か)を定めるルール",
         "evidence_date": "2026-04-01"
       },
+      "latest_change": {
+        "diff_id": "129AC0000000089_2026-03-31_2026-04-01",
+        "enforcement_date": "2026-04-01"
+      },
       "former": null,
       "changes": [
         {
@@ -3434,6 +3566,10 @@
       "current_summary": {
         "text": "離婚等の際に定められた「子の監護をすべき者（監護者）」が、日常の子育てに関してどのような権限を持つかを定める規定",
         "evidence_date": "2026-04-01"
+      },
+      "latest_change": {
+        "diff_id": "129AC0000000089_2026-03-31_2026-04-01",
+        "enforcement_date": "2026-04-01"
       },
       "former": null,
       "changes": [
@@ -3545,6 +3681,10 @@
       "current_summary": {
         "text": "親権者である父または母自身がまだ未成年者である場合に、誰がその子（孫にあたる子）の親権を代わりに行使するかを定める規定",
         "evidence_date": "2026-04-01"
+      },
+      "latest_change": {
+        "diff_id": "129AC0000000089_2026-03-31_2026-04-01",
+        "enforcement_date": "2026-04-01"
       },
       "former": null,
       "changes": [

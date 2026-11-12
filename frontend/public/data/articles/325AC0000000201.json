@@ -2,8 +2,8 @@
   "law_id": "325AC0000000201",
   "law_title": "建築基準法",
   "source": {
-    "asof": "2026-11-06",
-    "fetched_at": "2026-11-06T10:17:36+09:00",
+    "asof": "2026-11-12",
+    "fetched_at": "2026-11-12T14:23:52+09:00",
     "law_revision_id": "325AC0000000201_20260527_508AC0000000023",
     "amendment_enforcement_date": "2026-05-27"
   },
@@ -32,6 +32,10 @@
       "current_summary": {
         "text": "建築基準法で使われる「建築物」「特殊建築物」「主要構造部」「設計者」など、専門用語の意味を定義する条文",
         "evidence_date": "2025-04-01"
+      },
+      "latest_change": {
+        "diff_id": "325AC0000000201_2025-03-31_2025-04-01",
+        "enforcement_date": "2025-04-01"
       },
       "former": null,
       "changes": [
@@ -117,6 +121,10 @@
       "current_summary": {
         "text": "建築物の設計・工事監理は、建築士法で定める資格を持つ建築士(一級・二級建築士など)が行わなければならないことを定める規定",
         "evidence_date": "2025-04-01"
+      },
+      "latest_change": {
+        "diff_id": "325AC0000000201_2025-03-31_2025-04-01",
+        "enforcement_date": "2025-04-01"
       },
       "former": null,
       "changes": [
@@ -222,6 +230,10 @@
       "current_summary": {
         "text": "建物を建てたり増改築・大規模修繕・模様替をする際に、事前に行政のチェック（建築確認）を受けなければならない建物の種類・規模を定めるルール",
         "evidence_date": "2025-04-01"
+      },
+      "latest_change": {
+        "diff_id": "325AC0000000201_2025-03-31_2025-04-01",
+        "enforcement_date": "2025-04-01"
       },
       "former": null,
       "changes": [
@@ -361,6 +373,10 @@
         "text": "建築物の構造計算(耐震性など)が基準を満たしているかを都道府県知事が判定する「構造計算適合性判定」の手続きと、その判定が不要となる例外条件を定める規定",
         "evidence_date": "2025-04-01"
       },
+      "latest_change": {
+        "diff_id": "325AC0000000201_2025-03-31_2025-04-01",
+        "enforcement_date": "2025-04-01"
+      },
       "former": null,
       "changes": [
         {
@@ -486,6 +502,10 @@
         "text": "特定の建築物(型式認定を受けた建築材料・部分を使う建築物や、建築士が設計した一定の建築物)について、建築確認の審査手続きを一部簡略化するための特例を定める規定",
         "evidence_date": "2025-04-01"
       },
+      "latest_change": {
+        "diff_id": "325AC0000000201_2025-03-31_2025-04-01",
+        "enforcement_date": "2025-04-01"
+      },
       "former": null,
       "changes": [
         {
@@ -576,6 +596,10 @@
       "current_summary": {
         "text": "建物の完成検査（検査済証の交付）が終わる前に、例外的に建物を使用できる「仮使用」制度の対象となる建築物の範囲を定めた条文",
         "evidence_date": "2025-04-01"
+      },
+      "latest_change": {
+        "diff_id": "325AC0000000201_2025-03-31_2025-04-01",
+        "enforcement_date": "2025-04-01"
       },
       "former": null,
       "changes": [
@@ -875,6 +899,10 @@
         "text": "国や都道府県、建築主事を置く市町村が建築物を建てる際に、確認申請や検査に代わって行う独自の審査・検査手続きを定めた規定",
         "evidence_date": "2025-04-01"
       },
+      "latest_change": {
+        "diff_id": "325AC0000000201_2025-03-31_2025-04-01",
+        "enforcement_date": "2025-04-01"
+      },
       "former": null,
       "changes": [
         {
@@ -982,6 +1010,10 @@
       "current_summary": {
         "text": "建築確認や構造計算適合性判定などの審査・検査を公正かつ的確に行うための指針について定めた条文",
         "evidence_date": "2025-12-01"
+      },
+      "latest_change": {
+        "diff_id": "325AC0000000201_2025-11-30_2025-12-01",
+        "enforcement_date": "2025-12-01"
       },
       "former": null,
       "changes": [
@@ -1097,6 +1129,10 @@
         "text": "建築物が地震や風圧などの外力に対して安全であるために満たすべき構造計算の基準を、建築物の高さや構造の種類に応じて定める条文",
         "evidence_date": "2025-04-01"
       },
+      "latest_change": {
+        "diff_id": "325AC0000000201_2025-03-31_2025-04-01",
+        "enforcement_date": "2025-04-01"
+      },
       "former": null,
       "changes": [
         {
@@ -1172,6 +1208,10 @@
       "current_summary": {
         "text": "都市計画区域の指定がない地域などで、市町村が条例により建築基準法の一部規定を緩和できる制度について定めた条文",
         "evidence_date": "2025-04-01"
+      },
+      "latest_change": {
+        "diff_id": "325AC0000000201_2025-03-31_2025-04-01",
+        "enforcement_date": "2025-04-01"
       },
       "former": null,
       "changes": [
@@ -1288,6 +1328,10 @@
         "text": "都道府県知事が指定する区域内や準景観地区内で、地方公共団体が条例により建築物の敷地・構造に関する制限を定めることができるとするルール",
         "evidence_date": "2025-04-01"
       },
+      "latest_change": {
+        "diff_id": "325AC0000000201_2025-03-31_2025-04-01",
+        "enforcement_date": "2025-04-01"
+      },
       "former": null,
       "changes": [
         {
@@ -1353,6 +1397,10 @@
       "current_summary": {
         "text": "指定確認検査機関としての指定を受けることができない欠格事由（未成年者、破産者、一定の刑罰を受けた者など）を定めた条文",
         "evidence_date": "2025-12-01"
+      },
+      "latest_change": {
+        "diff_id": "325AC0000000201_2025-11-30_2025-12-01",
+        "enforcement_date": "2025-12-01"
       },
       "former": null,
       "changes": [
@@ -1473,6 +1521,10 @@
       "current_summary": {
         "text": "構造計算の適合性を判定する機関としての指定を受けられない欠格事由(未成年者、破産者、一定の前科者、過去に指定や登録を取り消された者など)を定めた規定",
         "evidence_date": "2025-12-01"
+      },
+      "latest_change": {
+        "diff_id": "325AC0000000201_2025-11-30_2025-12-01",
+        "enforcement_date": "2025-12-01"
       },
       "former": null,
       "changes": [
@@ -1621,6 +1673,10 @@
         "text": "指定認定機関等の指定を受けることができない人(欠格事由)を定めたルール",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "325AC0000000201_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -1686,6 +1742,10 @@
       "current_summary": {
         "text": "建築基準適合判定資格者の登録を受けることができない欠格事由を定める規定",
         "evidence_date": "2025-12-01"
+      },
+      "latest_change": {
+        "diff_id": "325AC0000000201_2025-11-30_2025-12-01",
+        "enforcement_date": "2025-12-01"
       },
       "former": null,
       "changes": [
@@ -1784,6 +1844,7 @@
         "text": "建築基準適合判定資格者の登録に関するルールを定めている条文です。",
         "evidence_date": "2025-12-01"
       },
+      "latest_change": null,
       "former": null,
       "changes": [
         {
@@ -1883,6 +1944,7 @@
         "text": "建築基準適合判定資格者が、登録している氏名などの事項を変更した場合に行うべき変更登録の申請手続きについて定める規定",
         "evidence_date": "2025-12-01"
       },
+      "latest_change": null,
       "former": null,
       "changes": [
         {
@@ -1960,6 +2022,7 @@
         "text": "建築基準適合判定資格者(建築確認の審査等を行う資格者)の登録に関する届出義務を定める条文",
         "evidence_date": "2025-12-01"
       },
+      "latest_change": null,
       "former": null,
       "changes": [
         {
@@ -2047,6 +2110,7 @@
         "text": "建築基準適合判定資格者(確認検査業務を行う資格者)の登録を取り消したり、一定期間業務を禁止したりする場合のルールを定めた条文",
         "evidence_date": "2025-12-01"
       },
+      "latest_change": null,
       "former": null,
       "changes": [
         {
@@ -2161,6 +2225,10 @@
       "current_summary": {
         "text": "構造計算適合判定資格者の登録手続について、建築基準適合判定資格者の登録に関する規定を準用することを定めた条文",
         "evidence_date": "2025-12-01"
+      },
+      "latest_change": {
+        "diff_id": "325AC0000000201_2025-11-30_2025-12-01",
+        "enforcement_date": "2025-12-01"
       },
       "former": null,
       "changes": [
@@ -2293,6 +2361,10 @@
         "text": "建築審査会の委員になれない人の条件を定めたルール",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "325AC0000000201_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -2368,6 +2440,10 @@
       "current_summary": {
         "text": "エレベーターなど政令で指定する建築設備を一定規模の建築物に設置する際に適用される、建築確認手続きに関するルール",
         "evidence_date": "2025-04-01"
+      },
+      "latest_change": {
+        "diff_id": "325AC0000000201_2025-03-31_2025-04-01",
+        "enforcement_date": "2025-04-01"
       },
       "former": null,
       "changes": [
@@ -2515,6 +2591,10 @@
         "text": "煙突や広告塔、擁壁、貯蔵施設などの「工作物」にも建築物と同様の建築確認・検査などの規定を準用するためのルールを定めた条文",
         "evidence_date": "2025-04-01"
       },
+      "latest_change": {
+        "diff_id": "325AC0000000201_2025-03-31_2025-04-01",
+        "enforcement_date": "2025-04-01"
+      },
       "former": null,
       "changes": [
         {
@@ -2595,6 +2675,10 @@
       "current_summary": {
         "text": "工事中の建物が安全上・防火上・避難上著しく危険な場合に、行政が使用禁止などを命じることができる対象建築物の範囲を定める規定",
         "evidence_date": "2025-04-01"
+      },
+      "latest_change": {
+        "diff_id": "325AC0000000201_2025-03-31_2025-04-01",
+        "enforcement_date": "2025-04-01"
       },
       "former": null,
       "changes": [
@@ -2696,6 +2780,10 @@
       "current_summary": {
         "text": "建築確認や許可を行う際に、消防長・消防署長の同意を得る手続きと、その同意の回答期限を定める規定",
         "evidence_date": "2025-04-01"
+      },
+      "latest_change": {
+        "diff_id": "325AC0000000201_2025-03-31_2025-04-01",
+        "enforcement_date": "2025-04-01"
       },
       "former": null,
       "changes": [
@@ -2822,6 +2910,10 @@
         "text": "都道府県や市町村が処理する建築基準法上の特定の事務が、国の仕事を代わりに行う『法定受託事務』のどの種類にあたるかを定める規定",
         "evidence_date": "2025-12-01"
       },
+      "latest_change": {
+        "diff_id": "325AC0000000201_2025-11-30_2025-12-01",
+        "enforcement_date": "2025-12-01"
+      },
       "former": null,
       "changes": [
         {
@@ -2913,6 +3005,10 @@
       "current_summary": {
         "text": "建築基準法の重要な規定(違反命令違反や防火・耐震基準違反など)に違反した者を処罰するルール",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "325AC0000000201_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -3083,6 +3179,10 @@
         "text": "建築基準法に違反した者に科される刑罰（拘禁刑または罰金）の対象となる行為を列挙する規定",
         "evidence_date": "2025-12-01"
       },
+      "latest_change": {
+        "diff_id": "325AC0000000201_2025-11-30_2025-12-01",
+        "enforcement_date": "2025-12-01"
+      },
       "former": null,
       "changes": [
         {
@@ -3165,6 +3265,10 @@
         ]
       },
       "current_summary": null,
+      "latest_change": {
+        "diff_id": "325AC0000000201_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -3235,6 +3339,10 @@
       "current_summary": {
         "text": "建築基準法に違反した一定の行為に対して、30万円以下の過料（行政罰）を科すことを定めた条文",
         "evidence_date": "2025-12-01"
+      },
+      "latest_change": {
+        "diff_id": "325AC0000000201_2025-11-30_2025-12-01",
+        "enforcement_date": "2025-12-01"
       },
       "former": null,
       "changes": [

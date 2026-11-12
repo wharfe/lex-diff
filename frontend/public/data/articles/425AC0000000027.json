@@ -2,8 +2,8 @@
   "law_id": "425AC0000000027",
   "law_title": "行政手続における特定の個人を識別するための番号の利用等に関する法律",
   "source": {
-    "asof": "2026-11-06",
-    "fetched_at": "2026-11-06T10:17:40+09:00",
+    "asof": "2026-11-12",
+    "fetched_at": "2026-11-12T14:23:54+09:00",
     "law_revision_id": "425AC0000000027_20261001_507AC0000000087",
     "amendment_enforcement_date": "2026-10-01"
   },
@@ -105,6 +105,7 @@
         ]
       },
       "current_summary": null,
+      "latest_change": null,
       "former": null,
       "changes": [
         {
@@ -207,6 +208,10 @@
       "current_summary": {
         "text": "マイナンバー（個人番号）や、戸籍に関する情報を特定するための符号を、行政機関などがどのような事務のためにどの範囲で利用できるかを定めた条文",
         "evidence_date": "2026-05-26"
+      },
+      "latest_change": {
+        "diff_id": "425AC0000000027_2026-05-25_2026-05-26",
+        "enforcement_date": "2026-05-26"
       },
       "former": null,
       "changes": [
@@ -327,6 +332,7 @@
         ]
       },
       "current_summary": null,
+      "latest_change": null,
       "former": null,
       "changes": [
         {
@@ -442,6 +448,7 @@
         ]
       },
       "current_summary": null,
+      "latest_change": null,
       "former": null,
       "changes": [
         {
@@ -562,6 +569,7 @@
         ]
       },
       "current_summary": null,
+      "latest_change": null,
       "former": null,
       "changes": [
         {
@@ -642,6 +650,7 @@
         ]
       },
       "current_summary": null,
+      "latest_change": null,
       "former": null,
       "changes": [
         {
@@ -697,6 +706,7 @@
         ]
       },
       "current_summary": null,
+      "latest_change": null,
       "former": null,
       "changes": [
         {
@@ -774,6 +784,10 @@
       "current_summary": {
         "text": "マイナンバー関連の業務に携わる人が正当な理由なく個人の秘密情報が記録された特定個人情報ファイルを他人に提供した場合の罰則を定めた規定",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "425AC0000000027_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -862,6 +876,10 @@
         "text": "マイナンバー(個人番号)を取り扱う業務で知った他人の番号を、不正な利益を得る目的で漏らしたり不正に使ったりした場合の刑罰を定めるルール",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "425AC0000000027_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -915,6 +933,10 @@
       "current_summary": {
         "text": "マイナンバー制度に関する業務で秘密を知った人が、その秘密を漏らしたり不正に使ったりした場合の刑罰を定めた条文",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "425AC0000000027_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -986,6 +1008,10 @@
         "text": "詐欺・暴行・脅迫・窃盗・不法侵入・不正アクセスなどの不正な手段でマイナンバーを取得した人を処罰するルール",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "425AC0000000027_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -1051,6 +1077,10 @@
         "text": "公務員などが職権を濫用して、職務以外の目的でマイナンバー(個人番号)を含む個人の秘密情報を不正に集めた場合の罰則を定める条文",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "425AC0000000027_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -1091,6 +1121,10 @@
       "current_summary": {
         "text": "マイナンバー関連の業務で知った秘密を不正に漏らした人に対する刑罰を定める規定",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "425AC0000000027_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -1146,6 +1180,10 @@
         "text": "マイナンバー関連の個人情報についての秘密保持義務に違反して秘密を漏らしたり不正に利用した者を処罰するルール",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "425AC0000000027_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -1200,6 +1238,10 @@
         "text": "マイナンバー(個人番号)の利用停止や是正命令に違反した場合の刑罰について定めた条文",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "425AC0000000027_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -1251,6 +1293,10 @@
         ]
       },
       "current_summary": null,
+      "latest_change": {
+        "diff_id": "425AC0000000027_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -1309,6 +1355,10 @@
         "text": "マイナンバー制度に関する報告拒否や虚偽報告、検査拒否などを行った者に対する罰則を定める規定",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "425AC0000000027_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -1362,6 +1412,10 @@
       "current_summary": {
         "text": "嘘や不正な方法でマイナンバーカード(個人番号カード)の交付やカード代替電磁的記録の発行を受けた人に対する罰則を定めた条文",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "425AC0000000027_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [

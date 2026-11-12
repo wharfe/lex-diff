@@ -2,8 +2,8 @@
   "law_id": "324AC0000000228",
   "law_title": "外国為替及び外国貿易法",
   "source": {
-    "asof": "2026-11-06",
-    "fetched_at": "2026-11-06T10:17:36+09:00",
+    "asof": "2026-11-12",
+    "fetched_at": "2026-11-12T14:23:52+09:00",
     "law_revision_id": "324AC0000000228_20260812_508AC0000000064",
     "amendment_enforcement_date": "2026-08-12"
   },
@@ -37,6 +37,10 @@
       "current_summary": {
         "text": "銀行などが、顧客の本人確認を怠って為替取引（送金など）を行った場合に、財務大臣が是正措置を命じることができるルール",
         "evidence_date": "2024-04-01"
+      },
+      "latest_change": {
+        "diff_id": "324AC0000000228_2024-03-31_2024-04-01",
+        "enforcement_date": "2024-04-01"
       },
       "former": null,
       "changes": [
@@ -140,6 +144,10 @@
         "text": "銀行等が外国送金などの為替取引を行う際に、顧客の本人確認を行うことを義務付けるルール",
         "evidence_date": "2024-04-01"
       },
+      "latest_change": {
+        "diff_id": "324AC0000000228_2024-03-31_2024-04-01",
+        "enforcement_date": "2024-04-01"
+      },
       "former": null,
       "changes": [
         {
@@ -215,6 +223,10 @@
       "current_summary": {
         "text": "外貨両替業者が顧客と両替を行う際に、本人確認などの規定を準用するルール",
         "evidence_date": "2024-04-01"
+      },
+      "latest_change": {
+        "diff_id": "324AC0000000228_2024-03-31_2024-04-01",
+        "enforcement_date": "2024-04-01"
       },
       "former": null,
       "changes": [
@@ -334,6 +346,10 @@
       "current_summary": {
         "text": "銀行や資金移動業者、両替業者などのうち特に重要な事業者について、為替取引や資本取引を行う際に守るべき基準（外国為替取引等取扱業者遵守基準）を国が定める制度",
         "evidence_date": "2024-04-01"
+      },
+      "latest_change": {
+        "diff_id": "324AC0000000228_2024-03-31_2024-04-01",
+        "enforcement_date": "2024-04-01"
       },
       "former": null,
       "changes": [
@@ -455,6 +471,10 @@
         "text": "外国為替取引等取扱業者が守るべき基準に従って取引が行われるよう、主務大臣が指導・助言できることを定めた規定",
         "evidence_date": "2024-04-01"
       },
+      "latest_change": {
+        "diff_id": "324AC0000000228_2024-03-31_2024-04-01",
+        "enforcement_date": "2024-04-01"
+      },
       "former": null,
       "changes": [
         {
@@ -563,6 +583,10 @@
         "text": "外国為替取引等取扱業者が遵守基準に違反し続けた場合に、監督官庁が是正を勧告し、従わなければ命令を出せるようにするルール",
         "evidence_date": "2024-04-01"
       },
+      "latest_change": {
+        "diff_id": "324AC0000000228_2024-03-31_2024-04-01",
+        "enforcement_date": "2024-04-01"
+      },
       "former": null,
       "changes": [
         {
@@ -639,6 +663,7 @@
         "text": "対内直接投資や特定取得の安全保障審査にあたり、財務大臣等が関係行政機関の長に意見を求める手続を定める規定",
         "evidence_date": "2026-06-05"
       },
+      "latest_change": null,
       "former": null,
       "changes": [
         {
@@ -757,6 +782,7 @@
         "text": "財務大臣等が、対内直接投資等の規制(第27条・第28条)に関する外国の取締当局と情報をやり取りするためのルールを定めた条文",
         "evidence_date": "2026-06-05"
       },
+      "latest_change": null,
       "former": null,
       "changes": [
         {
@@ -833,6 +859,7 @@
         "text": "外国為替及び外国貿易法に基づく命令を制定・改廃する際に、必要な経過措置（罰則に関する経過措置も含む）を定めることができるというルール",
         "evidence_date": "2026-06-05"
       },
+      "latest_change": null,
       "former": null,
       "changes": [
         {
@@ -966,6 +993,7 @@
         "text": "軍事転用可能な技術や貨物を許可なく海外に提供・輸出した場合の罰則を定める規定",
         "evidence_date": "2026-06-05"
       },
+      "latest_change": null,
       "former": null,
       "changes": [
         {
@@ -1090,6 +1118,7 @@
         "text": "経済安全保障上重要な技術の提供や、特定の貨物の輸出入を無許可・無承認で行った場合の罰則を定める規定",
         "evidence_date": "2026-06-05"
       },
+      "latest_change": null,
       "former": null,
       "changes": [
         {
@@ -1193,6 +1222,10 @@
         "text": "外国為替及び外国貿易法に違反する様々な行為(無許可の資本取引や対外投資、届出義務違反など)に対する刑事罰を定めた条文",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "324AC0000000228_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -1279,6 +1312,10 @@
       "current_summary": {
         "text": "外国為替及び外国貿易法に基づく特定の命令(資産凍結等の措置命令)に違反した場合の刑罰を定める条文",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "324AC0000000228_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -1377,6 +1414,10 @@
       "current_summary": {
         "text": "外国為替及び外国貿易法に違反する一定の行為(無届出での支払手段の輸出入、虚偽報告、検査拒否など)をした場合の罰則を定めた規定",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "324AC0000000228_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -1583,6 +1624,10 @@
       "current_summary": {
         "text": "会社の代表者や従業員が密輸出入など外為法違反の行為をした場合に、実際に行為をした本人だけでなく会社(法人)自体にも罰金を科す『両罰規定』を定めた条文",
         "evidence_date": "2026-06-05"
+      },
+      "latest_change": {
+        "diff_id": "324AC0000000228_2026-06-04_2026-06-05",
+        "enforcement_date": "2026-06-05"
       },
       "former": null,
       "changes": [

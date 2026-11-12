@@ -1418,3 +1418,206 @@ def test_main_saves_nothing_when_a_tombstone_disagrees_with_its_latest_card(monk
     assert errors == [
         "error: 306: the former block is shown but the latest change's note is about the text after it"
     ]
+
+
+# --- latest_change (#44, docs/article-latest-diff/spec.md) -------------------
+
+
+def _p(text):
+    return [{"num": "1", "text": text}]
+
+
+def test_latest_change_points_at_the_amendment_that_gave_todays_text():
+    entries = [_entry("306", paragraphs_after=_p("本文"))]
+    doc = _build(entries, _tree(_article("306", "第三百六条", text="本文")))
+    assert doc["articles"][0]["latest_change"] == {
+        "diff_id": "129AC0000000089_2026-03-31_2026-04-01",
+        "enforcement_date": "2026-04-01",
+    }
+
+
+def test_latest_change_is_none_when_the_text_has_moved_on():
+    # N2: a later, unshipped amendment changed the text.
+    entries = [_entry("306", paragraphs_after=_p("昔の本文"))]
+    doc = _build(entries, _tree(_article("306", "第三百六条", text="今日の本文")))
+    assert doc["articles"][0]["latest_change"] is None
+
+
+def test_latest_change_is_none_for_a_deleted_article():
+    # N1: both sides are the word 削除, so texts_match alone would say yes.
+    entries = [_entry("306", paragraphs_after=_p("削除"))]
+    doc = _build(entries, _tree(_article("306", "第三百六条", text="削除")))
+    page = doc["articles"][0]
+    assert page["current"]["status"] in articles.TOMBSTONE_STATUSES
+    assert page["latest_change"] is None
+
+
+def test_latest_change_is_none_for_a_diff_shipped_without_its_tables():
+    # N3: 335AC0000000105_2026-03-31_2026-04-01 is in SHIPPED_WITH_TABLE_CHANGES.
+    law = "335AC0000000105"
+    changes = articles.collect_changes(
+        [_doc("2026-04-01", [_entry("88", paragraphs_after=_p("本文"))], law_id=law)],
+        "2026-09-22",
+    )
+    doc = articles.build_law_articles(
+        law, "道路交通法", changes, _tree(_article("88", "第八十八条", text="本文")), SOURCE
+    )
+    assert doc["articles"][0]["latest_change"] is None
+
+
+PUBLIC_ARCHIVES = "国立公文書館等の長は、歴史公文書等を保存に必要な限度において複製することができる。"
+NEW_RULE = "国又は地方公共団体の機関は、公文書の管理のために必要な限度において複製することができる。"
+
+
+def test_latest_change_is_none_for_both_ends_of_a_renumbering():
+    # N4: 著作権法 2024-01-01 -- 42_4 is "added", but its text is the old
+    # 42_3, which in turn now holds new text.
+    entries = [
+        _entry("42_3", paragraphs_before=_p(PUBLIC_ARCHIVES), paragraphs_after=_p(NEW_RULE)),
+        _entry("42_4", "added", paragraphs_before=[], paragraphs_after=_p(PUBLIC_ARCHIVES)),
+    ]
+    tree = _tree(
+        _article("42_3", "第四十二条の三", text=NEW_RULE),
+        _article("42_4", "第四十二条の四", text=PUBLIC_ARCHIVES),
+    )
+    pages = {p["article_num"]: p for p in _build(entries, tree)["articles"]}
+    assert pages["42_4"]["latest_change"] is None
+    assert pages["42_3"]["latest_change"] is None
+
+
+def test_a_renumbering_that_also_rewrote_a_reference_is_still_a_move():
+    # Moving 42_3 to 42_4 typically turns its 「前条」 into 「第四十二条の三」;
+    # exact equality would then call the moved article new.
+    old = "前条の規定は、国立公文書館等の長が歴史公文書等を保存に必要な限度において複製する場合について準用する。"
+    moved = "第四十二条の三の規定は、国立公文書館等の長が歴史公文書等を保存に必要な限度において複製する場合について準用する。"
+    entries = [
+        _entry("42_3", paragraphs_before=_p(old), paragraphs_after=_p(NEW_RULE)),
+        _entry("42_4", "added", paragraphs_before=[], paragraphs_after=_p(moved)),
+    ]
+    tree = _tree(
+        _article("42_3", "第四十二条の三", text=NEW_RULE),
+        _article("42_4", "第四十二条の四", text=moved),
+    )
+    pages = {p["article_num"]: p for p in _build(entries, tree)["articles"]}
+    assert pages["42_4"]["latest_change"] is None
+
+
+def test_two_tombstones_are_not_a_move():
+    # One amendment repeals 10 (its body becomes 削除) and fills 12, which was
+    # already 削除, with a new provision. 削除 == 削除 says nothing about a move.
+    entries = [
+        _entry("10", paragraphs_before=_p(PUBLIC_ARCHIVES), paragraphs_after=_p("削除")),
+        _entry("12", paragraphs_before=_p("削除"), paragraphs_after=_p(NEW_RULE)),
+    ]
+    tree = _tree(_article("10", "第十条", text="削除"), _article("12", "第十二条", text=NEW_RULE))
+    pages = {p["article_num"]: p for p in _build(entries, tree)["articles"]}
+    assert pages["12"]["latest_change"] is not None
+
+
+def test_a_phrase_another_article_already_had_is_not_a_move():
+    # 21 drops a sentence that 22 has always contained. 22 is in the same diff
+    # for an unrelated edit, but it did not gain that sentence: nothing moved.
+    shared = "申請書には、申請者の氏名及び住所を記載しなければならない。"
+    entries = [
+        _entry("21", paragraphs_before=_p(f"{NEW_RULE}\n{shared}"), paragraphs_after=_p(NEW_RULE),
+               diff=["--- 旧", "+++ 新", f" {NEW_RULE}", f"-{shared}"]),
+        _entry("22", paragraphs_before=_p(f"{shared}ただし、書面によるものとする。"),
+               paragraphs_after=_p(f"{shared}ただし、電磁的方法によることができる。"),
+               diff=["--- 旧", "+++ 新", f"-{shared}ただし、書面によるものとする。",
+                     f"+{shared}ただし、電磁的方法によることができる。"]),
+    ]
+    tree = _tree(
+        _article("21", "第二十一条", text=NEW_RULE),
+        _article("22", "第二十二条", text=f"{shared}ただし、電磁的方法によることができる。"),
+    )
+    pages = {p["article_num"]: p for p in _build(entries, tree)["articles"]}
+    assert pages["21"]["latest_change"] is not None
+
+
+def test_an_empty_side_never_counts_as_a_renumbering():
+    # A new article's empty before must not match a repealed article's empty
+    # after: that nulled 民法 2026-04-01's seven new 共同親権 articles.
+    entries = [
+        _entry("766_2", "added", paragraphs_before=[], paragraphs_after=_p("親権の規定")),
+        _entry("753", "deleted", paragraphs_before=_p("旧規定"), paragraphs_after=[]),
+    ]
+    tree = _tree(_article("766_2", "第七百六十六条の二", text="親権の規定"))
+    changes = articles.collect_changes([_doc("2026-04-01", entries)], "2026-09-22")
+    doc = articles.build_law_articles("129AC0000000089", "民法", {"766_2": changes["766_2"]}, tree, SOURCE)
+    assert doc["articles"][0]["latest_change"] is not None
+
+
+LONG_A = "特許、意匠若しくは商標に関する審査に関する手続のために必要と認められる場合"
+LONG_B = "薬事に関する審査若しくは調査のために必要と認められる場合における複製"
+
+
+def test_latest_change_is_none_when_most_removed_lines_moved_to_another_article():
+    # N4 partial: 著作権法42条 -- its 第2項 moved to 42条の2, so on 42's own diff
+    # those lines look repealed.
+    entries = [
+        _entry(
+            "42",
+            paragraphs_before=_p(f"本文\n{LONG_A}\n{LONG_B}"),
+            paragraphs_after=_p("本文"),
+            diff=["--- 旧", "+++ 新", "@@ -1,3 +1,1 @@", " 本文", f"-{LONG_A}", f"-{LONG_B}"],
+        ),
+        _entry("42_2", "added", paragraphs_before=[], paragraphs_after=_p(f"{LONG_A}\n{LONG_B}"),
+               diff=["+++ 新", "@@ -0,0 +1,2 @@", f"+{LONG_A}", f"+{LONG_B}"]),
+    ]
+    tree = _tree(
+        _article("42", "第四十二条", text="本文"),
+        _article("42_2", "第四十二条の二", text=f"{LONG_A}\n{LONG_B}"),
+    )
+    pages = {p["article_num"]: p for p in _build(entries, tree)["articles"]}
+    assert pages["42"]["latest_change"] is None
+    # 42_2's added lines are 42's removed text: the same move seen from the other end.
+    assert pages["42_2"]["latest_change"] is None
+
+
+def test_a_replaced_term_is_not_mistaken_for_a_move():
+    # The 拘禁刑 merger rewrote the same phrase in many articles; the old
+    # wording appears in no other article's new text, so nothing moved.
+    old = "死刑を減軽するときは、無期の懲役若しくは禁錮又は十年以上の懲役若しくは禁錮とする。"
+    new = "死刑を減軽するときは、無期又は十年以上の拘禁刑とする。"
+    entries = [
+        _entry("68", paragraphs_before=_p(old), paragraphs_after=_p(new),
+               diff=["--- 旧", "+++ 新", f"-{old}", f"+{new}"]),
+        _entry("69", paragraphs_before=_p(old + "二"), paragraphs_after=_p(new + "二"),
+               diff=["--- 旧", "+++ 新", f"-{old}二", f"+{new}二"]),
+    ]
+    tree = _tree(_article("68", "第六十八条", text=new), _article("69", "第六十九条", text=new + "二"))
+    pages = {p["article_num"]: p for p in _build(entries, tree)["articles"]}
+    assert pages["68"]["latest_change"] is not None
+    assert pages["69"]["latest_change"] is not None
+
+
+def test_validate_rejects_a_tombstone_with_a_latest_change():
+    entries = [_entry("306", paragraphs_after=_p("削除"))]
+    doc = _build(entries, _tree(_article("306", "第三百六条", text="削除")))
+    doc["articles"][0]["latest_change"] = {"diff_id": "x", "enforcement_date": "2026-04-01"}
+    assert any("latest change" in e for e in articles.validate_articles(doc))
+
+
+def test_validate_rejects_a_latest_change_that_is_not_the_newest_change():
+    entries = [_entry("306", paragraphs_after=_p("本文"))]
+    doc = _build(entries, _tree(_article("306", "第三百六条", text="本文")))
+    doc["articles"][0]["latest_change"]["diff_id"] = "129AC0000000089_2020-03-31_2020-04-01"
+    assert any("latest change" in e for e in articles.validate_articles(doc))
+
+
+def test_parallel_provisions_amended_together_are_not_a_move():
+    # 刑法 2025-06-01: 26条の3 (全部執行猶予) was expanded while 27条の6 (一部執行猶予)
+    # only had 禁錮以上の刑 renamed. 26条の3's old text is 92% like 27条の6's new
+    # text, but 27条の6 is plainly still itself, so nothing moved.
+    a_before = "前二条の規定により禁錮以上の刑の全部の執行猶予の言渡しを取り消したときは、執行猶予中の他の禁錮以上の刑についても、その猶予の言渡しを取り消さなければならない。"
+    a_after = "前二条の規定により拘禁刑の全部の執行猶予の言渡しを取り消したときは、執行猶予中の他の拘禁刑（次条第二項後段の規定によりその執行を猶予されているものを除く。次条第六項において同じ。）についても、その猶予の言渡しを取り消さなければならない。この場合において、その者が既に刑の執行を受け終わっているときは、この限りでない。"
+    b_before = "前二条の規定により刑の一部の執行猶予の言渡しを取り消したときは、執行猶予中の他の禁錮以上の刑についても、その猶予の言渡しを取り消さなければならない。"
+    b_after = "前二条の規定により刑の一部の執行猶予の言渡しを取り消したときは、執行猶予中の他の拘禁刑についても、その猶予の言渡しを取り消さなければならない。"
+    entries = [
+        _entry("26_3", paragraphs_before=_p(a_before), paragraphs_after=_p(a_after)),
+        _entry("27_6", paragraphs_before=_p(b_before), paragraphs_after=_p(b_after)),
+    ]
+    tree = _tree(_article("26_3", "第二十六条の三", text=a_after), _article("27_6", "第二十七条の六", text=b_after))
+    pages = {p["article_num"]: p for p in _build(entries, tree)["articles"]}
+    assert pages["26_3"]["latest_change"] is not None
+    assert pages["27_6"]["latest_change"] is not None

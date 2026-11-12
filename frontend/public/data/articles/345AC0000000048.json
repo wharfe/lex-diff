@@ -2,8 +2,8 @@
   "law_id": "345AC0000000048",
   "law_title": "著作権法",
   "source": {
-    "asof": "2026-11-06",
-    "fetched_at": "2026-11-06T10:17:37+09:00",
+    "asof": "2026-11-12",
+    "fetched_at": "2026-11-12T14:23:52+09:00",
     "law_revision_id": "345AC0000000048_20260624_508AC0000000048",
     "amendment_enforcement_date": "2026-06-24"
   },
@@ -39,6 +39,10 @@
       "current_summary": {
         "text": "学校教育のために著作物を放送・有線放送・限定的なネット配信などで利用できるルールと、その際に補償金を支払う義務を定めた条文",
         "evidence_date": "2025-10-01"
+      },
+      "latest_change": {
+        "diff_id": "345AC0000000048_2025-09-30_2025-10-01",
+        "enforcement_date": "2025-10-01"
       },
       "former": null,
       "changes": [
@@ -150,6 +154,10 @@
         "text": "政治的な演説・陳述や裁判・行政審判での公開の発言を、著作権者の許可なく利用できる場合について定めた条文",
         "evidence_date": "2024-01-01"
       },
+      "latest_change": {
+        "diff_id": "345AC0000000048_2023-12-31_2024-01-01",
+        "enforcement_date": "2024-01-01"
+      },
       "former": null,
       "changes": [
         {
@@ -210,6 +218,10 @@
       "current_summary": {
         "text": "裁判や行政審判の手続きで必要な場合に、著作物を無断でコピーしたり送信したりできることを定めたルール",
         "evidence_date": "2026-05-21"
+      },
+      "latest_change": {
+        "diff_id": "345AC0000000048_2026-05-20_2026-05-21",
+        "enforcement_date": "2026-05-21"
       },
       "former": null,
       "changes": [
@@ -321,6 +333,7 @@
         "text": "国や自治体が仕事の資料として著作物を複製・利用できる場合を定めたルール",
         "evidence_date": "2024-01-01"
       },
+      "latest_change": null,
       "former": null,
       "changes": [
         {
@@ -426,6 +439,7 @@
         "text": "特許・商標・種苗登録・薬事審査など、行政機関が行う専門的な審査・調査の手続に必要な範囲で、著作物を無断で複製（コピー）できることを定める規定",
         "evidence_date": "2024-01-01"
       },
+      "latest_change": null,
       "former": null,
       "changes": [
         {
@@ -548,6 +562,7 @@
         "text": "国や地方公共団体などが情報公開法・情報公開条例に基づいて著作物を開示する際に、著作権者の許諾なくその著作物を利用できるルール",
         "evidence_date": "2024-01-01"
       },
+      "latest_change": null,
       "former": null,
       "changes": [
         {
@@ -686,6 +701,7 @@
         "text": "国立公文書館などが、歴史的な公文書に含まれる著作物を、保存や公開のために許可なくコピー・利用できるルール",
         "evidence_date": "2024-01-01"
       },
+      "latest_change": null,
       "former": null,
       "changes": [
         {
@@ -779,6 +795,10 @@
       "current_summary": {
         "text": "他の条文で著作物を許可なく利用できる場合に、その利用に付随して『翻訳』や『翻案』などの形を変えた利用も認めるためのルール",
         "evidence_date": "2024-01-01"
+      },
+      "latest_change": {
+        "diff_id": "345AC0000000048_2023-12-31_2024-01-01",
+        "enforcement_date": "2024-01-01"
       },
       "former": null,
       "changes": [
@@ -890,6 +910,10 @@
       "current_summary": {
         "text": "著作権が制限されて複製が認められた著作物について、その複製物を公衆に譲渡(販売など)してもよい場合を定めた規定",
         "evidence_date": "2024-01-01"
+      },
+      "latest_change": {
+        "diff_id": "345AC0000000048_2023-12-31_2024-01-01",
+        "enforcement_date": "2024-01-01"
       },
       "former": null,
       "changes": [
@@ -1012,6 +1036,10 @@
         "text": "他人の著作物を許可なく利用できる場合に、誰の作品かという「出所」を示さなければならない義務について定めるルール",
         "evidence_date": "2024-01-01"
       },
+      "latest_change": {
+        "diff_id": "345AC0000000048_2023-12-31_2024-01-01",
+        "enforcement_date": "2024-01-01"
+      },
       "former": null,
       "changes": [
         {
@@ -1116,6 +1144,10 @@
       "current_summary": {
         "text": "著作権の制限規定(裁判手続や行政手続、公文書保存などのために許された複製)を、後から本来の目的以外の目的で使った場合に「新たに無断複製をしたもの」とみなすルールを定めた条文",
         "evidence_date": "2024-01-01"
+      },
+      "latest_change": {
+        "diff_id": "345AC0000000048_2023-12-31_2024-01-01",
+        "enforcement_date": "2024-01-01"
       },
       "former": null,
       "changes": [
@@ -1246,6 +1278,10 @@
       "current_summary": {
         "text": "本を出版する権利（出版権）を持つ人にも、著作権者と同じように「自由に複製してよい場合」のルールを当てはめるための条文",
         "evidence_date": "2024-01-01"
+      },
+      "latest_change": {
+        "diff_id": "345AC0000000048_2023-12-31_2024-01-01",
+        "enforcement_date": "2024-01-01"
       },
       "former": null,
       "changes": [
@@ -1386,6 +1422,10 @@
         "text": "著作権者に認められている著作物利用の制限規定(私的利用や裁判・行政手続での利用など)を、実演・レコード・放送・有線放送といった著作隣接権にも同様に適用する(準用する)ためのルールを定めた条文",
         "evidence_date": "2024-01-01"
       },
+      "latest_change": {
+        "diff_id": "345AC0000000048_2023-12-31_2024-01-01",
+        "enforcement_date": "2024-01-01"
+      },
       "former": null,
       "changes": [
         {
@@ -1509,6 +1549,10 @@
         "text": "著作権・出版権・著作隣接権を侵害された権利者が、損害賠償を請求する際の損害額の算定方法（推定・みなし規定）を定めた条文",
         "evidence_date": "2024-01-01"
       },
+      "latest_change": {
+        "diff_id": "345AC0000000048_2023-12-31_2024-01-01",
+        "enforcement_date": "2024-01-01"
+      },
       "former": null,
       "changes": [
         {
@@ -1569,6 +1613,10 @@
       "current_summary": {
         "text": "著作権などが侵害されたとして裁判になったときに、裁判所が当事者に対して証拠となる書類などの提出を命じることができるルール",
         "evidence_date": "2026-05-21"
+      },
+      "latest_change": {
+        "diff_id": "345AC0000000048_2026-05-20_2026-05-21",
+        "enforcement_date": "2026-05-21"
       },
       "former": null,
       "changes": [
@@ -1655,6 +1703,10 @@
         "text": "著作権などの侵害訴訟で、企業秘密（営業秘密）が裁判を通じて外部に漏れないよう、裁判所が関係者に秘密保持を命令できる制度について定めたルール",
         "evidence_date": "2026-05-21"
       },
+      "latest_change": {
+        "diff_id": "345AC0000000048_2026-05-20_2026-05-21",
+        "enforcement_date": "2026-05-21"
+      },
       "former": null,
       "changes": [
         {
@@ -1740,6 +1792,10 @@
         "text": "裁判で営業秘密の秘密保持命令を取り消す場合の手続きを定めた条文",
         "evidence_date": "2026-05-21"
       },
+      "latest_change": {
+        "diff_id": "345AC0000000048_2026-05-20_2026-05-21",
+        "enforcement_date": "2026-05-21"
+      },
       "former": null,
       "changes": [
         {
@@ -1811,6 +1867,10 @@
         ]
       },
       "current_summary": null,
+      "latest_change": {
+        "diff_id": "345AC0000000048_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -1877,6 +1937,10 @@
         "text": "コピーガード外し装置の製造・販売や、無断でコピーガードを外す行為などを罰する規定",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "345AC0000000048_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -1941,6 +2005,10 @@
       "current_summary": {
         "text": "本当の著作者ではない人の名前を著作者名として表示した著作物のコピーを配った人を処罰するルール",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "345AC0000000048_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -2028,6 +2096,10 @@
       "current_summary": {
         "text": "無断で作られた海賊版の商業用レコード(CD等)を複製・販売した場合の罰則を定めた規定",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "345AC0000000048_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -2124,6 +2196,7 @@
         ]
       },
       "current_summary": null,
+      "latest_change": null,
       "former": null,
       "changes": [
         {

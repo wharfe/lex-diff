@@ -2,8 +2,8 @@
   "law_id": "416AC0000000123",
   "law_title": "不動産登記法",
   "source": {
-    "asof": "2026-11-06",
-    "fetched_at": "2026-11-06T10:17:39+09:00",
+    "asof": "2026-11-12",
+    "fetched_at": "2026-11-12T14:23:53+09:00",
     "law_revision_id": "416AC0000000123_20260624_508AC0000000046",
     "amendment_enforcement_date": "2026-06-24"
   },
@@ -38,6 +38,10 @@
       "current_summary": {
         "text": "国の役所などが登記を依頼(嘱託)する場合に、通常の登記手続きのどの規定を準用するか(適用するか)を定めたルール",
         "evidence_date": "2024-04-01"
+      },
+      "latest_change": {
+        "diff_id": "416AC0000000123_2024-03-31_2024-04-01",
+        "enforcement_date": "2024-04-01"
       },
       "former": null,
       "changes": [
@@ -115,6 +119,10 @@
       "current_summary": {
         "text": "登記officeが不動産登記の申請を却下(拒否)しなければならない具体的な場合を列挙した規定",
         "evidence_date": "2026-04-01"
+      },
+      "latest_change": {
+        "diff_id": "416AC0000000123_2026-03-31_2026-04-01",
+        "enforcement_date": "2026-04-01"
       },
       "former": null,
       "changes": [
@@ -243,6 +251,10 @@
         "text": "不動産の所有権登記に記録する内容(登記事項)を追加で定める規定です",
         "evidence_date": "2024-04-01"
       },
+      "latest_change": {
+        "diff_id": "416AC0000000123_2024-03-31_2024-04-01",
+        "enforcement_date": "2024-04-01"
+      },
       "former": null,
       "changes": [
         {
@@ -330,6 +342,10 @@
       "current_summary": {
         "text": "不動産を相続した人に、一定期間内に登記名義を変更することを義務づけるルール",
         "evidence_date": "2024-04-01"
+      },
+      "latest_change": {
+        "diff_id": "416AC0000000123_2024-03-31_2024-04-01",
+        "enforcement_date": "2024-04-01"
       },
       "former": null,
       "changes": [
@@ -445,6 +461,10 @@
         "text": "所有権の登記名義人が亡くなった際、相続人が『相続が開始したこと』と『自分がその相続人であること』を登記官に申し出ることで、相続登記の義務を一時的に果たしたとみなしてもらう制度を定めた条文",
         "evidence_date": "2024-04-01"
       },
+      "latest_change": {
+        "diff_id": "416AC0000000123_2024-03-31_2024-04-01",
+        "enforcement_date": "2024-04-01"
+      },
       "former": null,
       "changes": [
         {
@@ -511,6 +531,10 @@
       "current_summary": {
         "text": "不動産の所有権登記名義人が死亡や法人消滅などで権利能力を失ったと認められる場合に、登記官が職権でその旨を登記簿に表示できる制度を定めた条文",
         "evidence_date": "2026-04-01"
+      },
+      "latest_change": {
+        "diff_id": "416AC0000000123_2026-03-31_2026-04-01",
+        "enforcement_date": "2026-04-01"
       },
       "former": null,
       "changes": [
@@ -590,6 +614,10 @@
         "text": "不動産の所有者の氏名・名称や住所が変わったときに、その変更登記を行うことを義務付けるルール",
         "evidence_date": "2026-04-01"
       },
+      "latest_change": {
+        "diff_id": "416AC0000000123_2026-03-31_2026-04-01",
+        "enforcement_date": "2026-04-01"
+      },
       "former": null,
       "changes": [
         {
@@ -668,6 +696,10 @@
         "text": "所有権登記名義人の氏名・名称や住所が変わった場合に、登記官が職権で変更登記をできるようにするルール",
         "evidence_date": "2026-04-01"
       },
+      "latest_change": {
+        "diff_id": "416AC0000000123_2026-03-31_2026-04-01",
+        "enforcement_date": "2026-04-01"
+      },
       "former": null,
       "changes": [
         {
@@ -744,6 +776,10 @@
       "current_summary": {
         "text": "不動産登記簿に信託(財産を一定の目的のために管理・運用してもらう仕組み)を登記する際に、記載すべき事項を定めた条文",
         "evidence_date": "2026-04-01"
+      },
+      "latest_change": {
+        "diff_id": "416AC0000000123_2026-03-31_2026-04-01",
+        "enforcement_date": "2026-04-01"
       },
       "former": null,
       "changes": [
@@ -824,6 +860,10 @@
         "text": "不動産の登記記録に書かれている内容を証明する書面（登記事項証明書など）の交付を、誰でも手数料を払えば請求できるというルール",
         "evidence_date": "2024-04-01"
       },
+      "latest_change": {
+        "diff_id": "416AC0000000123_2024-03-31_2024-04-01",
+        "enforcement_date": "2024-04-01"
+      },
       "former": null,
       "changes": [
         {
@@ -892,6 +932,10 @@
       "current_summary": {
         "text": "自分が所有者として登記されている不動産の一覧を証明する書面（所有不動産記録証明書）を法務局に発行してもらえる制度を定めたもの",
         "evidence_date": "2026-02-02"
+      },
+      "latest_change": {
+        "diff_id": "416AC0000000123_2026-02-01_2026-02-02",
+        "enforcement_date": "2026-02-02"
       },
       "former": null,
       "changes": [
@@ -968,6 +1012,10 @@
         "text": "地図や建物所在図などの写しの交付や閲覧を誰でも請求できることを定めるルール",
         "evidence_date": "2026-02-02"
       },
+      "latest_change": {
+        "diff_id": "416AC0000000123_2026-02-01_2026-02-02",
+        "enforcement_date": "2026-02-02"
+      },
       "former": null,
       "changes": [
         {
@@ -1039,6 +1087,10 @@
         "text": "土地の境界（筆界）を調査する専門委員になれない人の条件を定めた条文",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "416AC0000000123_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -1086,6 +1138,10 @@
       "current_summary": {
         "text": "土地の境界を特定する手続きにおいて、関係者に申請内容を通知する方法を定めたルール",
         "evidence_date": "2026-05-21"
+      },
+      "latest_change": {
+        "diff_id": "416AC0000000123_2026-05-20_2026-05-21",
+        "enforcement_date": "2026-05-21"
       },
       "former": null,
       "changes": [
@@ -1141,6 +1197,10 @@
         "text": "登記識別情報(いわゆる不動産の権利証に代わる暗証番号のようなもの)の作成や管理に関する秘密を漏らした者を処罰するルール",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "416AC0000000123_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -1194,6 +1254,10 @@
       "current_summary": {
         "text": "不動産登記の際に虚偽の情報を提供した場合の罰則を定めるルール",
         "evidence_date": "2025-06-01"
+      },
+      "latest_change": {
+        "diff_id": "416AC0000000123_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
       },
       "former": null,
       "changes": [
@@ -1265,6 +1329,10 @@
         "text": "不正に登記識別情報（登記のパスワードのようなもの）を取得・保管した者を処罰するルール",
         "evidence_date": "2025-06-01"
       },
+      "latest_change": {
+        "diff_id": "416AC0000000123_2025-05-31_2025-06-01",
+        "enforcement_date": "2025-06-01"
+      },
       "former": null,
       "changes": [
         {
@@ -1334,6 +1402,10 @@
       "current_summary": {
         "text": "不動産の登記申請を怠った場合に科される過料（行政上の罰金のようなもの）の金額を定める条文",
         "evidence_date": "2026-04-01"
+      },
+      "latest_change": {
+        "diff_id": "416AC0000000123_2026-03-31_2026-04-01",
+        "enforcement_date": "2026-04-01"
       },
       "former": null,
       "changes": [

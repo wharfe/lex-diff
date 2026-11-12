@@ -249,6 +249,16 @@ export interface RelatedArticle {
   has_page: boolean;
 }
 
+/** The amendment that gave this article its current text (#44). Null unless
+ *  articles.py could show that: today's text equals that diff's after-text, the
+ *  article is not a tombstone, the diff did not drop table changes, and the
+ *  entry is not one end of a renumbering. Only the date and the diff id ship;
+ *  the lines are read from that diff at build time (getLatestChangeEntry). */
+export interface LatestChange {
+  diff_id: string;
+  enforcement_date: string;
+}
+
 export interface ArticlePage {
   article_num: string;
   slug: string;
@@ -258,6 +268,7 @@ export interface ArticlePage {
   section_path: string[];
   current: CurrentText;
   current_summary: CurrentSummary | null;
+  latest_change: LatestChange | null;
   former: FormerText | null;
   changes: ArticleChange[];
   related_articles: RelatedArticle[];

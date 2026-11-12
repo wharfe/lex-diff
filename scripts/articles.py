@@ -8,6 +8,7 @@ other -- see texts_match() and the version gate it guards.
 """
 
 import datetime
+from difflib import SequenceMatcher
 import json
 import os
 import re
@@ -18,7 +19,7 @@ from zoneinfo import ZoneInfo
 import httpx
 
 from lawtext import extract_text, walk_tags
-from diff import format_paragraph, find_section_path
+from diff import SHIPPED_WITH_TABLE_CHANGES, format_paragraph, find_section_path
 
 sys.path.insert(0, str(Path(__file__).parent))
 from fetch import fetch_law_data
@@ -86,6 +87,7 @@ def collect_changes(diff_docs: list[dict], today: str) -> dict[str, list[dict]]:
         if doc["date_after"] > today or "pending" in doc:
             continue
         main = [e for e in doc["diffs"] if not e.get("is_suppl")]
+        moved = moved_article_nums(main)
         individual = {e["article_num"] for e in main if not is_range_num(e["article_num"])}
         for entry in main:
             num = entry["article_num"]
@@ -116,11 +118,137 @@ def collect_changes(diff_docs: list[dict], today: str) -> dict[str, list[dict]]:
                     "paragraphs_before": entry.get("paragraphs_before", []),
                     "paragraphs_after": entry.get("paragraphs_after", []),
                     "title_before": entry.get("title_before"),
+                    "moved": num in moved,
                 }
             )
     for num in by_num:
         by_num[num].sort(key=lambda c: c["enforcement_date"], reverse=True)
     return by_num
+
+
+# A moved line or body has to be long enough to be a provision, not a shared
+# phrase -- and never the tombstone word, which many articles share.
+MOVED_MIN_CHARS = 16
+MOVED_LINE_SHARE = 0.5
+# A renumbered article often has its internal references rewritten in the same
+# amendment (前条 -> 第四十二条の三), so whole-body equality would miss it.
+MOVED_BODY_RATIO = 0.9
+
+
+def _body_text(paragraphs: list[dict]) -> str | None:
+    """One side's text for comparison, or None when it must match nothing.
+
+    Paragraph numbers are ignored. An empty side, a tombstone, or a body too
+    short to be a provision matches nothing: a new article's empty before would
+    otherwise equal a repealed article's empty after in the same diff, and two
+    articles that both read 削除 say nothing about a move.
+    """
+    if not paragraphs:
+        return None
+    text = "\n".join(_normalise(p.get("text", "")) for p in paragraphs)
+    if text.strip() in _DELETED_BODY or len(text.strip()) < MOVED_MIN_CHARS:
+        return None
+    return text
+
+
+def _changed_lines(entry: dict, sign: str) -> list[str]:
+    """The entry's long removed ("-") or added ("+") lines, file headers excluded."""
+    head = sign * 3
+    return [
+        line[1:].strip()
+        for line in entry.get("diff", [])
+        if line.startswith(sign)
+        and not line.startswith(head)
+        and len(line[1:].strip()) >= MOVED_MIN_CHARS
+    ]
+
+
+def _ratio(a: str | None, b: str | None, cheap: bool = True) -> float:
+    """SequenceMatcher.ratio, 0.0 for a side that matches nothing.
+
+    With `cheap`, a pair whose upper bounds already fall short of
+    MOVED_BODY_RATIO returns 0.0 unmeasured -- right for a candidate match,
+    wrong for an article's similarity to itself, which has to be exact.
+    """
+    if a is None or b is None:
+        return 0.0
+    matcher = SequenceMatcher(None, a, b, autojunk=False)
+    if cheap and (
+        matcher.real_quick_ratio() < MOVED_BODY_RATIO or matcher.quick_ratio() < MOVED_BODY_RATIO
+    ):
+        return 0.0
+    return matcher.ratio()
+
+
+def _mostly_changed_elsewhere(lines: list[str], other_lines: list[str]) -> bool:
+    """Whether at least half of `lines` reappear, whole, among other entries' changed lines.
+
+    Compared with lines another entry actually removed or added, never with its
+    whole body: a phrase several articles already shared is not a move.
+    """
+    if not lines or not other_lines:
+        return False
+    pool = set(other_lines)
+    found = sum(1 for line in lines if line in pool)
+    return found / len(lines) >= MOVED_LINE_SHARE
+
+
+def moved_article_nums(main_entries: list[dict]) -> set[str]:
+    """本則 entries in one diff whose text moved to or from another number.
+
+    diff.py pairs articles by number, so a renumbering looks like a new article
+    plus a wholesale rewrite (著作権法 2024-01-01: 42_4 is "added", but its text
+    is the old 42_3). Shown as "the change that gave this article its text",
+    such an entry tells the reader the provision is new. Either test is enough
+    (docs/article-latest-diff/spec.md N4):
+
+    - body: this entry's after is at least 90% similar to another entry's
+      before (or the reverse), and that match beats both articles' similarity
+      to their own other side;
+    - lines: at least half of this entry's long removed lines are among the
+      lines another entry added (or its added lines among lines another
+      removed) -- 著作権法42条, whose 第2項 moved to 42条の2 and otherwise
+      reads as repealed.
+
+    Both err towards calling something moved, which only withholds a block.
+    """
+    prepared = []
+    for e in main_entries:
+        before = _body_text(e.get("paragraphs_before", []))
+        after = _body_text(e.get("paragraphs_after", []))
+        prepared.append(
+            (
+                e["article_num"],
+                before,
+                after,
+                _changed_lines(e, "-"),
+                _changed_lines(e, "+"),
+                _ratio(after, before, cheap=False),  # how much it is still itself
+            )
+        )
+    moved: set[str] = set()
+    for i, (num, before, after, removed, added, own) in enumerate(prepared):
+        others = [o for j, o in enumerate(prepared) if j != i]
+        # Parallel provisions are 90% alike and the 拘禁刑 merger amended them
+        # in one diff (刑法246 詐欺 / 249 恐喝; 26条の3 / 27条の6). A move is a
+        # cross match better than either article's match with itself: a moved
+        # article and the one that received its number both stop being
+        # themselves, while a merely amended article does not.
+        if any(
+            (cross := max(_ratio(after, o[1]), _ratio(before, o[2]))) >= MOVED_BODY_RATIO
+            and cross > own
+            and cross > o[5]
+            for o in others
+        ):
+            moved.add(num)
+            continue
+        others_added = [line for o in others for line in o[4]]
+        others_removed = [line for o in others for line in o[3]]
+        if _mostly_changed_elsewhere(removed, others_added) or _mostly_changed_elsewhere(
+            added, others_removed
+        ):
+            moved.add(num)
+    return moved
 
 
 # 附則 is numbered independently of the main text, so it must never enter the
@@ -556,6 +684,19 @@ def build_law_articles(
                 else None
             )
 
+        # What the page may call "the amendment that gave this article its
+        # current text" (spec N1-N4). Only a date and a diff id are shipped; the
+        # frontend reads the lines from that diff, so a regenerated diff cannot
+        # leave a stale copy here.
+        latest_change = (
+            {"diff_id": latest["diff_id"], "enforcement_date": latest["enforcement_date"]}
+            if not is_tombstone
+            and matched
+            and latest["diff_id"] not in SHIPPED_WITH_TABLE_CHANGES
+            and not latest["moved"]
+            else None
+        )
+
         former = None
         # Keyed on the page being a tombstone, not on the amendment's type: a
         # repeal recorded as "modified" leaves the same page needing the same
@@ -594,6 +735,7 @@ def build_law_articles(
                 "paragraphs": current["paragraphs"],
             },
             "current_summary": current_summary,
+            "latest_change": latest_change,
             "former": former,
             "changes": [
                 {
@@ -749,6 +891,8 @@ def validate_articles(doc: dict) -> list[str]:
                 errors.append(f"{num}: a deleted article has no former text")
             if page.get("current_summary") is not None:
                 errors.append(f"{num}: a deleted article still carries a current summary")
+            if page.get("latest_change") is not None:
+                errors.append(f"{num}: a deleted article still carries a latest change")
 
         # The former block (「今回の改正直前の条文」) and the top history card's
         # 改正直前／改正直後 come from different facts: today's text being a
@@ -763,6 +907,13 @@ def validate_articles(doc: dict) -> list[str]:
             errors.append(f"{num}: a change's enforcement_date is missing or not a string")
         elif dates != sorted(dates, reverse=True):
             errors.append(f"{num}: changes are not newest first")
+        latest_change = page.get("latest_change")
+        if latest_change is not None and (
+            not changes
+            or latest_change.get("diff_id") != changes[0].get("diff_id")
+            or latest_change.get("enforcement_date") != changes[0].get("enforcement_date")
+        ):
+            errors.append(f"{num}: the latest change is not the newest change in its history")
         latest_basis = changes[0].get("summary_basis") if changes else None
         # An empty history or a bad basis is already reported above.
         if latest_basis in SUMMARY_BASES:
