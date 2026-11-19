@@ -232,6 +232,26 @@ def test_single_character_keyword_is_rejected():
     assert any("too short" in e for e in errors)
 
 
+@pytest.mark.parametrize("fragment", ["の罪", "殺人の", "窃盗及び", "及び強盗"])
+def test_keyword_cut_at_a_particle_is_rejected(fragment):
+    # Issue #21: 「の罪」 occurs inside the chapter title 「殺人の罪」, so the
+    # containment check passes it although it is not a term.
+    assert fragment in EVIDENCE
+    errors = validate_summary(valid_summary(keywords=["殺人", fragment]), EVIDENCE)
+    assert any("not a term" in e for e in errors), errors
+
+
+@pytest.mark.parametrize(
+    "term",
+    # Shipped keywords with a particle or okurigana *inside* — only the edges
+    # are judged, so these must keep passing.
+    ["子の看護等休暇", "事業者がとるべき措置", "解雇の無効", "取消し", "所定外労働の制限"],
+)
+def test_particle_inside_a_keyword_is_allowed(term):
+    errors = law_summary.validate_summary_shape(valid_summary(keywords=["殺人", term]))
+    assert errors == []
+
+
 def test_main_does_not_save_when_the_day_changes_mid_generation(monkeypatch, tmp_path):
     # Generation takes long enough to cross midnight. A summary written from
     # yesterday's text and saved today claims to describe current law on a day
