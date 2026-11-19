@@ -69,6 +69,19 @@ ABOLISHED_PENALTY_TERMS = ("懲役", "禁錮", "禁固", "禁こ")
 MAX_KEYWORDS = 5
 MIN_KEYWORD_LEN = 2
 
+# A term never begins or ends with a particle or a statutory connective, but a
+# fragment cut out of a heading does: 「の罪」 is the tail of 「殺人の罪」 and the
+# containment check passes it (issue #21). Only the edges are judged — terms
+# such as 「子の看護等休暇」 or 「事業者がとるべき措置」 carry particles inside.
+# This does not catch a fragment cut between two kanji (「人の罪」); telling that
+# from a real compound needs a dictionary. Both rejected alternatives were
+# measured against the 75 shipped keywords: exact match with a heading line
+# rejected 54 of them, and containment in a caption still passes 「の罪」.
+KEYWORD_EDGE_PARTICLES = (
+    "の", "を", "に", "が", "は", "へ", "と", "で", "や", "も",
+    "及び", "又は", "並びに", "若しくは",
+)
+
 # Enforcement dates are Japanese calendar dates, so "today" is Tokyo's. On a
 # UTC runner every Japanese midnight-to-09:00 would otherwise be yesterday.
 JST = ZoneInfo("Asia/Tokyo")
@@ -257,13 +270,19 @@ def validate_summary_shape(summary: dict) -> list[str]:
         # Output quality, not grounding. The containment check cannot reject a
         # single character — 「刑」 occurs inside 「刑罰」, so any kanji the law
         # uses at all passes it, and 刑法 shipped exactly that as a keyword.
-        # This length rule does not make a keyword meaningful either (「の罪」
-        # would pass); it removes the one failure that was actually observed.
+        # The edge rule below covers fragments such as 「の罪」; neither makes a
+        # keyword meaningful in general (see KEYWORD_EDGE_PARTICLES).
         for k in keywords:
             if len(k.strip()) < MIN_KEYWORD_LEN:
                 errors.append(
                     f"keyword too short to be a term: {k}"
                     f" (need {MIN_KEYWORD_LEN}+ characters)"
+                )
+            elif k.strip().startswith(KEYWORD_EDGE_PARTICLES) or k.strip().endswith(
+                KEYWORD_EDGE_PARTICLES
+            ):
+                errors.append(
+                    f"keyword is not a term (starts or ends with a particle): {k}"
                 )
 
     blob = json.dumps(summary, ensure_ascii=False)
@@ -329,7 +348,7 @@ def generate_summary(
 制約:
 - 上の根拠に書かれていることだけを使って書いてください。根拠に無い制度・用語・数値を補わないでください。
 - keywords は必ず根拠テキストに現れる語から選んでください（現れない語は機械的に弾かれ、やり直しになります）。
-- keywords は2文字以上の意味のある用語にしてください（「刑」のような一文字は弾かれます）。
+- keywords は2文字以上の意味のある用語にしてください（「刑」のような一文字や、「の罪」のように助詞で始まる・終わる断片は弾かれます）。
 - 根拠は目次・各条の見出し・第一条だけで、条文本文の大部分は含まれていません。書かれていない細部を推測で埋めないでください。
 - 2025年6月1日施行の改正刑法により「懲役」「禁錮」は「拘禁刑」に一本化されました。現行制度の説明にこれらの刑名を使わないでください。
 - 現在の制度として言えることだけを書き、廃止された制度名・過去の呼称を現行のものとして提示しないでください。
