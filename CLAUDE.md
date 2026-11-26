@@ -192,9 +192,10 @@ that shape:
   skips it (and every pending entry); `articles.collect_changes`
   skips it even past its date. Its date may be a 政令 deadline (e-Gov then sets
   `amendment_scheduled_enforcement_date` and a comment, and copies the scheduled
-  date into `amendment_enforcement_date`), so the frontend never names it by year
-  and dates every claim ("{generated_on}時点で未施行") — a static page is not
-  rebuilt when the date passes. All of that wording lives in `frontend/lib/pending.ts`.
+  date into `amendment_enforcement_date`), so a pending title carries a date only
+  when e-Gov fixed it (no comment; else 「施行日未確定」, #51), never says
+  「…に施行」, and every 未施行 claim is dated ("{generated_on}時点で未施行") — a
+  static page is not rebuilt when the date passes. All of that wording lives in `frontend/lib/pending.ts`.
   The D-1 text already contains every amendment scheduled before D, so it is not
   today's law; `unenforced_before` lists them and the page says so. Freshness is
   judged by content: `--check` rebuilds and compares, because e-Gov updates a
