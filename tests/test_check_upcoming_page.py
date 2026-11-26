@@ -285,7 +285,7 @@ def test_a_fixed_date_goes_in_the_diff_title():
     # CH3 has as many entries as CH2 (3 each) but appears later: ties keep order.
     assert c.diff_page_title(doc) == "甲法の改正【施行日 2026-12-01】本則7条: 禁止等・措置等ほか | lexdiff"
     assert c.diff_page_description(doc) == (
-        "甲法の改正（令和七年法律第一号）による新旧条文の差分。施行日: 2026-12-01。"
+        "甲法の改正（令和七年法律第一号）で変わる条文の新旧対照。施行日: 2026-12-01。"
         "施行されると本則7条が変わります（うち新設3条）。"
         f"主な変更箇所: {CH2}、{CH3}ほか。2026-11-06時点で未施行。")
 
@@ -362,3 +362,32 @@ def test_a_missing_diff_page_is_reported(diff_dir):
     d, _ = diff_dir
     errors = c.check_diff_pages(d.parent / "out", d)
     assert any("does not exist" in e for e in errors), errors
+
+
+# Gate3 round 1 (codex, code-review, intent review).
+
+def test_the_upcoming_description_follows_the_page_order():
+    # The unfixed section comes last on the page, whatever its date.
+    rows = {
+        "U_2026-10-31_2026-11-01": {"date": "2026-11-01", "where": "unfixed", "law_title": "U法"},
+        "A_2026-11-30_2026-12-01": {"date": "2026-12-01", "where": "2026-12", "law_title": "A法"},
+    }
+    assert c.upcoming_description(rows) == (
+        c.DESCRIPTION_HEAD + "A法、U法の改正を載せています。" + c.DESCRIPTION_TAIL)
+
+
+def test_an_empty_heading_is_not_a_place():
+    doc = _pending_diff(entries=[("modified", [""])])
+    assert c.diff_page_title(doc) == "甲法の改正【施行日 2026-12-01】本則1条 | lexdiff"
+    assert "主な変更箇所" not in c.diff_page_description(doc)
+
+
+def test_two_pending_pages_with_one_title_are_reported(diff_dir):
+    d, doc = diff_dir
+    other = "X_2027-11-30_2027-12-01"
+    (d / f"{other}.json").write_text(json.dumps(doc, ensure_ascii=False))
+    out = d.parent / "out"
+    for stem in (STEM, other):
+        _diff_page(out, stem, c.diff_page_title(doc), c.diff_page_description(doc))
+    errors = c.check_diff_pages(out, d)
+    assert any("share the title" in e for e in errors), errors

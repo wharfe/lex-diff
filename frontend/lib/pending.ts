@@ -9,9 +9,9 @@ import { LawDiffData, PendingInfo, PendingRevision, TimelineEntry } from "./type
  * "{date}時点で未施行" stays true after the date passes. The build date is not
  * such a day — nobody asked e-Gov then — so it never dates a claim about
  * e-Gov's record. A pending date may be a 政令 deadline rather than the day the
- * law takes effect, so a pending amendment is named by its law number, never
- * its year. Every pending wording on the site is in this file; components only
- * place it.
+ * law takes effect, so a pending amendment is named by its law number, and a
+ * date goes in its title only when e-Gov fixed it (#51; pendingTitle). Every
+ * pending wording on the site is in this file; components only place it.
  */
 
 /** JST calendar date of this build. Used only for date arithmetic. */
@@ -85,6 +85,7 @@ export function changedPlaces(d: PendingDiff): string[] {
   const counts = new Map<string, number>();
   for (const x of d.diffs) {
     const top = x.section_path?.[0];
+    // An empty heading is no place: check_upcoming_page.py skips it too.
     if (x.is_suppl || !top) continue;
     counts.set(top, (counts.get(top) ?? 0) + 1);
   }
@@ -133,7 +134,7 @@ export function pendingDescription(d: PendingDiff): string {
       : `施行されると附則${d.diffs.length}件が変わります（本則は変わりません）。`;
   const places = changedPlaces(d);
   const where = places.length > 0 ? `主な変更箇所: ${placesList(places, (h) => h, "、")}。` : "";
-  return `${d.law_title}の改正（${pendingName(d)}）による新旧条文の差分。施行日: ${enforcementLabels(d)}。${change}${where}${asOfLabel(d.pending.generated_on)}。`;
+  return `${d.law_title}の改正（${pendingName(d)}）で変わる条文の新旧対照。施行日: ${enforcementLabels(d)}。${change}${where}${asOfLabel(d.pending.generated_on)}。`;
 }
 
 export function pendingBreadcrumb(d: PendingDiff): string {
@@ -241,10 +242,12 @@ const UPCOMING_DESCRIPTION_HEAD =
 const UPCOMING_DESCRIPTION_TAIL = "施行されると変わる条文を新旧の差分で確認できます。";
 const UPCOMING_LAWS_SHOWN = 3;
 
-/** Names the laws on the page (rows in page order, each law once) — what a
- *  search reader looks for — and still no date (#51). */
-export function upcomingDescription(rows: { data: PendingDiff }[]): string {
-  const laws = [...new Set(rows.map((r) => r.data.law_title))];
+/** Names the laws on the page (rows in page order — groupUpcoming puts the
+ *  unfixed section last — each law once): what a search reader looks for,
+ *  and still no date (#51). */
+export function upcomingDescription<T extends { id: string; data: PendingDiff }>(rows: T[]): string {
+  const ordered = groupUpcoming(rows).flatMap((s) => s.rows);
+  const laws = [...new Set(ordered.map((r) => r.data.law_title))];
   const rest = laws.length - UPCOMING_LAWS_SHOWN;
   const named =
     laws.length > 0

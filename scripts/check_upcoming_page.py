@@ -58,9 +58,11 @@ def month_heading(month: str) -> str:
 
 def upcoming_description(rows: dict[str, dict]) -> str:
     """lib/pending.ts upcomingDescription: the rows' law titles, first
-    appearance in page order (date, then id), the first few named."""
+    appearance in page order — month sections, then the unfixed one last,
+    each by date then id — the first few named."""
     laws: list[str] = []
-    for _, x in sorted(rows.items(), key=lambda kv: (kv[1]["date"], kv[0])):
+    for _, x in sorted(rows.items(),
+                       key=lambda kv: (kv[1]["where"] == "unfixed", kv[1]["date"], kv[0])):
         if x["law_title"] not in laws:
             laws.append(x["law_title"])
     shown = laws[:DESCRIPTION_LAWS_SHOWN]
@@ -93,7 +95,7 @@ def main_places(doc: dict) -> list[str]:
     counts: dict[str, int] = {}
     for d in doc["diffs"]:
         path = d.get("section_path") or []
-        if d.get("is_suppl") or not path:
+        if d.get("is_suppl") or not path or not path[0]:
             continue
         counts[path[0]] = counts.get(path[0], 0) + 1
     order = list(counts)
@@ -135,7 +137,7 @@ def diff_page_description(doc: dict) -> str:
     places = main_places(doc)
     where = ("主な変更箇所: " + "、".join(places[:PLACES_SHOWN])
              + ("ほか" if len(places) > PLACES_SHOWN else "") + "。") if places else ""
-    return (f"{doc['law_title']}の改正（{pending_name(p)}）による新旧条文の差分。"
+    return (f"{doc['law_title']}の改正（{pending_name(p)}）で変わる条文の新旧対照。"
             f"施行日: {enforcement_labels(doc)}。{change}{where}{p['generated_on']}時点で未施行。")
 
 
@@ -384,10 +386,13 @@ def check_diff_pages(out_dir: Path, data_dir: Path) -> list[str]:
     """Every pending diff's page — overdue ones too, which still carry the
     pending copy — against the title and description its data gives."""
     errors: list[str] = []
+    titles: dict[str, list[str]] = {}
     for path in sorted(data_dir.glob("*_*_*.json")):
         doc = json.loads(path.read_text())
         if "pending" not in doc:
             continue
+        # Without the law number two stages of one law can collide (Gate3).
+        titles.setdefault(diff_page_title(doc), []).append(path.stem)
         page = out_dir / "diff" / f"{path.stem}.html"
         if not page.exists():
             errors.append(f"{page} does not exist")
@@ -401,6 +406,9 @@ def check_diff_pages(out_dir: Path, data_dir: Path) -> list[str]:
                           ("og:description", description)]:
             if r.meta.get(key) != want:
                 errors.append(f"{path.stem}: meta {key} {r.meta.get(key)!r} != {want!r}")
+    for title, stems in titles.items():
+        if len(stems) > 1:
+            errors.append(f"{stems} share the title {title!r}")
     return errors
 
 
