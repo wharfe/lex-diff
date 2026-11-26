@@ -34,8 +34,8 @@
 2. 施行日確定の diff は `date_after` の先頭 7 文字（文字列で切る。タイムゾーンに依らない）の
    月節に入る。月節の集合 = 確定日の行の月の集合（空の節なし）。月は昇順、節内は日付→id 昇順。
    確定していない diff は最後の 1 節だけに入り、日付→id 昇順。その節は該当行があるときだけ出る。
-3. 改正は年で呼ばない（`pendingName`）。月見出しは確定日の行にだけ付く。title / description に
-   日付・月・年を入れない。
+3. /upcoming の行では改正を年で呼ばない（`pendingName`）。月見出しは確定日の行にだけ付く。
+   /upcoming の title / description に日付・月・年を入れない（施行前 diff ページの title は #51 節）。
 4. 各行の表示文に `asOfLabel(generated_on)`・`pendingName`・`enforcementLinesFor`・
    `pendingStatsLabel(mainChangeCounts(...).total)` がそのまま現れる。
 5. 載る diff が 0 件でもビルドは通り、「現在、掲載できる施行予定の改正はありません」を出す。
