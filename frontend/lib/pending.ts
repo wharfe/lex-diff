@@ -73,20 +73,67 @@ export function enforcementLine(
 }
 
 // --- Copy for the diff page -------------------------------------------------
+// scripts/check_upcoming_page.py (check_diff_pages) rebuilds the title and
+// description below from the data and compares them verbatim (#51).
 
+const PLACES_SHOWN = 2;
+
+/** Top-level headings (編 or 章) of the 本則 entries, most entries first, ties
+ *  in order of first appearance. Facts from the diff — what a search reader
+ *  wants from the title, without a model writing it. */
+export function changedPlaces(d: PendingDiff): string[] {
+  const counts = new Map<string, number>();
+  for (const x of d.diffs) {
+    const top = x.section_path?.[0];
+    if (x.is_suppl || !top) continue;
+    counts.set(top, (counts.get(top) ?? 0) + 1);
+  }
+  const order = [...counts.keys()];
+  return [...order].sort(
+    (a, b) => counts.get(b)! - counts.get(a)! || order.indexOf(a) - order.indexOf(b)
+  );
+}
+
+/** 「第三章　事業者がとるべき措置等」 → 「事業者がとるべき措置等」. */
+function headingName(heading: string): string {
+  const i = heading.indexOf("\u3000");
+  return i >= 0 ? heading.slice(i + 1) : heading;
+}
+
+function placesList(places: string[], show: (h: string) => string, sep: string): string {
+  return (
+    places.slice(0, PLACES_SHOWN).map(show).join(sep) +
+    (places.length > PLACES_SHOWN ? "ほか" : "")
+  );
+}
+
+/** The date only when e-Gov fixed it. A 政令 deadline may move (a 前倒し), and
+ *  the page keeps its title after the day passes, so an unfixed one says
+ *  未確定. A fixed date is e-Gov's record and stays a fact once passed —
+ *  hence "施行日 {date}", not "{date}に施行" (no claim about the future). */
 export function pendingTitle(d: PendingDiff): string {
-  return `${d.law_title}【${asOfLabel(d.pending.generated_on)}】${pendingName(d)}による改正`;
+  const when = isUnfixedPending(d) ? "施行日未確定" : `施行日 ${d.date_after}`;
+  const main = d.diffs.filter((x) => !x.is_suppl).length;
+  const places = changedPlaces(d);
+  const gist =
+    main > 0
+      ? `本則${main}条` + (places.length > 0 ? `: ${placesList(places, headingName, "・")}` : "")
+      : "附則のみの改正";
+  return `${d.law_title}の改正【${when}】${gist}`;
 }
 
-/** Conditional, so true whenever (if ever) it takes effect. */
-export function pendingChangeSentence(mainCount: number, supplCount: number): string {
-  return mainCount > 0
-    ? `施行されると本則${mainCount}条が変わります。`
-    : `施行されると附則${supplCount}件が変わります（本則は変わりません）。`;
-}
-
-export function pendingDescription(d: PendingDiff, mainCount: number, supplCount: number): string {
-  return `${d.law_title}の改正（${pendingName(d)}、${asOfLabel(d.pending.generated_on)}）による新旧条文の差分。施行日: ${enforcementLabels(d)}。${pendingChangeSentence(mainCount, supplCount)}`;
+/** Conditional, so true whenever (if ever) it takes effect; the 未施行 claim
+ *  is dated by generated_on. */
+export function pendingDescription(d: PendingDiff): string {
+  const main = d.diffs.filter((x) => !x.is_suppl);
+  const added = main.filter((x) => x.type === "added").length;
+  const change =
+    main.length > 0
+      ? `施行されると本則${main.length}条が変わります${added > 0 ? `（うち新設${added}条）` : ""}。`
+      : `施行されると附則${d.diffs.length}件が変わります（本則は変わりません）。`;
+  const places = changedPlaces(d);
+  const where = places.length > 0 ? `主な変更箇所: ${placesList(places, (h) => h, "、")}。` : "";
+  return `${d.law_title}の改正（${pendingName(d)}）による新旧条文の差分。施行日: ${enforcementLabels(d)}。${change}${where}${asOfLabel(d.pending.generated_on)}。`;
 }
 
 export function pendingBreadcrumb(d: PendingDiff): string {
@@ -189,8 +236,22 @@ export const UPCOMING_TITLE = "施行予定の法改正一覧";
 // and the nearest date may be a 政令 deadline (Gate 2 H2).
 // "成立済みで施行日前" was an undated claim about the reader's present, and a
 // search snippet outlives the date it describes (codex, Gate 3).
-export const UPCOMING_DESCRIPTION =
-  "e-Gov の記録で未施行だった法改正の一覧です（記録の日付は各行に表示）。施行されると変わる条文を新旧の差分で確認できます。";
+const UPCOMING_DESCRIPTION_HEAD =
+  "e-Gov の記録で未施行だった法改正の一覧です（記録の日付は各行に表示）。";
+const UPCOMING_DESCRIPTION_TAIL = "施行されると変わる条文を新旧の差分で確認できます。";
+const UPCOMING_LAWS_SHOWN = 3;
+
+/** Names the laws on the page (rows in page order, each law once) — what a
+ *  search reader looks for — and still no date (#51). */
+export function upcomingDescription(rows: { data: PendingDiff }[]): string {
+  const laws = [...new Set(rows.map((r) => r.data.law_title))];
+  const rest = laws.length - UPCOMING_LAWS_SHOWN;
+  const named =
+    laws.length > 0
+      ? `${laws.slice(0, UPCOMING_LAWS_SHOWN).join("、")}${rest > 0 ? `ほか${rest}法令` : ""}の改正を載せています。`
+      : "";
+  return UPCOMING_DESCRIPTION_HEAD + named + UPCOMING_DESCRIPTION_TAIL;
+}
 export const UPCOMING_SCOPE =
   "lexdiff が収録する法令のうち、差分を作れた改正のみを載せています（e-Gov に施行日の記載がない改正や、条文中の表が変わる改正は載せていません）";
 // Dated by each row: whether a date is fixed is e-Gov's record as of generated_on.

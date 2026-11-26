@@ -13,6 +13,9 @@ It reads the visible text, not only the markers: a section is
 heading, and a row is the <a href="/diff/{id}" data-pending-id> inside it,
 holding all of the row's text. The wording below is the page's, copied from
 frontend/lib/pending.ts on purpose: a change there has to be made here too.
+main() also checks every pending diff page's <title> and description against
+the same data (check_diff_pages): the enforcement date and the 本則 count and
+chapters they name are built from the diff, never written by a model (#51).
 Exit 1 on any mismatch. Run by hand after a build (CI does not run it).
 """
 
@@ -31,8 +34,11 @@ BASE = "https://lexdiff.com"
 
 TITLE = "施行予定の法改正一覧 | lexdiff"
 # Dated by each row's record, not asserted of the reader's present: a search
-# snippet outlives the date it describes (codex, Gate3).
-DESCRIPTION = "e-Gov の記録で未施行だった法改正の一覧です（記録の日付は各行に表示）。施行されると変わる条文を新旧の差分で確認できます。"
+# snippet outlives the date it describes (codex, Gate3). The law names come
+# from the rows; still no date, month or year (spec Gate2 H2).
+DESCRIPTION_HEAD = "e-Gov の記録で未施行だった法改正の一覧です（記録の日付は各行に表示）。"
+DESCRIPTION_TAIL = "施行されると変わる条文を新旧の差分で確認できます。"
+DESCRIPTION_LAWS_SHOWN = 3
 INTRO = (
     "成立済みで、各行の日付の時点では未施行だった改正です。"
     "施行されると変わる条文を差分で確認できます（AIによる解説はありません）"
@@ -50,20 +56,96 @@ def month_heading(month: str) -> str:
     return f"施行日が{int(y)}年{int(m)}月の改正"
 
 
+def upcoming_description(rows: dict[str, dict]) -> str:
+    """lib/pending.ts upcomingDescription: the rows' law titles, first
+    appearance in page order (date, then id), the first few named."""
+    laws: list[str] = []
+    for _, x in sorted(rows.items(), key=lambda kv: (kv[1]["date"], kv[0])):
+        if x["law_title"] not in laws:
+            laws.append(x["law_title"])
+    shown = laws[:DESCRIPTION_LAWS_SHOWN]
+    rest = len(laws) - len(shown)
+    named = ("、".join(shown) + (f"ほか{rest}法令" if rest else "") + "の改正を載せています。") if laws else ""
+    return DESCRIPTION_HEAD + named + DESCRIPTION_TAIL
+
+
+def pending_name(p: dict) -> str:
+    return "／".join(
+        r.get("amendment_law_num") or r.get("amendment_law_title") or r["law_revision_id"]
+        for r in p["revisions"]
+    )
+
+
+def enforcement_labels(doc: dict) -> str:
+    return "／".join(
+        f"{r['enforcement_comment']}（e-Gov 上の予定日: {doc['date_after']}）"
+        if r.get("enforcement_comment") else doc["date_after"]
+        for r in doc["pending"]["revisions"]
+    )
+
+
+PLACES_SHOWN = 2
+
+
+def main_places(doc: dict) -> list[str]:
+    """lib/pending.ts changedPlaces: the top-level heading (編 or 章) of each
+    本則 entry, most entries first, ties in order of first appearance."""
+    counts: dict[str, int] = {}
+    for d in doc["diffs"]:
+        path = d.get("section_path") or []
+        if d.get("is_suppl") or not path:
+            continue
+        counts[path[0]] = counts.get(path[0], 0) + 1
+    order = list(counts)
+    return sorted(order, key=lambda k: (-counts[k], order.index(k)))
+
+
+def heading_name(heading: str) -> str:
+    """「第三章　事業者がとるべき措置等」 → 「事業者がとるべき措置等」."""
+    return heading.split("\u3000", 1)[1] if "\u3000" in heading else heading
+
+
+def diff_page_title(doc: dict) -> str:
+    """lib/pending.ts pendingTitle, with the layout's " | lexdiff". A date only
+    when e-Gov fixed it: a dated 政令 deadline may move (pending-amendments
+    spec), so such a page says 未確定 rather than naming a day."""
+    unfixed = any(r.get("enforcement_comment") for r in doc["pending"]["revisions"])
+    when = "施行日未確定" if unfixed else f"施行日 {doc['date_after']}"
+    main = sum(1 for d in doc["diffs"] if not d.get("is_suppl"))
+    if main > 0:
+        places = main_places(doc)
+        gist = f"本則{main}条"
+        if places:
+            gist += ": " + "・".join(heading_name(h) for h in places[:PLACES_SHOWN])
+            gist += "ほか" if len(places) > PLACES_SHOWN else ""
+    else:
+        gist = "附則のみの改正"
+    return f"{doc['law_title']}の改正【{when}】{gist} | lexdiff"
+
+
+def diff_page_description(doc: dict) -> str:
+    """lib/pending.ts pendingDescription."""
+    p = doc["pending"]
+    main = [d for d in doc["diffs"] if not d.get("is_suppl")]
+    if main:
+        added = sum(1 for d in main if d.get("type") == "added")
+        change = f"施行されると本則{len(main)}条が変わります" + (f"（うち新設{added}条）" if added else "") + "。"
+    else:
+        change = f"施行されると附則{len(doc['diffs'])}件が変わります（本則は変わりません）。"
+    places = main_places(doc)
+    where = ("主な変更箇所: " + "、".join(places[:PLACES_SHOWN])
+             + ("ほか" if len(places) > PLACES_SHOWN else "") + "。") if places else ""
+    return (f"{doc['law_title']}の改正（{pending_name(p)}）による新旧条文の差分。"
+            f"施行日: {enforcement_labels(doc)}。{change}{where}{p['generated_on']}時点で未施行。")
+
+
 def row_texts(doc: dict) -> list[str]:
     """A row's strings in the order the page shows them, as lib/pending.ts
     builds them. The row's text must be exactly their concatenation, so a
     contradicting extra string fails too (code-review, Gate3)."""
     p = doc["pending"]
-    name = "／".join(
-        r.get("amendment_law_num") or r.get("amendment_law_title") or r["law_revision_id"]
-        for r in p["revisions"]
-    )
-    labels = "／".join(
-        f"{r['enforcement_comment']}（e-Gov 上の予定日: {doc['date_after']}）"
-        if r.get("enforcement_comment") else doc["date_after"]
-        for r in p["revisions"]
-    )
+    name = pending_name(p)
+    labels = enforcement_labels(doc)
     # Counted from the diffs, as the page's mainChangeCounts does — not from
     # the published stats, which the page does not read.
     main = sum(1 for d in doc["diffs"] if not d.get("is_suppl"))
@@ -88,6 +170,7 @@ def expected_rows(data_dir: Path, build_date: str) -> dict[str, dict]:
             "date": doc["date_after"],
             "where": "unfixed" if unfixed else doc["date_after"][:7],
             "generated_on": doc["pending"]["generated_on"],
+            "law_title": doc["law_title"],
             "texts": row_texts(doc),
         }
     return rows
@@ -225,8 +308,9 @@ def check(out_dir: Path, data_dir: Path, today: str | None) -> list[str]:
         errors.append(f"{r.mains} <main> elements")
     if r.title_text != TITLE:
         errors.append(f"title {r.title_text!r}")
-    for key, want in [("description", DESCRIPTION), ("og:title", TITLE),
-                      ("og:description", DESCRIPTION), ("og:url", f"{BASE}/upcoming"),
+    description = upcoming_description(expected)
+    for key, want in [("description", description), ("og:title", TITLE),
+                      ("og:description", description), ("og:url", f"{BASE}/upcoming"),
                       ("og:site_name", "lexdiff"), ("og:locale", "ja_JP"),
                       ("og:type", "website")]:
         if r.meta.get(key) != want:
@@ -296,6 +380,30 @@ def check(out_dir: Path, data_dir: Path, today: str | None) -> list[str]:
     return errors
 
 
+def check_diff_pages(out_dir: Path, data_dir: Path) -> list[str]:
+    """Every pending diff's page — overdue ones too, which still carry the
+    pending copy — against the title and description its data gives."""
+    errors: list[str] = []
+    for path in sorted(data_dir.glob("*_*_*.json")):
+        doc = json.loads(path.read_text())
+        if "pending" not in doc:
+            continue
+        page = out_dir / "diff" / f"{path.stem}.html"
+        if not page.exists():
+            errors.append(f"{page} does not exist")
+            continue
+        r = PageReader()
+        r.feed(page.read_text())
+        title, description = diff_page_title(doc), diff_page_description(doc)
+        if r.title_text != title:
+            errors.append(f"{path.stem}: title {r.title_text!r} != {title!r}")
+        for key, want in [("description", description), ("og:title", title),
+                          ("og:description", description)]:
+            if r.meta.get(key) != want:
+                errors.append(f"{path.stem}: meta {key} {r.meta.get(key)!r} != {want!r}")
+    return errors
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description="Check the built /upcoming page.")
     ap.add_argument("out_dir", type=Path)
@@ -304,6 +412,7 @@ def main() -> None:
                     help="judge the build date against this day instead of the file's date")
     args = ap.parse_args()
     errors = check(args.out_dir, args.data_dir, args.today)
+    errors += check_diff_pages(args.out_dir, args.data_dir)
     for e in errors:
         print(e)
     print(f"{len(errors)} problem(s).")

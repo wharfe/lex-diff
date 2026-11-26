@@ -10,7 +10,7 @@ import {
   pendingStatsLabel,
   PENDING_SECTION_INTRO,
   type PendingDiff,
-  UPCOMING_DESCRIPTION,
+  upcomingDescription,
   UPCOMING_EMPTY,
   UPCOMING_SCOPE,
   UPCOMING_TITLE,
@@ -21,20 +21,27 @@ import {
 // docs/upcoming-page/spec.md. Every string is from lib/pending.ts, and
 // scripts/check_upcoming_page.py checks the built page against the data.
 
-export const metadata: Metadata = {
-  title: UPCOMING_TITLE,
-  description: UPCOMING_DESCRIPTION,
-  alternates: { canonical: "/upcoming" },
-  // Restated in full: a page-level openGraph replaces the root one.
-  openGraph: {
-    title: `${UPCOMING_TITLE} | lexdiff`,
-    description: UPCOMING_DESCRIPTION,
-    url: "https://lexdiff.com/upcoming",
-    siteName: "lexdiff",
-    locale: "ja_JP",
-    type: "website",
-  },
-};
+function upcomingRows() {
+  return upcomingPending(getDiffIds().map((id) => ({ id, data: getDiffData(id) })));
+}
+
+export function generateMetadata(): Metadata {
+  const description = upcomingDescription(upcomingRows());
+  return {
+    title: UPCOMING_TITLE,
+    description,
+    alternates: { canonical: "/upcoming" },
+    // Restated in full: a page-level openGraph replaces the root one.
+    openGraph: {
+      title: `${UPCOMING_TITLE} | lexdiff`,
+      description,
+      url: "https://lexdiff.com/upcoming",
+      siteName: "lexdiff",
+      locale: "ja_JP",
+      type: "website",
+    },
+  };
+}
 
 type Row = { id: string; data: PendingDiff };
 
@@ -76,7 +83,7 @@ function UpcomingSection({ k, heading, rows }: { k: string; heading: string; row
 }
 
 export default function UpcomingPage() {
-  const rows = upcomingPending(getDiffIds().map((id) => ({ id, data: getDiffData(id) })));
+  const rows = upcomingRows();
 
   return (
     <div className="flex flex-col gap-8" data-build-date={BUILD_DATE_JST}>

@@ -34,10 +34,11 @@ export async function generateMetadata({
     data.diffs
   );
   if (isPendingDiff(data)) {
-    // No year and no past tense: the date may be a 政令 deadline, and the
-    // page stays as built after it passes. Every claim is dated instead.
+    // No past tense, and a date only when e-Gov fixed it: an unfixed one may
+    // be a 政令 deadline, and the page stays as built after it passes. The
+    // 未施行 claim is dated by generated_on (lib/pending.ts).
     const title = pendingTitle(data);
-    const description = pendingDescription(data, mainCount, supplCount);
+    const description = pendingDescription(data);
     return {
       title,
       description,

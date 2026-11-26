@@ -98,10 +98,10 @@ def render(data_dir, *, build_date=TODAY, drop=None, extra_link=None, move=None,
     if not rows or empty_msg:
         body += f"<p>{c.EMPTY}</p>"
     body += "</div>"
-    head = (f"<title>{title}</title><meta name=\"description\" content=\"{c.DESCRIPTION}\"/>"
+    head = (f"<title>{title}</title><meta name=\"description\" content=\"{c.upcoming_description(rows)}\"/>"
             f"<link rel=\"canonical\" href=\"{c.BASE}{canonical}\"/>"
             f"<meta property=\"og:title\" content=\"{c.TITLE}\"/>"
-            f"<meta property=\"og:description\" content=\"{c.DESCRIPTION}\"/>"
+            f"<meta property=\"og:description\" content=\"{c.upcoming_description(rows)}\"/>"
             f"<meta property=\"og:url\" content=\"{c.BASE}/upcoming\"/>"
             f"<meta property=\"og:site_name\" content=\"lexdiff\"/>"
             f"<meta property=\"og:locale\" content=\"ja_JP\"/>"
@@ -234,3 +234,131 @@ def test_the_build_date_is_judged_against_the_files_own_date(data_dir):
     later = datetime(2026, 10, 25, 12, tzinfo=c.JST).timestamp()
     os.utime(page, (later, later))
     assert c.check(out, data_dir, None)
+
+
+# #51: the descriptions and pending diff titles are built from the data.
+
+def test_the_upcoming_description_names_the_rows_laws(data_dir):
+    rows = c.expected_rows(data_dir, TODAY)
+    assert c.upcoming_description(rows) == (
+        c.DESCRIPTION_HEAD + "A法、B法、C法ほか1法令の改正を載せています。" + c.DESCRIPTION_TAIL)
+    assert c.upcoming_description({}) == c.DESCRIPTION_HEAD + c.DESCRIPTION_TAIL
+    # Rows of one law name it once.
+    one = {k: {**v, "law_title": "X法"} for k, v in rows.items()}
+    assert c.upcoming_description(one) == c.DESCRIPTION_HEAD + "X法の改正を載せています。" + c.DESCRIPTION_TAIL
+
+
+def test_the_upcoming_description_has_no_date(data_dir):
+    import re
+    desc = c.upcoming_description(c.expected_rows(data_dir, TODAY))
+    assert not re.search(r"\d{4}|[0-9０-９]+月|令和|平成", desc), desc
+
+
+def test_a_stale_upcoming_description_is_reported(data_dir):
+    errors = render(data_dir, meta={"description": c.DESCRIPTION_HEAD + c.DESCRIPTION_TAIL + "x"})
+    assert any("meta description" in e for e in errors), errors
+
+
+CH2 = "第二章\u3000禁止等"
+CH3 = "第三章\u3000措置等"
+CH5 = "第五章\u3000罰則"
+
+
+def _pending_diff(*, comment=None, entries=None, suppl=1):
+    entries = entries if entries is not None else (
+        [("modified", [CH2])] * 3 + [("added", [CH3])] * 2 + [("modified", [CH3]), ("added", [CH5])])
+    return {
+        "law_title": "甲法", "date_after": "2026-12-01",
+        "diffs": [{"type": t, "is_suppl": False, "section_path": sp} for t, sp in entries]
+                 + [{"type": "added", "is_suppl": True, "section_path": []}] * suppl,
+        "pending": {
+            "generated_on": "2026-11-06",
+            "revisions": [{"law_revision_id": "x", "amendment_law_num": "令和七年法律第一号",
+                           "enforcement_comment": comment}],
+            "unenforced_before": [],
+        },
+    }
+
+
+def test_a_fixed_date_goes_in_the_diff_title():
+    doc = _pending_diff()
+    # CH3 has as many entries as CH2 (3 each) but appears later: ties keep order.
+    assert c.diff_page_title(doc) == "甲法の改正【施行日 2026-12-01】本則7条: 禁止等・措置等ほか | lexdiff"
+    assert c.diff_page_description(doc) == (
+        "甲法の改正（令和七年法律第一号）による新旧条文の差分。施行日: 2026-12-01。"
+        "施行されると本則7条が変わります（うち新設3条）。"
+        f"主な変更箇所: {CH2}、{CH3}ほか。2026-11-06時点で未施行。")
+
+
+def test_an_unfixed_date_stays_out_of_the_diff_title():
+    doc = _pending_diff(comment="政令で定める日", entries=[("modified", [CH5])])
+    assert c.diff_page_title(doc) == "甲法の改正【施行日未確定】本則1条: 罰則 | lexdiff"
+    assert "2026" not in c.diff_page_title(doc)
+    # The description quotes e-Gov's own wording with the date it records.
+    assert "施行日: 政令で定める日（e-Gov 上の予定日: 2026-12-01）。" in c.diff_page_description(doc)
+
+
+def test_more_entries_rank_a_chapter_first():
+    doc = _pending_diff(entries=[("modified", [CH2]), ("modified", [CH3]), ("modified", [CH3])])
+    assert c.diff_page_title(doc).endswith("本則3条: 措置等・禁止等 | lexdiff")
+
+
+def test_a_diff_without_chapters_or_main_changes():
+    flat = _pending_diff(entries=[("modified", [])])
+    assert c.diff_page_title(flat) == "甲法の改正【施行日 2026-12-01】本則1条 | lexdiff"
+    assert "主な変更箇所" not in c.diff_page_description(flat)
+    suppl = _pending_diff(entries=[], suppl=2)
+    assert c.diff_page_title(suppl) == "甲法の改正【施行日 2026-12-01】附則のみの改正 | lexdiff"
+    assert "施行されると附則2件が変わります（本則は変わりません）。" in c.diff_page_description(suppl)
+
+
+def _diff_page(out, stem, title, description, og_title=None, og_description=None):
+    d = out / "diff"
+    d.mkdir(parents=True, exist_ok=True)
+    (d / f"{stem}.html").write_text(
+        f'<html><head><title>{title}</title><meta name="description" content="{description}"/>'
+        f'<meta property="og:title" content="{og_title or title}"/>'
+        f'<meta property="og:description" content="{og_description or description}"/></head></html>')
+
+
+@pytest.fixture
+def diff_dir(tmp_path):
+    d = tmp_path / "data"
+    d.mkdir()
+    doc = _pending_diff()
+    (d / "X_2026-11-30_2026-12-01.json").write_text(json.dumps(doc, ensure_ascii=False))
+    (d / "Y_2025-03-31_2025-04-01.json").write_text(json.dumps({"date_after": "2025-04-01"}))
+    return d, doc
+
+
+STEM = "X_2026-11-30_2026-12-01"
+
+
+def test_a_correct_diff_page_passes(diff_dir):
+    d, doc = diff_dir
+    out = d.parent / "out"
+    _diff_page(out, STEM, c.diff_page_title(doc), c.diff_page_description(doc))
+    assert c.check_diff_pages(out, d) == []
+
+
+@pytest.mark.parametrize("field,expected", [
+    ("title", f"{STEM}: title"),
+    ("description", f"{STEM}: meta description"),
+    ("og_title", f"{STEM}: meta og:title"),
+    ("og_description", f"{STEM}: meta og:description"),
+])
+def test_each_wrong_diff_page_field_is_reported(diff_dir, field, expected):
+    d, doc = diff_dir
+    out = d.parent / "out"
+    fields = {"title": c.diff_page_title(doc), "description": c.diff_page_description(doc)}
+    # The base tree's wording: the generated_on claim and law number, no date.
+    old = "甲法【2026-11-06時点で未施行】令和七年法律第一号による改正 | lexdiff"
+    _diff_page(out, STEM, **{**fields, field: old})
+    errors = c.check_diff_pages(out, d)
+    assert any(expected in e for e in errors), errors
+
+
+def test_a_missing_diff_page_is_reported(diff_dir):
+    d, _ = diff_dir
+    errors = c.check_diff_pages(d.parent / "out", d)
+    assert any("does not exist" in e for e in errors), errors
